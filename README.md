@@ -1,0 +1,156 @@
+# Bitcoin Battlefield — Live
+
+A live, 3D Bitcoin market visualization built to run for hours unattended as
+an **OBS Browser Source** on a monetized YouTube livestream. Bulls (buyers)
+and Bears (sellers) camp on either side of a river; their armies grow and
+shrink with real order-book depth, march toward the frontline, and take
+casualties in real time whenever a leveraged position gets liquidated.
+
+It's inspired by [newhedge.io's Bitcoin Battlefield](https://newhedge.io/bitcoin/battlefield),
+rebuilt from scratch and tuned specifically for streaming: a fully
+autonomous camera (no interaction required), synthesized sound effects (no
+licensing headaches), automatic WebSocket reconnects so a dropped
+connection never freezes the stream, and a "kill-feed" style callout for
+big liquidations and price milestones to keep viewers engaged.
+
+## What it shows
+
+- **Live BTC/USD price**, 24h change, and a UTC clock (top center).
+- **Market pressure** — buyers vs. sellers, derived from order-book
+  imbalance *and* recent taker trade flow, not price alone.
+- **Sell Wall / Buy Wall** — live USD depth on each side (top corners).
+- **Order book depth chart** (bottom-left) — the classic bid/ask "valley"
+  chart, mirrored from the same data driving the 3D scene.
+- **Bulls vs. Bears armies** — unit count scales with order-book depth on
+  each side; soldiers and tanks march from camp toward the river/frontline,
+  which itself drifts toward whichever side has more pressure.
+- **Live liquidations** — every forced long/short liquidation on Binance
+  Futures triggers an explosion + camera shake at the front line, removes
+  units from the losing side, and appears in the market feed. Large
+  liquidations (≥ $75K) also trigger a big on-screen callout.
+- **Milestones** — round-number price crossings and new 24h highs/lows get
+  their own callout + chime.
+
+## Data source
+
+Everything is fetched **client-side, directly from Binance's public
+WebSocket API** — no backend server, no API key, nothing to host except the
+static files themselves:
+
+- `btcusdt@ticker` — live price / 24h stats
+- `btcusdt@depth20@1000ms` — top-20 order book (buy/sell wall)
+- `btcusdt@aggTrade` — trade flow (for market pressure)
+- Binance USD-M Futures `btcusdt@forceOrder` — liquidation events
+
+Because it's single-exchange (Binance spot + Binance futures), the wall
+totals and liquidation feed will differ slightly from any multi-exchange
+aggregator — that's expected and disclosed in the UI ("Binance spot").
+
+## Running it
+
+```bash
+npm install
+npm run build
+npm run preview -- --port 4173
+```
+
+Then add `http://localhost:4173` as an OBS **Browser Source**.
+
+For local development with hot reload: `npm run dev`.
+
+### Keeping it running 24/7
+
+`npm run preview` is a plain static file server — nothing here needs a
+database or backend, so the simplest reliable setup is:
+
+1. Run `npm run build` once (or after any change).
+2. Run the preview server as a background service so it survives reboots,
+   e.g. with `pm2`: `pm2 start "npm run preview -- --port 4173" --name btc-battlefield`.
+3. Point OBS at `http://localhost:4173`.
+
+If you'd rather not manage a local process, `npm run build` produces a fully
+static `dist/` folder you can deploy to Vercel/Netlify/Cloudflare
+Pages/GitHub Pages and point OBS at that public URL instead — useful if you
+stream from more than one machine.
+
+## OBS Browser Source setup
+
+1. Add **Browser Source**, URL = wherever you're hosting it (see above).
+2. Resolution: **1920×1080** (or match your canvas), FPS: 30 is plenty.
+3. **Uncheck** "Shutdown source when not visible" — you want the WebSocket
+   connections and army positions to keep updating even while you're on
+   another scene, so it's still live the moment you switch back.
+4. **Uncheck** "Refresh browser when scene becomes active" for the same
+   reason — a refresh would drop and re-establish all the WebSocket
+   connections and reset the armies every time you switch scenes.
+5. If you enable sound (`?sound=1`, see below), check **"Control audio via
+   OBS"** so it's mixed like any other audio source instead of relying on
+   browser autoplay.
+
+## URL query parameters
+
+The same build adapts to different scenes/setups without a rebuild:
+
+| Param | Default | Effect |
+|---|---|---|
+| `symbol` | `BTCUSDT` | Any Binance spot+futures symbol, e.g. `ETHUSDT` |
+| `label` | derived from symbol | Override the display label (e.g. `ETH/USD`) |
+| `sound` | `0` | `1` enables synthesized explosion/milestone SFX |
+| `transparent` | `0` | `1` renders on a transparent background so you can overlay the scene on top of another source instead of using it full-screen |
+| `interact` | `0` | `1` enables mouse-drag/scroll/WASD camera control (for you to line up a shot) — leave this **off** for the actual live source so nothing can accidentally bump the camera during a multi-hour stream |
+| `cinematic` | `1` | Slow autonomous camera sway when not interacting |
+| `daynight` | `0` | `1` adds a subtle day/night tint cycle keyed to real UTC time |
+| `watermark` | *(none)* | Text shown bottom-right, e.g. your channel handle |
+| `quality` | `high` | `low` / `medium` / `high` — lower reduces tree/shadow counts if you're CPU/GPU constrained while also running an encoder |
+| `fps` | `60` | Internal render FPS cap, independent of OBS's own capture rate |
+| `debug` | `0` | `1` exposes `window.battlefieldDebug` in the browser console (`demoTicker()`, `demoLiquidation()`) to sanity-check the scene without waiting on real market data |
+
+Example for a transparent overlay with your handle and sound on:
+
+```
+http://localhost:4173/?transparent=1&sound=1&watermark=%40YourChannel
+```
+
+## Architecture
+
+Everything is plain TypeScript + [three.js](https://threejs.org), bundled
+with Vite — no framework, no backend:
+
+```
+src/
+  config.ts          query-param configuration
+  audio.ts            synthesized WebAudio sound effects
+  data/
+    types.ts          shared data types
+    BinanceFeed.ts     WebSocket connections + auto-reconnect + staleness watchdog
+    store.ts           single reactive store (pressure/derived state, pub-sub)
+  scene/
+    Battlefield.ts     terrain, road, river/frontline, camps, camera
+    Units.ts           instanced marching armies (soldiers + tanks)
+    Effects.ts         pooled explosion particles + camera shake
+    geometry.ts         merged low-poly geometries for instancing
+  ui/
+    hud.ts             DOM overlay (price, walls, depth chart, feed, kill-feed)
+  main.ts              wires data -> store -> scene/HUD, render loop
+```
+
+Design choices worth knowing about if you extend this:
+
+- **No external asset downloads.** Terrain, trees, tanks, soldiers, the
+  road texture and all sound are procedurally generated. Nothing to fetch
+  at runtime beyond the Binance WebSocket data itself, so a flaky CDN can
+  never break your live source.
+- **Object pooling everywhere that runs continuously** (units, explosion
+  particles) — a multi-hour stream must not leak memory or accumulate
+  draw calls.
+- **The camera never requires interaction.** OBS Browser Sources don't
+  receive keyboard/mouse input unless you tick "Interact", which you won't
+  be doing mid-stream — so the default camera is a slow autonomous sway,
+  not the reference site's WASD fly-cam (`?interact=1` brings that back for
+  setting up a shot beforehand).
+
+## Disclaimer
+
+This is a data visualization for entertainment purposes, not financial
+advice. Wall sizes and liquidation data reflect Binance only and can differ
+from other exchanges or aggregators.
