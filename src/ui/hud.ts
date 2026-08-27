@@ -46,6 +46,8 @@ export class Hud {
   private readonly changeEl: HTMLDivElement;
   private readonly clockEl: HTMLDivElement;
   private readonly pressureLabelEl: HTMLDivElement;
+  private readonly pressureBarEl: HTMLDivElement;
+  private readonly pressureBarFillEl: HTMLDivElement;
   private readonly pressureDetailEl: HTMLDivElement;
   private readonly sellWallEl: HTMLDivElement;
   private readonly buyWallEl: HTMLDivElement;
@@ -83,8 +85,11 @@ export class Hud {
     const pressureBlock = el('div', 'hud__pressure-block');
     const pressureCaption = el('div', 'hud__pressure-caption', 'MARKET PRESSURE');
     this.pressureLabelEl = el('div', 'hud__pressure-label', 'Balanced');
+    this.pressureBarEl = el('div', 'hud__pressure-bar');
+    this.pressureBarFillEl = el('div', 'hud__pressure-bar-fill');
+    this.pressureBarEl.append(this.pressureBarFillEl);
     this.pressureDetailEl = el('div', 'hud__pressure-detail', 'Waiting for data…');
-    pressureBlock.append(pressureCaption, this.pressureLabelEl, this.pressureDetailEl);
+    pressureBlock.append(pressureCaption, this.pressureLabelEl, this.pressureBarEl, this.pressureDetailEl);
 
     const headerRow = el('div', 'hud__header-row');
     headerRow.append(priceBlock, pressureBlock);
@@ -156,7 +161,15 @@ export class Hud {
     const label = pressure === 'buyers' ? 'Buyers advancing' : pressure === 'sellers' ? 'Sellers advancing' : 'Standoff';
     this.pressureLabelEl.textContent = label;
     this.pressureLabelEl.dataset.pressure = pressure;
-    this.pressureDetailEl.textContent = `Pressure ${(pressureRatio * 100).toFixed(0)}% · ${(book.bidWallUsd + book.askWallUsd > 0 ? 'depth-weighted' : 'n/a')}`;
+
+    const clamped = Math.max(-1, Math.min(1, pressureRatio));
+    this.pressureBarFillEl.style.width = `${Math.abs(clamped) * 50}%`;
+    this.pressureBarFillEl.classList.toggle('hud__pressure-bar-fill--buy', clamped >= 0);
+    this.pressureBarFillEl.classList.toggle('hud__pressure-bar-fill--sell', clamped < 0);
+    this.pressureBarFillEl.style.left = clamped >= 0 ? '50%' : `${50 - Math.abs(clamped) * 50}%`;
+
+    this.pressureDetailEl.textContent =
+      pressure === 'balanced' ? 'Evenly matched' : `${Math.round(Math.abs(clamped) * 100)}% ${pressure === 'buyers' ? 'buy-side' : 'sell-side'} dominance`;
 
     this.drawDepth(book, currentPrice);
   }

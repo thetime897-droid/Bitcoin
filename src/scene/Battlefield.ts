@@ -258,7 +258,8 @@ export class Battlefield {
       const nearRoad = Math.abs(z - 2) < 6;
       const nearRiver = Math.abs(z + 18) < 7;
       const nearCamp = Math.abs(x) > GROUND_HALF_WIDTH * 0.78;
-      if (nearRoad || nearRiver || nearCamp) continue;
+      const nearPriceTicks = Math.abs(z - 20) < 4.5;
+      if (nearRoad || nearRiver || nearCamp || nearPriceTicks) continue;
       const y = fbmHeight(x, z) * THREE.MathUtils.smoothstep(Math.abs(z - 2), 0, 9);
       const scale = 0.7 + rand() * 0.9;
       m.compose(

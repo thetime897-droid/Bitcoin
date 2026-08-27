@@ -38,6 +38,11 @@ html, body {
   color: #f4f6f8;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   user-select: none;
+  background: radial-gradient(ellipse at 50% 40%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.22) 100%);
+}
+
+.hud--transparent {
+  background: none;
 }
 
 .hud--transparent .hud__topbar,
@@ -104,7 +109,7 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 4px 26px 0;
+  padding: 4px 22px 0;
   gap: 24px;
 }
 
@@ -125,19 +130,52 @@ html, body {
 .hud__change--up { color: #4fe39a; }
 .hud__change--down { color: #ff6b60; }
 
-.hud__pressure-block { text-align: right; display: flex; flex-direction: column; gap: 2px; max-width: 340px; }
+.hud__pressure-block { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; max-width: 340px; }
 .hud__pressure-caption { font-size: 11px; opacity: 0.6; letter-spacing: 1.5px; }
 .hud__pressure-label { font-size: 22px; font-weight: 800; }
 .hud__pressure-label[data-pressure='buyers'] { color: #4fe39a; }
 .hud__pressure-label[data-pressure='sellers'] { color: #ff6b60; }
 .hud__pressure-label[data-pressure='balanced'] { color: #cfd4da; }
-.hud__pressure-detail { font-size: 12px; opacity: 0.65; }
+.hud__pressure-detail { font-size: 12px; opacity: 0.6; }
+
+.hud__pressure-bar {
+  position: relative;
+  width: 180px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+  margin-top: 2px;
+}
+.hud__pressure-bar::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.35);
+}
+.hud__pressure-bar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-radius: 999px;
+  transition: width 0.4s ease, left 0.4s ease;
+}
+.hud__pressure-bar-fill--buy { background: #4fe39a; box-shadow: 0 0 8px rgba(79, 227, 154, 0.6); }
+.hud__pressure-bar-fill--sell { background: #ff6b60; box-shadow: 0 0 8px rgba(255, 107, 96, 0.6); }
 
 /* ---------- Corner wall totals ---------- */
 .hud__wall {
   position: absolute;
   top: 196px;
-  padding: 6px 4px;
+  padding: 10px 16px;
+  background: rgba(6, 9, 14, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
 }
 .hud__wall--sell { left: 22px; text-align: left; }
 .hud__wall--buy { right: 22px; text-align: right; }
