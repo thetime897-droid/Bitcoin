@@ -1,11 +1,34 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { config } from '../config';
+import { buildPineLeafGeometry } from './geometry';
 
 const GROUND_HALF_WIDTH = 72;
 const GROUND_HALF_DEPTH = 60;
 const MAX_FRONTLINE_SHIFT = 14;
 const CAMP_X_FACTOR = 0.8;
+const CAMP_X = GROUND_HALF_WIDTH * CAMP_X_FACTOR;
+const RIVER_Z = -18;
+const CLASH_CENTER: [number, number] = [0, -14];
+
+/** The road isn't a straight strip: it dips north from each camp to cross
+ * the river at the bridge (x=0), then climbs back out to the other camp -
+ * the natural line a road would actually take to the easiest crossing. */
+function roadCenterZ(x: number): number {
+  const t = Math.min(Math.abs(x) / CAMP_X, 1);
+  return RIVER_Z + 22 * Math.pow(t, 1.3);
+}
+
+function roadSlope(x: number): number {
+  const ax = Math.abs(x);
+  if (ax >= CAMP_X || ax < 1e-4) return 0;
+  const t = ax / CAMP_X;
+  return Math.sign(x) * ((22 * 1.3) / CAMP_X) * Math.pow(t, 0.3);
+}
 
 function makeCanvasTexture(draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void, w = 256, h = 256): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
@@ -18,24 +41,20 @@ function makeCanvasTexture(draw: (ctx: CanvasRenderingContext2D, w: number, h: n
   return tex;
 }
 
-function makeLabelSprite(text: string, color: string): THREE.Sprite {
+/** A flat, ground-hugging text decal (like a painted yard line) rather than
+ * a billboard sprite - reads as part of the terrain instead of a floating
+ * HUD element bolted onto the 3D world. */
+function makeGroundLabel(): { mesh: THREE.Mesh; canvas: HTMLCanvasElement; texture: THREE.CanvasTexture } {
   const canvas = document.createElement('canvas');
-  canvas.width = 256;
-  canvas.height = 64;
-  const ctx = canvas.getContext('2d')!;
-  ctx.font = '600 34px system-ui, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.shadowColor = 'rgba(0,0,0,0.8)';
-  ctx.shadowBlur = 8;
-  ctx.fillStyle = color;
-  ctx.fillText(text, 128, 32);
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
-  const sprite = new THREE.Sprite(mat);
-  sprite.scale.set(6, 1.5, 1);
-  return sprite;
+  canvas.width = 320;
+  canvas.height = 96;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false, toneMapped: false });
+  const geo = new THREE.PlaneGeometry(7.2, 2.16);
+  geo.rotateX(-Math.PI / 2);
+  const mesh = new THREE.Mesh(geo, mat);
+  return { mesh, canvas, texture };
 }
 
 /** Simple deterministic pseudo-random so the scattered scenery is stable
@@ -54,6 +73,11 @@ function fbmHeight(x: number, z: number): number {
     Math.sin(x * 0.11 + z * 0.07) * 0.35 +
     Math.sin(z * 0.023 - x * 0.02) * 0.5
   );
+}
+
+function terrainHeightAt(x: number, z: number): number {
+  const flattener = THREE.MathUtils.smoothstep(Math.abs(z - roadCenterZ(x)), 0, 9);
+  return fbmHeight(x, z) * flattener;
 }
 
 export type CampSide = 'bears' | 'bulls';
@@ -77,10 +101,12 @@ export class Battlefield {
   private frontlineX = 0;
   private readonly clock = new THREE.Clock();
   private controls: OrbitControls | null = null;
+  private composer: EffectComposer | null = null;
   private cinematicT = 0;
   private disposed = false;
-  private readonly priceLabels: THREE.Sprite[] = [];
-  private readonly priceLabelBaseX: number[] = [];
+  private readonly priceLabels: { mesh: THREE.Mesh; canvas: HTMLCanvasElement; texture: THREE.CanvasTexture }[] = [];
+  private waterMat: THREE.MeshStandardMaterial | null = null;
+  private waterTime = 0;
 
   constructor(private readonly container: HTMLElement) {
     this.renderer = new THREE.WebGLRenderer({
@@ -91,6 +117,9 @@ export class Battlefield {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = config.quality !== 'low';
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.08;
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     if (config.transparent) this.renderer.setClearColor(0x000000, 0);
     container.appendChild(this.renderer.domElement);
 
@@ -99,8 +128,8 @@ export class Battlefield {
     this.camera.lookAt(0, 1, -6);
 
     if (!config.transparent) {
-      this.scene.background = new THREE.Color(0x8fd1ef);
-      this.scene.fog = new THREE.Fog(0x8fd1ef, 90, 220);
+      this.buildSky();
+      this.scene.fog = new THREE.Fog(0xb8cdb2, 130, 250);
     }
 
     this.buildLighting();
@@ -123,14 +152,39 @@ export class Battlefield {
       this.controls.listenToKeyEvents(window);
     }
 
+    if (!config.transparent) {
+      this.composer = new EffectComposer(this.renderer);
+      this.composer.addPass(new RenderPass(this.scene, this.camera));
+      const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.28, 0.4, 0.94);
+      this.composer.addPass(bloom);
+      this.composer.addPass(new OutputPass());
+    }
+
     this.resize();
   }
 
+  private buildSky(): void {
+    const tex = makeCanvasTexture((ctx, w, h) => {
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, '#4d7fb8');
+      grad.addColorStop(0.42, '#8fbcd6');
+      grad.addColorStop(0.72, '#b9d3bc');
+      grad.addColorStop(1, '#c6d9bd');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+    }, 8, 512);
+    const sky = new THREE.Mesh(
+      new THREE.SphereGeometry(280, 20, 16),
+      new THREE.MeshBasicMaterial({ map: tex, side: THREE.BackSide, fog: false, toneMapped: false }),
+    );
+    this.scene.add(sky);
+  }
+
   private buildLighting(): void {
-    const hemi = new THREE.HemisphereLight(0xbfe3ff, 0x3b5c2c, 0.9);
+    const hemi = new THREE.HemisphereLight(0xbfe3ff, 0x3b5c2c, 0.85);
     this.scene.add(hemi);
 
-    const sun = new THREE.DirectionalLight(0xfff3d6, 1.4);
+    const sun = new THREE.DirectionalLight(0xfff0d2, 1.5);
     sun.position.set(-40, 60, 30);
     sun.castShadow = config.quality !== 'low';
     if (sun.castShadow) {
@@ -143,27 +197,36 @@ export class Battlefield {
       sun.shadow.bias = -0.0015;
     }
     this.scene.add(sun);
-    this.scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.22));
   }
 
   private buildTerrain(): void {
-    const geo = new THREE.PlaneGeometry(GROUND_HALF_WIDTH * 2, GROUND_HALF_DEPTH * 2, 80, 48);
+    const geo = new THREE.PlaneGeometry(GROUND_HALF_WIDTH * 2, GROUND_HALF_DEPTH * 2, 100, 60);
     geo.rotateX(-Math.PI / 2);
     const pos = geo.attributes.position;
     const colors = new Float32Array(pos.count * 3);
     const base = new THREE.Color(0x4c8a3f);
     const dark = new THREE.Color(0x2f5e26);
+    const dirt = new THREE.Color(0x8a6f45);
+    const dirtDark = new THREE.Color(0x6b5636);
     const rand = seededRandom(7);
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i);
       const z = pos.getZ(i);
-      const roadDist = Math.abs(z - 2);
-      const flattener = THREE.MathUtils.smoothstep(roadDist, 0, 9);
-      const h = fbmHeight(x, z) * flattener;
-      pos.setY(i, h);
+      pos.setY(i, terrainHeightAt(x, z));
 
       const edge = Math.min(1, (Math.abs(x) / GROUND_HALF_WIDTH) * 1.15);
-      const c = base.clone().lerp(dark, edge * 0.6 + rand() * 0.12);
+      let c = base.clone().lerp(dark, edge * 0.6 + rand() * 0.12);
+
+      // No-man's-land: a war-trampled dirt patch around the river crossing
+      // where the armies actually clash, fading back to grass outward.
+      const clashDist = Math.hypot(x - CLASH_CENTER[0], z - CLASH_CENTER[1]);
+      const warBlend = 1 - THREE.MathUtils.smoothstep(clashDist, 12, 46);
+      if (warBlend > 0) {
+        const patchDirt = dirt.clone().lerp(dirtDark, rand() * 0.3);
+        c = c.lerp(patchDirt, warBlend * 0.8);
+      }
+
       colors[i * 3] = c.r;
       colors[i * 3 + 1] = c.g;
       colors[i * 3 + 2] = c.b;
@@ -178,8 +241,8 @@ export class Battlefield {
   }
 
   private buildRoad(): void {
-    // Canvas width = along the road's length (X, after rotation); canvas
-    // height = across its width (Z) - a dashed centre line running lengthwise.
+    // Canvas width = along the road's length; canvas height = across its
+    // width - a dashed centre line running lengthwise once tiled.
     const tex = makeCanvasTexture((ctx, w, h) => {
       ctx.fillStyle = '#3a3a3f';
       ctx.fillRect(0, 0, w, h);
@@ -191,76 +254,106 @@ export class Battlefield {
     }, 512, 64);
     tex.wrapS = THREE.RepeatWrapping;
     tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set(16, 1);
+    tex.repeat.set(18, 1);
 
-    const geo = new THREE.PlaneGeometry(GROUND_HALF_WIDTH * 2 - 4, 7);
-    geo.rotateX(-Math.PI / 2);
-    const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.95 }));
-    mesh.position.set(0, 0.03, 2);
+    const halfWidth = 3.5;
+    const length = GROUND_HALF_WIDTH * 2 - 4;
+    const geo = new THREE.PlaneGeometry(length, halfWidth * 2, 64, 1);
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const alongX = pos.getX(i);
+      const crossT = pos.getY(i) / halfWidth;
+      const centerZ = roadCenterZ(alongX);
+      const slope = roadSlope(alongX);
+      const tangentLen = Math.sqrt(1 + slope * slope);
+      const px = -slope / tangentLen;
+      const pz = 1 / tangentLen;
+      pos.setXYZ(i, alongX + px * halfWidth * crossT, 0.04, centerZ + pz * halfWidth * crossT);
+    }
+    geo.computeVertexNormals();
+
+    // DoubleSide: remapping the plane's local Y onto world Z (instead of a
+    // simple rotation) can leave the computed winding facing away from the
+    // camera depending on curve direction, so don't rely on face culling here.
+    const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.95, side: THREE.DoubleSide }));
     mesh.receiveShadow = true;
     this.scene.add(mesh);
   }
 
   private buildRiver(): THREE.Object3D[] {
-    const water = new THREE.Mesh(
-      new THREE.PlaneGeometry(GROUND_HALF_WIDTH * 2.4, 9),
-      new THREE.MeshStandardMaterial({
-        color: 0x2a7fb0,
-        transparent: true,
-        opacity: 0.82,
-        roughness: 0.15,
-        metalness: 0.35,
-      }),
-    );
+    this.waterMat = new THREE.MeshStandardMaterial({
+      color: 0x2a7fb0,
+      transparent: true,
+      opacity: 0.82,
+      roughness: 0.12,
+      metalness: 0.4,
+    });
+    const water = new THREE.Mesh(new THREE.PlaneGeometry(GROUND_HALF_WIDTH * 2.4, 9), this.waterMat);
     water.rotateX(-Math.PI / 2);
     water.rotateZ(Math.PI / 2);
-    water.position.set(0, 0.06, -18);
+    water.position.set(0, 0.06, RIVER_Z);
     water.receiveShadow = true;
 
     const bridgeDeck = new THREE.Mesh(
       new THREE.BoxGeometry(7.4, 0.4, 10),
       new THREE.MeshStandardMaterial({ color: 0x8a6a4a, roughness: 0.9 }),
     );
-    bridgeDeck.position.set(0, 0.28, -18);
+    bridgeDeck.position.set(0, 0.28, RIVER_Z);
     bridgeDeck.castShadow = true;
     bridgeDeck.receiveShadow = true;
 
+    const railMat = new THREE.MeshStandardMaterial({ color: 0x4a3a28, roughness: 0.85 });
+    const rails: THREE.Object3D[] = [];
+    for (const side of [-1, 1]) {
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(7.6, 0.18, 0.18), railMat);
+      rail.position.set(0, 0.56, RIVER_Z + side * 4.9);
+      rail.castShadow = true;
+      rails.push(rail);
+    }
+
     const glow = new THREE.Mesh(
       new THREE.PlaneGeometry(1.4, 9),
-      new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.16 }),
+      new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.16, toneMapped: false }),
     );
     glow.rotateX(-Math.PI / 2);
     glow.rotateZ(Math.PI / 2);
-    glow.position.set(0, 0.08, -18);
+    glow.position.set(0, 0.08, RIVER_Z);
 
-    return [water, bridgeDeck, glow];
+    return [water, bridgeDeck, glow, ...rails];
   }
 
   private buildScenery(): void {
     const rand = seededRandom(42);
     const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5b4530, roughness: 1 });
-    const leafMat = new THREE.MeshStandardMaterial({ color: 0x2e6b32, roughness: 0.9 });
+    // White base so the per-instance colors set below (leafBase/leafDark)
+    // aren't multiplied against another dark green and crushed toward black.
+    const leafMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9 });
     const trunkGeo = new THREE.CylinderGeometry(0.15, 0.22, 1.2, 6);
-    const leafGeo = new THREE.ConeGeometry(1.1, 2.4, 7);
+    const leafGeo = buildPineLeafGeometry();
 
-    const count = config.quality === 'high' ? 140 : config.quality === 'medium' ? 90 : 50;
+    const count = config.quality === 'high' ? 150 : config.quality === 'medium' ? 95 : 50;
     const trunks = new THREE.InstancedMesh(trunkGeo, trunkMat, count);
     const leaves = new THREE.InstancedMesh(leafGeo, leafMat, count);
     trunks.castShadow = true;
     leaves.castShadow = true;
     const m = new THREE.Matrix4();
+    const leafColor = new THREE.Color();
+    const leafBase = new THREE.Color(0x2e6b32);
+    const leafDark = new THREE.Color(0x214d24);
     let placed = 0;
     let guard = 0;
     while (placed < count && guard < count * 20) {
       guard++;
       const x = (rand() * 2 - 1) * GROUND_HALF_WIDTH * 0.94;
       const z = (rand() * 2 - 1) * GROUND_HALF_DEPTH * 0.9;
-      const nearRoad = Math.abs(z - 2) < 6;
-      const nearRiver = Math.abs(z + 18) < 7;
+      const nearRoad = Math.abs(z - roadCenterZ(x)) < 6;
+      const nearRiver = Math.abs(z - RIVER_Z) < 7;
       const nearCamp = Math.abs(x) > GROUND_HALF_WIDTH * 0.78;
       const nearPriceTicks = Math.abs(z - 20) < 4.5;
-      if (nearRoad || nearRiver || nearCamp || nearPriceTicks) continue;
-      const y = fbmHeight(x, z) * THREE.MathUtils.smoothstep(Math.abs(z - 2), 0, 9);
+      const clashDist = Math.hypot(x - CLASH_CENTER[0], z - CLASH_CENTER[1]);
+      const inWarZone = clashDist < 24;
+      if (nearRoad || nearRiver || nearCamp || nearPriceTicks || inWarZone) continue;
+      const y = terrainHeightAt(x, z);
       const scale = 0.7 + rand() * 0.9;
       m.compose(
         new THREE.Vector3(x, y + 0.6 * scale, z),
@@ -269,11 +362,13 @@ export class Battlefield {
       );
       trunks.setMatrixAt(placed, m);
       m.compose(
-        new THREE.Vector3(x, y + 1.7 * scale, z),
+        new THREE.Vector3(x, y + 1.2 * scale, z),
         new THREE.Quaternion(),
         new THREE.Vector3(scale, scale, scale),
       );
       leaves.setMatrixAt(placed, m);
+      leafColor.copy(leafBase).lerp(leafDark, rand() * 0.5);
+      leaves.setColorAt(placed, leafColor);
       placed++;
     }
     trunks.count = placed;
@@ -297,44 +392,68 @@ export class Battlefield {
       roof.rotation.y = Math.PI / 4;
       roof.castShadow = true;
       group.add(body, roof);
-      const y = fbmHeight(x, z) * THREE.MathUtils.smoothstep(Math.abs(z - 2), 0, 9);
-      group.position.set(x, y, z);
+      group.position.set(x, terrainHeightAt(x, z), z);
       this.scene.add(group);
     }
   }
 
   private buildCamps(): void {
-    this.bearsAnchor.position.set(-GROUND_HALF_WIDTH * CAMP_X_FACTOR, 0, 4);
-    this.bullsAnchor.position.set(GROUND_HALF_WIDTH * CAMP_X_FACTOR, 0, 4);
+    this.bearsAnchor.position.set(-CAMP_X, 0, roadCenterZ(-CAMP_X));
+    this.bullsAnchor.position.set(CAMP_X, 0, roadCenterZ(CAMP_X));
     this.scene.add(this.bearsAnchor, this.bullsAnchor);
 
-    this.buildCampMarkers(this.bearsAnchor, 0xe0483f, 'BEARS');
-    this.buildCampMarkers(this.bullsAnchor, 0x36c17a, 'BULLS');
+    this.buildCampMarkers(this.bearsAnchor, 0xe0483f, 'BEARS', 'SELL SIDE');
+    this.buildCampMarkers(this.bullsAnchor, 0x36c17a, 'BULLS', 'BUY SIDE');
   }
 
-  private buildCampMarkers(anchor: THREE.Object3D, color: number, label: string): void {
-    const pole = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.12, 0.12, 8, 6),
-      new THREE.MeshStandardMaterial({ color: 0x333333 }),
-    );
-    pole.position.y = 4;
-    pole.castShadow = true;
+  private buildCampMarkers(anchor: THREE.Object3D, color: number, label: string, sub: string): void {
+    const poleMat = new THREE.MeshStandardMaterial({ color: 0x2b2b2b, roughness: 0.6, metalness: 0.3 });
+    const poleGeo = new THREE.CylinderGeometry(0.14, 0.14, 8.4, 6);
+    for (const px of [-3.1, 3.1]) {
+      const pole = new THREE.Mesh(poleGeo, poleMat);
+      pole.position.set(px, 4.2, 0);
+      pole.castShadow = true;
+      anchor.add(pole);
+    }
 
     const bannerTex = makeCanvasTexture((ctx, w, h) => {
-      ctx.fillStyle = `#${color.toString(16).padStart(6, '0')}`;
+      const hex = `#${color.toString(16).padStart(6, '0')}`;
+      ctx.fillStyle = hex;
       ctx.fillRect(0, 0, w, h);
-      ctx.fillStyle = 'rgba(255,255,255,0.92)';
-      ctx.font = '700 76px system-ui, sans-serif';
+      // subtle diagonal insignia stripes
+      ctx.save();
+      ctx.globalAlpha = 0.1;
+      ctx.fillStyle = '#000000';
+      for (let sx = -h; sx < w; sx += 44) {
+        ctx.beginPath();
+        ctx.moveTo(sx, 0);
+        ctx.lineTo(sx + h * 0.6, h);
+        ctx.lineTo(sx + h * 0.6 + 18, h);
+        ctx.lineTo(sx + 18, 0);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(10, 10, w - 20, h - 20);
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.font = '800 92px system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(label, w / 2, h / 2 + 4);
-    }, 512, 256);
+      ctx.fillText(label, w / 2, h / 2 - 14);
+      ctx.font = '600 30px system-ui, sans-serif';
+      ctx.letterSpacing = '4px';
+      ctx.fillStyle = 'rgba(255,255,255,0.8)';
+      ctx.fillText(sub, w / 2, h / 2 + 58);
+    }, 640, 256);
     const banner = new THREE.Mesh(
-      new THREE.PlaneGeometry(4.4, 2.2),
-      new THREE.MeshStandardMaterial({ map: bannerTex, side: THREE.DoubleSide }),
+      new THREE.PlaneGeometry(6.2, 2.48),
+      new THREE.MeshStandardMaterial({ map: bannerTex, side: THREE.DoubleSide, roughness: 0.85 }),
     );
     banner.position.set(0, 6.6, 0);
     banner.castShadow = true;
+    anchor.add(banner);
 
     const tentColor = new THREE.Color(color).lerp(new THREE.Color(0x111111), 0.35);
     for (let i = 0; i < 3; i++) {
@@ -347,17 +466,14 @@ export class Battlefield {
       tent.receiveShadow = true;
       anchor.add(tent);
     }
-
-    anchor.add(pole, banner);
   }
 
   private buildPriceTicks(): void {
     for (let i = -3; i <= 3; i++) {
-      const sprite = makeLabelSprite('—', 'rgba(255,255,255,0.55)');
-      sprite.position.set(i * 9, 1.4, 20);
-      this.priceLabels.push(sprite);
-      this.priceLabelBaseX.push(i * 9);
-      this.scene.add(sprite);
+      const label = makeGroundLabel();
+      label.mesh.position.set(i * 9, 0.05, 20);
+      this.priceLabels.push(label);
+      this.scene.add(label.mesh);
     }
   }
 
@@ -366,18 +482,15 @@ export class Battlefield {
     for (let i = 0; i < this.priceLabels.length; i++) {
       const offsetIndex = i - Math.floor(this.priceLabels.length / 2);
       const value = price + offsetIndex * step;
-      const sprite = this.priceLabels[i];
-      const canvas = (sprite.material.map!.image as HTMLCanvasElement);
+      const { canvas, texture } = this.priceLabels[i];
       const ctx = canvas.getContext('2d')!;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = '600 30px system-ui, sans-serif';
+      ctx.font = '700 42px system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.shadowColor = 'rgba(0,0,0,0.8)';
-      ctx.shadowBlur = 8;
-      ctx.fillStyle = offsetIndex === 0 ? '#ffffff' : 'rgba(255,255,255,0.5)';
-      ctx.fillText(value.toLocaleString('en-US', { maximumFractionDigits: 0 }), 128, 32);
-      sprite.material.map!.needsUpdate = true;
+      ctx.fillStyle = offsetIndex === 0 ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.42)';
+      ctx.fillText(value.toLocaleString('en-US', { maximumFractionDigits: 0 }), canvas.width / 2, canvas.height / 2);
+      texture.needsUpdate = true;
     }
   }
 
@@ -396,6 +509,11 @@ export class Battlefield {
     this.frontlineX = THREE.MathUtils.damp(this.frontlineX, this.frontlineTargetX, 1.4, dt);
     this.frontlineGroup.position.x = this.frontlineX;
 
+    this.waterTime += dt;
+    if (this.waterMat) {
+      this.waterMat.opacity = 0.78 + Math.sin(this.waterTime * 0.8) * 0.04;
+    }
+
     if (this.controls) {
       this.controls.update();
     } else if (config.cinematic) {
@@ -410,7 +528,8 @@ export class Battlefield {
   }
 
   render(): void {
-    this.renderer.render(this.scene, this.camera);
+    if (this.composer) this.composer.render();
+    else this.renderer.render(this.scene, this.camera);
   }
 
   resize(): void {
@@ -419,6 +538,7 @@ export class Battlefield {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(w, h);
+    this.composer?.setSize(w, h);
   }
 
   /** Camera shake used for big liquidations - additive offset applied once
@@ -433,6 +553,7 @@ export class Battlefield {
     if (this.disposed) return;
     this.disposed = true;
     this.controls?.dispose();
+    this.composer?.dispose();
     this.renderer.dispose();
     this.renderer.domElement.remove();
   }

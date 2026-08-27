@@ -13,6 +13,16 @@ export function buildSoldierGeometry(): THREE.BufferGeometry {
   return mergeGeometries([body, head, weapon]) as THREE.BufferGeometry;
 }
 
+/** Two stacked cones read as a fuller pine silhouette than a single cone,
+ * at zero extra draw calls since it's still one instanced geometry. */
+export function buildPineLeafGeometry(): THREE.BufferGeometry {
+  const lower = new THREE.ConeGeometry(1.1, 2.2, 7);
+  lower.translate(0, 0, 0);
+  const upper = new THREE.ConeGeometry(0.72, 1.7, 7);
+  upper.translate(0, 1.35, 0);
+  return mergeGeometries([lower, upper]) as THREE.BufferGeometry;
+}
+
 export function buildTankGeometry(): THREE.BufferGeometry {
   const hull = new THREE.BoxGeometry(0.9, 0.42, 1.5);
   hull.translate(0, 0.3, 0);
