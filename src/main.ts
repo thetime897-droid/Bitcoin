@@ -1,8 +1,11 @@
 import './style.css';
 import * as THREE from 'three';
-import { Battlefield } from './scene/Battlefield';
+import { Battlefield, CAMP_X, GROUND_HALF_DEPTH, GROUND_HALF_WIDTH } from './scene/Battlefield';
 import { UnitArmies } from './scene/Units';
 import { Effects } from './scene/Effects';
+import { Combat } from './scene/Combat';
+import { Emplacements } from './scene/Emplacements';
+import { AirSupport } from './scene/Aircraft';
 import { Hud } from './ui/hud';
 import { BinanceFeed } from './data/BinanceFeed';
 import { marketStore } from './data/store';
@@ -16,8 +19,23 @@ sceneContainer.id = 'scene-container';
 app.appendChild(sceneContainer);
 
 const battlefield = new Battlefield(sceneContainer);
-const units = new UnitArmies(battlefield.scene, battlefield.bearsAnchor.position.x, battlefield.bullsAnchor.position.x);
 const effects = new Effects(battlefield.scene);
+
+// Shells and bombs detonate through the same particle system as
+// liquidations, but with the camera shake dialled right down - background
+// fire should light up the field without making the shot unwatchable.
+const combat = new Combat(battlefield.scene, (position, color, magnitude) => {
+  effects.explode(position, color, magnitude, 0.16);
+});
+
+const units = new UnitArmies(battlefield.scene, -CAMP_X, CAMP_X, combat);
+const emplacements = new Emplacements(battlefield.scene, combat);
+const airSupport = new AirSupport(battlefield.scene, combat, {
+  fieldHalfWidth: GROUND_HALF_WIDTH,
+  fieldHalfDepth: GROUND_HALF_DEPTH,
+  jetsPerSide: config.quality === 'low' ? 1 : 2,
+  helisPerSide: config.quality === 'low' ? 1 : 2,
+});
 const hud = new Hud(app);
 
 // --- Wall depth -> army size ------------------------------------------------
@@ -132,8 +150,12 @@ function frame(now: number): void {
   lastFrameTime = now;
 
   const dt = battlefield.update();
+  const frontlineX = battlefield.frontlineWorldX;
   if (effects.shake > 0) battlefield.shake(effects.shake);
-  units.update(dt, battlefield.frontlineWorldX);
+  units.update(dt, frontlineX);
+  emplacements.update(dt, frontlineX);
+  airSupport.update(dt, frontlineX);
+  combat.update(dt);
   effects.update(dt);
   battlefield.render();
 }

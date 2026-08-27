@@ -7,7 +7,7 @@ interface Particle {
   maxLife: number;
 }
 
-const POOL_SIZE = 220;
+const POOL_SIZE = 460;
 
 function buildParticleTexture(): THREE.Texture {
   const canvas = document.createElement('canvas');
@@ -66,8 +66,12 @@ export class Effects {
     return this.shakeAmount;
   }
 
-  /** magnitude: roughly 0 (small) .. 1+ (whale-sized) liquidation. */
-  explode(position: THREE.Vector3, color: number, magnitude: number): void {
+  /**
+   * magnitude: roughly 0 (small) .. 1+ (whale-sized) liquidation.
+   * shakeScale lets routine background fire (artillery, bombs) light up the
+   * field without rattling the camera the way a real liquidation does.
+   */
+  explode(position: THREE.Vector3, color: number, magnitude: number, shakeScale = 1): void {
     const m = THREE.MathUtils.clamp(magnitude, 0.15, 2.5);
     const count = Math.round(THREE.MathUtils.lerp(8, 55, Math.min(m, 1)));
     for (let i = 0; i < count; i++) {
@@ -91,7 +95,7 @@ export class Effects {
     light.color.set(color);
     light.intensity = THREE.MathUtils.lerp(6, 26, m);
 
-    this.shakeAmount = Math.max(this.shakeAmount, THREE.MathUtils.lerp(0.02, 0.35, m));
+    this.shakeAmount = Math.max(this.shakeAmount, THREE.MathUtils.lerp(0.02, 0.35, m) * shakeScale);
   }
 
   update(dt: number): void {

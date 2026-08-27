@@ -1,10 +1,12 @@
 # Bitcoin Battlefield — Live
 
 A live, 3D Bitcoin market visualization built to run for hours unattended as
-an **OBS Browser Source** on a monetized YouTube livestream. Bulls (buyers)
-and Bears (sellers) camp on either side of a river; their armies grow and
-shrink with real order-book depth, march toward the frontline, and take
-casualties in real time whenever a leveraged position gets liquidated.
+an **OBS Browser Source** on a monetized YouTube livestream. Bears (sellers)
+hold the red half of the map, Bulls (buyers) the green half, and the
+frontline between them is pushed back and forth by live market pressure.
+Their armies grow and shrink with real order-book depth, fight across the
+line with tracers, artillery and air support, and take casualties in real
+time whenever a leveraged position gets liquidated.
 
 It's inspired by [newhedge.io's Bitcoin Battlefield](https://newhedge.io/bitcoin/battlefield),
 rebuilt from scratch and tuned specifically for streaming: a fully
@@ -21,9 +23,18 @@ big liquidations and price milestones to keep viewers engaged.
 - **Sell Wall / Buy Wall** — live USD depth on each side (top corners).
 - **Order book depth chart** (bottom-left) — the classic bid/ask "valley"
   chart, mirrored from the same data driving the 3D scene.
+- **A frontline you can read at a glance** — the ground is painted with each
+  side's colour: Bear red on the left, Bull green on the right, split by a
+  glowing boundary. That boundary is physically pushed back and forth by
+  market pressure, so whoever is winning is visible without reading a
+  single number.
 - **Bulls vs. Bears armies** — unit count scales with order-book depth on
-  each side; soldiers and tanks march from camp toward the river/frontline,
-  which itself drifts toward whichever side has more pressure.
+  each side. Soldiers and tanks march out from camp, dig in at the line and
+  trade tracer fire across it.
+- **Artillery, armour and air support** — field guns behind each camp lob
+  shells over their own infantry (with recoil and muzzle blast), jets make
+  bombing runs the length of the map, and gunships hold station behind the
+  line and strafe across it.
 - **Live liquidations** — every forced long/short liquidation on Binance
   Futures triggers an explosion + camera shake at the front line, removes
   units from the losing side, and appears in the market feed. Large
@@ -114,7 +125,8 @@ The same build adapts to different scenes/setups without a rebuild:
 | `cinematic` | `1` | Slow autonomous camera sway when not interacting |
 | `daynight` | `0` | `1` adds a subtle day/night tint cycle keyed to real UTC time |
 | `watermark` | *(none)* | Text shown bottom-right, e.g. your channel handle |
-| `quality` | `high` | `low` / `medium` / `high` — lower reduces tree/shadow counts if you're CPU/GPU constrained while also running an encoder |
+| `quality` | `high` | `low` / `medium` / `high` — lower reduces tree/shadow/aircraft counts if you're CPU/GPU constrained while also running an encoder |
+| `scale` | `1` | Supersampling factor. OBS browser sources report a device pixel ratio of 1, so `scale=1.5` is the only way to render *above* the capture resolution and downsample for noticeably cleaner edges. Costs fill rate quadratically — try it before committing to it on stream. |
 | `fps` | `60` | Internal render FPS cap, independent of OBS's own capture rate |
 | `debug` | `0` | `1` exposes `window.battlefieldDebug` in the browser console (`demoTicker()`, `demoLiquidation()`) to sanity-check the scene without waiting on real market data |
 
@@ -138,8 +150,11 @@ src/
     BinanceFeed.ts     WebSocket connections + auto-reconnect + staleness watchdog
     store.ts           single reactive store (pressure/derived state, pub-sub)
   scene/
-    Battlefield.ts     terrain, road, river/frontline, camps, camera
-    Units.ts           instanced marching armies (soldiers + tanks)
+    Battlefield.ts     terrain + territory shader, frontline, camps, camera
+    Units.ts           instanced armies (soldiers + tanks) and their fire
+    Combat.ts          pooled tracers, artillery shells, muzzle flashes
+    Emplacements.ts    camp artillery batteries (firing + recoil)
+    Aircraft.ts        jet bombing runs and frontline gunships
     Effects.ts         pooled explosion particles + camera shake
     geometry.ts         merged low-poly geometries for instancing
   ui/

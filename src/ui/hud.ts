@@ -72,27 +72,35 @@ export class Hud {
     status.append(this.statusDotEl, this.statusTextEl);
     topBar.append(brand, status);
 
-    // Center price block
-    const priceBlock = el('div', 'hud__price-block');
-    this.clockEl = el('div', 'hud__clock', '--:--:--');
-    const priceRow = el('div', 'hud__price-row');
-    const label = el('div', 'hud__price-label', `${displaySymbol} · LIVE SPOT`);
+    // Centered hero block: clock, symbol, price, change, pressure meter.
+    const headerRow = el('div', 'hud__center');
+    this.clockEl = el('div', 'hud__clock', 'UTC --:--:--');
+    const label = el('div', 'hud__price-label', `${displaySymbol} · AGGREGATED SPOT`);
     this.priceEl = el('div', 'hud__price', '$--,---.--');
     this.changeEl = el('div', 'hud__change', '--');
-    priceRow.append(this.priceEl);
-    priceBlock.append(this.clockEl, label, priceRow, this.changeEl);
 
-    const pressureBlock = el('div', 'hud__pressure-block');
-    const pressureCaption = el('div', 'hud__pressure-caption', 'MARKET PRESSURE');
     this.pressureLabelEl = el('div', 'hud__pressure-label', 'Balanced');
     this.pressureBarEl = el('div', 'hud__pressure-bar');
     this.pressureBarFillEl = el('div', 'hud__pressure-bar-fill');
     this.pressureBarEl.append(this.pressureBarFillEl);
     this.pressureDetailEl = el('div', 'hud__pressure-detail', 'Waiting for data…');
-    pressureBlock.append(pressureCaption, this.pressureLabelEl, this.pressureBarEl, this.pressureDetailEl);
 
-    const headerRow = el('div', 'hud__header-row');
-    headerRow.append(priceBlock, pressureBlock);
+    const meter = el('div', 'hud__meter');
+    meter.append(
+      el('span', 'hud__meter-end hud__meter-end--bears', 'BEARS'),
+      this.pressureBarEl,
+      el('span', 'hud__meter-end hud__meter-end--bulls', 'BULLS'),
+    );
+
+    headerRow.append(
+      this.clockEl,
+      label,
+      this.priceEl,
+      this.changeEl,
+      this.pressureLabelEl,
+      meter,
+      this.pressureDetailEl,
+    );
 
     // Wall totals (corners)
     const sellWallBox = el('div', 'hud__wall hud__wall--sell');

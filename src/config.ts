@@ -33,6 +33,11 @@ export const config = {
   fpsCap: Number(params.get('fps') ?? '60'),
   /** Quality preset affects instance counts / shadow use. */
   quality: (params.get('quality') ?? 'high') as 'low' | 'medium' | 'high',
+  /** Supersampling factor. OBS browser sources report a device pixel ratio
+   * of 1, so this is the only way to render above the capture resolution
+   * and downsample for noticeably cleaner edges. Costs fill rate
+   * quadratically - 1.5 is a good quality/cost point on a capable GPU. */
+  renderScale: Math.min(Math.max(Number(params.get('scale') ?? '1') || 1, 0.5), 2),
 };
 
 export const displaySymbol = config.label ?? config.symbol.replace(/USDT?$/, '/USD');
