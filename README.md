@@ -31,6 +31,19 @@ big liquidations and price milestones to keep viewers engaged.
 - **Milestones** — round-number price crossings and new 24h highs/lows get
   their own callout + chime.
 
+## Quick start (no coding, no server)
+
+The build produces a **single self-contained `dist/index.html`** file - all
+JS/CSS inlined, nothing else to host. You can just:
+
+1. Double-click it to open in a browser and see it working, or
+2. In OBS: **Add Source → Browser → Local File**, and point it at that
+   `index.html` on disk.
+
+No `localhost`, no server, no npm needed day-to-day - only the WebSocket
+connection to Binance requires internet. Re-run `npm run build` (see below)
+any time you change something and it regenerates that one file.
+
 ## Data source
 
 Everything is fetched **client-side, directly from Binance's public
@@ -46,36 +59,36 @@ Because it's single-exchange (Binance spot + Binance futures), the wall
 totals and liquidation feed will differ slightly from any multi-exchange
 aggregator — that's expected and disclosed in the UI ("Binance spot").
 
-## Running it
+## Building it (only needed if you change something)
 
 ```bash
 npm install
 npm run build
-npm run preview -- --port 4173
 ```
 
-Then add `http://localhost:4173` as an OBS **Browser Source**.
+That regenerates the single `dist/index.html` described above. For local
+development with hot reload while editing: `npm run dev`.
 
-For local development with hot reload: `npm run dev`.
+### Alternative: hosting it instead of using a local file
 
-### Keeping it running 24/7
-
-`npm run preview` is a plain static file server — nothing here needs a
-database or backend, so the simplest reliable setup is:
-
-1. Run `npm run build` once (or after any change).
-2. Run the preview server as a background service so it survives reboots,
-   e.g. with `pm2`: `pm2 start "npm run preview -- --port 4173" --name btc-battlefield`.
-3. Point OBS at `http://localhost:4173`.
-
-If you'd rather not manage a local process, `npm run build` produces a fully
-static `dist/` folder you can deploy to Vercel/Netlify/Cloudflare
-Pages/GitHub Pages and point OBS at that public URL instead — useful if you
-stream from more than one machine.
+You don't need this for normal use, but if you stream from more than one
+machine it can be more convenient to host `dist/index.html` somewhere and
+point OBS at a URL instead of a local path — any static host works
+(Vercel/Netlify/Cloudflare Pages/GitHub Pages), or run it locally with
+`npm run preview -- --port 4173` and add `http://localhost:4173` as the
+Browser Source URL. Since it's one static file, there's no backend to keep
+running either way.
 
 ## OBS Browser Source setup
 
-1. Add **Browser Source**, URL = wherever you're hosting it (see above).
+1. Add **Browser Source**. Either check **"Local file"** and pick
+   `index.html` on disk, or (if you want query parameters, see below) leave
+   it unchecked and paste the full path into the URL field as
+   `file:///C:/path/to/index.html?sound=1&watermark=%40YourChannel` (Windows)
+   or `file:///Users/you/path/index.html?sound=1` (macOS/Linux) — OBS's URL
+   field accepts `file://` URLs directly, and that's the only way to pass
+   query parameters to a local file since the "Local file" picker doesn't
+   have a field for them.
 2. Resolution: **1920×1080** (or match your canvas), FPS: 30 is plenty.
 3. **Uncheck** "Shutdown source when not visible" — you want the WebSocket
    connections and army positions to keep updating even while you're on
