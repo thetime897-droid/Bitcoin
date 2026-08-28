@@ -46,9 +46,9 @@ const statsPanel = new StatsPanel(hud.root);
 const eventOverlay = new EventOverlay(app);
 
 // --- Wall depth -> army size ------------------------------------------------
-const USD_PER_UNIT = 400_000;
-const MIN_UNITS = 14;
-const MAX_UNITS = 92;
+const USD_PER_UNIT = 260_000;
+const MIN_UNITS = 22;
+const MAX_UNITS = 145;
 
 function wallToUnits(usd: number): number {
   return THREE.MathUtils.clamp(Math.round(usd / USD_PER_UNIT), MIN_UNITS, MAX_UNITS);

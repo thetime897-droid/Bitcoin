@@ -25,10 +25,12 @@ interface UnitSlot {
   fireCooldown: number;
   /** Chat handle riding this unit, if any. */
   label: string | null;
-  /** Rear patrols range across the whole territory instead of holding the
-   * line, which is what fills the map with traffic rather than leaving one
-   * dense rank and empty ground behind it. */
-  patrols: boolean;
+  /** What this unit is currently trying to do. */
+  stance: Stance;
+  /** Seconds left before it reconsiders its stance. */
+  stanceTimer: number;
+  /** Per-unit speed multiplier, so nobody moves in lockstep. */
+  speedMul: number;
 }
 
 /** Unit classes, ordered light to heavy. */
@@ -38,8 +40,23 @@ const enum Kind {
   Tank,
 }
 
-/** Closest any unit will sit to the line. */
-const MIN_STANDOFF = 3.5;
+/**
+ * What a unit is currently trying to do. Every unit cycles through these on
+ * its own timer, which is what keeps the front churning: at any moment some
+ * are pushing up to the boundary, some are holding, some are pulling back,
+ * and none of them are doing it in step with each other.
+ */
+const enum Stance {
+  /** Push right up to the boundary and fight at contact range. */
+  Assault,
+  /** Sit in the firing line a short way back. */
+  Hold,
+  /** Pull back and move around the rear of own territory. */
+  Reserve,
+}
+
+/** Closest any unit will press to the line - just past the sandbags. */
+const MIN_STANDOFF = 1.2;
 /** Only units within this distance of the line have a shot worth taking. */
 const FIRING_RANGE = 17;
 /** How far back a unit may roam, as a fraction of the way to its own camp.
@@ -55,9 +72,9 @@ const ARRIVE_EPS = 0.6;
 const TRACER_BEARS = 0xffb0a4;
 const TRACER_BULLS = 0xaaffcf;
 
-const INFANTRY_CAP = 72;
-const APC_CAP = 16;
-const TANK_CAP = 18;
+const INFANTRY_CAP = 110;
+const APC_CAP = 20;
+const TANK_CAP = 20;
 
 /** Golden-ratio and silver-ratio strides. Stepping an index by an irrational
  * fraction spreads *any* prefix of the sequence evenly over [0,1), so a
@@ -71,24 +88,33 @@ function frac(v: number): number {
 }
 
 interface KindProfile {
-  /** Ground speed in world units per second. */
+  /** Ground speed in world units per second, before this unit's own jitter. */
   speed: number;
-  /** Depth band this class holds when it is fighting at the line. */
+  /** Depth of this class's firing line behind the boundary. */
   rankDepth: number;
-  /** Seconds between repositioning moves once deployed. */
+  /** Seconds to pause on arrival before moving again. Short on purpose -
+   * long pauses are what made the front look like a diorama. */
   dwellMin: number;
   dwellMax: number;
   /** How far it will drift along the line in one move. */
   roam: number;
-  /** Share of this class that patrols the rear instead of holding the
-   * line. Vehicles range much further back than infantry do. */
-  patrolShare: number;
+  /** Odds of picking each stance, in Assault / Hold / Reserve order. */
+  stanceOdds: [number, number, number];
 }
 
 const PROFILES: Record<Kind, KindProfile> = {
-  [Kind.Infantry]: { speed: 3.4, rankDepth: 12, dwellMin: 1.6, dwellMax: 6, roam: 10, patrolShare: 0.3 },
-  [Kind.Apc]: { speed: 7.4, rankDepth: 10, dwellMin: 2, dwellMax: 5.5, roam: 24, patrolShare: 0.6 },
-  [Kind.Tank]: { speed: 5.2, rankDepth: 8, dwellMin: 2.8, dwellMax: 7, roam: 18, patrolShare: 0.45 },
+  [Kind.Infantry]: {
+    speed: 3.4, rankDepth: 12, dwellMin: 0.5, dwellMax: 2.6, roam: 11,
+    stanceOdds: [0.42, 0.4, 0.18],
+  },
+  [Kind.Apc]: {
+    speed: 7.4, rankDepth: 10, dwellMin: 0.6, dwellMax: 2.4, roam: 26,
+    stanceOdds: [0.3, 0.3, 0.4],
+  },
+  [Kind.Tank]: {
+    speed: 5.2, rankDepth: 9, dwellMin: 0.8, dwellMax: 3, roam: 19,
+    stanceOdds: [0.34, 0.42, 0.24],
+  },
 };
 
 function makeSlots(n: number, campX: number, profile: KindProfile): UnitSlot[] {
@@ -105,7 +131,9 @@ function makeSlots(n: number, campX: number, profile: KindProfile): UnitSlot[] {
     scale: 1,
     fireCooldown: Math.random() * 2,
     label: null,
-    patrols: frac(i * RANK_STEP + 0.37) < profile.patrolShare,
+    stance: Stance.Hold,
+    stanceTimer: Math.random() * 6,
+    speedMul: 0.78 + frac(i * PHI_STEP + 0.21) * 0.55,
   }));
 }
 
@@ -205,6 +233,9 @@ class SideArmy {
         slot.yaw = this.facing === 1 ? 0 : Math.PI;
         slot.dwell = 0;
         slot.fireCooldown = Math.random() * 1.5;
+        // Head somewhere straight away rather than standing at the camp.
+        this.rollStance(slot, formation.profile);
+        slot.standoff = MIN_STANDOFF + Math.random() * formation.profile.rankDepth;
         activeCount++;
       } else if (activeCount > target && slot.active) {
         slot.active = false;
@@ -296,16 +327,43 @@ class SideArmy {
    * a short shuffle along it. Movement stays inside its own territory
    * because the tasked X is always measured back from the frontline.
    */
-  private retask(slot: UnitSlot, profile: KindProfile, frontlineX: number): void {
-    if (slot.patrols) {
-      // Anywhere between the line and (almost) its own camp. Distance from
-      // the line to the camp shrinks as the enemy advances, so the roaming
-      // zone naturally tightens when a side is losing ground.
-      const zone = Math.max(profile.rankDepth, Math.abs(frontlineX - this.campX) * ZONE_LIMIT);
-      slot.standoff = MIN_STANDOFF + Math.random() * zone;
+  /** Roll a new stance. Called on its own timer per unit, so pushes and
+   * pull-backs happen independently rather than as a synchronised wave. */
+  private rollStance(slot: UnitSlot, profile: KindProfile): void {
+    const [assault, hold] = profile.stanceOdds;
+    const r = Math.random();
+    if (r < assault) {
+      slot.stance = Stance.Assault;
+      slot.stanceTimer = 3 + Math.random() * 6;
+    } else if (r < assault + hold) {
+      slot.stance = Stance.Hold;
+      slot.stanceTimer = 5 + Math.random() * 9;
     } else {
-      slot.standoff = MIN_STANDOFF + Math.random() * profile.rankDepth;
+      slot.stance = Stance.Reserve;
+      slot.stanceTimer = 4 + Math.random() * 8;
     }
+  }
+
+  /** Pick the next spot to move to, given the current stance. */
+  private retask(slot: UnitSlot, profile: KindProfile, frontlineX: number): void {
+    switch (slot.stance) {
+      case Stance.Assault:
+        // Right up against the boundary.
+        slot.standoff = MIN_STANDOFF + Math.random() * 3.5;
+        break;
+      case Stance.Hold:
+        slot.standoff = 3 + Math.random() * profile.rankDepth;
+        break;
+      case Stance.Reserve: {
+        // Anywhere between the firing line and (almost) its own camp. The
+        // distance from line to camp shrinks as the enemy advances, so the
+        // roaming zone tightens automatically when a side is losing ground.
+        const zone = Math.max(profile.rankDepth, Math.abs(frontlineX - this.campX) * ZONE_LIMIT);
+        slot.standoff = profile.rankDepth + Math.random() * Math.max(4, zone - profile.rankDepth);
+        break;
+      }
+    }
+
     const roam = (Math.random() - 0.5) * 2 * profile.roam;
     const half = LANE_SPREAD / 2;
     slot.laneZ = THREE.MathUtils.clamp(slot.laneZ + roam, -half, half);
@@ -333,6 +391,15 @@ class SideArmy {
       let moving = false;
 
       if (slot.active) {
+        // Stance runs on its own clock and can flip mid-move, so a unit may
+        // turn around and push forward before it ever reaches the rear spot
+        // it was heading for.
+        slot.stanceTimer -= dt;
+        if (slot.stanceTimer <= 0) {
+          this.rollStance(slot, profile);
+          this.retask(slot, profile, frontlineX);
+        }
+
         // Tasked position is always measured back from the line, so the
         // whole army follows the front as it is pushed around.
         const wantX = frontlineX - this.facing * slot.standoff;
@@ -341,7 +408,7 @@ class SideArmy {
         const dist = Math.hypot(dx, dz);
 
         if (dist > ARRIVE_EPS) {
-          const step = Math.min(dist, profile.speed * dt);
+          const step = Math.min(dist, profile.speed * slot.speedMul * dt);
           slot.posX += (dx / dist) * step;
           slot.posZ += (dz / dist) * step;
           moving = true;
@@ -405,7 +472,10 @@ class SideArmy {
         this.aimAcross(frontlineX, slot.posZ, 10);
         combat.fireTracer(this.muzzle, this.target, this.tracerColor);
       } else {
-        slot.fireCooldown = 0.42 + Math.random() * 1.15;
+        // Slower per rifle than a real weapon, but there are well over a
+        // hundred of them per side - any faster and the tracers merge into
+        // one solid sheet of light.
+        slot.fireCooldown = 0.75 + Math.random() * 1.7;
         this.muzzle.set(slot.posX + this.facing * 0.75, groundY + 0.75, slot.posZ + 0.14);
         this.aimAcross(frontlineX, slot.posZ, 12);
         combat.fireTracer(this.muzzle, this.target, this.tracerColor);

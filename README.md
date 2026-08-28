@@ -29,14 +29,18 @@ big liquidations and price milestones to keep viewers engaged.
   market pressure, so whoever is winning is visible without reading a
   single number.
 - **Bulls vs. Bears armies** — unit count scales with order-book depth on
-  each side. Infantry, APCs and tanks walk out from their camp and move
-  around their own territory under their own steam - some hold the line,
-  others patrol the rear all the way back toward camp - turning to face
-  where they're going and back toward the enemy once they arrive. Only
-  units within range of the line open fire. Because a unit's post is
-  measured back from the frontline rather than stored as a fixed
-  coordinate, the whole army advances or falls back as the line moves,
-  and nobody can wander onto enemy ground.
+  each side - well over a hundred per army at full depth. Infantry, APCs
+  and tanks walk out from their camp and then move around their own
+  territory entirely under their own steam. Each one runs its own clock
+  and switches between three stances: pushing right up to the boundary,
+  holding the firing line a short way back, or pulling into the rear.
+  Because those timers are independent and every unit has its own speed,
+  the front is always churning - some advancing while others fall back -
+  rather than moving as one wave. Units turn to face where they're going
+  and back toward the enemy on arrival, and anything within range of the
+  line is firing. A unit's post is measured back from the frontline rather
+  than stored as a fixed coordinate, so the whole army advances or falls
+  back as the line moves, and nobody can cross onto enemy ground.
 - **Artillery, armour and air support** — field guns behind each camp lob
   shells over their own infantry (with recoil and muzzle blast), jets make
   bombing runs the length of the map, and gunships hold station behind the
