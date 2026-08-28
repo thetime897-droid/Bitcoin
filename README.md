@@ -41,6 +41,29 @@ big liquidations and price milestones to keep viewers engaged.
   liquidations (≥ $75K) also trigger a big on-screen callout.
 - **Milestones** — round-number price crossings and new 24h highs/lows get
   their own callout + chime.
+- **Session scoreboard** (top left) — running liquidation totals per side,
+  biggest hit of the session, total kills, and how long the current side
+  has held the line.
+- **Next objective** (top right) — a progress bar toward the next round
+  price level, with the distance still to go.
+- **Major event banners** — a full-width announcement plus a coloured
+  screen flash for the moments that actually deserve interrupting the
+  scene: a $250K+ liquidation, a price level breaking, one side overrunning
+  the line, or a run of kills against the same side. Deliberately
+  rate-limited: fire these on every liquidation and viewers stop seeing
+  them.
+
+### Why those elements
+
+The retention research on always-on streams is fairly consistent: what
+holds a passive viewer is a mix of **milestone alerts**, **visible goals
+and progress**, and **running totals they can check back on** - concrete
+things happening on a predictable rhythm, rather than a scene that merely
+moves. The scoreboard, objective bar, event banners and the continuously
+updating battle log all exist for that, not for trading utility. Sources:
+[getrektlabs on alerts & widgets](https://getrektlabs.com/blogs/news/why-alerts-widgets-matter-increase-viewer-interaction-retention-and-support),
+[rave-tech on overlays & engagement](https://rave-tech.com/stream-overlays-101-how-to-boost-engagement-with-custom-alerts-widgets/),
+[EnosTech on 24/7 watch time](https://www.enostech.com/how-24-7-live-streams-boost-viewer-engagement-and-watch-time-on-youtube/).
 
 ## Quick start (no coding, no server)
 
@@ -119,7 +142,7 @@ The same build adapts to different scenes/setups without a rebuild:
 |---|---|---|
 | `symbol` | `BTCUSDT` | Any Binance spot+futures symbol, e.g. `ETHUSDT` |
 | `label` | derived from symbol | Override the display label (e.g. `ETH/USD`) |
-| `sound` | `0` | `1` enables synthesized explosion/milestone SFX |
+| `sound` | `0` | `1` enables the synthesized soundtrack: a low ambient battle bed that swells with how many units are engaged, explosion booms, milestone chimes, a riser-and-impact sting under event banners, and a klaxon on the very biggest events |
 | `transparent` | `0` | `1` renders on a transparent background so you can overlay the scene on top of another source instead of using it full-screen |
 | `interact` | `0` | `1` enables mouse-drag/scroll/WASD camera control (for you to line up a shot) — leave this **off** for the actual live source so nothing can accidentally bump the camera during a multi-hour stream |
 | `cinematic` | `1` | Slow autonomous camera sway when not interacting |
@@ -158,7 +181,9 @@ src/
     Effects.ts         pooled explosion particles + camera shake
     geometry.ts         merged low-poly geometries for instancing
   ui/
-    hud.ts             DOM overlay (price, walls, depth chart, feed, kill-feed)
+    hud.ts             DOM overlay (price, walls, depth chart, battle log)
+    StatsPanel.ts      session scoreboard + next-objective bar
+    EventOverlay.ts    full-width banners + screen flash for major moments
   main.ts              wires data -> store -> scene/HUD, render loop
 ```
 

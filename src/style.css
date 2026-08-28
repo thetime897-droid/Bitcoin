@@ -187,9 +187,10 @@ html, body {
 .hud__pressure-bar-fill--sell { background: #ff6b60; box-shadow: 0 0 8px rgba(255, 107, 96, 0.6); }
 
 /* ---------- Corner wall totals ---------- */
+/* Sits below the scoreboard / objective panels in the same corners. */
 .hud__wall {
   position: absolute;
-  top: 132px;
+  top: 258px;
   padding: 10px 16px;
   background: rgba(6, 9, 14, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -318,4 +319,163 @@ html, body {
 @media (max-width: 1100px) {
   .hud__price { font-size: 48px; }
   .hud__depth, .hud__feed { width: 280px; }
+}
+
+/* ---------- Session scoreboard (top left, under the brand) ---------- */
+.stats {
+  position: absolute;
+  left: 18px;
+  top: 68px;
+  width: 244px;
+  background: rgba(6, 9, 14, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 11px 13px 9px;
+  backdrop-filter: blur(6px);
+}
+.stats__caption {
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  opacity: 0.55;
+  margin-bottom: 9px;
+}
+.stats__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stats__label { font-size: 9.5px; letter-spacing: 0.8px; opacity: 0.6; }
+.stats__value {
+  font-size: 20px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+}
+.stats__value--bears { color: #ff6b60; }
+.stats__value--bulls { color: #4fe39a; }
+
+.stats__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 11.5px;
+}
+.stats__row-label { letter-spacing: 0.7px; opacity: 0.58; font-size: 9.5px; }
+.stats__row-value { font-weight: 700; font-variant-numeric: tabular-nums; }
+.stats__row-value[data-side='bears'] { color: #ff6b60; }
+.stats__row-value[data-side='bulls'] { color: #4fe39a; }
+
+/* ---------- Next objective (top right, under the status pill) ---------- */
+.objective {
+  position: absolute;
+  right: 18px;
+  top: 68px;
+  width: 210px;
+  background: rgba(6, 9, 14, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 11px 13px 10px;
+  backdrop-filter: blur(6px);
+  text-align: right;
+}
+.objective__caption { font-size: 10px; letter-spacing: 1.6px; opacity: 0.55; }
+.objective__target {
+  font-size: 24px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  margin: 3px 0 7px;
+}
+.objective__target[data-dir='up'] { color: #4fe39a; }
+.objective__target[data-dir='down'] { color: #ff6b60; }
+.objective__track {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+.objective__fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+.objective__fill[data-dir='up'] { background: #4fe39a; box-shadow: 0 0 9px rgba(79, 227, 154, 0.65); }
+.objective__fill[data-dir='down'] { background: #ff6b60; box-shadow: 0 0 9px rgba(255, 107, 96, 0.65); }
+.objective__gap { font-size: 11px; opacity: 0.62; margin-top: 6px; font-variant-numeric: tabular-nums; }
+
+/* ---------- Major event overlay ---------- */
+.evt { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+
+/* Screen-edge flash in the winning side's colour. */
+.evt__flash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 42%, var(--evt-color, #fff) 145%);
+}
+.evt__flash[data-side='bears'] { --evt-color: rgba(255, 70, 58, 0.9); }
+.evt__flash[data-side='bulls'] { --evt-color: rgba(50, 226, 140, 0.9); }
+.evt__flash[data-side='neutral'] { --evt-color: rgba(255, 205, 100, 0.9); }
+.evt__flash.is-live { animation: evt-flash 900ms ease-out; }
+
+@keyframes evt-flash {
+  0% { opacity: 0; }
+  12% { opacity: var(--evt-flash, 0.4); }
+  100% { opacity: 0; }
+}
+
+.evt__banner {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.92);
+  opacity: 0;
+  text-align: center;
+  padding: 18px 54px;
+  border-radius: 14px;
+  background: rgba(8, 10, 14, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+.evt__banner.is-live { animation: evt-banner 4200ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+@keyframes evt-banner {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.86); }
+  7% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
+  12% { transform: translate(-50%, -50%) scale(1); }
+  85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -54%) scale(0.98); }
+}
+
+.evt__kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  opacity: 0.72;
+  margin-bottom: 6px;
+}
+.evt__title {
+  font-size: calc(46px * var(--evt-scale, 1));
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.05;
+  text-shadow: 0 3px 24px rgba(0, 0, 0, 0.7);
+}
+.evt__subtitle { font-size: 15px; opacity: 0.8; margin-top: 6px; font-variant-numeric: tabular-nums; }
+
+.evt__banner[data-side='bears'] { border-color: rgba(255, 107, 96, 0.55); }
+.evt__banner[data-side='bears'] .evt__title,
+.evt__banner[data-side='bears'] .evt__kicker { color: #ff7a6f; }
+.evt__banner[data-side='bulls'] { border-color: rgba(79, 227, 154, 0.55); }
+.evt__banner[data-side='bulls'] .evt__title,
+.evt__banner[data-side='bulls'] .evt__kicker { color: #5cf0a8; }
+.evt__banner[data-side='neutral'] { border-color: rgba(255, 209, 102, 0.55); }
+.evt__banner[data-side='neutral'] .evt__title,
+.evt__banner[data-side='neutral'] .evt__kicker { color: #ffd166; }
+
+@media (prefers-reduced-motion: reduce) {
+  .evt__banner.is-live,
+  .evt__flash.is-live { animation-duration: 1ms; }
 }

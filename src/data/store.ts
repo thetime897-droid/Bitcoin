@@ -36,10 +36,37 @@ export interface FeedEvent {
   time: number;
 }
 
+/** Running totals for the session, shown in the scoreboard panel. Gives a
+ * returning viewer something to check in on beyond the current price. */
+export interface SessionStats {
+  /** Shorts liquidated - Bears losing positions. */
+  bearsLostUsd: number;
+  /** Longs liquidated - Bulls losing positions. */
+  bullsLostUsd: number;
+  liquidationCount: number;
+  biggestUsd: number;
+  biggestSide: 'bears' | 'bulls' | null;
+  /** Which side currently controls the line, and since when. */
+  holdSide: Pressure;
+  holdSince: number;
+}
+
+/** A moment big enough to interrupt the screen with a full-width banner. */
+export interface MajorEvent {
+  kind: 'mega-liquidation' | 'breakout' | 'breakthrough' | 'streak';
+  title: string;
+  subtitle: string;
+  side: 'bears' | 'bulls' | 'neutral';
+  /** 0..1 - drives banner size, screen flash strength and sound. */
+  intensity: number;
+}
+
 type Listener = (s: MarketState) => void;
 type LiquidationListener = (l: LiquidationEvent) => void;
 type MilestoneListener = (m: Milestone) => void;
 type FeedListener = (e: FeedEvent) => void;
+type StatsListener = (s: SessionStats) => void;
+type MajorListener = (e: MajorEvent) => void;
 
 const MAX_LIQUIDATION_HISTORY = 40;
 const ROUND_NUMBER_STEP = 1000;
@@ -52,6 +79,16 @@ const CHATTER_MIN_GAP_MS = 2600;
 /** If nothing at all has printed for this long, post a situation report -
  * a quiet market must never leave the log looking frozen on stream. */
 const SITREP_AFTER_MS = 17_000;
+
+/** A liquidation this size stops the show with a full-width banner. */
+const MEGA_LIQUIDATION_USD = 250_000;
+/** Consecutive kills on one side, within this window, count as a rout. */
+const STREAK_WINDOW_MS = 22_000;
+const STREAK_MIN = 3;
+/** Pressure beyond this counts as one side breaking through the line. */
+const BREAKTHROUGH_RATIO = 0.55;
+/** Don't re-announce a breakthrough more often than this. */
+const BREAKTHROUGH_COOLDOWN_MS = 45_000;
 
 function fmtUsd(n: number): string {
   if (Math.abs(n) >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
@@ -92,6 +129,24 @@ class MarketStore {
   private lastBidWall = 0;
   private lastAskWall = 0;
 
+  private statsListeners = new Set<StatsListener>();
+  private majorListeners = new Set<MajorListener>();
+  private stats: SessionStats = {
+    bearsLostUsd: 0,
+    bullsLostUsd: 0,
+    liquidationCount: 0,
+    biggestUsd: 0,
+    biggestSide: null,
+    holdSide: 'balanced',
+    holdSince: Date.now(),
+  };
+  private streakSide: 'bears' | 'bulls' | null = null;
+  private streakCount = 0;
+  private streakLastAt = 0;
+  private streakAnnouncedAt = 0;
+  private lastBreakthroughAt = 0;
+  private lastBreakthroughSide: 'bears' | 'bulls' | null = null;
+
   subscribe(fn: Listener): () => void {
     this.listeners.add(fn);
     fn(this.state);
@@ -111,6 +166,27 @@ class MarketStore {
   onFeed(fn: FeedListener): () => void {
     this.feedListeners.add(fn);
     return () => this.feedListeners.delete(fn);
+  }
+
+  onStats(fn: StatsListener): () => void {
+    this.statsListeners.add(fn);
+    fn(this.stats);
+    return () => this.statsListeners.delete(fn);
+  }
+
+  /** Screen-stopping moments: a whale getting wiped out, a price level
+   * breaking, one side overrunning the line, a run of kills. */
+  onMajorEvent(fn: MajorListener): () => void {
+    this.majorListeners.add(fn);
+    return () => this.majorListeners.delete(fn);
+  }
+
+  private emitStats(): void {
+    for (const fn of this.statsListeners) fn(this.stats);
+  }
+
+  private fireMajor(event: MajorEvent): void {
+    for (const fn of this.majorListeners) fn(event);
   }
 
   /** Emit a battle-log line. `chatter` lines are rate-limited against each
@@ -223,6 +299,57 @@ class MarketStore {
     this.state = { ...this.state, liquidations };
     this.emit();
     for (const fn of this.liquidationListeners) fn(liq);
+
+    // A liquidated short is a Bear losing their position, and vice versa.
+    const losing: 'bears' | 'bulls' = liq.side === 'short' ? 'bears' : 'bulls';
+    if (losing === 'bears') this.stats.bearsLostUsd += liq.usd;
+    else this.stats.bullsLostUsd += liq.usd;
+    this.stats.liquidationCount += 1;
+    if (liq.usd > this.stats.biggestUsd) {
+      this.stats.biggestUsd = liq.usd;
+      this.stats.biggestSide = losing;
+    }
+    this.emitStats();
+
+    this.checkStreak(losing);
+
+    if (liq.usd >= MEGA_LIQUIDATION_USD) {
+      this.fireMajor({
+        kind: 'mega-liquidation',
+        title: `${losing === 'bears' ? 'BEARS' : 'BULLS'} WIPED OUT`,
+        subtitle: `${fmtUsd(liq.usd)} liquidated at ${liq.price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+        side: losing,
+        // Saturates around $1M so a single record print can't peg it forever.
+        intensity: clamp(liq.usd / 1_000_000, 0.35, 1),
+      });
+    }
+  }
+
+  /** Consecutive kills against one side inside a short window read as a
+   * rout, which is worth calling out even when no single hit was huge. */
+  private checkStreak(losing: 'bears' | 'bulls'): void {
+    const now = Date.now();
+    if (this.streakSide === losing && now - this.streakLastAt <= STREAK_WINDOW_MS) {
+      this.streakCount += 1;
+    } else {
+      this.streakSide = losing;
+      this.streakCount = 1;
+      this.streakAnnouncedAt = 0;
+    }
+    this.streakLastAt = now;
+
+    // Announce at the threshold, then only on every further kill.
+    if (this.streakCount >= STREAK_MIN && this.streakCount > this.streakAnnouncedAt) {
+      this.streakAnnouncedAt = this.streakCount;
+      const winner = losing === 'bears' ? 'BULLS' : 'BEARS';
+      this.fireMajor({
+        kind: 'streak',
+        title: `${winner} ON A RAMPAGE`,
+        subtitle: `${this.streakCount} liquidations in a row`,
+        side: losing === 'bears' ? 'bulls' : 'bears',
+        intensity: clamp(0.3 + this.streakCount * 0.12, 0.3, 1),
+      });
+    }
   }
 
   private recomputePressure(): void {
@@ -256,7 +383,13 @@ class MarketStore {
         });
       }
     }
+    if (this.lastReportedPressure !== pressure) {
+      this.stats.holdSide = pressure;
+      this.stats.holdSince = Date.now();
+      this.emitStats();
+    }
     this.lastReportedPressure = pressure;
+    this.checkBreakthrough(combined);
 
     this.state = { ...this.state, pressureRatio: combined, pressure };
     this.emit();
@@ -281,8 +414,35 @@ class MarketStore {
     this.lastLow24h = ticker.low24h;
   }
 
+  /** One side pushing the line far past centre is its own headline. */
+  private checkBreakthrough(ratio: number): void {
+    if (Math.abs(ratio) < BREAKTHROUGH_RATIO) return;
+    const side: 'bears' | 'bulls' = ratio > 0 ? 'bulls' : 'bears';
+    const now = Date.now();
+    if (side === this.lastBreakthroughSide && now - this.lastBreakthroughAt < BREAKTHROUGH_COOLDOWN_MS) return;
+    this.lastBreakthroughSide = side;
+    this.lastBreakthroughAt = now;
+    this.fireMajor({
+      kind: 'breakthrough',
+      title: `${side === 'bulls' ? 'BULLS' : 'BEARS'} BREAK THROUGH`,
+      subtitle: `Line pushed ${Math.round(Math.abs(ratio) * 100)}% into enemy ground`,
+      side,
+      intensity: clamp(Math.abs(ratio), 0.4, 1),
+    });
+  }
+
   private fireMilestone(m: Milestone): void {
     for (const fn of this.milestoneListeners) fn(m);
+
+    if (m.kind === 'round-number') {
+      this.fireMajor({
+        kind: 'breakout',
+        title: `BTC BREAKS $${m.price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+        subtitle: 'Price level taken',
+        side: 'neutral',
+        intensity: 0.8,
+      });
+    }
   }
 
   private emit(): void {

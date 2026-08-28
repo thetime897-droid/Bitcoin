@@ -286,7 +286,9 @@ export class Hud {
       time: l.time,
     });
 
-    if (l.usd >= 75_000) {
+    // Anything above the mega threshold gets the full-screen event banner
+    // instead; showing both at once just stacks two announcements.
+    if (l.usd >= 75_000 && l.usd < 250_000) {
       this.showKillfeed(
         `${losingSide.toUpperCase()} WIPED · ${fmtUsd(l.usd)} liquidated @ ${fmtPrice(l.price)}`,
         losingSide,

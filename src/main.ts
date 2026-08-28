@@ -7,6 +7,8 @@ import { Combat } from './scene/Combat';
 import { Emplacements } from './scene/Emplacements';
 import { AirSupport } from './scene/Aircraft';
 import { Hud } from './ui/hud';
+import { EventOverlay } from './ui/EventOverlay';
+import { StatsPanel } from './ui/StatsPanel';
 import { BinanceFeed } from './data/BinanceFeed';
 import { marketStore } from './data/store';
 import { sfx } from './audio';
@@ -37,6 +39,8 @@ const airSupport = new AirSupport(battlefield.scene, combat, {
   helisPerSide: config.quality === 'low' ? 1 : 2,
 });
 const hud = new Hud(app);
+const statsPanel = new StatsPanel(hud.root);
+const eventOverlay = new EventOverlay(app);
 
 // --- Wall depth -> army size ------------------------------------------------
 const USD_PER_UNIT = 400_000;
@@ -56,6 +60,7 @@ marketStore.subscribe((state) => {
 
   if (state.ticker) {
     hud.setTicker(state.ticker);
+    statsPanel.setPrice(state.ticker.price, state.ticker.changePercent24h);
     battlefield.setCenterPrice(state.ticker.price, priceTickStep(state.ticker.price));
   }
 
@@ -90,7 +95,19 @@ marketStore.onMilestone((m) => {
 // log as liquidations, so the corner keeps telling the story even when
 // nothing is being liquidated.
 marketStore.onFeed((event) => {
-  if (event.kind !== 'liquidation') hud.pushFeed(event);
+  if (event.kind === 'liquidation') return;
+  hud.pushFeed(event);
+  if (event.kind === 'whale') sfx.blip(event.side === 'bulls');
+});
+
+marketStore.onStats((stats) => statsPanel.setStats(stats));
+
+// The handful of moments worth interrupting the screen for. The overlay
+// rate-limits itself, so only play the sting when it actually showed.
+marketStore.onMajorEvent((event) => {
+  if (!eventOverlay.show(event)) return;
+  sfx.sting(event.intensity);
+  if (event.intensity > 0.75) sfx.alarm();
 });
 
 // Situation reports if the market goes quiet; the store rate-limits itself,
@@ -148,6 +165,16 @@ if (new URLSearchParams(window.location.search).get('debug') === '1') {
         time: Date.now(),
       });
     },
+    demoMega: () => {
+      marketStore.addLiquidation({
+        id: `demo-mega-${Date.now()}`,
+        side: Math.random() > 0.5 ? 'short' : 'long',
+        price: demoPrice,
+        qtyBase: 8,
+        usd: 400_000 + Math.random() * 900_000,
+        time: Date.now(),
+      });
+    },
     demoWhale: () => {
       const usd = 140_000 + Math.random() * 600_000;
       marketStore.addTrade({
@@ -165,6 +192,7 @@ if (new URLSearchParams(window.location.search).get('debug') === '1') {
 // --- Render loop --------------------------------------------------------------
 const minFrameMs = config.fpsCap > 0 ? 1000 / config.fpsCap : 0;
 let lastFrameTime = 0;
+let intensityTimer = 0;
 
 function frame(now: number): void {
   requestAnimationFrame(frame);
@@ -180,6 +208,14 @@ function frame(now: number): void {
   combat.update(dt);
   effects.update(dt);
   battlefield.render();
+
+  // Swell the ambient battle bed with how many units are actually fighting.
+  intensityTimer += dt;
+  if (intensityTimer > 1) {
+    intensityTimer = 0;
+    const engaged = units.activeCount('bears') + units.activeCount('bulls');
+    sfx.setIntensity(Math.min(1, engaged / 150));
+  }
 }
 requestAnimationFrame(frame);
 
