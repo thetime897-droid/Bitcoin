@@ -29,8 +29,11 @@ big liquidations and price milestones to keep viewers engaged.
   market pressure, so whoever is winning is visible without reading a
   single number.
 - **Bulls vs. Bears armies** — unit count scales with order-book depth on
-  each side. Soldiers and tanks march out from camp, dig in at the line and
-  trade tracer fire across it.
+  each side. Infantry, APCs and tanks walk out from their camp, take up a
+  position behind their own side of the line and keep repositioning along
+  it on their own, turning to face where they're going and back toward the
+  enemy once they arrive. Because a unit's post is measured back from the
+  frontline, the whole army advances or falls back as the line moves.
 - **Artillery, armour and air support** — field guns behind each camp lob
   shells over their own infantry (with recoil and muzzle blast), jets make
   bombing runs the length of the map, and gunships hold station behind the
@@ -52,6 +55,55 @@ big liquidations and price milestones to keep viewers engaged.
   the line, or a run of kills against the same side. Deliberately
   rate-limited: fire these on every liquidation and viewers stop seeing
   them.
+
+## Enlisting chat viewers
+
+Viewers who write in chat get their own soldier or vehicle, with their
+handle floating above it in a colour derived from the name (stable, so
+they look the same every time) on a chip edged in their army's colour.
+They're split evenly between Bears and Bulls, they join the battle log
+when they enlist, and they get their own line when their unit is killed.
+Up to 46 handles are shown at once; past that the field becomes a wall of
+text and nobody's name is readable.
+
+**The page cannot read YouTube chat on its own** - that needs the YouTube
+Data API. Three ways to feed it, in order of how well they hold up:
+
+**1. A bot or relay over WebSocket** (recommended for 24/7)
+
+```
+?chatws=ws://localhost:8080
+```
+
+Anything that pushes one message per chat line works: either a bare handle
+as text, or JSON with an `author`, `user`, `name` or `displayName` field.
+Reconnects on its own with backoff. This is the option that survives a
+round-the-clock stream.
+
+**2. The YouTube Data API directly**
+
+```
+?ytkey=YOUR_API_KEY&ytvideo=YOUR_LIVE_VIDEO_ID
+```
+
+Simplest to set up, but **read the quota maths before relying on it**:
+`liveChatMessages.list` costs 5 quota units per call and a default Google
+Cloud project gets 10,000 units per day - about 2,000 calls. That is one
+call every ~45 seconds for a full 24 hours, which is why `chatpoll`
+defaults to 45000 ms. Poll faster and chat silently stops partway through
+the day when the quota runs dry. For anything quicker you need a quota
+increase from Google, or the WebSocket relay above. Note also that the key
+sits in the URL, so treat that file as private and restrict the key to the
+YouTube Data API in the Cloud console.
+
+**3. Manually, from a script or the console**
+
+```js
+window.battlefieldEnlist('SomeViewer');
+```
+
+Always available. Useful for testing, or for a local script driving the
+page from any chat source you like.
 
 ### Why those elements
 
@@ -151,6 +203,9 @@ The same build adapts to different scenes/setups without a rebuild:
 | `quality` | `high` | `low` / `medium` / `high` — lower reduces tree/shadow/aircraft counts if you're CPU/GPU constrained while also running an encoder |
 | `scale` | `1` | Supersampling factor. OBS browser sources report a device pixel ratio of 1, so `scale=1.5` is the only way to render *above* the capture resolution and downsample for noticeably cleaner edges. Costs fill rate quadratically — try it before committing to it on stream. |
 | `fps` | `60` | Internal render FPS cap, independent of OBS's own capture rate |
+| `chatws` | *(none)* | WebSocket relay pushing chat handles - see **Enlisting chat viewers** |
+| `ytkey` / `ytvideo` | *(none)* | YouTube Data API key + live video id, to poll chat directly (quota-limited) |
+| `chatpoll` | `45000` | Floor on the YouTube poll interval in ms. The default is what keeps a full day inside the default API quota |
 | `debug` | `0` | `1` exposes `window.battlefieldDebug` in the browser console (`demoTicker()`, `demoLiquidation()`) to sanity-check the scene without waiting on real market data |
 
 Example for a transparent overlay with your handle and sound on:
@@ -172,12 +227,14 @@ src/
     types.ts          shared data types
     BinanceFeed.ts     WebSocket connections + auto-reconnect + staleness watchdog
     store.ts           single reactive store (pressure/derived state, pub-sub)
+    chat.ts            viewer enlistment from YouTube / a relay / manual calls
   scene/
     Battlefield.ts     terrain + territory shader, frontline, camps, camera
-    Units.ts           instanced armies (soldiers + tanks) and their fire
+    Units.ts           instanced armies, autonomous movement and their fire
     Combat.ts          pooled tracers, artillery shells, muzzle flashes
     Emplacements.ts    camp artillery batteries (firing + recoil)
     Aircraft.ts        jet bombing runs and frontline gunships
+    Nametags.ts        floating handles above enlisted viewers' units
     Effects.ts         pooled explosion particles + camera shake
     geometry.ts         merged low-poly geometries for instancing
   ui/

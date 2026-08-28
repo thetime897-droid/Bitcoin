@@ -38,6 +38,18 @@ export const config = {
    * and downsample for noticeably cleaner edges. Costs fill rate
    * quadratically - 1.5 is a good quality/cost point on a capable GPU. */
   renderScale: Math.min(Math.max(Number(params.get('scale') ?? '1') || 1, 0.5), 2),
+
+  // --- Chat enlistment ---------------------------------------------------
+  /** WebSocket relay pushing chat messages. The scalable option for 24/7 -
+   * any bot that can emit `{"author":"name"}` or a bare handle works. */
+  chatWsUrl: params.get('chatws') ?? '',
+  /** YouTube Data API key and the live video id, for polling chat directly.
+   * Simple to set up, but quota-limited - see chat.ts and the README. */
+  ytKey: params.get('ytkey') ?? '',
+  ytVideoId: params.get('ytvideo') ?? '',
+  /** Floor on the YouTube poll interval. The default keeps a full day of
+   * polling inside the default 10,000-unit daily API quota. */
+  chatPollMs: Math.max(Number(params.get('chatpoll') ?? '45000') || 45_000, 5_000),
 };
 
 export const displaySymbol = config.label ?? config.symbol.replace(/USDT?$/, '/USD');

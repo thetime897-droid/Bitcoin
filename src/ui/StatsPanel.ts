@@ -109,9 +109,12 @@ export class StatsPanel {
       this.biggestEl.dataset.side = stats.biggestSide;
     }
 
-    const holder =
-      stats.holdSide === 'buyers' ? 'BULLS' : stats.holdSide === 'sellers' ? 'BEARS' : 'CONTESTED';
-    this.holdLabelEl.textContent = `LINE HELD BY ${holder}`;
+    this.holdLabelEl.textContent =
+      stats.holdSide === 'buyers'
+        ? 'LINE HELD BY BULLS'
+        : stats.holdSide === 'sellers'
+          ? 'LINE HELD BY BEARS'
+          : 'LINE CONTESTED';
     this.tickHold();
   }
 

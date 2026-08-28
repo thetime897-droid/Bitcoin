@@ -1,11 +1,13 @@
 import './style.css';
 import * as THREE from 'three';
-import { Battlefield, CAMP_X, GROUND_HALF_DEPTH, GROUND_HALF_WIDTH } from './scene/Battlefield';
+import { Battlefield, GROUND_HALF_DEPTH, GROUND_HALF_WIDTH } from './scene/Battlefield';
 import { UnitArmies } from './scene/Units';
 import { Effects } from './scene/Effects';
 import { Combat } from './scene/Combat';
 import { Emplacements } from './scene/Emplacements';
 import { AirSupport } from './scene/Aircraft';
+import { Nametags } from './scene/Nametags';
+import { ChatBridge } from './data/chat';
 import { Hud } from './ui/hud';
 import { EventOverlay } from './ui/EventOverlay';
 import { StatsPanel } from './ui/StatsPanel';
@@ -30,7 +32,8 @@ const combat = new Combat(battlefield.scene, (position, color, magnitude) => {
   effects.explode(position, color, magnitude, 0.16);
 });
 
-const units = new UnitArmies(battlefield.scene, -CAMP_X, CAMP_X, combat);
+const nametags = new Nametags(battlefield.scene);
+const units = new UnitArmies(battlefield.scene, combat, nametags);
 const emplacements = new Emplacements(battlefield.scene, combat);
 const airSupport = new AirSupport(battlefield.scene, combat, {
   fieldHalfWidth: GROUND_HALF_WIDTH,
@@ -78,12 +81,25 @@ marketStore.onLiquidation((liq) => {
   const magnitude = THREE.MathUtils.clamp(liq.usd / 60_000, 0.2, 2.2);
   const unitsLost = THREE.MathUtils.clamp(Math.round(liq.usd / 35_000), 1, 8);
 
-  const pos = units.killUnits(side, unitsLost, battlefield.frontlineWorldX);
+  const { position, names } = units.killUnits(side, unitsLost, battlefield.frontlineWorldX);
   const color = side === 'bears' ? 0xe0483f : 0x36c17a;
-  if (pos) effects.explode(pos, color, magnitude);
+  if (position) effects.explode(position, color, magnitude);
 
   hud.pushLiquidation(liq, unitsLost);
   sfx.explosion(magnitude);
+
+  // Losing an enlisted viewer's unit is the most personal thing that can
+  // happen on screen, so it gets its own line in the log.
+  for (const name of names) {
+    hud.pushFeed({
+      id: `fallen-${name}-${liq.time}`,
+      kind: 'status',
+      side,
+      text: `${name} was wiped out on the ${side === 'bears' ? 'Bear' : 'Bull'} line`,
+      detail: 'K.I.A.',
+      time: liq.time,
+    });
+  }
 });
 
 marketStore.onMilestone((m) => {
@@ -124,7 +140,26 @@ const feed = new BinanceFeed(config.symbol, {
 });
 feed.start();
 
-window.addEventListener('beforeunload', () => feed.stop());
+// --- Chat enlistment ---------------------------------------------------
+// Viewers who talk in chat get their own unit with their handle above it.
+const chat = new ChatBridge((author) => {
+  const side = units.enlist(author);
+  if (!side) return;
+  hud.pushFeed({
+    id: `enlist-${author}-${Date.now()}`,
+    kind: 'status',
+    side,
+    text: `${author} joined the ${side === 'bears' ? 'Bears' : 'Bulls'}`,
+    detail: 'ENLISTED',
+    time: Date.now(),
+  });
+});
+chat.start();
+
+window.addEventListener('beforeunload', () => {
+  feed.stop();
+  chat.stop();
+});
 
 // --- Debug/demo hook ----------------------------------------------------------
 // Opt-in via ?debug=1. Lets a streamer sanity-check the scene from the
