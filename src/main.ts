@@ -200,6 +200,13 @@ if (new URLSearchParams(window.location.search).get('debug') === '1') {
         time: Date.now(),
       });
     },
+    // Park the camera somewhere specific - handy for lining up a shot or
+    // grabbing a close-up of the models. Needs ?interact=1 so the
+    // cinematic drift isn't fighting for the camera.
+    setCamera: ((x: number, y: number, z: number, tx = 0, ty = 1, tz = 0) => {
+      battlefield.camera.position.set(x, y, z);
+      battlefield.camera.lookAt(tx, ty, tz);
+    }) as unknown as () => void,
     demoMega: () => {
       marketStore.addLiquidation({
         id: `demo-mega-${Date.now()}`,

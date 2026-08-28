@@ -25,6 +25,10 @@ interface UnitSlot {
   fireCooldown: number;
   /** Chat handle riding this unit, if any. */
   label: string | null;
+  /** Rear patrols range across the whole territory instead of holding the
+   * line, which is what fills the map with traffic rather than leaving one
+   * dense rank and empty ground behind it. */
+  patrols: boolean;
 }
 
 /** Unit classes, ordered light to heavy. */
@@ -34,8 +38,13 @@ const enum Kind {
   Tank,
 }
 
-/** Closest any unit will sit to the line, and how deep the ranks go. */
+/** Closest any unit will sit to the line. */
 const MIN_STANDOFF = 3.5;
+/** Only units within this distance of the line have a shot worth taking. */
+const FIRING_RANGE = 17;
+/** How far back a unit may roam, as a fraction of the way to its own camp.
+ * Kept below 1 so nobody wanders into the camp furniture. */
+const ZONE_LIMIT = 0.86;
 const LANE_SPREAD = GROUND_HALF_DEPTH * 1.7;
 /** Units are drawn slightly larger than true scale: the camera has to hold
  * the whole field, and at true scale the fighting reads as coloured dust. */
@@ -64,19 +73,22 @@ function frac(v: number): number {
 interface KindProfile {
   /** Ground speed in world units per second. */
   speed: number;
-  /** How deep behind the line this class deploys. */
+  /** Depth band this class holds when it is fighting at the line. */
   rankDepth: number;
   /** Seconds between repositioning moves once deployed. */
   dwellMin: number;
   dwellMax: number;
   /** How far it will drift along the line in one move. */
   roam: number;
+  /** Share of this class that patrols the rear instead of holding the
+   * line. Vehicles range much further back than infantry do. */
+  patrolShare: number;
 }
 
 const PROFILES: Record<Kind, KindProfile> = {
-  [Kind.Infantry]: { speed: 3.4, rankDepth: 11, dwellMin: 1.6, dwellMax: 6, roam: 9 },
-  [Kind.Apc]: { speed: 6.2, rankDepth: 9, dwellMin: 2.5, dwellMax: 7, roam: 18 },
-  [Kind.Tank]: { speed: 4.6, rankDepth: 7, dwellMin: 3.5, dwellMax: 9, roam: 13 },
+  [Kind.Infantry]: { speed: 3.4, rankDepth: 12, dwellMin: 1.6, dwellMax: 6, roam: 10, patrolShare: 0.3 },
+  [Kind.Apc]: { speed: 7.4, rankDepth: 10, dwellMin: 2, dwellMax: 5.5, roam: 24, patrolShare: 0.6 },
+  [Kind.Tank]: { speed: 5.2, rankDepth: 8, dwellMin: 2.8, dwellMax: 7, roam: 18, patrolShare: 0.45 },
 };
 
 function makeSlots(n: number, campX: number, profile: KindProfile): UnitSlot[] {
@@ -93,6 +105,7 @@ function makeSlots(n: number, campX: number, profile: KindProfile): UnitSlot[] {
     scale: 1,
     fireCooldown: Math.random() * 2,
     label: null,
+    patrols: frac(i * RANK_STEP + 0.37) < profile.patrolShare,
   }));
 }
 
@@ -283,8 +296,16 @@ class SideArmy {
    * a short shuffle along it. Movement stays inside its own territory
    * because the tasked X is always measured back from the frontline.
    */
-  private retask(slot: UnitSlot, profile: KindProfile): void {
-    slot.standoff = MIN_STANDOFF + Math.random() * profile.rankDepth;
+  private retask(slot: UnitSlot, profile: KindProfile, frontlineX: number): void {
+    if (slot.patrols) {
+      // Anywhere between the line and (almost) its own camp. Distance from
+      // the line to the camp shrinks as the enemy advances, so the roaming
+      // zone naturally tightens when a side is losing ground.
+      const zone = Math.max(profile.rankDepth, Math.abs(frontlineX - this.campX) * ZONE_LIMIT);
+      slot.standoff = MIN_STANDOFF + Math.random() * zone;
+    } else {
+      slot.standoff = MIN_STANDOFF + Math.random() * profile.rankDepth;
+    }
     const roam = (Math.random() - 0.5) * 2 * profile.roam;
     const half = LANE_SPREAD / 2;
     slot.laneZ = THREE.MathUtils.clamp(slot.laneZ + roam, -half, half);
@@ -334,7 +355,7 @@ class SideArmy {
           slot.yaw = this.approachAngle(slot.yaw, enemyYaw, dt * 2.4);
           slot.deployed = true;
           slot.dwell -= dt;
-          if (slot.dwell <= 0) this.retask(slot, profile);
+          if (slot.dwell <= 0) this.retask(slot, profile, frontlineX);
         }
       }
 
@@ -364,9 +385,11 @@ class SideArmy {
         nametags.place(slot.label, this.side, slot.posX, groundY + lift, slot.posZ);
       }
 
-      // Only units that have reached their fighting position open fire, so
-      // a fresh wave visibly marches up before it joins the firefight.
+      // Only deployed units close enough to the line have a shot worth
+      // taking: a fresh wave visibly marches up before it joins the
+      // firefight, and rear patrols move without firing at nothing.
       if (!slot.active || !slot.deployed) continue;
+      if (Math.abs(slot.posX - frontlineX) > FIRING_RANGE) continue;
       slot.fireCooldown -= dt;
       if (slot.fireCooldown > 0) continue;
 

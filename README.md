@@ -29,17 +29,23 @@ big liquidations and price milestones to keep viewers engaged.
   market pressure, so whoever is winning is visible without reading a
   single number.
 - **Bulls vs. Bears armies** — unit count scales with order-book depth on
-  each side. Infantry, APCs and tanks walk out from their camp, take up a
-  position behind their own side of the line and keep repositioning along
-  it on their own, turning to face where they're going and back toward the
-  enemy once they arrive. Because a unit's post is measured back from the
-  frontline, the whole army advances or falls back as the line moves.
+  each side. Infantry, APCs and tanks walk out from their camp and move
+  around their own territory under their own steam - some hold the line,
+  others patrol the rear all the way back toward camp - turning to face
+  where they're going and back toward the enemy once they arrive. Only
+  units within range of the line open fire. Because a unit's post is
+  measured back from the frontline rather than stored as a fixed
+  coordinate, the whole army advances or falls back as the line moves,
+  and nobody can wander onto enemy ground.
 - **Artillery, armour and air support** — field guns behind each camp lob
   shells over their own infantry (with recoil and muzzle blast), jets make
   bombing runs the length of the map, and gunships hold station behind the
   line and strafe across it.
 - **Live liquidations** — every forced long/short liquidation on Binance
-  Futures triggers an explosion + camera shake at the front line, removes
+  Futures triggers an explosion at the front line: a fireball that cools
+  from white through orange to embers, tumbling debris that bounces once
+  and settles, an expanding ground shockwave, a rising smoke column and a
+  scorch mark burned into the terrain. It also shakes the camera, removes
   units from the losing side, and appears in the market feed. Large
   liquidations (≥ $75K) also trigger a big on-screen callout.
 - **Milestones** — round-number price crossings and new 24h highs/lows get
