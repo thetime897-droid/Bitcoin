@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { terrainHeightAt } from './Battlefield';
 import { buildDebrisGeometry } from './geometry';
 
@@ -36,11 +37,24 @@ interface Shockwave {
   maxRadius: number;
 }
 
+/** A burnt-out hull left where a unit died, smoking until it fades. */
+interface Wreck {
+  active: boolean;
+  position: THREE.Vector3;
+  yaw: number;
+  scale: number;
+  life: number;
+  maxLife: number;
+}
+
 const FIRE_POOL = 460;
 const SMOKE_POOL = 260;
 const SCORCH_POOL = 90;
 const DEBRIS_POOL = 220;
 const SHOCKWAVE_POOL = 8;
+const WRECK_POOL = 40;
+/** How long a burnt-out hull stays on the field before fading away. */
+const WRECK_LIFE = 26;
 
 /** Colours a fireball passes through as it cools. */
 const HOT_CORE = new THREE.Color(0xfff6e0);
@@ -108,6 +122,11 @@ export class Effects {
 
   private readonly shockwaves: Shockwave[] = [];
   private shockCursor = 0;
+
+  private readonly wreckMesh: THREE.InstancedMesh;
+  private readonly wrecks: Wreck[] = [];
+  private wreckCursor = 0;
+  private wreckSmokeTimer = 0;
 
   private fireCursor = 0;
   private smokeCursor = 0;
@@ -200,6 +219,95 @@ export class Effects {
       scene.add(mesh);
       this.shockwaves.push({ active: false, mesh, life: 0, maxLife: 1, maxRadius: 1 });
     }
+
+    // Wrecks: a charred hull silhouette, dark and matte so it reads as
+    // burnt-out rather than as another live unit.
+    const wreckGeo = mergeGeometries([
+      new THREE.BoxGeometry(1.9, 0.5, 1.0).translate(0, 0.3, 0),
+      new THREE.BoxGeometry(0.9, 0.4, 0.8).translate(-0.2, 0.68, 0),
+      new THREE.BoxGeometry(0.16, 0.16, 0.16).translate(0.9, 0.85, 0.2),
+    ]) as THREE.BufferGeometry;
+    this.wreckMesh = new THREE.InstancedMesh(
+      wreckGeo,
+      new THREE.MeshStandardMaterial({ color: 0x201c18, roughness: 1 }),
+      WRECK_POOL,
+    );
+    this.wreckMesh.count = 0;
+    this.wreckMesh.frustumCulled = false;
+    this.wreckMesh.castShadow = true;
+    this.wreckMesh.receiveShadow = true;
+    scene.add(this.wreckMesh);
+    for (let i = 0; i < WRECK_POOL; i++) {
+      this.wrecks.push({
+        active: false,
+        position: new THREE.Vector3(),
+        yaw: 0,
+        scale: 1,
+        life: 0,
+        maxLife: WRECK_LIFE,
+      });
+    }
+  }
+
+  /**
+   * Leave a burnt-out hull where a unit was destroyed. It smokes for a
+   * while and then fades, so a stretch of front that has been fought over
+   * hard visibly accumulates losses.
+   */
+  addWreck(position: THREE.Vector3, scale = 1): void {
+    const w = this.wrecks[this.wreckCursor];
+    this.wreckCursor = (this.wreckCursor + 1) % WRECK_POOL;
+    w.active = true;
+    w.life = w.maxLife = WRECK_LIFE * (0.75 + Math.random() * 0.5);
+    w.position.set(position.x, terrainHeightAt(position.x, position.z), position.z);
+    w.yaw = Math.random() * Math.PI * 2;
+    w.scale = scale * (0.85 + Math.random() * 0.35);
+  }
+
+  private stepWrecks(dt: number): void {
+    let writeIndex = 0;
+    // One shared smoke emission per tick rather than per wreck, so a field
+    // full of hulls costs the same as a single one.
+    this.wreckSmokeTimer -= dt;
+    const emit = this.wreckSmokeTimer <= 0;
+    if (emit) this.wreckSmokeTimer = 0.35;
+
+    for (const w of this.wrecks) {
+      if (!w.active) continue;
+      w.life -= dt;
+      if (w.life <= 0) {
+        w.active = false;
+        continue;
+      }
+
+      // Sink slightly and shrink away over the last few seconds.
+      const fade = Math.min(1, w.life / 4);
+      const s = w.scale * (0.6 + 0.4 * fade);
+      this.tmpQuat.setFromAxisAngle(new THREE.Vector3(0, 1, 0), w.yaw);
+      this.tmpScale.set(s, s * fade, s);
+      this.matrix.compose(w.position, this.tmpQuat, this.tmpScale);
+      this.wreckMesh.setMatrixAt(writeIndex, this.matrix);
+      writeIndex++;
+
+      if (emit && w.life > 3 && Math.random() < 0.5) {
+        const p = this.smoke[this.smokeCursor];
+        this.smokeCursor = (this.smokeCursor + 1) % SMOKE_POOL;
+        p.life = p.maxLife = 2.2 + Math.random() * 1.6;
+        p.velocity.set((Math.random() - 0.5) * 0.5, 1.5 + Math.random(), (Math.random() - 0.5) * 0.5);
+        p.sprite.position.copy(w.position).setY(w.position.y + 0.8);
+        p.baseScale = 0.7;
+        p.growth = 1.5;
+        p.fadePower = 0.6;
+        p.coolsDown = false;
+        p.sprite.scale.setScalar(p.baseScale);
+        (p.sprite.material as THREE.SpriteMaterial).color.setHex(0x6f6a64);
+        (p.sprite.material as THREE.SpriteMaterial).opacity = 0.35;
+        p.sprite.visible = true;
+      }
+    }
+
+    this.wreckMesh.count = writeIndex;
+    if (writeIndex > 0) this.wreckMesh.instanceMatrix.needsUpdate = true;
   }
 
   private makeParticle(scene: THREE.Scene, map: THREE.Texture, blending: THREE.Blending): Particle {
@@ -353,6 +461,7 @@ export class Effects {
     this.stepParticles(this.smoke, dt, 0.6, 0.72);
     this.stepDebris(dt);
     this.stepShockwaves(dt);
+    this.stepWrecks(dt);
 
     for (const light of this.flashes) {
       if (light.intensity > 0) light.intensity = Math.max(0, light.intensity - dt * 40);

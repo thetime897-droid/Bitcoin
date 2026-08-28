@@ -74,6 +74,60 @@ export function terrainHeightAt(x: number, z: number): number {
 export type CampSide = 'bears' | 'bulls';
 
 /**
+ * Team emblems, drawn as flat silhouettes. Both are built from a handful of
+ * curves rather than loaded as images so the whole build stays a single
+ * self-contained file with nothing to fetch at runtime.
+ */
+function drawBullEmblem(ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number): void {
+  // Horns sweeping out and up from the crown of the head.
+  for (const dir of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(cx + dir * 0.26 * s, cy - 0.16 * s);
+    ctx.quadraticCurveTo(cx + dir * 0.78 * s, cy - 0.26 * s, cx + dir * 0.74 * s, cy - 0.62 * s);
+    ctx.quadraticCurveTo(cx + dir * 0.62 * s, cy - 0.34 * s, cx + dir * 0.20 * s, cy - 0.30 * s);
+    ctx.closePath();
+    ctx.fill();
+  }
+  // Ears tucked under the horns.
+  for (const dir of [-1, 1]) {
+    ctx.beginPath();
+    ctx.ellipse(cx + dir * 0.36 * s, cy - 0.06 * s, 0.16 * s, 0.09 * s, dir * 0.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // Head: broad at the brow, tapering into a heavy muzzle.
+  ctx.beginPath();
+  ctx.moveTo(cx - 0.30 * s, cy - 0.26 * s);
+  ctx.quadraticCurveTo(cx - 0.36 * s, cy + 0.16 * s, cx - 0.20 * s, cy + 0.40 * s);
+  ctx.quadraticCurveTo(cx, cy + 0.60 * s, cx + 0.20 * s, cy + 0.40 * s);
+  ctx.quadraticCurveTo(cx + 0.36 * s, cy + 0.16 * s, cx + 0.30 * s, cy - 0.26 * s);
+  ctx.quadraticCurveTo(cx, cy - 0.40 * s, cx - 0.30 * s, cy - 0.26 * s);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawBearEmblem(ctx: CanvasRenderingContext2D, cx: number, cy: number, s: number): void {
+  // Round ears set wide on the skull.
+  for (const dir of [-1, 1]) {
+    ctx.beginPath();
+    ctx.arc(cx + dir * 0.42 * s, cy - 0.38 * s, 0.20 * s, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  // Skull.
+  ctx.beginPath();
+  ctx.ellipse(cx, cy - 0.02 * s, 0.46 * s, 0.42 * s, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // Muzzle pushed forward and down.
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + 0.30 * s, 0.26 * s, 0.22 * s, 0, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawTeamEmblem(ctx: CanvasRenderingContext2D, side: CampSide, cx: number, cy: number, s: number): void {
+  if (side === 'bulls') drawBullEmblem(ctx, cx, cy, s);
+  else drawBearEmblem(ctx, cx, cy, s);
+}
+
+/**
  * Owns the persistent 3D world: terrain, the contested frontline, the two
  * fortified camps, scenery and camera. Units, projectiles and aircraft are
  * separate modules positioned against the frontline this class tracks, so
@@ -463,99 +517,274 @@ export class Battlefield {
       roughness: 0.85,
     });
 
-    // Perimeter: back wall plus two returns, leaving the enemy-facing side open.
-    const backWall = new THREE.Mesh(new THREE.BoxGeometry(1.1, 3.1, 26), stoneMat);
-    backWall.position.set(-11, 1.55, 0);
+    const tm = new THREE.Matrix4();
+
+    // Perimeter: a long back wall with buttresses, plus two returns that
+    // leave the enemy-facing side open for the armies to deploy through.
+    const backWall = new THREE.Mesh(new THREE.BoxGeometry(1.4, 4.2, 40), stoneMat);
+    backWall.position.set(-16, 2.1, 0);
     backWall.castShadow = true;
     backWall.receiveShadow = true;
     built.add(backWall);
 
+    const buttressGeo = new THREE.BoxGeometry(1.8, 3.2, 1.6);
+    const buttresses = new THREE.InstancedMesh(buttressGeo, stoneMat, 7);
+    buttresses.castShadow = true;
+    for (let i = 0; i < 7; i++) {
+      tm.makeTranslation(-14.6, 1.6, -18 + i * 6);
+      buttresses.setMatrixAt(i, tm);
+    }
+    built.add(buttresses);
+
     for (const zSide of [-1, 1]) {
-      const wing = new THREE.Mesh(new THREE.BoxGeometry(15, 2.7, 1.1), stoneMat);
-      wing.position.set(-4, 1.35, zSide * 12.5);
+      const wing = new THREE.Mesh(new THREE.BoxGeometry(24, 3.6, 1.4), stoneMat);
+      wing.position.set(-4, 1.8, zSide * 20);
       wing.castShadow = true;
       wing.receiveShadow = true;
       built.add(wing);
 
-      const tower = new THREE.Group();
-      const shaft = new THREE.Mesh(new THREE.BoxGeometry(2.4, 6.4, 2.4), woodMat);
-      shaft.position.y = 3.2;
+      // Corner blockhouses at the back of the perimeter.
+      const corner = new THREE.Group();
+      const shaft = new THREE.Mesh(new THREE.BoxGeometry(3.4, 8, 3.4), stoneMat);
+      shaft.position.y = 4;
       shaft.castShadow = true;
-      const deck = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.4, 3.6), woodMat);
-      deck.position.y = 6.5;
+      const deck = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.5, 4.8), woodMat);
+      deck.position.y = 8.2;
       deck.castShadow = true;
-      const roof = new THREE.Mesh(new THREE.ConeGeometry(2.9, 1.7, 4), accentMat);
-      roof.position.y = 7.6;
+      const roof = new THREE.Mesh(new THREE.ConeGeometry(3.8, 2.2, 4), accentMat);
+      roof.position.y = 9.5;
       roof.rotation.y = Math.PI / 4;
       roof.castShadow = true;
-      tower.add(shaft, deck, roof);
-      tower.position.set(-10.5, 0, zSide * 12.5);
-      built.add(tower);
+      corner.add(shaft, deck, roof);
+      corner.position.set(-15, 0, zSide * 20);
+      built.add(corner);
     }
 
     // HQ block with a team-coloured roof.
     const hq = new THREE.Group();
-    const hqBody = new THREE.Mesh(new THREE.BoxGeometry(7.5, 3.4, 9), stoneMat);
-    hqBody.position.y = 1.7;
+    const hqBody = new THREE.Mesh(new THREE.BoxGeometry(10, 4.4, 13), stoneMat);
+    hqBody.position.y = 2.2;
     hqBody.castShadow = true;
     hqBody.receiveShadow = true;
-    const hqRoof = new THREE.Mesh(new THREE.BoxGeometry(8.4, 0.7, 9.9), accentMat);
-    hqRoof.position.y = 3.7;
+    const hqRoof = new THREE.Mesh(new THREE.BoxGeometry(11.2, 0.9, 14.4), accentMat);
+    hqRoof.position.y = 4.8;
     hqRoof.castShadow = true;
-    const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 4.2, 5), woodMat);
-    mast.position.y = 6.1;
-    hq.add(hqBody, hqRoof, mast);
-    hq.position.set(-6.5, 0, 0);
+    hq.add(hqBody, hqRoof);
+    hq.position.set(-9, 0, 0);
     built.add(hq);
 
+    // Vehicle park: a hardstanding with a hangar alongside the HQ.
+    const apron = new THREE.Mesh(
+      new THREE.BoxGeometry(16, 0.16, 12),
+      new THREE.MeshStandardMaterial({ color: 0x5b5851, roughness: 1 }),
+    );
+    apron.position.set(-4, 0.09, -13);
+    apron.receiveShadow = true;
+    built.add(apron);
+
+    const hangar = new THREE.Group();
+    const hangarBody = new THREE.Mesh(new THREE.BoxGeometry(9, 4, 7), stoneMat);
+    hangarBody.position.y = 2;
+    hangarBody.castShadow = true;
+    const hangarRoof = new THREE.Mesh(new THREE.CylinderGeometry(3.7, 3.7, 9, 12, 1, false, 0, Math.PI), accentMat);
+    hangarRoof.rotation.z = Math.PI / 2;
+    hangarRoof.position.y = 4;
+    hangarRoof.castShadow = true;
+    hangar.add(hangarBody, hangarRoof);
+    hangar.position.set(-11, 0, -14);
+    built.add(hangar);
+
     // Tents in staggered rows behind the staging area.
-    const tentGeo = new THREE.ConeGeometry(1.7, 2.4, 5);
+    const tentGeo = new THREE.ConeGeometry(1.9, 2.7, 5);
     const tentMat = new THREE.MeshStandardMaterial({
       color: teamColor.clone().lerp(new THREE.Color(0x141414), 0.4),
       roughness: 1,
     });
-    const tents = new THREE.InstancedMesh(tentGeo, tentMat, 8);
+    const tents = new THREE.InstancedMesh(tentGeo, tentMat, 14);
     tents.castShadow = true;
     tents.receiveShadow = true;
-    const tm = new THREE.Matrix4();
-    for (let i = 0; i < 8; i++) {
-      const row = Math.floor(i / 4);
-      const col = i % 4;
-      tm.makeTranslation(-2 + row * 4.2, 1.2, -8.4 + col * 5.6 + row * 1.4);
+    for (let i = 0; i < 14; i++) {
+      const row = Math.floor(i / 7);
+      const col = i % 7;
+      tm.makeTranslation(-6 + row * 5, 1.35, 4 + col * 4.4 + row * 1.6);
       tents.setMatrixAt(i, tm);
     }
     built.add(tents);
 
-    // Supply crates for a bit of clutter/scale near the staging area.
-    const crateGeo = new THREE.BoxGeometry(1.1, 1.1, 1.1);
-    const crates = new THREE.InstancedMesh(crateGeo, woodMat, 10);
+    // Supply crates and fuel drums for clutter and a sense of scale.
+    const crateGeo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+    const crates = new THREE.InstancedMesh(crateGeo, woodMat, 20);
     crates.castShadow = true;
     crates.receiveShadow = true;
     const crand = seededRandom(isBears ? 21 : 57);
-    for (let i = 0; i < 10; i++) {
-      tm.makeTranslation(-9 + crand() * 6, 0.55 + (crand() > 0.75 ? 1.1 : 0), -10 + crand() * 20);
+    for (let i = 0; i < 20; i++) {
+      tm.makeTranslation(-13 + crand() * 9, 0.6 + (crand() > 0.7 ? 1.2 : 0), -18 + crand() * 34);
       crates.setMatrixAt(i, tm);
     }
     built.add(crates);
 
+    const drumGeo = new THREE.CylinderGeometry(0.55, 0.55, 1.3, 8);
+    const drums = new THREE.InstancedMesh(drumGeo, accentMat, 12);
+    drums.castShadow = true;
+    for (let i = 0; i < 12; i++) {
+      tm.makeTranslation(-3 + crand() * 5, 0.65, -19 + crand() * 10);
+      drums.setMatrixAt(i, tm);
+    }
+    built.add(drums);
+
+    this.buildCampTower(built, side, teamColor, stoneMat, accentMat);
+    this.buildCampTrench(built, teamColor);
+
     // Banner is parented to the unrotated anchor so its text always faces
     // the camera regardless of which side's camp it belongs to.
-    this.addCampBanner(anchor, hex, isBears ? 'BEARS' : 'BULLS', isBears ? 'SELL SIDE' : 'BUY SIDE');
+    this.addCampBanner(anchor, side, hex, isBears ? 'BEARS' : 'BULLS', isBears ? 'SELL SIDE' : 'BUY SIDE');
   }
 
-  private addCampBanner(anchor: THREE.Object3D, color: number, label: string, sub: string): void {
+  /**
+   * The keep: a tall stone tower at the front of the camp, battlemented,
+   * flying the side's colours with its animal emblem. It is the tallest
+   * thing on the map, so each half reads as belonging to somebody from any
+   * camera angle.
+   */
+  private buildCampTower(
+    built: THREE.Object3D,
+    side: CampSide,
+    teamColor: THREE.Color,
+    stoneMat: THREE.Material,
+    accentMat: THREE.Material,
+  ): void {
+    const tower = new THREE.Group();
+    tower.position.set(2, 0, 0);
+
+    // Battered base, then the shaft.
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(4.4, 5.4, 3, 8), stoneMat);
+    base.position.y = 1.5;
+    base.castShadow = true;
+    base.receiveShadow = true;
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(3.4, 4.0, 15, 8), stoneMat);
+    shaft.position.y = 10.5;
+    shaft.castShadow = true;
+    shaft.receiveShadow = true;
+    tower.add(base, shaft);
+
+    // Corbelled gallery and crenellations.
+    const gallery = new THREE.Mesh(new THREE.CylinderGeometry(4.6, 3.7, 1.2, 8), stoneMat);
+    gallery.position.y = 18.4;
+    gallery.castShadow = true;
+    tower.add(gallery);
+
+    const merlonGeo = new THREE.BoxGeometry(1.3, 1.5, 1.0);
+    const merlons = new THREE.InstancedMesh(merlonGeo, stoneMat, 10);
+    merlons.castShadow = true;
+    const m = new THREE.Matrix4();
+    const q = new THREE.Quaternion();
+    const up = new THREE.Vector3(0, 1, 0);
+    for (let i = 0; i < 10; i++) {
+      const a = (i / 10) * Math.PI * 2;
+      q.setFromAxisAngle(up, -a);
+      m.compose(
+        new THREE.Vector3(Math.sin(a) * 4.0, 19.7, Math.cos(a) * 4.0),
+        q,
+        new THREE.Vector3(1, 1, 1),
+      );
+      merlons.setMatrixAt(i, m);
+    }
+    tower.add(merlons);
+
+    // Banded trim in team colour, so the tower is identifiable at distance.
+    for (const y of [4.4, 12]) {
+      const band = new THREE.Mesh(new THREE.CylinderGeometry(4.05, 4.15, 0.7, 8), accentMat);
+      band.position.y = y;
+      band.castShadow = true;
+      tower.add(band);
+    }
+
+    // Flagpole and the team flag itself.
+    const pole = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.14, 0.14, 11, 6),
+      new THREE.MeshStandardMaterial({ color: 0x2b2b2b, roughness: 0.6, metalness: 0.35 }),
+    );
+    pole.position.y = 25.3;
+    pole.castShadow = true;
+    tower.add(pole);
+
+    const flagTex = makeCanvasTexture((ctx, w, h) => {
+      ctx.fillStyle = `#${teamColor.getHexString()}`;
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(10, 10, w - 20, h - 20);
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      drawTeamEmblem(ctx, side, w / 2, h / 2, h * 0.72);
+    }, 384, 256);
+
+    const flag = new THREE.Mesh(
+      new THREE.PlaneGeometry(6.6, 4.4),
+      new THREE.MeshStandardMaterial({ map: flagTex, side: THREE.DoubleSide, roughness: 0.9 }),
+    );
+    flag.position.set(0, 27.4, 3.4);
+    flag.castShadow = true;
+    tower.add(flag);
+
+    built.add(tower);
+  }
+
+  /** Earthworks in front of the tower: a cut trench with a spoil berm
+   * behind it, which is what the forward gun line sits in. */
+  private buildCampTrench(built: THREE.Object3D, teamColor: THREE.Color): void {
+    const soilMat = new THREE.MeshStandardMaterial({ color: 0x4a3a26, roughness: 1 });
+
+    // The cut itself, sunk just below the surface.
+    const trench = new THREE.Mesh(new THREE.BoxGeometry(3.2, 1.4, 40), soilMat);
+    trench.position.set(11, -0.45, 0);
+    trench.receiveShadow = true;
+    built.add(trench);
+
+    // Spoil thrown up on the friendly side, with sandbags on the lip.
+    const berm = new THREE.Mesh(new THREE.BoxGeometry(2.2, 1.1, 40), soilMat);
+    berm.position.set(8.6, 0.5, 0);
+    berm.castShadow = true;
+    berm.receiveShadow = true;
+    built.add(berm);
+
+    const bagMat = new THREE.MeshStandardMaterial({
+      color: teamColor.clone().lerp(new THREE.Color(0x2b2b2b), 0.5),
+      roughness: 1,
+    });
+    const bagGeo = new THREE.BoxGeometry(1.5, 0.5, 1.8);
+    const bags = new THREE.InstancedMesh(bagGeo, bagMat, 22);
+    bags.castShadow = true;
+    const m = new THREE.Matrix4();
+    const rand = seededRandom(63);
+    for (let i = 0; i < 22; i++) {
+      m.makeTranslation(12.6 + rand() * 0.5, 0.28 + (rand() > 0.6 ? 0.5 : 0), -19 + i * 1.8);
+      bags.setMatrixAt(i, m);
+    }
+    built.add(bags);
+  }
+
+  /**
+   * The big wordmark sign. Parented to the unrotated anchor so its text
+   * always faces the camera, and set off along Z so it stands clear of the
+   * tower rather than clipping through it.
+   */
+  private addCampBanner(anchor: THREE.Object3D, side: CampSide, color: number, label: string, sub: string): void {
+    const sign = new THREE.Group();
+    sign.position.set(0, 0, 27);
+    anchor.add(sign);
+
     const poleMat = new THREE.MeshStandardMaterial({ color: 0x2b2b2b, roughness: 0.6, metalness: 0.35 });
     const poleGeo = new THREE.CylinderGeometry(0.16, 0.16, 12.4, 8);
     for (const px of [-4.6, 4.6]) {
       const pole = new THREE.Mesh(poleGeo, poleMat);
       pole.position.set(px, 6.2, 0);
       pole.castShadow = true;
-      anchor.add(pole);
+      sign.add(pole);
     }
     const crossbar = new THREE.Mesh(new THREE.BoxGeometry(9.8, 0.3, 0.3), poleMat);
     crossbar.position.set(0, 12.2, 0);
     crossbar.castShadow = true;
-    anchor.add(crossbar);
+    sign.add(crossbar);
 
     const tex = makeCanvasTexture((ctx, w, h) => {
       const hex = `#${color.toString(16).padStart(6, '0')}`;
@@ -578,14 +807,15 @@ export class Battlefield {
       ctx.lineWidth = 8;
       ctx.strokeRect(12, 12, w - 24, h - 24);
       ctx.fillStyle = 'rgba(255,255,255,0.97)';
+      drawTeamEmblem(ctx, side, 168, h / 2, h * 0.62);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.font = '800 128px system-ui, sans-serif';
-      ctx.fillText(label, w / 2, h / 2 - 18);
+      ctx.fillText(label, w / 2 + 90, h / 2 - 18);
       ctx.font = '600 40px system-ui, sans-serif';
       ctx.letterSpacing = '7px';
       ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      ctx.fillText(sub, w / 2, h / 2 + 74);
+      ctx.fillText(sub, w / 2 + 90, h / 2 + 74);
     }, 1024, 400);
 
     const banner = new THREE.Mesh(
@@ -594,7 +824,7 @@ export class Battlefield {
     );
     banner.position.set(0, 10.2, 0);
     banner.castShadow = true;
-    anchor.add(banner);
+    sign.add(banner);
   }
 
   private buildPriceTicks(): void {

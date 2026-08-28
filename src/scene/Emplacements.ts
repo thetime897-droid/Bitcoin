@@ -11,12 +11,17 @@ interface Gun {
   facing: 1 | -1;
   restX: number;
   laneZ: number;
+  /** Trench guns fire flat and fast; rear guns lob high and slow. */
+  forward: boolean;
   cooldown: number;
   /** Seconds left in the recoil-and-return animation, 0 when settled. */
   recoil: number;
 }
 
-const GUNS_PER_SIDE = 3;
+/** Guns dug in behind the camp, lobbing over their own lines. */
+const REAR_GUNS_PER_SIDE = 3;
+/** Guns in the forward trench in front of the tower, firing direct. */
+const TRENCH_GUNS_PER_SIDE = 3;
 const RECOIL_TIME = 0.42;
 const SHELL_COLOR = 0xffcf7a;
 
@@ -41,11 +46,20 @@ export class Emplacements {
         metalness: 0.3,
       });
 
-      for (let i = 0; i < GUNS_PER_SIDE; i++) {
-        // Spread the battery along Z, set back behind the camp banner.
-        const laneZ = -16 + i * 16;
-        const restX = (isBears ? -CAMP_X : CAMP_X) - facing * 5;
+      const campX = isBears ? -CAMP_X : CAMP_X;
+      // Two batteries: one dug in behind the camp lobbing over its own
+      // lines, one in the forward trench in front of the tower firing
+      // direct at whatever is coming across the line.
+      const positions: { laneZ: number; restX: number; forward: boolean }[] = [];
+      for (let i = 0; i < REAR_GUNS_PER_SIDE; i++) {
+        positions.push({ laneZ: -22 + i * 22, restX: campX - facing * 7, forward: false });
+      }
+      for (let i = 0; i < TRENCH_GUNS_PER_SIDE; i++) {
+        // Sitting on the trench line, which the camp builds at local x=11.
+        positions.push({ laneZ: -13 + i * 13, restX: campX + facing * 11, forward: true });
+      }
 
+      for (const { laneZ, restX, forward } of positions) {
         const group = new THREE.Group();
         const gun = new THREE.Mesh(geo, mat);
         gun.castShadow = true;
@@ -75,7 +89,10 @@ export class Emplacements {
           facing,
           restX,
           laneZ,
-          cooldown: 1.5 + Math.random() * 5,
+          forward,
+          // Trench guns are in direct contact and fire noticeably faster
+          // than the rear battery lobbing shells over the camp.
+          cooldown: (forward ? 1 : 1.5) + Math.random() * 5,
           recoil: 0,
         });
       }
@@ -93,7 +110,7 @@ export class Emplacements {
 
       gun.cooldown -= dt;
       if (gun.cooldown > 0) continue;
-      gun.cooldown = 3.5 + Math.random() * 6;
+      gun.cooldown = (gun.forward ? 2 : 3.5) + Math.random() * (gun.forward ? 3.5 : 6);
       gun.recoil = RECOIL_TIME;
 
       const muzzle = new THREE.Vector3(
@@ -101,14 +118,23 @@ export class Emplacements {
         gun.group.position.y + 1.5,
         gun.laneZ,
       );
-      // Drop rounds well beyond the line, into enemy-held ground.
+      // Drop rounds well beyond the line, into enemy-held ground. The
+      // forward guns shoot flatter and land closer, since they are firing
+      // directly at whatever is pressing the boundary.
+      const reach = gun.forward ? 4 + Math.random() * 18 : 8 + Math.random() * 26;
       const target = new THREE.Vector3(
-        frontlineX + gun.facing * (8 + Math.random() * 26),
+        frontlineX + gun.facing * reach,
         0.4,
         gun.laneZ + (Math.random() - 0.5) * 26,
       );
-      this.combat.fireShell(muzzle, target, SHELL_COLOR, 0.5 + Math.random() * 0.45, 20);
-      this.combat.flash(muzzle, 3.2);
+      this.combat.fireShell(
+        muzzle,
+        target,
+        SHELL_COLOR,
+        0.5 + Math.random() * 0.45,
+        gun.forward ? 7 : 20,
+      );
+      this.combat.flash(muzzle, gun.forward ? 2.6 : 3.2);
     }
   }
 }

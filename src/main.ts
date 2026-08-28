@@ -83,7 +83,13 @@ marketStore.onLiquidation((liq) => {
 
   const { position, names } = units.killUnits(side, unitsLost, battlefield.frontlineWorldX);
   const color = side === 'bears' ? 0xe0483f : 0x36c17a;
-  if (position) effects.explode(position, color, magnitude);
+  if (position) {
+    effects.explode(position, color, magnitude);
+    // Leave hulls behind. Replacements roll out of the camp on a delay, so
+    // a stretch of front that has been fought over hard stays visibly
+    // wrecked for a while afterwards.
+    effects.addWreck(position, 1 + Math.min(magnitude, 1) * 0.6);
+  }
 
   hud.pushLiquidation(liq, unitsLost);
   sfx.explosion(magnitude);

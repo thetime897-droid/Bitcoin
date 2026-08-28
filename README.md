@@ -24,6 +24,15 @@ big liquidations and price milestones to keep viewers engaged.
 - **Sell Wall / Buy Wall** — live USD depth on each side (top corners).
 - **Order book depth chart** (bottom-left) — the classic bid/ask "valley"
   chart, mirrored from the same data driving the 3D scene.
+- **Two fortified camps** — walled compounds with an HQ, hangar, vehicle
+  park, tents and corner blockhouses, fronted by a battlemented stone
+  tower flying the side's colours. Each side's emblem - a horned bull for
+  the Bulls, a bear's head for the Bears - is drawn procedurally onto both
+  the tower flag and the camp wordmark, so nothing has to be fetched at
+  runtime. A cut trench with a spoil berm runs in front of each tower,
+  holding a forward gun battery that fires flat and fast at whatever is
+  pressing the boundary, while the rear battery lobs shells high over the
+  camp.
 - **A frontline you can read at a glance** — the ground is painted with each
   side's colour: Bear red on the left, Bull green on the right, split by a
   glowing boundary. That boundary is physically pushed back and forth by
@@ -44,7 +53,10 @@ big liquidations and price milestones to keep viewers engaged.
   arrival, and anything within range of the line is firing. A post is
   measured back from the frontline rather than stored as a fixed
   coordinate, so the whole army advances or falls back as the line moves,
-  and nobody can cross onto enemy ground.
+  and nobody can cross onto enemy ground. A destroyed unit leaves a burnt
+  hull smoking on the spot and stays gone for several seconds before a
+  replacement rolls out of the camp and drives back up to the front, so
+  losses read as losses instead of blinking straight back.
 - **Artillery, armour and air support** — field guns behind each camp lob
   shells over their own infantry (with recoil and muzzle blast). Jets fly
   real attack profiles: cruising in high, nosing down onto the target,

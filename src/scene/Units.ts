@@ -36,6 +36,9 @@ interface UnitSlot {
   /** Post within the squad: how far back, and how far off to the side. */
   offX: number;
   offZ: number;
+  /** Seconds until a destroyed unit may be replaced from camp. Keeps a
+   * casualty visibly gone for a while instead of blinking straight back. */
+  respawnTimer: number;
 }
 
 /** Unit classes, ordered light to heavy. */
@@ -73,6 +76,11 @@ const LANE_SPREAD = GROUND_HALF_DEPTH * 1.7;
 const UNIT_SCALE = 1.45;
 /** Close enough to a tasked spot to count as arrived. */
 const ARRIVE_EPS = 0.6;
+
+/** How long a destroyed unit stays gone before a replacement rolls out of
+ * the camp. Long enough that losses read as losses. */
+const RESPAWN_MIN = 5;
+const RESPAWN_MAX = 13;
 
 const TRACER_BEARS = 0xffb0a4;
 const TRACER_BULLS = 0xaaffcf;
@@ -176,6 +184,7 @@ function makeSlots(n: number, campX: number, profile: KindProfile, kind: Kind): 
       // Fixed post within the squad, so a group keeps a recognisable shape.
       offX: frac(i * PHI_STEP + 0.53) * layout.depth,
       offZ: (frac(i * RANK_STEP + 0.29) - 0.5) * 2 * layout.spread,
+      respawnTimer: 0,
     };
   });
 }
@@ -278,7 +287,7 @@ class SideArmy {
 
     for (const slot of formation.slots) {
       if (activeCount === target) break;
-      if (activeCount < target && !slot.active) {
+      if (activeCount < target && !slot.active && slot.respawnTimer <= 0) {
         // Fresh units walk on from their own camp.
         slot.active = true;
         slot.deployed = false;
@@ -340,6 +349,10 @@ class SideArmy {
     for (let i = 0; i < Math.min(count, all.length); i++) {
       const slot = all[i];
       slot.active = false;
+      // Replacements come up from the camp, not straight back onto the
+      // spot where the wreck is still burning.
+      slot.respawnTimer = RESPAWN_MIN + Math.random() * (RESPAWN_MAX - RESPAWN_MIN);
+      slot.deployed = false;
       if (slot.label) {
         names.push(slot.label);
         slot.label = null;
@@ -462,6 +475,7 @@ class SideArmy {
 
     for (const slot of slots) {
       // Shrink/pop out retired units smoothly instead of an instant vanish.
+      if (!slot.active && slot.respawnTimer > 0) slot.respawnTimer -= dt;
       const targetScale = slot.active ? 1 : 0;
       slot.scale = THREE.MathUtils.damp(slot.scale, targetScale, 6, dt);
       if (slot.scale < 0.02 && !slot.active) continue;
