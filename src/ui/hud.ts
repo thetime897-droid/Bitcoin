@@ -125,6 +125,7 @@ export class Hud {
   private readonly feedListEl: HTMLDivElement;
   private readonly depthCanvas: HTMLCanvasElement;
   private readonly killfeedEl: HTMLDivElement;
+  private readonly audioPromptEl: HTMLDivElement;
   private lastPrice: number | null = null;
 
   constructor(container: HTMLElement) {
@@ -197,7 +198,21 @@ export class Hud {
     // Kill-feed style callout for large liquidations
     this.killfeedEl = el('div', 'hud__killfeed');
 
-    this.root.append(topBar, headerRow, sellWallBox, buyWallBox, depthBox, feedBox, this.killfeedEl);
+    // Browsers refuse to start audio until the page has been clicked. OBS
+    // has no such restriction, so this prompt only ever appears when
+    // someone opens the file in a normal browser - and it removes itself
+    // the moment sound is running.
+    this.audioPromptEl = el('div', 'hud__audio-prompt');
+    this.audioPromptEl.append(
+      el('span', 'hud__audio-prompt-icon', '🔇'),
+      el('span', undefined, 'Click anywhere for sound'),
+    );
+    this.audioPromptEl.hidden = true;
+
+    this.root.append(
+      topBar, headerRow, sellWallBox, buyWallBox, depthBox, feedBox,
+      this.killfeedEl, this.audioPromptEl,
+    );
 
     if (config.watermark) {
       this.root.append(el('div', 'hud__watermark', config.watermark));
@@ -211,6 +226,11 @@ export class Hud {
   private tickClock(): void {
     const now = new Date();
     this.clockEl.textContent = `UTC ${now.toISOString().slice(11, 19)}`;
+  }
+
+  /** Show or hide the "click for sound" prompt. */
+  setAudioBlocked(blocked: boolean): void {
+    this.audioPromptEl.hidden = !blocked;
   }
 
   setStatus(status: ConnectionStatus): void {

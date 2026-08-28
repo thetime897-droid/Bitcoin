@@ -92,7 +92,16 @@ big liquidations and price milestones to keep viewers engaged.
 
 All audio is **synthesized in the browser with the Web Audio API** - there
 are no audio files, so there is nothing to license and nothing that can
-trip a Content ID claim on a monetized channel. Enable it with `?sound=1`.
+trip a Content ID claim on a monetized channel.
+
+**Sound is on by default** - there is no parameter to add. Pass `?sound=0`
+if you deliberately want a silent overlay.
+
+One quirk worth knowing: a normal browser refuses to start audio until the
+page has been clicked, so opening the file by double-clicking shows a
+"Click anywhere for sound" prompt at the bottom until you click once. OBS'
+browser source has no such restriction, so the prompt never appears there
+and audio starts on its own.
 
 What you get: a low ambient battlefield bed that swells with how many units
 are engaged, explosion booms scaled to the size of the liquidation, a
@@ -108,11 +117,16 @@ window.battlefieldDebug.testSound();
 window.battlefieldDebug.audioStatus();
 ```
 
-`state` must read `running` - a `suspended` context is the usual cause of
-silence - and `peak` must rise above zero while something is firing.
-Measured in a headless Chromium launched the way OBS runs its browser
-source (no user gesture available), this reads `state: "running"` with a
-peak of about `0.30` during a blast and `0.008` on the ambient bed alone.
+`state` must read `running` - a `suspended` context means the browser is
+still waiting for a click - and `peak` must rise above zero while something
+is firing. Measured in headless Chromium:
+
+| Situation | Result |
+|---|---|
+| Opened by hand, before clicking | `state: "suspended"`, prompt shown |
+| After one click | peak `0.075`, prompt gone |
+| Launched the way OBS runs its browser source (no gesture available) | peak `0.038`, prompt never shown |
+| `?sound=0` | `state: "disabled"`, peak `0` |
 
 If OBS is silent despite `state: running`, the problem is downstream: check
 that the Browser Source is not muted in the Audio Mixer, and tick
@@ -257,7 +271,7 @@ The same build adapts to different scenes/setups without a rebuild:
 |---|---|---|
 | `symbol` | `BTCUSDT` | Any Binance spot+futures symbol, e.g. `ETHUSDT` |
 | `label` | derived from symbol | Override the display label (e.g. `ETH/USD`) |
-| `sound` | `0` | `1` enables the synthesized soundtrack: a low ambient battle bed that swells with how many units are engaged, explosion booms, milestone chimes, a riser-and-impact sting under event banners, and a klaxon on the very biggest events |
+| `sound` | `1` | On by default. `0` silences the synthesized soundtrack: a low ambient battle bed that swells with how many units are engaged, explosion booms, milestone chimes, a riser-and-impact sting under event banners, and a klaxon on the very biggest events |
 | `transparent` | `0` | `1` renders on a transparent background so you can overlay the scene on top of another source instead of using it full-screen |
 | `interact` | `0` | `1` enables mouse-drag/scroll/WASD camera control (for you to line up a shot) — leave this **off** for the actual live source so nothing can accidentally bump the camera during a multi-hour stream |
 | `cinematic` | `1` | Slow autonomous camera sway when not interacting |

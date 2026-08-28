@@ -508,3 +508,34 @@ html, body {
   color: #7fe6a8;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
+
+/* ---------- "Click for sound" prompt ---------- */
+.hud__audio-prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  background: rgba(6, 9, 14, 0.86);
+  border: 1px solid rgba(255, 209, 102, 0.55);
+  color: #ffd166;
+  backdrop-filter: blur(6px);
+  animation: audio-prompt-pulse 2.2s ease-in-out infinite;
+}
+.hud__audio-prompt[hidden] { display: none; }
+.hud__audio-prompt-icon { font-size: 16px; }
+
+@keyframes audio-prompt-pulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud__audio-prompt { animation: none; }
+}

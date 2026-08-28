@@ -168,6 +168,18 @@ chat.start();
 // only chance to get the context running.
 sfx.resume();
 
+// A normal browser still holds audio suspended until the page is clicked;
+// OBS does not. Poll the real context state and show the prompt only while
+// it is genuinely blocked, so it appears when someone opens the file by
+// hand and never on the stream itself. Any click retries.
+const wakeAudio = () => sfx.resume();
+window.addEventListener('pointerdown', wakeAudio);
+window.addEventListener('keydown', wakeAudio);
+window.setInterval(() => {
+  const { enabled, state } = sfx.status;
+  hud.setAudioBlocked(enabled && state !== 'running');
+}, 700);
+
 window.addEventListener('beforeunload', () => {
   feed.stop();
   chat.stop();

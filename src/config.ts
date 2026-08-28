@@ -3,6 +3,9 @@ const params = new URLSearchParams(window.location.search);
 function bool(name: string, fallback: boolean): boolean {
   const v = params.get(name);
   if (v === null) return fallback;
+  // A bare flag (`?sound`) reads as an empty value; treat it as "on", which
+  // is what anyone typing it expects.
+  if (v === '') return true;
   return v === '1' || v === 'true' || v === 'yes';
 }
 
@@ -21,9 +24,10 @@ export const config = {
   interact: bool('interact', false),
   /** Slow autonomous cinematic camera drift when not interacting. */
   cinematic: bool('cinematic', true),
-  /** Synthesized sound effects (explosions, milestones). Muted by default -
-   * enable per-source in OBS via "Control audio via OBS" and this flag. */
-  sound: bool('sound', false),
+  /** Synthesized sound effects. On by default: a silent stream is the
+   * surprising outcome, not a noisy one, and OBS can mute the source
+   * anyway. Pass `?sound=0` for a deliberately silent overlay. */
+  sound: bool('sound', true),
   /** Subtle day/night tint cycle keyed to real UTC time. */
   dayNight: bool('daynight', false),
   /** Streamer handle / watermark text shown bottom-right. */
