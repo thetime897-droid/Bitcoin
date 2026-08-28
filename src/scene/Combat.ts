@@ -16,6 +16,10 @@ interface Projectile {
   impact: number;
   /** Sprite size for a cheap spark on landing; 0 = none. */
   endFlash: number;
+  /** True for something released rather than launched. Horizontal travel
+   * stays linear while the drop accelerates, which is what a free-falling
+   * bomb actually does - a symmetric arc reads as a lobbed shell. */
+  fallCurve: boolean;
 }
 
 interface Flash {
@@ -59,6 +63,7 @@ function makeSlots(n: number): Projectile[] {
     thickness: 1,
     impact: 0,
     endFlash: 0,
+    fallCurve: false,
   }));
 }
 
@@ -154,11 +159,23 @@ export class Combat {
     // dozens of shooters firing continuously would otherwise drain the
     // particle pool that liquidation blasts depend on.
     p.endFlash = heavy ? 2.4 : 0.9;
+    p.fallCurve = false;
     this.flash(from, heavy ? 1.5 : 0.7);
   }
 
-  /** High-arcing artillery shell or air-dropped bomb that detonates on impact. */
-  fireShell(from: THREE.Vector3, to: THREE.Vector3, color: number, magnitude: number, arc = 16): void {
+  /**
+   * High-arcing artillery shell, or - with `fall` set - a bomb released
+   * from an aircraft, which keeps the launcher's forward motion while the
+   * drop accelerates under gravity.
+   */
+  fireShell(
+    from: THREE.Vector3,
+    to: THREE.Vector3,
+    color: number,
+    magnitude: number,
+    arc = 16,
+    fall = false,
+  ): void {
     const p = this.shells[this.shellCursor];
     this.shellCursor = (this.shellCursor + 1) % SHELL_SLOTS;
     p.active = true;
@@ -173,6 +190,7 @@ export class Combat {
     p.thickness = 1 + magnitude * 0.5;
     p.impact = magnitude;
     p.endFlash = 0;
+    p.fallCurve = fall;
   }
 
   /** Bright, very short-lived burst - muzzle blast, rotor gun flash. */
@@ -189,6 +207,16 @@ export class Combat {
 
   /** Point along the ballistic path at progress `t` (0..1). */
   private samplePath(p: Projectile, t: number, out: THREE.Vector3): THREE.Vector3 {
+    if (p.fallCurve) {
+      // Horizontal at a constant rate, vertical proportional to t squared -
+      // free fall, so the bomb pitches over steeply as it nears the ground.
+      out.set(
+        THREE.MathUtils.lerp(p.from.x, p.to.x, t),
+        THREE.MathUtils.lerp(p.from.y, p.to.y, t * t),
+        THREE.MathUtils.lerp(p.from.z, p.to.z, t),
+      );
+      return out;
+    }
     out.lerpVectors(p.from, p.to, t);
     out.y += p.arc * 4 * t * (1 - t);
     return out;

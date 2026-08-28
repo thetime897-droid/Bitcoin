@@ -9,8 +9,9 @@ line with tracers, artillery and air support, and take casualties in real
 time whenever a leveraged position gets liquidated.
 
 It's inspired by [newhedge.io's Bitcoin Battlefield](https://newhedge.io/bitcoin/battlefield),
-rebuilt from scratch and tuned specifically for streaming: a fully
-autonomous camera (no interaction required), synthesized sound effects (no
+rebuilt from scratch and tuned specifically for streaming: a slow
+autonomous camera that holds a steady side-on framing (no interaction
+required), synthesized sound effects (no
 licensing headaches), automatic WebSocket reconnects so a dropped
 connection never freezes the stream, and a "kill-feed" style callout for
 big liquidations and price milestones to keep viewers engaged.
@@ -45,9 +46,15 @@ big liquidations and price milestones to keep viewers engaged.
   coordinate, so the whole army advances or falls back as the line moves,
   and nobody can cross onto enemy ground.
 - **Artillery, armour and air support** — field guns behind each camp lob
-  shells over their own infantry (with recoil and muzzle blast), jets make
-  bombing runs the length of the map, and gunships hold station behind the
-  line and strafe across it.
+  shells over their own infantry (with recoil and muzzle blast). Jets fly
+  real attack profiles: cruising in high, nosing down onto the target,
+  releasing a stick of three to five bombs across the line, then climbing
+  out with the burner lit. Their pitch and bank are derived from actual
+  climb and turn rate rather than a canned animation. Bombs are released
+  rather than launched - they keep the jet's forward speed while the drop
+  accelerates, so they pitch over steeply and land well ahead of the drop
+  point. Gunships work the line from behind their own front, shifting
+  station constantly and tipping into each move the way a helicopter does.
 - **Live liquidations** — every forced long/short liquidation on Binance
   Futures triggers an explosion at the front line: a fireball that cools
   from white through orange to embers, tumbling debris that bounces once

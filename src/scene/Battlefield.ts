@@ -95,6 +95,8 @@ export class Battlefield {
   private controls: OrbitControls | null = null;
   private composer: EffectComposer | null = null;
   private cinematicT = 0;
+  /** Damped aim point, so the camera eases toward the shifting line. */
+  private lookAtX = 0;
   private disposed = false;
   private readonly priceLabels: { mesh: THREE.Mesh; canvas: HTMLCanvasElement; texture: THREE.CanvasTexture }[] = [];
 
@@ -652,12 +654,23 @@ export class Battlefield {
     } else if (config.cinematic) {
       this.cinematicT += dt;
       const t = this.cinematicT;
-      // Kept deliberately tight: the camera must never swing far enough
-      // back to show past the near edge of the terrain slab.
-      const radius = 52 + Math.sin(t * 0.04) * 6;
-      const angle = Math.sin(t * 0.023) * 0.34;
-      this.camera.position.set(Math.sin(angle) * radius, 37 + Math.sin(t * 0.065) * 3, Math.cos(angle) * radius + 32);
-      this.camera.lookAt(this.frontlineX * 0.25, 3, -4);
+
+      // A slow, hand-held-feeling side view. Three sweeps with deliberately
+      // unrelated periods (roughly 7.5, 9.5 and 6 minutes) so the motion
+      // never visibly repeats and never reverses sharply enough to read as
+      // a mechanical oscillation. Amplitudes stay small: the camera must
+      // never swing far enough back to show past the near edge of the
+      // terrain slab, and the framing should stay recognisably the same
+      // shot for a viewer who looks away and comes back.
+      const angle = Math.sin(t * 0.0140) * 0.30;
+      const radius = 54 + Math.sin(t * 0.0110) * 6;
+      const height = 36.5 + Math.sin(t * 0.0175) * 2.5;
+      this.camera.position.set(Math.sin(angle) * radius, height, Math.cos(angle) * radius + 32);
+
+      // Drift the aim toward whichever side is winning, damped hard so the
+      // camera eases across rather than snapping when the line jumps.
+      this.lookAtX = THREE.MathUtils.damp(this.lookAtX, this.frontlineX * 0.3, 0.35, dt);
+      this.camera.lookAt(this.lookAtX, 3, -4);
     }
     return dt;
   }
