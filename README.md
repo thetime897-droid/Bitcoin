@@ -29,18 +29,21 @@ big liquidations and price milestones to keep viewers engaged.
   market pressure, so whoever is winning is visible without reading a
   single number.
 - **Bulls vs. Bears armies** — unit count scales with order-book depth on
-  each side - well over a hundred per army at full depth. Infantry, APCs
-  and tanks walk out from their camp and then move around their own
-  territory entirely under their own steam. Each one runs its own clock
-  and switches between three stances: pushing right up to the boundary,
-  holding the firing line a short way back, or pulling into the rear.
-  Because those timers are independent and every unit has its own speed,
-  the front is always churning - some advancing while others fall back -
-  rather than moving as one wave. Units turn to face where they're going
-  and back toward the enemy on arrival, and anything within range of the
-  line is firing. A unit's post is measured back from the frontline rather
-  than stored as a fixed coordinate, so the whole army advances or falls
-  back as the line moves, and nobody can cross onto enemy ground.
+  each side - well over a hundred per army at full depth. Rather than each
+  class forming its own tidy rank, units are handed out round-robin into
+  sixteen combined-arms squads, so a group is riflemen up front with an
+  APC and usually a tank supporting from behind. Squads move and fight as
+  groups, each on its own clock, switching between pushing right up to the
+  boundary, holding the firing line, and pulling into the rear - which is
+  what produces clumps and gaps along the front instead of an evenly
+  spaced line. Within a squad every member has its own speed, so a group
+  stretches out on the move and bunches up again when it arrives, and
+  around one unit in six fights alone to fill the gaps between groups.
+  Units turn to face where they're going and back toward the enemy on
+  arrival, and anything within range of the line is firing. A post is
+  measured back from the frontline rather than stored as a fixed
+  coordinate, so the whole army advances or falls back as the line moves,
+  and nobody can cross onto enemy ground.
 - **Artillery, armour and air support** — field guns behind each camp lob
   shells over their own infantry (with recoil and muzzle blast), jets make
   bombing runs the length of the map, and gunships hold station behind the

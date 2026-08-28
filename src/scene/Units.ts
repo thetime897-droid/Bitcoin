@@ -31,6 +31,11 @@ interface UnitSlot {
   stanceTimer: number;
   /** Per-unit speed multiplier, so nobody moves in lockstep. */
   speedMul: number;
+  /** Index into the army's squads, or -1 for a unit that fights alone. */
+  squad: number;
+  /** Post within the squad: how far back, and how far off to the side. */
+  offX: number;
+  offZ: number;
 }
 
 /** Unit classes, ordered light to heavy. */
@@ -117,24 +122,62 @@ const PROFILES: Record<Kind, KindProfile> = {
   },
 };
 
-function makeSlots(n: number, campX: number, profile: KindProfile): UnitSlot[] {
-  return Array.from({ length: n }, (_, i) => ({
-    active: false,
-    posX: campX,
-    posZ: (frac(i * PHI_STEP) - 0.5) * LANE_SPREAD,
-    standoff: MIN_STANDOFF + frac(i * RANK_STEP) * profile.rankDepth,
-    laneZ: (frac(i * PHI_STEP) - 0.5) * LANE_SPREAD,
-    dwell: Math.random() * 3,
-    deployed: false,
-    yaw: 0,
-    seed: Math.random() * 1000,
-    scale: 1,
-    fireCooldown: Math.random() * 2,
-    label: null,
-    stance: Stance.Hold,
-    stanceTimer: Math.random() * 6,
-    speedMul: 0.78 + frac(i * PHI_STEP + 0.21) * 0.55,
-  }));
+/**
+ * How many combined-arms groups each army fields. Units are handed out
+ * round-robin, so every squad ends up with a mix of riflemen, an APC and
+ * usually a tank rather than each class forming its own tidy rank.
+ */
+const SQUAD_COUNT = 16;
+/** Share of units that fight alone instead of in a squad, so the gaps
+ * between groups aren't completely empty. */
+const LONE_WOLF_SHARE = 0.16;
+
+/** A group that moves and fights together. Members hold a loose formation
+ * around it, each at their own speed, so the group stretches and bunches
+ * as it moves instead of sliding as one rigid block. */
+interface Squad {
+  stance: Stance;
+  stanceTimer: number;
+  standoff: number;
+  laneZ: number;
+}
+
+/** Where each class sits inside its squad: riflemen up front, vehicles
+ * supporting from behind and off to the flanks. */
+const SQUAD_LAYOUT: Record<Kind, { depth: number; spread: number }> = {
+  [Kind.Infantry]: { depth: 4.5, spread: 5.5 },
+  [Kind.Apc]: { depth: 7, spread: 7 },
+  [Kind.Tank]: { depth: 8.5, spread: 8 },
+};
+
+function makeSlots(n: number, campX: number, profile: KindProfile, kind: Kind): UnitSlot[] {
+  const layout = SQUAD_LAYOUT[kind];
+  return Array.from({ length: n }, (_, i) => {
+    // Round-robin over squads, so activating the first N slots spreads
+    // across every group instead of filling squad 0 to capacity first.
+    const lone = frac(i * RANK_STEP + 0.11) < LONE_WOLF_SHARE;
+    return {
+      active: false,
+      posX: campX,
+      posZ: (frac(i * PHI_STEP) - 0.5) * LANE_SPREAD,
+      standoff: MIN_STANDOFF + frac(i * RANK_STEP) * profile.rankDepth,
+      laneZ: (frac(i * PHI_STEP) - 0.5) * LANE_SPREAD,
+      dwell: Math.random() * 3,
+      deployed: false,
+      yaw: 0,
+      seed: Math.random() * 1000,
+      scale: 1,
+      fireCooldown: Math.random() * 2,
+      label: null,
+      stance: Stance.Hold,
+      stanceTimer: Math.random() * 6,
+      speedMul: 0.78 + frac(i * PHI_STEP + 0.21) * 0.55,
+      squad: lone ? -1 : i % SQUAD_COUNT,
+      // Fixed post within the squad, so a group keeps a recognisable shape.
+      offX: frac(i * PHI_STEP + 0.53) * layout.depth,
+      offZ: (frac(i * RANK_STEP + 0.29) - 0.5) * 2 * layout.spread,
+    };
+  });
 }
 
 interface Formation {
@@ -146,6 +189,7 @@ interface Formation {
 
 class SideArmy {
   private readonly formations: Formation[] = [];
+  private readonly squads: Squad[] = [];
   private readonly matrix = new THREE.Matrix4();
   private readonly quat = new THREE.Quaternion();
   private readonly upAxis = new THREE.Vector3(0, 1, 0);
@@ -200,9 +244,19 @@ class SideArmy {
       scene.add(mesh);
       this.formations.push({
         mesh,
-        slots: makeSlots(spec.cap, campX, profile),
+        slots: makeSlots(spec.cap, campX, profile, spec.kind),
         kind: spec.kind,
         profile,
+      });
+    }
+
+    // Squads start spread along the line, each on its own stance clock.
+    for (let i = 0; i < SQUAD_COUNT; i++) {
+      this.squads.push({
+        stance: Stance.Hold,
+        stanceTimer: Math.random() * 8,
+        standoff: MIN_STANDOFF + Math.random() * 10,
+        laneZ: (frac(i * PHI_STEP) - 0.5) * LANE_SPREAD,
       });
     }
   }
@@ -317,16 +371,40 @@ class SideArmy {
 
   update(dt: number, frontlineX: number, combat: Combat, nametags: Nametags | null): void {
     this.time += dt;
+    this.updateSquads(dt, frontlineX);
     for (const formation of this.formations) {
       this.writeFormation(formation, dt, frontlineX, combat, nametags);
     }
   }
 
-  /**
-   * Pick a fresh spot for a deployed unit: a new depth behind the line and
-   * a short shuffle along it. Movement stays inside its own territory
-   * because the tasked X is always measured back from the frontline.
-   */
+  /** Squads move as groups on their own clocks, which is what produces
+   * clumps and gaps along the front rather than an evenly spaced rank. */
+  private updateSquads(dt: number, frontlineX: number): void {
+    const half = LANE_SPREAD / 2;
+    for (const squad of this.squads) {
+      squad.stanceTimer -= dt;
+      if (squad.stanceTimer > 0) continue;
+
+      const r = Math.random();
+      if (r < 0.4) {
+        squad.stance = Stance.Assault;
+        squad.stanceTimer = 5 + Math.random() * 8;
+        squad.standoff = MIN_STANDOFF + Math.random() * 3;
+      } else if (r < 0.74) {
+        squad.stance = Stance.Hold;
+        squad.stanceTimer = 7 + Math.random() * 11;
+        squad.standoff = 3 + Math.random() * 9;
+      } else {
+        squad.stance = Stance.Reserve;
+        squad.stanceTimer = 6 + Math.random() * 10;
+        const zone = Math.max(12, Math.abs(frontlineX - this.campX) * ZONE_LIMIT);
+        squad.standoff = 12 + Math.random() * Math.max(5, zone - 12);
+      }
+      // Groups also slide along the front, so the gaps between them move.
+      squad.laneZ = THREE.MathUtils.clamp(squad.laneZ + (Math.random() - 0.5) * 30, -half, half);
+    }
+  }
+
   /** Roll a new stance. Called on its own timer per unit, so pushes and
    * pull-backs happen independently rather than as a synchronised wave. */
   private rollStance(slot: UnitSlot, profile: KindProfile): void {
@@ -391,20 +469,35 @@ class SideArmy {
       let moving = false;
 
       if (slot.active) {
-        // Stance runs on its own clock and can flip mid-move, so a unit may
-        // turn around and push forward before it ever reaches the rear spot
-        // it was heading for.
-        slot.stanceTimer -= dt;
-        if (slot.stanceTimer <= 0) {
-          this.rollStance(slot, profile);
-          this.retask(slot, profile, frontlineX);
+        let wantStandoff: number;
+        let wantZ: number;
+
+        if (slot.squad >= 0) {
+          // Hold a post inside the squad. The squad's own clock decides
+          // when the whole group pushes up or pulls back; each member
+          // covers the ground at its own speed, so the group stretches out
+          // on the move and bunches up again when it arrives.
+          const squad = this.squads[slot.squad];
+          wantStandoff = squad.standoff + slot.offX;
+          wantZ = squad.laneZ + slot.offZ;
+        } else {
+          // Fighting alone: run the per-unit stance clock instead. It can
+          // flip mid-move, so a lone unit may turn around and push forward
+          // before it ever reaches the rear spot it set out for.
+          slot.stanceTimer -= dt;
+          if (slot.stanceTimer <= 0) {
+            this.rollStance(slot, profile);
+            this.retask(slot, profile, frontlineX);
+          }
+          wantStandoff = slot.standoff;
+          wantZ = slot.laneZ;
         }
 
-        // Tasked position is always measured back from the line, so the
+        // The tasked position is always measured back from the line, so the
         // whole army follows the front as it is pushed around.
-        const wantX = frontlineX - this.facing * slot.standoff;
+        const wantX = frontlineX - this.facing * wantStandoff;
         const dx = wantX - slot.posX;
-        const dz = slot.laneZ - slot.posZ;
+        const dz = wantZ - slot.posZ;
         const dist = Math.hypot(dx, dz);
 
         if (dist > ARRIVE_EPS) {
@@ -418,11 +511,15 @@ class SideArmy {
             slot.deployed = true;
           }
         } else {
-          // Standing in position: face the enemy and wait out the dwell.
+          // In position: face the enemy. A squad member then simply waits
+          // for its group's next move; a lone unit runs its own dwell and
+          // picks a fresh spot when it expires.
           slot.yaw = this.approachAngle(slot.yaw, enemyYaw, dt * 2.4);
           slot.deployed = true;
-          slot.dwell -= dt;
-          if (slot.dwell <= 0) this.retask(slot, profile, frontlineX);
+          if (slot.squad < 0) {
+            slot.dwell -= dt;
+            if (slot.dwell <= 0) this.retask(slot, profile, frontlineX);
+          }
         }
       }
 
