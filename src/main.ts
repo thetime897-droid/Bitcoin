@@ -28,8 +28,18 @@ const effects = new Effects(battlefield.scene);
 // Shells and bombs detonate through the same particle system as
 // liquidations, but with the camera shake dialled right down - background
 // fire should light up the field without making the shot unwatchable.
+// Impacts land far more often than they need to be heard - artillery and
+// bomb sticks together run well over one a second - so the thump is
+// throttled. A steady punctuation reads as a battlefield; one boom per
+// shell reads as clipping.
+let lastBoom = 0;
 const combat = new Combat(battlefield.scene, (position, color, magnitude) => {
   effects.explode(position, color, magnitude, 0.16);
+  const now = performance.now();
+  if (now - lastBoom > 620) {
+    lastBoom = now;
+    sfx.distantBoom(Math.min(1, magnitude));
+  }
 });
 
 const nametags = new Nametags(battlefield.scene);

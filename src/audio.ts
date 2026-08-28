@@ -17,6 +17,7 @@ class SfxEngine {
   private ambientTarget = 0;
   private analyser: AnalyserNode | null = null;
   private meterBuffer: Float32Array<ArrayBuffer> | null = null;
+  private gunTimer: number | null = null;
 
   /**
    * Diagnostics for the one thing that cannot be seen on screen. Returns
@@ -67,6 +68,7 @@ class SfxEngine {
       this.analyser.connect(this.ctx.destination);
 
       this.startAmbience();
+      this.scheduleGunfire();
 
       // Browsers suspend audio until a gesture. In OBS there is never one,
       // so also retry on a timer - the source usually starts unmuted there.
@@ -119,12 +121,122 @@ class SfxEngine {
     );
   }
 
-  /** Per-voice gain routed into the master bus. */
-  private bus(ctx: AudioContext, level: number): GainNode {
+  /** Per-voice gain routed into the master bus, optionally panned. Spread
+   * matters a lot here: a firefight panned across the stereo field reads as
+   * a battlefield, while the same shots dead-centre read as one gun. */
+  private bus(ctx: AudioContext, level: number, pan = 0): GainNode {
     const gain = ctx.createGain();
     gain.gain.value = level;
-    gain.connect(this.master ?? ctx.destination);
+    if (pan !== 0 && typeof ctx.createStereoPanner === 'function') {
+      const panner = ctx.createStereoPanner();
+      panner.pan.value = Math.max(-1, Math.min(1, pan));
+      gain.connect(panner);
+      panner.connect(this.master ?? ctx.destination);
+    } else {
+      gain.connect(this.master ?? ctx.destination);
+    }
     return gain;
+  }
+
+  /**
+   * One rifle crack. Small-arms fire is far too dense to play per bullet -
+   * well over a hundred shooters are firing at once - so these are
+   * scheduled at a rate derived from how many units are engaged, with the
+   * pitch, distance and stereo position randomised per shot. That reads as
+   * a firefight; one sample per trigger pull would read as a jackhammer.
+   */
+  private gunshot(): void {
+    const ctx = this.ctx;
+    if (!ctx || !this.noiseBuffer) return;
+    const now = ctx.currentTime;
+    // Most shots are "further away": quieter, duller, longer tail.
+    const near = Math.random();
+    const level = 0.018 + near * 0.05;
+    const out = this.bus(ctx, level, (Math.random() - 0.5) * 1.6);
+
+    const crack = ctx.createBufferSource();
+    crack.buffer = this.noiseBuffer;
+    crack.playbackRate.value = 0.8 + Math.random() * 0.6;
+    const band = ctx.createBiquadFilter();
+    band.type = 'bandpass';
+    band.frequency.value = 900 + near * 2200 + Math.random() * 600;
+    band.Q.value = 0.9;
+    const crackGain = ctx.createGain();
+    const decay = 0.045 + (1 - near) * 0.09;
+    crackGain.gain.setValueAtTime(1, now);
+    crackGain.gain.exponentialRampToValueAtTime(0.001, now + decay);
+    crack.connect(band).connect(crackGain).connect(out);
+    crack.start(now);
+    crack.stop(now + decay + 0.02);
+
+    // A little body under the crack so it doesn't sound like static.
+    const thump = ctx.createOscillator();
+    thump.type = 'sine';
+    thump.frequency.setValueAtTime(150 + Math.random() * 70, now);
+    thump.frequency.exponentialRampToValueAtTime(60, now + 0.07);
+    const thumpGain = ctx.createGain();
+    thumpGain.gain.setValueAtTime(0.5, now);
+    thumpGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+    thump.connect(thumpGain).connect(out);
+    thump.start(now);
+    thump.stop(now + 0.1);
+  }
+
+  /** Keeps small-arms fire going at a density that tracks the battle. */
+  private scheduleGunfire(): void {
+    if (!this.ctx) return;
+    // Roughly 2 shots/sec on a quiet field up to ~18 when both armies are
+    // at full strength. Intervals are jittered hard so the fire never
+    // falls into an audible rhythm.
+    const rate = 2 + this.ambientTarget * 16;
+    const delay = (1 / rate) * (0.35 + Math.random() * 1.5);
+    if (this.gunTimer !== null) window.clearTimeout(this.gunTimer);
+    this.gunTimer = window.setTimeout(() => {
+      this.gunshot();
+      // Bursts: a shooter usually squeezes off two or three.
+      if (Math.random() < 0.45) {
+        window.setTimeout(() => this.gunshot(), 70 + Math.random() * 90);
+        if (Math.random() < 0.5) window.setTimeout(() => this.gunshot(), 160 + Math.random() * 120);
+      }
+      this.scheduleGunfire();
+    }, delay * 1000);
+  }
+
+  /**
+   * Muffled thud for artillery and bombs landing across the field. Much
+   * softer and duller than `explosion`, which is reserved for liquidations -
+   * background shelling should not compete with the events that matter.
+   */
+  distantBoom(magnitude = 0.6): void {
+    const ctx = this.ensureContext();
+    if (!ctx || !this.noiseBuffer) return;
+    const m = Math.min(1, Math.max(0.3, magnitude));
+    const now = ctx.currentTime;
+    const out = this.bus(ctx, 0.075 * m, (Math.random() - 0.5) * 1.4);
+
+    const sub = ctx.createOscillator();
+    sub.type = 'sine';
+    sub.frequency.setValueAtTime(85 * m + 30, now);
+    sub.frequency.exponentialRampToValueAtTime(32, now + 0.3);
+    const subGain = ctx.createGain();
+    subGain.gain.setValueAtTime(1, now);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+    sub.connect(subGain).connect(out);
+    sub.start(now);
+    sub.stop(now + 0.5);
+
+    const rumble = ctx.createBufferSource();
+    rumble.buffer = this.noiseBuffer;
+    rumble.playbackRate.value = 0.5;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 420;
+    const rumbleGain = ctx.createGain();
+    rumbleGain.gain.setValueAtTime(0.6, now);
+    rumbleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    rumble.connect(lp).connect(rumbleGain).connect(out);
+    rumble.start(now);
+    rumble.stop(now + 0.45);
   }
 
   /** Deep boom plus a noise crack, scaled by liquidation magnitude (0..1+). */
