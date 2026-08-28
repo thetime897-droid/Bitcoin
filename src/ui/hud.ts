@@ -36,6 +36,75 @@ const STATUS_LABEL: Record<ConnectionStatus, string> = {
 const MAX_FEED_ITEMS = 14;
 
 /**
+ * Channel branding beside the title. Uses `?logo=` when the streamer points
+ * at their own image, and otherwise draws a panda mark inline so the badge
+ * works with nothing to host or fetch.
+ */
+function buildChannelBadge(): HTMLElement {
+  const badge = el('div', 'brand-badge');
+
+  if (config.logoUrl) {
+    const img = el('img', 'brand-badge__img');
+    img.src = config.logoUrl;
+    img.alt = '';
+    // If the file is missing or blocked, fall back to the drawn mark rather
+    // than leaving a broken-image icon on stream.
+    img.onerror = () => {
+      img.remove();
+      badge.prepend(buildPandaMark());
+    };
+    badge.append(img);
+  } else {
+    badge.append(buildPandaMark());
+  }
+
+  badge.append(el('span', 'brand-badge__text', config.brand));
+  return badge;
+}
+
+/** Panda mark drawn as inline SVG: nothing to load, scales cleanly. */
+function buildPandaMark(): SVGSVGElement {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 48 48');
+  svg.setAttribute('class', 'brand-badge__mark');
+
+  const add = (tag: string, attrs: Record<string, string>) => {
+    const node = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+    svg.appendChild(node);
+    return node;
+  };
+
+  add('circle', { cx: '24', cy: '24', r: '23', fill: '#12351f' });
+  // Ears.
+  add('circle', { cx: '10', cy: '11', r: '6.4', fill: '#14161a' });
+  add('circle', { cx: '38', cy: '11', r: '6.4', fill: '#14161a' });
+  // Face.
+  add('circle', { cx: '24', cy: '25', r: '15', fill: '#f4f2ee' });
+  // Eye patches, angled inward the way the logo's are.
+  add('ellipse', { cx: '17.5', cy: '22', rx: '5.2', ry: '6', fill: '#14161a', transform: 'rotate(-14 17.5 22)' });
+  add('ellipse', { cx: '30.5', cy: '22', rx: '5.2', ry: '6', fill: '#14161a', transform: 'rotate(14 30.5 22)' });
+  add('circle', { cx: '18.4', cy: '22.4', r: '2', fill: '#ffffff' });
+  add('circle', { cx: '29.6', cy: '22.4', r: '2', fill: '#ffffff' });
+  // Snout.
+  add('ellipse', { cx: '24', cy: '30', rx: '2.6', ry: '1.9', fill: '#14161a' });
+  // The gold coin it's holding.
+  add('circle', { cx: '35', cy: '36', r: '7.5', fill: '#e8a723', stroke: '#a86f0c', 'stroke-width': '1.6' });
+  const btc = document.createElementNS(NS, 'text');
+  btc.setAttribute('x', '35');
+  btc.setAttribute('y', '39.6');
+  btc.setAttribute('text-anchor', 'middle');
+  btc.setAttribute('font-size', '9');
+  btc.setAttribute('font-weight', '700');
+  btc.setAttribute('fill', '#7a4e05');
+  btc.textContent = '₿';
+  svg.appendChild(btc);
+
+  return svg;
+}
+
+/**
  * Builds and mutates the DOM overlay drawn on top of the WebGL canvas.
  * Everything here is pure presentation - it only reacts to data pushed in
  * from main.ts, never touches the network or the scene directly.
@@ -66,6 +135,7 @@ export class Hud {
     const topBar = el('div', 'hud__topbar');
     const brand = el('div', 'hud__brand');
     brand.append(el('span', 'hud__brand-icon', '₿'), el('span', 'hud__brand-text', 'Bitcoin Battlefield'));
+    if (config.brand) brand.append(buildChannelBadge());
     const status = el('div', 'hud__status');
     this.statusDotEl = el('div', 'hud__status-dot');
     this.statusTextEl = el('div', 'hud__status-text', 'CONNECTING');

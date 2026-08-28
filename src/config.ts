@@ -28,6 +28,11 @@ export const config = {
   dayNight: bool('daynight', false),
   /** Streamer handle / watermark text shown bottom-right. */
   watermark: params.get('watermark') ?? '',
+  /** Channel branding shown next to the title. Defaults to the drawn panda
+   * mark; `logo` swaps in an image (any URL the page can load, including a
+   * local file:// path next to the HTML). */
+  brand: params.get('brand') ?? 'Panda_investiert',
+  logoUrl: params.get('logo') ?? '',
   /** Target render FPS cap (OBS captures whatever it wants; capping keeps
    * CPU/GPU headroom free for the encoder during long unattended runs). */
   fpsCap: Number(params.get('fps') ?? '60'),

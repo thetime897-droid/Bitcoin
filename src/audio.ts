@@ -15,6 +15,33 @@ class SfxEngine {
   private noiseBuffer: AudioBuffer | null = null;
   private ambientGain: GainNode | null = null;
   private ambientTarget = 0;
+  private analyser: AnalyserNode | null = null;
+  private meterBuffer: Float32Array<ArrayBuffer> | null = null;
+
+  /**
+   * Diagnostics for the one thing that cannot be seen on screen. Returns
+   * whether audio is enabled, whether the context is actually running (a
+   * suspended context is the usual reason for silence), and the current
+   * peak output level.
+   */
+  get status(): { enabled: boolean; state: string; peak: number } {
+    if (!config.sound) return { enabled: false, state: 'disabled', peak: 0 };
+    if (!this.ctx) return { enabled: true, state: 'not-started', peak: 0 };
+    let peak = 0;
+    if (this.analyser && this.meterBuffer) {
+      this.analyser.getFloatTimeDomainData(this.meterBuffer);
+      for (let i = 0; i < this.meterBuffer.length; i++) {
+        const v = Math.abs(this.meterBuffer[i]);
+        if (v > peak) peak = v;
+      }
+    }
+    return { enabled: true, state: this.ctx.state, peak };
+  }
+
+  /** Force the context awake. Safe to call repeatedly. */
+  resume(): void {
+    this.ensureContext();
+  }
 
   private ensureContext(): AudioContext | null {
     if (!config.sound) return null;
@@ -27,7 +54,17 @@ class SfxEngine {
 
       this.master = this.ctx.createGain();
       this.master.gain.value = 0.85;
-      this.master.connect(this.ctx.destination);
+
+      // Everything passes through an analyser on its way out, purely so the
+      // output level can be read back. Browsers give no way to confirm that
+      // sound actually reached the speakers, but a non-zero peak here proves
+      // the graph is producing samples - which is the part that can silently
+      // fail (a suspended context, a muted OBS source).
+      this.analyser = this.ctx.createAnalyser();
+      this.analyser.fftSize = 1024;
+      this.meterBuffer = new Float32Array(this.analyser.fftSize);
+      this.master.connect(this.analyser);
+      this.analyser.connect(this.ctx.destination);
 
       this.startAmbience();
 

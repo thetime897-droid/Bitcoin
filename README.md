@@ -88,6 +88,37 @@ big liquidations and price milestones to keep viewers engaged.
   rate-limited: fire these on every liquidation and viewers stop seeing
   them.
 
+## Sound
+
+All audio is **synthesized in the browser with the Web Audio API** - there
+are no audio files, so there is nothing to license and nothing that can
+trip a Content ID claim on a monetized channel. Enable it with `?sound=1`.
+
+What you get: a low ambient battlefield bed that swells with how many units
+are engaged, explosion booms scaled to the size of the liquidation, a
+riser-and-impact sting under event banners, a klaxon on the biggest events,
+milestone chimes and a soft blip on whale prints.
+
+**Verifying it works.** Browsers give no way to confirm sound reached the
+speakers, so the engine taps its own output. Open the page with
+`?sound=1&debug=1` and run in the console:
+
+```js
+window.battlefieldDebug.testSound();
+window.battlefieldDebug.audioStatus();
+```
+
+`state` must read `running` - a `suspended` context is the usual cause of
+silence - and `peak` must rise above zero while something is firing.
+Measured in a headless Chromium launched the way OBS runs its browser
+source (no user gesture available), this reads `state: "running"` with a
+peak of about `0.30` during a blast and `0.008` on the ambient bed alone.
+
+If OBS is silent despite `state: running`, the problem is downstream: check
+that the Browser Source is not muted in the Audio Mixer, and tick
+**"Control audio via OBS"** in the source properties so it is routed
+through the mixer at all.
+
 ## Enlisting chat viewers
 
 Viewers who write in chat get their own soldier or vehicle, with their
@@ -232,6 +263,8 @@ The same build adapts to different scenes/setups without a rebuild:
 | `cinematic` | `1` | Slow autonomous camera sway when not interacting |
 | `daynight` | `0` | `1` adds a subtle day/night tint cycle keyed to real UTC time |
 | `watermark` | *(none)* | Text shown bottom-right, e.g. your channel handle |
+| `brand` | `Panda_investiert` | Channel name in the badge beside the title. Empty string hides the badge |
+| `logo` | *(drawn panda)* | Image for the badge instead of the built-in drawn mark. Any URL the page can load, including a `file:///` path to a PNG sitting next to the HTML. Falls back to the drawn mark if it can't load |
 | `quality` | `high` | `low` / `medium` / `high` — lower reduces tree/shadow/aircraft counts if you're CPU/GPU constrained while also running an encoder |
 | `scale` | `1` | Supersampling factor. OBS browser sources report a device pixel ratio of 1, so `scale=1.5` is the only way to render *above* the capture resolution and downsample for noticeably cleaner edges. Costs fill rate quadratically — try it before committing to it on stream. |
 | `fps` | `60` | Internal render FPS cap, independent of OBS's own capture rate |

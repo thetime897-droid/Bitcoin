@@ -37,12 +37,16 @@ function makeCanvasTexture(
  * HUD element bolted onto the 3D world. */
 function makeGroundLabel(): { mesh: THREE.Mesh; canvas: HTMLCanvasElement; texture: THREE.CanvasTexture } {
   const canvas = document.createElement('canvas');
-  canvas.width = 384;
-  canvas.height = 112;
+  canvas.width = 640;
+  canvas.height = 180;
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
   const mat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false, toneMapped: false });
-  const geo = new THREE.PlaneGeometry(7.6, 2.2);
+  // Sized so the price scale stays legible from the cinematic camera - a
+  // viewer should be able to see where price is sitting without reading the
+  // HUD, which is the whole point of having it on the ground.
+  const geo = new THREE.PlaneGeometry(15, 4.2);
   geo.rotateX(-Math.PI / 2);
   const mesh = new THREE.Mesh(geo, mat);
   return { mesh, canvas, texture };
@@ -468,7 +472,7 @@ export class Battlefield {
       const inCorridor = Math.abs(z - ROAD_Z) < 22 && Math.abs(x) < GROUND_HALF_WIDTH * 0.72;
       const nearRoad = Math.abs(z - ROAD_Z) < 7;
       const nearCamp = Math.abs(x) > GROUND_HALF_WIDTH * 0.7;
-      const nearPriceTicks = Math.abs(z - (GROUND_HALF_DEPTH - 24)) < 4.5;
+      const nearPriceTicks = Math.abs(z - (GROUND_HALF_DEPTH - 32)) < 7;
       if (inCorridor || nearRoad || nearCamp || nearPriceTicks) continue;
       const y = terrainHeightAt(x, z);
       const scale = 0.75 + rand() * 0.95;
@@ -828,10 +832,12 @@ export class Battlefield {
   }
 
   private buildPriceTicks(): void {
-    const z = GROUND_HALF_DEPTH - 24;
-    for (let i = -3; i <= 3; i++) {
+    // Set back from the front edge so the row clears the market feed panel
+    // in the bottom-right, and spaced to fit five plates across the shot.
+    const z = GROUND_HALF_DEPTH - 32;
+    for (let i = -2; i <= 2; i++) {
       const label = makeGroundLabel();
-      label.mesh.position.set(i * 10.5, 0.07, z);
+      label.mesh.position.set(i * 17, 0.07, z);
       this.priceLabels.push(label);
       this.scene.add(label.mesh);
     }
@@ -844,17 +850,28 @@ export class Battlefield {
       const value = price + offsetIndex * step;
       const { canvas, texture } = this.priceLabels[i];
       const ctx = canvas.getContext('2d')!;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = '700 52px system-ui, sans-serif';
+      const w = canvas.width;
+      const h = canvas.height;
+      const text = value.toLocaleString('en-US', { maximumFractionDigits: 0 });
+      const isCurrent = offsetIndex === 0;
+      ctx.clearRect(0, 0, w, h);
+
+      // A dark plate behind the figure. These sit on grass, dirt, scorch
+      // marks and both held colours depending on where the line is, so
+      // outlined text alone was losing contrast against half of them.
+      ctx.fillStyle = isCurrent ? 'rgba(8,10,14,0.72)' : 'rgba(8,10,14,0.5)';
+      ctx.beginPath();
+      ctx.roundRect(18, 24, w - 36, h - 48, 22);
+      ctx.fill();
+      ctx.strokeStyle = isCurrent ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.22)';
+      ctx.lineWidth = isCurrent ? 5 : 3;
+      ctx.stroke();
+
+      ctx.font = `800 ${isCurrent ? 96 : 82}px system-ui, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      // Dark outline first: these sit on red or green held ground depending
-      // on where the line is, so plain white text alone loses contrast.
-      ctx.lineWidth = 9;
-      ctx.strokeStyle = 'rgba(0,0,0,0.55)';
-      ctx.strokeText(value.toLocaleString('en-US', { maximumFractionDigits: 0 }), canvas.width / 2, canvas.height / 2);
-      ctx.fillStyle = offsetIndex === 0 ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.72)';
-      ctx.fillText(value.toLocaleString('en-US', { maximumFractionDigits: 0 }), canvas.width / 2, canvas.height / 2);
+      ctx.fillStyle = isCurrent ? '#ffffff' : 'rgba(255,255,255,0.82)';
+      ctx.fillText(text, w / 2, h / 2 + 2);
       texture.needsUpdate = true;
     }
   }

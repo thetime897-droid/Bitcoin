@@ -162,6 +162,12 @@ const chat = new ChatBridge((author) => {
 });
 chat.start();
 
+// Start the audio graph at boot rather than on the first explosion, so the
+// ambient bed is already there when a viewer tunes in. No-op when sound is
+// off. OBS' browser source has no user gesture to wait for, so this is the
+// only chance to get the context running.
+sfx.resume();
+
 window.addEventListener('beforeunload', () => {
   feed.stop();
   chat.stop();
@@ -206,6 +212,14 @@ if (new URLSearchParams(window.location.search).get('debug') === '1') {
         time: Date.now(),
       });
     },
+    // Audio diagnostics. `state` must read "running" and `peak` must go
+    // above zero while something is firing, otherwise the page is silent.
+    audioStatus: (() => sfx.status) as unknown as () => void,
+    testSound: (() => {
+      sfx.resume();
+      sfx.explosion(1);
+      sfx.sting(0.9);
+    }) as unknown as () => void,
     // Park the camera somewhere specific - handy for lining up a shot or
     // grabbing a close-up of the models. Needs ?interact=1 so the
     // cinematic drift isn't fighting for the camera.

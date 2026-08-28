@@ -479,3 +479,32 @@ html, body {
   .evt__banner.is-live,
   .evt__flash.is-live { animation-duration: 1ms; }
 }
+
+/* ---------- Channel branding beside the title ---------- */
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 14px;
+  padding: 5px 13px 5px 6px;
+  border-radius: 999px;
+  background: rgba(6, 9, 14, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(6px);
+}
+.brand-badge__mark,
+.brand-badge__img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: block;
+  flex: none;
+}
+.brand-badge__img { object-fit: cover; }
+.brand-badge__text {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #7fe6a8;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
