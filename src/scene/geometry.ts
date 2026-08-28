@@ -45,6 +45,31 @@ export function buildTankGeometry(): THREE.BufferGeometry {
   return mergeGeometries([hull, glacis, turret, barrel, trackL, trackR]) as THREE.BufferGeometry;
 }
 
+/** Six-wheeled armoured personnel carrier - the bulk of each side's
+ * vehicle line, lighter and boxier than a tank. Nose along +X. */
+export function buildApcGeometry(): THREE.BufferGeometry {
+  const hull = new THREE.BoxGeometry(1.9, 0.55, 0.92);
+  hull.translate(0, 0.62, 0);
+  const nose = new THREE.BoxGeometry(0.55, 0.36, 0.88);
+  nose.rotateZ(-0.26);
+  nose.translate(1.06, 0.5, 0);
+  const cupola = new THREE.BoxGeometry(0.62, 0.3, 0.6);
+  cupola.translate(-0.2, 1.02, 0);
+  const mg = new THREE.CylinderGeometry(0.045, 0.045, 0.72, 5);
+  mg.rotateZ(Math.PI / 2);
+  mg.translate(0.24, 1.14, 0);
+  const parts: THREE.BufferGeometry[] = [hull, nose, cupola, mg];
+  for (const wx of [-0.62, 0.06, 0.72]) {
+    for (const wz of [-0.52, 0.52]) {
+      const wheel = new THREE.CylinderGeometry(0.28, 0.28, 0.18, 10);
+      wheel.rotateX(Math.PI / 2);
+      wheel.translate(wx, 0.29, wz);
+      parts.push(wheel);
+    }
+  }
+  return mergeGeometries(parts) as THREE.BufferGeometry;
+}
+
 /** Towed field gun that sits at the back of a camp and lobs shells. Barrel
  * points along +X and is elevated, so shells leave on a visible arc. */
 export function buildCannonGeometry(): THREE.BufferGeometry {

@@ -39,9 +39,9 @@ const airSupport = new AirSupport(battlefield.scene, combat, {
 const hud = new Hud(app);
 
 // --- Wall depth -> army size ------------------------------------------------
-const USD_PER_UNIT = 500_000;
-const MIN_UNITS = 4;
-const MAX_UNITS = 32;
+const USD_PER_UNIT = 400_000;
+const MIN_UNITS = 14;
+const MAX_UNITS = 92;
 
 function wallToUnits(usd: number): number {
   return THREE.MathUtils.clamp(Math.round(usd / USD_PER_UNIT), MIN_UNITS, MAX_UNITS);
@@ -85,6 +85,17 @@ marketStore.onMilestone((m) => {
   hud.pushMilestone(m);
   sfx.milestone();
 });
+
+// Whale prints, wall shifts and ground gained all print to the same battle
+// log as liquidations, so the corner keeps telling the story even when
+// nothing is being liquidated.
+marketStore.onFeed((event) => {
+  if (event.kind !== 'liquidation') hud.pushFeed(event);
+});
+
+// Situation reports if the market goes quiet; the store rate-limits itself,
+// so this can poll cheaply.
+window.setInterval(() => marketStore.tickFeed(), 4000);
 
 // --- Feed lifecycle ----------------------------------------------------------
 const feed = new BinanceFeed(config.symbol, {
@@ -134,6 +145,17 @@ if (new URLSearchParams(window.location.search).get('debug') === '1') {
         price: demoPrice,
         qtyBase: 0.6,
         usd: 51_500 + Math.random() * 150_000,
+        time: Date.now(),
+      });
+    },
+    demoWhale: () => {
+      const usd = 140_000 + Math.random() * 600_000;
+      marketStore.addTrade({
+        id: `demo-trade-${Date.now()}`,
+        price: demoPrice,
+        qtyBase: usd / demoPrice,
+        usd,
+        isBuyerMaker: Math.random() > 0.5,
         time: Date.now(),
       });
     },

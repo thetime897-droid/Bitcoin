@@ -1,5 +1,5 @@
 import type { ConnectionStatus, LiquidationEvent, OrderBookState, TickerState } from '../data/types';
-import type { Milestone, Pressure } from '../data/store';
+import type { FeedEvent, Milestone, Pressure } from '../data/store';
 import { config, displaySymbol } from '../config';
 
 function el<K extends keyof HTMLElementTagNameMap>(
@@ -249,24 +249,48 @@ export class Hud {
     ctx.fillText(maxPrice.toLocaleString('en-US', { maximumFractionDigits: 0 }), w - 4, h - 4);
   }
 
-  pushLiquidation(l: LiquidationEvent, unitsLost: number): void {
+  private static readonly FEED_ICONS: Record<FeedEvent['kind'], string> = {
+    liquidation: '✖',
+    whale: '◆',
+    push: '➤',
+    wall: '▮',
+    status: '•',
+  };
+
+  /** Render one battle-log row. Everything that reaches the log - kills,
+   * whale prints, ground gained, situation reports - comes through here. */
+  pushFeed(event: FeedEvent): void {
     const row = el('div', 'hud__feed-row');
-    row.dataset.side = l.side;
-    const icon = el('div', 'hud__feed-icon', l.side === 'short' ? '▲' : '▼');
-    const text = el(
-      'div',
-      'hud__feed-text',
-      `Liquidated ${l.side} · ${fmtUsd(l.usd)} @ ${l.price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+    row.dataset.side = event.side;
+    row.dataset.kind = event.kind;
+    row.append(
+      el('div', 'hud__feed-icon', Hud.FEED_ICONS[event.kind]),
+      el('div', 'hud__feed-text', event.text),
+      el('div', 'hud__feed-units', event.detail),
     );
-    const units = el('div', 'hud__feed-units', `${l.side === 'short' ? 'Bears' : 'Bulls'} -${unitsLost}`);
-    row.append(icon, text, units);
     this.feedListEl.prepend(row);
     while (this.feedListEl.children.length > MAX_FEED_ITEMS) {
       this.feedListEl.removeChild(this.feedListEl.lastElementChild as ChildNode);
     }
+  }
+
+  pushLiquidation(l: LiquidationEvent, unitsLost: number): void {
+    // A liquidated short is a Bear losing their position, and vice versa.
+    const losingSide = l.side === 'short' ? 'bears' : 'bulls';
+    this.pushFeed({
+      id: l.id,
+      kind: 'liquidation',
+      side: losingSide,
+      text: `Liquidated ${l.side} · ${fmtUsd(l.usd)} @ ${l.price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+      detail: `${losingSide === 'bears' ? 'Bears' : 'Bulls'} -${unitsLost}`,
+      time: l.time,
+    });
 
     if (l.usd >= 75_000) {
-      this.showKillfeed(`${l.side === 'short' ? 'BEARS' : 'BULLS'} WIPED · ${fmtUsd(l.usd)} liquidated @ ${fmtPrice(l.price)}`, l.side);
+      this.showKillfeed(
+        `${losingSide.toUpperCase()} WIPED · ${fmtUsd(l.usd)} liquidated @ ${fmtPrice(l.price)}`,
+        losingSide,
+      );
     }
   }
 
@@ -281,9 +305,9 @@ export class Hud {
   }
 
   private killfeedTimer: number | null = null;
-  private showKillfeed(text: string, tone: 'short' | 'long' | 'bears' | 'bulls' | 'milestone'): void {
+  private showKillfeed(text: string, tone: 'bears' | 'bulls' | 'milestone'): void {
     this.killfeedEl.textContent = text;
-    this.killfeedEl.dataset.tone = tone === 'short' ? 'bears' : tone === 'long' ? 'bulls' : tone;
+    this.killfeedEl.dataset.tone = tone;
     this.killfeedEl.classList.remove('show');
     // Force reflow so the animation restarts even for back-to-back events.
     void this.killfeedEl.offsetWidth;

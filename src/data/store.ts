@@ -24,12 +24,40 @@ export interface MarketState {
   pressureRatio: number;
 }
 
+/** Anything worth printing to the on-screen battle log. */
+export interface FeedEvent {
+  id: string;
+  kind: 'liquidation' | 'whale' | 'push' | 'wall' | 'status';
+  /** Which army the event favours; drives the row's accent colour. */
+  side: 'bears' | 'bulls' | 'neutral';
+  text: string;
+  /** Short right-aligned label, e.g. the unit swing. */
+  detail: string;
+  time: number;
+}
+
 type Listener = (s: MarketState) => void;
 type LiquidationListener = (l: LiquidationEvent) => void;
 type MilestoneListener = (m: Milestone) => void;
+type FeedListener = (e: FeedEvent) => void;
 
 const MAX_LIQUIDATION_HISTORY = 40;
 const ROUND_NUMBER_STEP = 1000;
+
+/** A single trade this large is worth calling out on its own. */
+const WHALE_TRADE_USD = 120_000;
+/** Minimum gap between the chattier auto-generated feed lines, so whale
+ * prints and wall shifts can't drown out actual liquidations. */
+const CHATTER_MIN_GAP_MS = 2600;
+/** If nothing at all has printed for this long, post a situation report -
+ * a quiet market must never leave the log looking frozen on stream. */
+const SITREP_AFTER_MS = 17_000;
+
+function fmtUsd(n: number): string {
+  if (Math.abs(n) >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
+  if (Math.abs(n) >= 1_000) return `$${(n / 1_000).toFixed(1)}K`;
+  return `$${n.toFixed(0)}`;
+}
 
 /**
  * Single source of truth for live market state. Feed handlers push raw
@@ -49,12 +77,20 @@ class MarketStore {
   private listeners = new Set<Listener>();
   private liquidationListeners = new Set<LiquidationListener>();
   private milestoneListeners = new Set<MilestoneListener>();
+  private feedListeners = new Set<FeedListener>();
 
   private tradeFlowEma = 0;
   private tradeVolumeEma = 0;
   private lastRoundLevelSeen: number | null = null;
   private lastHigh24h: number | null = null;
   private lastLow24h: number | null = null;
+
+  private feedSeq = 0;
+  private lastChatterAt = 0;
+  private lastFeedAt = 0;
+  private lastReportedPressure: Pressure | null = null;
+  private lastBidWall = 0;
+  private lastAskWall = 0;
 
   subscribe(fn: Listener): () => void {
     this.listeners.add(fn);
@@ -70,6 +106,49 @@ class MarketStore {
   onMilestone(fn: MilestoneListener): () => void {
     this.milestoneListeners.add(fn);
     return () => this.milestoneListeners.delete(fn);
+  }
+
+  onFeed(fn: FeedListener): () => void {
+    this.feedListeners.add(fn);
+    return () => this.feedListeners.delete(fn);
+  }
+
+  /** Emit a battle-log line. `chatter` lines are rate-limited against each
+   * other; liquidations always get through. */
+  private pushFeed(event: Omit<FeedEvent, 'id' | 'time'>, chatter = true): void {
+    const now = Date.now();
+    if (chatter && now - this.lastChatterAt < CHATTER_MIN_GAP_MS) return;
+    if (chatter) this.lastChatterAt = now;
+    this.lastFeedAt = now;
+    this.feedSeq += 1;
+    const full: FeedEvent = { ...event, id: `feed-${now}-${this.feedSeq}`, time: now };
+    for (const fn of this.feedListeners) fn(full);
+  }
+
+  /**
+   * Called on a timer from the render loop. Prints a situation report if the
+   * market has gone quiet, so the on-screen log always looks live even when
+   * nothing is being liquidated.
+   */
+  tickFeed(): void {
+    if (Date.now() - this.lastFeedAt < SITREP_AFTER_MS) return;
+    const { pressure, pressureRatio, book } = this.state;
+    if (pressure === 'balanced' || !book) {
+      this.pushFeed({
+        kind: 'status',
+        side: 'neutral',
+        text: 'Front holds · neither side gaining ground',
+        detail: 'STANDOFF',
+      }, false);
+    } else {
+      const bulls = pressure === 'buyers';
+      this.pushFeed({
+        kind: 'status',
+        side: bulls ? 'bulls' : 'bears',
+        text: `${bulls ? 'Bulls' : 'Bears'} hold the advance · ${fmtUsd(bulls ? book.bidWallUsd : book.askWallUsd)} wall`,
+        detail: `${Math.round(Math.abs(pressureRatio) * 100)}%`,
+      }, false);
+    }
   }
 
   get snapshot(): MarketState {
@@ -88,8 +167,35 @@ class MarketStore {
   }
 
   setBook(book: OrderBookState): void {
+    this.checkWallShift(book);
     this.state = { ...this.state, book };
     this.recomputePressure();
+  }
+
+  /** Report a wall that thickens or thins sharply - reinforcements arriving
+   * or a side pulling back. */
+  private checkWallShift(book: OrderBookState): void {
+    const prevBid = this.lastBidWall;
+    const prevAsk = this.lastAskWall;
+    this.lastBidWall = book.bidWallUsd;
+    this.lastAskWall = book.askWallUsd;
+    if (prevBid <= 0 || prevAsk <= 0) return;
+
+    const bidDelta = (book.bidWallUsd - prevBid) / prevBid;
+    const askDelta = (book.askWallUsd - prevAsk) / prevAsk;
+    const bidBigger = Math.abs(bidDelta) >= Math.abs(askDelta);
+    const delta = bidBigger ? bidDelta : askDelta;
+    if (Math.abs(delta) < 0.18) return;
+
+    const side = bidBigger ? 'bulls' : 'bears';
+    const wallName = bidBigger ? 'Buy wall' : 'Sell wall';
+    const verb = delta > 0 ? 'reinforced' : 'thinning';
+    this.pushFeed({
+      kind: 'wall',
+      side,
+      text: `${wallName} ${verb} · ${fmtUsd(bidBigger ? book.bidWallUsd : book.askWallUsd)}`,
+      detail: `${delta > 0 ? '+' : ''}${Math.round(delta * 100)}%`,
+    });
   }
 
   addTrade(trade: TradeEvent): void {
@@ -98,6 +204,17 @@ class MarketStore {
     const alpha = 0.05;
     this.tradeFlowEma = this.tradeFlowEma * (1 - alpha) + signed * alpha;
     this.tradeVolumeEma = this.tradeVolumeEma * (1 - alpha) + trade.usd * alpha;
+
+    if (trade.usd >= WHALE_TRADE_USD) {
+      const buying = !trade.isBuyerMaker;
+      this.pushFeed({
+        kind: 'whale',
+        side: buying ? 'bulls' : 'bears',
+        text: `Whale ${buying ? 'buy' : 'sell'} · ${fmtUsd(trade.usd)} @ ${trade.price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+        detail: `${buying ? 'Bulls' : 'Bears'} +${Math.max(1, Math.round(trade.usd / 90_000))}`,
+      });
+    }
+
     this.recomputePressure();
   }
 
@@ -119,6 +236,27 @@ class MarketStore {
 
     const combined = clamp(wallRatio * 0.65 + tradeRatio * 0.35, -1, 1);
     const pressure: Pressure = combined > 0.07 ? 'buyers' : combined < -0.07 ? 'sellers' : 'balanced';
+
+    // Announce whenever control of the line actually changes hands.
+    if (this.lastReportedPressure !== null && pressure !== this.lastReportedPressure) {
+      if (pressure === 'balanced') {
+        this.pushFeed({
+          kind: 'push',
+          side: 'neutral',
+          text: 'Advance stalls · line back to a standoff',
+          detail: 'HELD',
+        });
+      } else {
+        const bulls = pressure === 'buyers';
+        this.pushFeed({
+          kind: 'push',
+          side: bulls ? 'bulls' : 'bears',
+          text: `${bulls ? 'Bulls' : 'Bears'} push the line forward`,
+          detail: `${Math.round(Math.abs(combined) * 100)}%`,
+        });
+      }
+    }
+    this.lastReportedPressure = pressure;
 
     this.state = { ...this.state, pressureRatio: combined, pressure };
     this.emit();

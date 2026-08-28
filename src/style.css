@@ -230,8 +230,8 @@ html, body {
   position: absolute;
   right: 18px;
   bottom: 18px;
-  width: 380px;
-  max-height: 260px;
+  width: 400px;
+  max-height: 300px;
   background: rgba(6, 9, 14, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
@@ -263,11 +263,25 @@ html, body {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.hud__feed-icon { font-size: 10px; width: 14px; text-align: center; }
-.hud__feed-row[data-side='short'] .hud__feed-icon { color: #ff6b60; }
-.hud__feed-row[data-side='long'] .hud__feed-icon { color: #4fe39a; }
+.hud__feed-icon { font-size: 10px; width: 14px; text-align: center; opacity: 0.9; }
 .hud__feed-text { flex: 1; opacity: 0.92; }
-.hud__feed-units { font-weight: 700; opacity: 0.8; font-variant-numeric: tabular-nums; }
+.hud__feed-units { font-weight: 700; opacity: 0.85; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Side accent: a coloured leading edge plus matching icon and detail. */
+.hud__feed-row[data-side='bears'] { box-shadow: inset 3px 0 0 #ff6b60; }
+.hud__feed-row[data-side='bulls'] { box-shadow: inset 3px 0 0 #4fe39a; }
+.hud__feed-row[data-side='neutral'] { box-shadow: inset 3px 0 0 rgba(255, 255, 255, 0.28); }
+.hud__feed-row[data-side='bears'] .hud__feed-icon,
+.hud__feed-row[data-side='bears'] .hud__feed-units { color: #ff6b60; }
+.hud__feed-row[data-side='bulls'] .hud__feed-icon,
+.hud__feed-row[data-side='bulls'] .hud__feed-units { color: #4fe39a; }
+.hud__feed-row[data-side='neutral'] .hud__feed-icon,
+.hud__feed-row[data-side='neutral'] .hud__feed-units { color: rgba(255, 255, 255, 0.6); }
+
+/* Chatter sits quieter than kills so liquidations still stand out. */
+.hud__feed-row[data-kind='status'],
+.hud__feed-row[data-kind='wall'] { opacity: 0.72; }
+.hud__feed-row[data-kind='liquidation'] .hud__feed-text { font-weight: 600; }
 
 /* ---------- Kill-feed callout ---------- */
 .hud__killfeed {
