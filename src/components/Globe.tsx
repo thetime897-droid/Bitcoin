@@ -2,9 +2,7 @@ import React, { useMemo } from "react";
 import { AbsoluteFill } from "remotion";
 import { geoDistance, geoInterpolate, geoPath, type GeoProjection } from "d3-geo";
 import {
-  BIOMES,
   BORDERS,
-  LAND,
   STATE_BORDERS,
   cull,
   getMainFeature,
@@ -17,6 +15,7 @@ import {
 import { getFlag } from "../geo/flags";
 import { isOnFrontSide, maxCornerDistance } from "../geo/projection";
 import type { Layout } from "../layout";
+import { EarthCanvas } from "./EarthCanvas";
 
 export type Drape = { key: string; iso: string; opacity: number; pop: number };
 export type Arc = { from: [number, number]; to: [number, number]; progress: number; opacity: number };
@@ -85,13 +84,9 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
     return d;
   };
 
-  const land = join(LAND[lod]);
   const borders = join(BORDERS[lod]);
   const statesOpacity = Math.min(1, Math.max(0, (camera.zoom - 1.8) / 1.4));
   const states = statesOpacity > 0 ? join(STATE_BORDERS) : "";
-  const biomes = BIOMES.map((b) => ({ ...b, d: join(b.chunks) }));
-  const blur = Math.min(70, Math.max(12, 9 * camera.zoom)) * u;
-  const halo = Math.min(18, Math.max(3, 3 + camera.zoom * 2)) * u;
 
   const clouds = CLOUDS.map((c, i) => {
     const lon = c.lon + frame * 0.02;
@@ -110,7 +105,7 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
         ry={ry}
         transform={`rotate(${c.rot} ${p[0]} ${p[1]})`}
         fill="url(#cloud)"
-        opacity={0.5 * fade}
+        opacity={0.32 * fade}
       />
     );
   });
@@ -124,7 +119,7 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
     const flag = getFlag(iso);
     if (!flag) return null;
     return (
-      <>
+      <g opacity={0.9}>
         <svg
           x={x0}
           y={y0}
@@ -135,7 +130,7 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
           dangerouslySetInnerHTML={{ __html: flag.inner }}
         />
         <rect x={x0} y={y0} width={w} height={h} fill="url(#flag-sheen)" />
-      </>
+      </g>
     );
   };
 
@@ -158,14 +153,14 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
           </clipPath>
           <g clipPath="url(#state-clip)">
             {lift.iso && countryBounds ? (
-              flagLayer(lift.iso, x0, y0, x1 - x0, y1 - y0)
+              <g style={{ filter: "saturate(1.15) brightness(1.08)" }}>{flagLayer(lift.iso, x0, y0, x1 - x0, y1 - y0)}</g>
             ) : (
               <rect x={sx0} y={sy0} width={sx1 - sx0} height={sy1 - sy0} fill="url(#gold)" />
             )}
-            <rect x={sx0} y={sy0} width={sx1 - sx0} height={sy1 - sy0} fill="rgba(255,255,255,0.12)" />
           </g>
-          <path d={sd} fill="none" stroke="#ffd23c" strokeWidth={14 * u} strokeOpacity={0.35 * l} strokeLinejoin="round" />
-          <path d={sd} fill="none" stroke="#ffffff" strokeWidth={4 * u} strokeOpacity={l} strokeLinejoin="round" />
+          <path d={sd} fill="none" stroke="#ffd23c" strokeWidth={18 * u} strokeOpacity={0.22 * l} strokeLinejoin="round" />
+          <path d={sd} fill="none" stroke="#ffd23c" strokeWidth={7 * u} strokeOpacity={0.45 * l} strokeLinejoin="round" />
+          <path d={sd} fill="none" stroke="#ffffff" strokeWidth={2.6 * u} strokeOpacity={l} strokeLinejoin="round" />
         </g>
       </g>
     );
@@ -185,7 +180,7 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
     const liftHere = stateLift && stateLift.iso === drape.iso ? stateLift : undefined;
     return (
       <g key={drape.key} opacity={drape.opacity}>
-        <path d={d} fill="rgba(0,0,0,0.45)" transform={`translate(${5 * u} ${6 * u + lift})`} />
+        <path d={d} fill="rgba(0,0,0,0.38)" transform={`translate(${4 * u} ${5 * u + lift})`} filter="url(#soft-shadow)" />
         <g transform={`translate(${cx} ${cy - lift}) scale(${scale}) translate(${-cx} ${-cy})`}>
           <clipPath id={clipId}>
             <path d={d} />
@@ -196,8 +191,9 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
               <path d={states} fill="none" stroke="rgba(0,0,0,0.35)" strokeWidth={1.4 * u} opacity={statesOpacity} />
             </g>
           )}
-          <path d={d} fill="none" stroke="#0b0b0b" strokeWidth={4 * u} strokeLinejoin="round" />
-          {liftHere && <path d={d} fill={`rgba(4,8,16,${0.42 * Math.min(1, liftHere.lift)})`} />}
+          <path d={d} fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth={5 * u} strokeLinejoin="round" />
+          <path d={d} fill="none" stroke="rgba(8,10,16,0.9)" strokeWidth={1.8 * u} strokeLinejoin="round" />
+          {liftHere && <path d={d} fill={`rgba(4,8,16,${0.3 * Math.min(1, liftHere.lift)})`} />}
           {liftHere && renderStatePiece(liftHere, bounds)}
         </g>
       </g>
@@ -307,16 +303,14 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
             <stop offset={0.93} stopColor="rgba(80,160,255,0.28)" />
             <stop offset={1} stopColor="rgba(60,140,255,0)" />
           </radialGradient>
-          <radialGradient id="ocean" gradientUnits="userSpaceOnUse" cx={focal.x - radius * 0.25} cy={focal.y - radius * 0.3} r={radius * 1.3}>
-            <stop offset="0%" stopColor="#1f6391" />
-            <stop offset="55%" stopColor="#123f66" />
-            <stop offset="100%" stopColor="#0a2642" />
+          <radialGradient id="shade" gradientUnits="userSpaceOnUse" cx={focal.x - radius * 0.35} cy={focal.y - radius * 0.4} r={radius * 1.45}>
+            <stop offset="0%" stopColor="rgba(255,250,235,0.10)" />
+            <stop offset="50%" stopColor="rgba(0,0,0,0)" />
+            <stop offset="100%" stopColor="rgba(0,6,20,0.45)" />
           </radialGradient>
-          <radialGradient id="shade" gradientUnits="userSpaceOnUse" cx={focal.x - radius * 0.3} cy={focal.y - radius * 0.35} r={radius * 1.35}>
-            <stop offset="0%" stopColor="rgba(255,255,255,0.10)" />
-            <stop offset="55%" stopColor="rgba(0,0,0,0)" />
-            <stop offset="100%" stopColor="rgba(0,0,0,0.55)" />
-          </radialGradient>
+          <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation={6 * u} />
+          </filter>
           <radialGradient id="cloud">
             <stop offset="0%" stopColor="rgba(255,255,255,0.75)" />
             <stop offset="55%" stopColor="rgba(255,255,255,0.3)" />
@@ -331,37 +325,18 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
             <stop offset="0%" stopColor="#ffe27a" />
             <stop offset="100%" stopColor="#e0a800" />
           </linearGradient>
-          <linearGradient id="land-light" gradientUnits="userSpaceOnUse" x1={focal.x - radius} y1={focal.y - radius} x2={focal.x + radius} y2={focal.y + radius}>
-            <stop offset="0%" stopColor="rgba(255,255,255,0.10)" />
-            <stop offset="100%" stopColor="rgba(0,0,0,0.12)" />
-          </linearGradient>
-          <filter id="biome-blur" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation={blur} />
-          </filter>
-          <clipPath id="land-clip">
-            <path d={land} />
-          </clipPath>
         </defs>
 
         <rect width={W} height={H} fill="url(#space)" />
         <g opacity={twinkle}>{stars}</g>
-
         <circle cx={focal.x} cy={focal.y} r={radius * 1.1} fill="url(#atmo)" />
-        <circle cx={focal.x} cy={focal.y} r={radius} fill="url(#ocean)" />
-
-        <path d={land} fill="none" stroke="rgba(70,170,210,0.32)" strokeWidth={halo} strokeLinejoin="round" />
-        <path d={land} fill="#4b7a44" />
-        <g clipPath="url(#land-clip)">
-          <g filter="url(#biome-blur)">
-            {biomes.map((b, i) => (b.d ? <path key={i} d={b.d} fill={b.color} opacity={b.opacity} /> : null))}
-          </g>
-          <rect width={W} height={H} fill="url(#land-light)" />
-        </g>
-        <path d={land} fill="none" stroke="rgba(215,240,255,0.55)" strokeWidth={1.1 * u} strokeLinejoin="round" />
-        <path d={borders} fill="none" stroke="rgba(0,0,0,0.28)" strokeWidth={2.8 * u} strokeLinejoin="round" />
-        <path d={borders} fill="none" stroke="rgba(255,255,255,0.62)" strokeWidth={1.2 * u} strokeLinejoin="round" />
+      </svg>
+      <EarthCanvas camera={camera} layout={layout} />
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ position: "absolute", inset: 0 }}>
+        <path d={borders} fill="none" stroke="rgba(0,0,0,0.35)" strokeWidth={2.6 * u} strokeLinejoin="round" />
+        <path d={borders} fill="none" stroke="rgba(255,228,150,0.78)" strokeWidth={1.25 * u} strokeLinejoin="round" />
         {states && (
-          <path d={states} fill="none" stroke="rgba(255,255,255,0.45)" strokeWidth={1 * u} strokeDasharray={`${5 * u} ${4 * u}`} opacity={statesOpacity} />
+          <path d={states} fill="none" stroke="rgba(255,240,200,0.5)" strokeWidth={0.9 * u} strokeDasharray={`${6 * u} ${4 * u}`} opacity={statesOpacity} />
         )}
 
         <g>{clouds}</g>

@@ -100,13 +100,22 @@ Aktuell sind die Szenenlaengen geschaetzt. Mit deiner Aufnahme werden die
 `durationInSeconds` auf die echten Satzgrenzen gesetzt und die Audiospur
 eingebunden - Bild und Stimme laufen dann exakt synchron.
 
+## 5b. Satelliten-Globus, Sounds, Musik
+
+- `public/earth.jpg`: NASA Blue Marble + Natural-Earth-Relief (gemeinfrei),
+  neu bauen mit `scripts/build-earth-texture.py` (Quelle: `pip download basemap-data`).
+- `scripts/generate-sfx.py`: natürlichere Effekte (Rauschen, Raumhall, Holz-/Marimba-Töne), braucht numpy + scipy.
+- `scripts/generate-music.py`: eigenes, lizenzfreies News-Bed.
+- `scripts/voice-sync.py`: Szenenlängen aus der Sprachaufnahme.
+
 ## 6. Aufbau
 
 - `src/timeline.ts` - Szenen-Zeitplan + Kamera (Great-Circle-Fluege mit Rauszoomen, sanftes Nachziehen)
 - `src/layout.ts` - Positionen fuer 9:16 und 16:9
 - `src/geo/globe.ts` - Kuesten/Grenzen (world-atlas 50m/10m je nach Zoom), US-Bundesstaaten (us-atlas), Landschaftsfarben, Rahmung
 - `src/components/RegionMarker.tsx` - Pin mit Beschriftung
-- `src/components/Globe.tsx` - Globus, Wolken, Atmosphaere, Flagge, Flugbogen, Ripple
+- `src/components/EarthCanvas.tsx` - Satellitenbild pixelgenau auf die Kugel projiziert
+- `src/components/Globe.tsx` - Grenzen, Wolken, Atmosphaere, Flagge, Flugbogen, Ripple
 - `src/components/NewsCard.tsx`, `StatCallout.tsx`, `Badge.tsx`, `Ticker.tsx`,
   `HudChips.tsx`, `StoryProgress.tsx`, `IntroIdent.tsx`, `FollowCta.tsx`, `ChannelBadge.tsx`
 - `src/MainVideo.tsx` - setzt alles zusammen

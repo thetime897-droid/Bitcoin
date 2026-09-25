@@ -28,13 +28,18 @@ export type Segment = {
 
 export const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 export const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+// Zero velocity and zero acceleration at both ends: no visible "kick" when a flight starts or lands.
+export const smootherstep = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
 const easeInOutSine = (t: number) => -(Math.cos(Math.PI * t) - 1) / 2;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 export const sceneFrames = (scene: Scene, fps: number) => Math.round(scene.durationInSeconds * fps);
 
+export const outroFrames = (episode: Episode, fps: number) =>
+  episode.outroSeconds ? Math.round(episode.outroSeconds * fps) : OUTRO_FRAMES;
+
 export const computeTotalFrames = (episode: Episode, fps: number) =>
-  INTRO_FRAMES + episode.scenes.reduce((sum, s) => sum + sceneFrames(s, fps), 0) + OUTRO_FRAMES;
+  INTRO_FRAMES + episode.scenes.reduce((sum, s) => sum + sceneFrames(s, fps), 0) + outroFrames(episode, fps);
 
 const sceneCamera = (scene: Scene, layout: Layout): Camera => {
   // An explicit lonLat always wins, so a country scene can use a custom close-up.
@@ -64,7 +69,7 @@ const sceneAnchor = (scene: Scene, target: Camera): [number, number] =>
 const flyFrames = (a: Camera, b: Camera) => {
   const d = geoDistance([a.lon, a.lat], [b.lon, b.lat]);
   const zr = Math.abs(Math.log(b.zoom / a.zoom));
-  return Math.round(Math.min(78, Math.max(40, 34 + 22 * d + 8 * zr)));
+  return Math.round(Math.min(84, Math.max(42, 36 + 24 * d + 8 * zr)));
 };
 
 const flyBetween = (a: Camera, b: Camera, p: number, dipEnabled: boolean): Camera => {
@@ -73,18 +78,23 @@ const flyBetween = (a: Camera, b: Camera, p: number, dipEnabled: boolean): Camer
   // Pull back mid-flight on long hops (Google-Earth style), none on short ones.
   const dip = dipEnabled ? Math.min(1, Math.max(0.3, 1.12 - d / 1.5)) : 1;
   const logZoom = lerp(Math.log(a.zoom), Math.log(b.zoom), p) + Math.log(dip) * Math.sin(Math.PI * p);
-  return { lon, lat, zoom: Math.max(0.75, Math.exp(logZoom)) };
+  // Bank into the turn on longer flights, like a plane.
+  const dLon = ((((b.lon - a.lon) % 360) + 540) % 360) - 180;
+  const bank = dipEnabled ? -Math.sign(dLon) * Math.min(7, 2 + d * 3.5) * Math.sin(Math.PI * p) : 0;
+  const roll = lerp(a.roll ?? 0, b.roll ?? 0, p) + bank;
+  return { lon, lat, zoom: Math.max(0.75, Math.exp(logZoom)), roll };
 };
 
 const drifted = (base: Camera, drift: number, push: number, e: number): Camera => ({
   lon: base.lon + drift * e,
   lat: base.lat,
   zoom: base.zoom * (1 + push * e),
+  roll: 0,
 });
 
 export const cameraAt = (seg: Segment, local: number): Camera => {
   if (local < seg.fly) {
-    return flyBetween(seg.start, seg.target, easeInOutCubic(clamp01(local / seg.fly)), true);
+    return flyBetween(seg.start, seg.target, smootherstep(clamp01(local / seg.fly)), true);
   }
   if (!seg.focus) {
     const hold = seg.duration - seg.fly;
@@ -94,7 +104,7 @@ export const cameraAt = (seg: Segment, local: number): Camera => {
   if (local < seg.focusAt) return settle(local);
   const pushEnd = seg.focusAt + seg.focusLength;
   if (local < pushEnd) {
-    return flyBetween(settle(seg.focusAt), seg.focus, easeInOutCubic((local - seg.focusAt) / seg.focusLength), false);
+    return flyBetween(settle(seg.focusAt), seg.focus, smootherstep((local - seg.focusAt) / seg.focusLength), false);
   }
   const hold = seg.duration - pushEnd;
   return drifted(seg.focus, 2 / seg.focus.zoom, 0.05, easeInOutSine(hold > 0 ? clamp01((local - pushEnd) / hold) : 1));
@@ -161,7 +171,7 @@ export const buildTimeline = (episode: Episode, layout: Layout, fps: number): Se
     kind: "outro",
     index: -1,
     from,
-    duration: OUTRO_FRAMES,
+    duration: outroFrames(episode, fps),
     fly: flyFrames(outroStart, outroTarget),
     start: outroStart,
     target: outroTarget,
@@ -182,7 +192,7 @@ export const segmentAt = (segments: Segment[], frame: number): Segment => {
 };
 
 export const flyProgress = (seg: Segment, local: number) =>
-  seg.fly > 0 ? easeInOutCubic(clamp01(local / seg.fly)) : 1;
+  seg.fly > 0 ? smootherstep(clamp01(local / seg.fly)) : 1;
 
 // Frame (scene-local) at which the region pin/state lift should appear.
 export const regionRevealAt = (seg: Segment) => (seg.focus ? seg.focusAt + seg.focusLength - 16 : seg.fly + 14);

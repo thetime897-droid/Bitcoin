@@ -1,28 +1,27 @@
 import type { Episode } from "../types";
 
-// Folge vom 23. September 2026.
-// Story-Bogen: Hook (Zins-Schock an der Wall Street) -> Ursache 1 (Oel/Iran)
-// -> Ursache 2 (Fed) -> Folge (Hypotheken) -> Krypto (Bitcoin stabil + Wal)
-// -> Lichtblick (IonQ/Nvidia) -> Cliffhanger (Trump-Xi-Gipfel morgen).
-// Taeglich nur diese Datei austauschen. `voiceover` wird nicht gerendert -
-// das ist dein Sprechtext pro Szene.
+// Folge vom 25. September 2026 (Freitag), synchron zur Sprachaufnahme public/voice.mp3.
+// Szenenlaengen aus der Audio-Analyse: jeder Kameraflug startet 0,5 s vor dem
+// jeweiligen Satz. Taeglich nur diese Datei austauschen.
 export const episode: Episode = {
-  dateLabel: "23. SEPTEMBER",
+  dateLabel: "25. SEPTEMBER",
   channelName: "Panda_investiert",
   brandLine: "MARKTUPDATE",
   logoSrc: "logo.jpg",
+  // voiceSrc: "voice.mp3", // Aufnahme nicht im Repo - nur setzen, wenn public/voice.mp3 existiert
   introTitle: "MARKT*UPDATE*",
   introSubtitle: "PANDA INVESTIERT",
   ticker: [
-    { symbol: "S&P 500", value: "7.706,03", change: "−0,75 %", direction: "down" },
-    { symbol: "NASDAQ", value: "26.936,04", change: "−1,13 %", direction: "down" },
-    { symbol: "DOW", value: "51.511,59", change: "−0,68 %", direction: "down" },
-    { symbol: "US 10J", value: "> 5 %", change: "19-J.-Hoch", direction: "up", tone: "bad" },
-    { symbol: "FED", value: "3,75–4,00 %", change: "+0,25", direction: "up", tone: "bad" },
-    { symbol: "BRENT", value: "101,61 $", change: "+2,37 %", direction: "up", tone: "bad" },
-    { symbol: "BITCOIN", value: "≈ 86.500 $", change: "stabil", direction: "neutral" },
-    { symbol: "IONQ", value: "", change: "bis +11 %", direction: "up" },
-    { symbol: "HYPO 30J", value: "7,12 %", change: "Hoch seit 2024", direction: "up", tone: "bad" },
+    { symbol: "S&P 500", value: "7.743,41", change: "+0,51 %", direction: "up" },
+    { symbol: "NASDAQ", value: "27.068,72", change: "+0,50 %", direction: "up" },
+    { symbol: "DOW", value: "51.828,62", change: "+0,93 %", direction: "up" },
+    { symbol: "US 10J", value: "5,18 %", change: "Hoch seit 2007", direction: "up", tone: "bad" },
+    { symbol: "BRENT", value: "104,32 $", change: "−2,14 %", direction: "down", tone: "good" },
+    { symbol: "WTI", value: "92,41 $", change: "−2,33 %", direction: "down", tone: "good" },
+    { symbol: "META", value: "", change: "+13 % Woche", direction: "up" },
+    { symbol: "ORACLE", value: "", change: "Force Majeure", direction: "down" },
+    { symbol: "BITCOIN", value: "≈ 85.000 $", change: "~+10 % Woche", direction: "up" },
+    { symbol: "MICRON", value: "", change: "+279 % 2026", direction: "up" },
   ],
   scenes: [
     {
@@ -30,113 +29,144 @@ export const episode: Episode = {
       countryIso: "840",
       region: { stateFips: "36", point: { lon: -74.0107, lat: 40.7069 }, title: "NEW YORK", subtitle: "Wall Street · NYSE" },
       news: [
-        { outlet: "CNBC", headline: "10-year Treasury yield rockets to 19-year high. Here's what's driving the spike", accent: "#005594" },
-        { outlet: "Börsen-Zeitung", headline: "US-Rendite klettert auf höchsten Stand seit 2007", accent: "#0b2a4a" },
+        {
+          outlet: "Yahoo Finance",
+          headline: "Stock market today: Dow, S&P 500, Nasdaq notch weekly wins as market shrugs off bond sell-off, oil prices ease",
+          accent: "#6001d2",
+        },
+        {
+          outlet: "TheStreet",
+          headline: "Stock Market Today (Sept. 25, 2026): S&P 500, Nasdaq jump as yields, oil prices test investors",
+          accent: "#e4002b",
+        },
       ],
       stats: [
-        { label: "US-Rendite 10J", value: 5, decimals: 0, prefix: "> ", suffix: " %", direction: "up", tone: "bad" },
-        { label: "Nasdaq", value: -1.13, decimals: 2, suffix: " %", showSign: true, direction: "down" },
+        { label: "US-Rendite 10J", value: 5.18, decimals: 2, suffix: " %", direction: "up", tone: "bad" },
+        { label: "Dow", value: 0.93, decimals: 2, suffix: " %", showSign: true, direction: "up" },
       ],
       voiceover:
-        "Die Zinsen explodieren – und reißen die Wall Street mit. Die zehnjährige US-Rendite springt über fünf Prozent, so hoch wie seit 2007 nicht mehr. Die Nasdaq verliert mehr als ein Prozent, der Dow über 350 Punkte.",
-      durationInSeconds: 10.5,
+        "Die US-Renditen steigen auf das höchste Niveau seit der Finanzkrise – 5,18 Prozent bei der zehnjährigen Staatsanleihe. Und trotzdem dreht die Wall Street ins Plus: Der Dow steigt fast ein Prozent und beendet damit eine dreiwöchige Verlustserie.",
+      durationInSeconds: 11.097,
     },
     {
-      label: "IRAN · ÖLPREIS",
+      label: "IRAN · STRASSE VON HORMUS",
       countryIso: "364",
-      region: { point: { lon: 56.3, lat: 26.55 }, title: "STRASSE VON HORMUS", subtitle: "Wichtigstes Öl-Nadelöhr", zoom: 5.2 },
+      region: { point: { lon: 56.3, lat: 26.55 }, title: "STRASSE VON HORMUS", subtitle: "Hoffnung auf Öffnung", zoom: 5.2 },
       badge: { text: "🛢️", color: "#f59e0b", kind: "icon" },
       news: [
-        { outlet: "Aktien.news", headline: "US-Renditesprung und Energiekrise setzen Finanzmärkte unter Druck", accent: "#0f766e" },
-        { outlet: "Charles Schwab", headline: "Crude in Control: Stocks Stumble as Diplomacy Eyed", accent: "#00a0df" },
+        {
+          outlet: "Yahoo Finance",
+          headline: "Stock market today: Dow, S&P 500, Nasdaq trims losses as hopes of Hormuz deal offset rising bond yields",
+          accent: "#6001d2",
+        },
       ],
       stats: [
-        { label: "Brent / Barrel", value: 101.61, decimals: 2, prefix: "$", direction: "up", tone: "bad" },
-        { label: "Tagesplus", value: 2.37, decimals: 2, suffix: " %", showSign: true, direction: "up", tone: "bad" },
+        { label: "Brent / Barrel", value: 104.32, decimals: 2, prefix: "$", direction: "down", tone: "good" },
+        { label: "Brent heute", value: -2.14, decimals: 2, suffix: " %", showSign: true, direction: "down", tone: "good" },
       ],
       voiceover:
-        "Der Grund? Zum einen der Iran-Krieg: Er treibt den Ölpreis – Brent klettert über 100 Dollar pro Barrel. Und teures Öl heißt: Die Inflation bleibt hartnäckig.",
-      durationInSeconds: 9,
+        "Der Grund für die gute Laune: Hoffnung am Persischen Golf. Die USA und der Iran arbeiten an einem Plan, die Straße von Hormus wieder zu öffnen. Der Ölpreis gibt nach – Brent verliert über zwei Prozent.",
+      durationInSeconds: 9.98,
     },
     {
-      label: "USA · FEDERAL RESERVE",
+      label: "USA · META",
       countryIso: "840",
-      region: { point: { lon: -77.0457, lat: 38.8928 }, title: "WASHINGTON D.C.", subtitle: "Federal Reserve", zoom: 6.5 },
-      badge: { text: "🏛️", color: "#94a3b8", kind: "icon" },
+      region: { stateFips: "06", point: { lon: -122.1817, lat: 37.4848 }, title: "KALIFORNIEN", subtitle: "Meta · Menlo Park" },
+      badge: { text: "META", color: "#0866ff", kind: "logo" },
       news: [
-        { outlet: "CNBC", headline: "Fed rate decision September 2026: Rates rise to 3.75%-4%", accent: "#005594" },
-        { outlet: "Charles Schwab", headline: "Fed Hikes in 12-0 Vote, Commits to Inflation Fight", accent: "#00a0df" },
-      ],
-      stats: [{ label: "Leitzins", value: 4, decimals: 2, prefix: "3,75 – ", suffix: " %", direction: "up", tone: "bad" }],
-      voiceover:
-        "Zum anderen die Fed: Letzte Woche hat sie die Zinsen zum ersten Mal seit 2023 erhöht – und signalisiert, dass noch mehr kommen kann.",
-      durationInSeconds: 8.5,
-    },
-    {
-      label: "USA · IMMOBILIEN",
-      countryIso: "840",
-      badge: { text: "🏠", color: "#38bdf8", kind: "icon" },
-      news: [
-        { outlet: "Yahoo Finance", headline: "U.S. 30-year mortgage rate hits 7.12%, highest since May 2024", accent: "#6001d2" },
-        { outlet: "CNBC", headline: "Nearly 10% of borrowers opted for riskier mortgages last week, as rates soared over 7%", accent: "#005594" },
+        {
+          outlet: "Invezz",
+          headline: "Meta stock surges 36% in September on Muse AI boom: can it breach the $2T mark?",
+          accent: "#0f766e",
+        },
+        {
+          outlet: "GuruFocus",
+          headline: "Meta Platforms (META) Stock Surges Over 11% on Positive AI Product Outlook",
+          accent: "#1d4ed8",
+        },
       ],
       stats: [
-        { label: "Hypothek 30J", value: 7.12, decimals: 2, suffix: " %", direction: "up", tone: "bad" },
-        { label: "Anteil variabel", value: 9.8, decimals: 1, suffix: " %", direction: "up", tone: "bad" },
+        { label: "Diese Woche", value: 13, decimals: 0, suffix: " %", showSign: true, direction: "up" },
+        { label: "September", value: 36, decimals: 0, suffix: " %", showSign: true, direction: "up" },
       ],
       voiceover:
-        "Die Rechnung zahlen Immobilienkäufer: Der 30-jährige Hypothekenzins steigt auf 7,12 Prozent – der höchste Stand seit Mai 2024. Fast jeder Zehnte weicht schon auf riskantere, variable Kredite aus.",
-      durationInSeconds: 9,
+        "Der Star der Woche heißt Meta. Der neue KI-Assistent Muse stürmt die App-Charts – die Aktie legt diese Woche rund 13 Prozent zu, im September sogar 36 Prozent.",
+      durationInSeconds: 9.12,
+    },
+    {
+      label: "USA · ORACLE",
+      countryIso: "840",
+      region: { stateFips: "35", point: { lon: -106.68, lat: 31.86 }, title: "NEW MEXICO", subtitle: "Oracle · Project Jupiter" },
+      badge: { text: "ORCL", color: "#c74634", kind: "logo" },
+      news: [
+        {
+          outlet: "CNBC",
+          headline: "Oracle sends 'force majeure' notice about data center project — stock drops 3%",
+          accent: "#005594",
+        },
+        { outlet: "Yahoo Finance", headline: "Why Oracle's force majeure notice is freaking out AI bulls", accent: "#6001d2" },
+      ],
+      stats: [
+        { label: "Oracle (Do.)", value: -3, decimals: 0, suffix: " %", showSign: true, direction: "down" },
+        { label: "Rechenzentrum", value: 165, decimals: 0, prefix: "$", suffix: " Mrd.", direction: "neutral" },
+      ],
+      voiceover:
+        "Ganz anders bei Oracle: Für sein 165-Milliarden-Dollar-Rechenzentrum in New Mexico hat der Konzern am Donnerstag „höhere Gewalt“ angemeldet. Die Aktie verliert – und die KI-Bullen werden nervös.",
+      durationInSeconds: 10.88,
+    },
+    {
+      label: "CHINA × USA · HANDEL",
+      countryIso: "156",
+      region: { point: { lon: 116.4074, lat: 39.9042 }, title: "PEKING", subtitle: "Handelsfrieden bis 10. Januar" },
+      news: [
+        {
+          outlet: "CNBC",
+          headline: "U.S.-China trade truce extended for two months, Bessent says, as Xi begins state visit",
+          accent: "#005594",
+        },
+      ],
+      voiceover:
+        "Entspannung dagegen zwischen Washington und Peking: Beim Staatsbesuch von Xi Jinping verlängern die USA und China ihren Handelsfrieden bis zum 10. Januar.",
+      durationInSeconds: 7.97,
     },
     {
       label: "KRYPTO · BITCOIN",
-      lonLat: { lon: -25, lat: 28 },
+      lonLat: { lon: 150, lat: 28 },
       zoom: 1.3,
       network: true,
       badge: { text: "₿", color: "#f7931a", kind: "coin" },
       news: [
-        { outlet: "finanzen.net", headline: "Kryptomarkt: Bitcoin hält 86.500 Dollar – schlafender Wal erwacht nach 14 Jahren", accent: "#1d4ed8" },
-        { outlet: "The Crypto Basic", headline: "600 Bitcoin Bought at Around $7 Moved After 14.2 Years", accent: "#f7931a" },
+        {
+          outlet: "Yahoo Finance",
+          headline: "Bitcoin and ethereum prices today, Friday, September 25, 2026: Is bitcoin finally on a path to $250,000?",
+          accent: "#6001d2",
+        },
       ],
-      stats: [
-        { label: "Bitcoin", value: 86500, decimals: 0, prefix: "≈ $", direction: "neutral" },
-        { label: "Wal bewegt", value: 600, decimals: 0, suffix: " BTC", direction: "neutral" },
-      ],
-      voiceover:
-        "Und Bitcoin? Bleibt erstaunlich cool bei rund 86.500 Dollar. Spannender: Ein Wal, der 14 Jahre geschlafen hat, bewegt plötzlich 600 Bitcoin – gekauft für rund acht Dollar das Stück.",
-      durationInSeconds: 9.5,
+      stats: [{ label: "Bitcoin", value: 85000, decimals: 0, prefix: "≈ $", direction: "neutral" }],
+      voiceover: "Bitcoin hält sich bei rund 85.000 Dollar – mit fast zehn Prozent Plus auf Wochensicht.",
+      durationInSeconds: 4.77,
     },
     {
-      label: "USA · QUANTEN-AKTIEN",
+      label: "USA · MICRON",
       countryIso: "840",
-      region: { stateFips: "24", point: { lon: -76.9378, lat: 38.9897 }, title: "MARYLAND", subtitle: "IonQ · College Park" },
-      badge: { text: "IONQ", color: "#6f5bd0", kind: "logo" },
+      region: { stateFips: "16", point: { lon: -116.2023, lat: 43.615 }, title: "IDAHO", subtitle: "Micron · Boise" },
+      badge: { text: "MU", color: "#2f80ed", kind: "logo" },
       news: [
-        { outlet: "finanzen.ch", headline: "Durchbruch bei der Fehlerkorrektur: IonQ-Aktie springt kräftig an", accent: "#e30613" },
-        { outlet: "CNBC", headline: "IonQ shares rise after company says it made a major quantum computing breakthrough", accent: "#005594" },
+        { outlet: "The Motley Fool", headline: "Act Now: Micron Could Skyrocket After Sept. 30", accent: "#6b21a8" },
+        {
+          outlet: "Investing.com",
+          headline: "Micron earnings outlook: what to watch ahead of the September 30 report",
+          accent: "#f59e0b",
+        },
       ],
-      stats: [
-        { label: "IonQ (Hoch)", value: 11, decimals: 0, suffix: " %", showSign: true, direction: "up" },
-        { label: "D-Wave", value: 5, decimals: 0, suffix: " %", showSign: true, direction: "up" },
-      ],
+      stats: [{ label: "Micron seit Jahresstart", value: 279, decimals: 0, suffix: " %", showSign: true, direction: "up" }],
       voiceover:
-        "Doch es gibt Gewinner: IonQ aus Maryland springt zeitweise um mehr als elf Prozent – nach einem Durchbruch bei der Quanten-Fehlerkorrektur in Echtzeit. Und Nvidia holt sich IonQs neuen Quantenrechner ins eigene Forschungszentrum.",
-      durationInSeconds: 10.5,
-    },
-    {
-      label: "CHINA × USA · GIPFEL",
-      countryIso: "156",
-      region: { point: { lon: 116.4074, lat: 39.9042 }, title: "PEKING", subtitle: "Xi reist nach Washington" },
-      news: [
-        { outlet: "Yahoo Finance", headline: "Trump meets Xi this week. Expect small steps on trade and AI, not breakthroughs.", accent: "#6001d2" },
-        { outlet: "CNBC", headline: "Trump-Xi meeting: Why China's self-sufficiency changes the calculus", accent: "#005594" },
-      ],
-      voiceover:
-        "Und morgen wird's spannend: Xi Jinping trifft Donald Trump in Washington. Handel, Chips, seltene Erden – erwartet werden kleine Schritte, aber große Schlagzeilen.",
-      durationInSeconds: 9,
+        "Und nächste Woche wird's heiß: Am 30. September legt Micron Zahlen vor – die Aktie ist in diesem Jahr schon um fast 280 Prozent gestiegen. Und am selben Tag kommen neue Inflationsdaten.",
+      durationInSeconds: 11.67,
     },
   ],
-  outroVoiceover: "Das war dein Marktupdate. Folg Panda investiert, damit du morgen nichts verpasst.",
+  outroVoiceover: "Das war dein Marktupdate. Folg Panda investiert, damit du nichts verpasst.",
+  outroSeconds: 5.29,
   followLabel: "Folgen",
   followedLabel: "Gefolgt",
 };

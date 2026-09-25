@@ -90,6 +90,8 @@ export const EpisodeSchema = z.object({
   ticker: z.array(TickerItemSchema),
   scenes: z.array(SceneSchema).min(1),
   outroVoiceover: z.string(),
+  // Length of the outro (follow card) in seconds; default 3.5.
+  outroSeconds: z.number().min(2).max(15).optional(),
   followLabel: z.string(),
   followedLabel: z.string(),
 });

@@ -1,139 +1,195 @@
 """Synthesises the sound effects into public/sfx/*.wav (no external assets needed).
 
-Run with: python3 scripts/generate-sfx.py
+Designed to sound natural rather than "synthy": pink-noise air movement,
+real-room reverb, soft transients and wood/marimba-like UI tones.
+Requires numpy + scipy.  Run with: python3 scripts/generate-sfx.py
 """
-import math
 import os
-import random
-import struct
-import wave
 
-SR = 44100
+import numpy as np
+from scipy import signal
+from scipy.io import wavfile
+
+SR = 48000
 OUT = os.path.join(os.path.dirname(__file__), "..", "public", "sfx")
-random.seed(7)
+rng = np.random.default_rng(7)
 
 
-def write(name, left, right=None, gain=0.9):
-    right = right if right is not None else left
-    peak = max(1e-9, max(max(abs(x) for x in left), max(abs(x) for x in right)))
-    scale = gain / peak
+def t_axis(sec):
+    return np.arange(int(SR * sec)) / SR
+
+
+def pink(n):
+    white = rng.standard_normal(n)
+    spec = np.fft.rfft(white)
+    f = np.fft.rfftfreq(n, 1 / SR)
+    spec[1:] /= np.sqrt(f[1:])
+    spec[0] = 0
+    x = np.fft.irfft(spec, n)
+    return x / np.max(np.abs(x))
+
+
+def filt(x, kind, freq, order=2):
+    sos = signal.butter(order, freq, btype=kind, fs=SR, output="sos")
+    return signal.sosfilt(sos, x)
+
+
+def sweep_bandpass(x, freqs, q=1.1, block=256):
+    """Band-pass with a centre frequency that moves over time (block-wise)."""
+    out = np.zeros_like(x)
+    zi = None
+    for i in range(0, len(x), block):
+        f = float(np.clip(freqs[min(i, len(freqs) - 1)], 60, SR / 2.3))
+        bw = f / q
+        lo, hi = max(30.0, f - bw / 2), min(SR / 2.2, f + bw / 2)
+        sos = signal.butter(2, [lo, hi], btype="band", fs=SR, output="sos")
+        if zi is None:
+            zi = signal.sosfilt_zi(sos) * 0
+        seg, zi = signal.sosfilt(sos, x[i : i + block], zi=zi)
+        out[i : i + block] = seg
+    return out
+
+
+def reverb_ir(seconds, damping=6000, early=True):
+    n = int(SR * seconds)
+    t = np.arange(n) / SR
+    ir = np.zeros((n, 2))
+    decay = np.exp(-6.9 * t / seconds)
+    for ch in range(2):
+        tail = rng.standard_normal(n) * decay
+        tail = filt(tail, "low", damping)
+        ir[:, ch] = tail * 0.35
+        if early:
+            for d, g in [(0.011, 0.5), (0.019, 0.38), (0.027, 0.3), (0.041, 0.22), (0.057, 0.15)]:
+                k = int((d + ch * 0.0023) * SR)
+                ir[k, ch] += g
+    return ir / np.max(np.abs(ir))
+
+
+def with_reverb(dry, seconds, wet, damping=6000):
+    if dry.ndim == 1:
+        dry = np.stack([dry, dry], axis=1)
+    ir = reverb_ir(seconds, damping)
+    pad = np.zeros((int(SR * seconds), 2))
+    x = np.vstack([dry, pad])
+    rev = np.stack([signal.fftconvolve(x[:, c], ir[:, c])[: len(x)] for c in range(2)], axis=1)
+    rev /= max(1e-9, np.max(np.abs(rev)))
+    return x * (1 - wet) + rev * wet * np.max(np.abs(dry))
+
+
+def env(n, attack, release, curve=2.0):
+    e = np.ones(n)
+    a = int(SR * attack)
+    r = int(SR * release)
+    if a:
+        e[:a] = np.linspace(0, 1, a) ** curve
+    if r:
+        e[-r:] *= np.linspace(1, 0, r) ** curve
+    return e
+
+
+def pan_stereo(mono, start=-0.6, end=0.6):
+    p = np.linspace(start, end, len(mono))
+    left = mono * np.cos((p + 1) * np.pi / 4)
+    right = mono * np.sin((p + 1) * np.pi / 4)
+    return np.stack([left, right], axis=1)
+
+
+def write(name, x, peak_db=-1.0):
+    if x.ndim == 1:
+        x = np.stack([x, x], axis=1)
+    # Tiny fades avoid clicks at the file edges.
+    f = int(SR * 0.004)
+    x[:f] *= np.linspace(0, 1, f)[:, None]
+    x[-f:] *= np.linspace(1, 0, f)[:, None]
+    x = x / max(1e-9, np.max(np.abs(x))) * 10 ** (peak_db / 20)
     os.makedirs(OUT, exist_ok=True)
-    with wave.open(os.path.join(OUT, name), "wb") as w:
-        w.setnchannels(2)
-        w.setsampwidth(2)
-        w.setframerate(SR)
-        frames = bytearray()
-        for l, r in zip(left, right):
-            frames += struct.pack("<hh", int(max(-1, min(1, l * scale)) * 32767), int(max(-1, min(1, r * scale)) * 32767))
-        w.writeframes(bytes(frames))
+    wavfile.write(os.path.join(OUT, name), SR, (x * 32767).astype(np.int16))
 
 
-def svf_bandpass(signal, freqs, q=0.7):
-    """State-variable band-pass filter with a per-sample centre frequency."""
-    low = band = 0.0
-    out = []
-    damp = 1.0 / q
-    for x, f in zip(signal, freqs):
-        c = 2 * math.sin(math.pi * min(f, SR / 6) / SR)
-        high = x - low - damp * band
-        band += c * high
-        low += c * band
-        out.append(band)
-    return out
+# --- Camera flights: air rush that passes by -------------------------------------------
+def whoosh(sec, lo, hi, peak_at=0.55):
+    n = int(SR * sec)
+    t = np.linspace(0, 1, n)
+    shape = np.where(t < peak_at, (t / peak_at) ** 2.2, ((1 - t) / (1 - peak_at)) ** 1.4)
+    freqs = lo + (hi - lo) * shape
+    body = sweep_bandpass(pink(n), freqs, q=0.9)
+    air = sweep_bandpass(pink(n), freqs * 2.4, q=1.6) * 0.35
+    rumble = filt(pink(n), "low", 140) * 0.5
+    mono = (body + air + rumble * shape) * shape
+    stereo = pan_stereo(mono, -0.7, 0.7)
+    # Haas delay on the trailing side for width.
+    d = int(0.012 * SR)
+    stereo[d:, 1] = 0.85 * stereo[d:, 1] + 0.15 * stereo[:-d, 0]
+    return with_reverb(stereo, 1.6, 0.22, damping=5000)
 
 
-def noise(n):
-    return [random.uniform(-1, 1) for _ in range(n)]
+write("whoosh-long.wav", whoosh(2.7, 180, 1700))
+write("whoosh-short.wav", whoosh(1.5, 260, 2200, 0.5), peak_db=-2)
+
+# --- Hook impact: cinematic sub drop + body + transient, big hall --------------------------
+t = t_axis(2.2)
+sub_f = 32 + 28 * np.exp(-t * 3)
+sub = np.sin(2 * np.pi * np.cumsum(sub_f) / SR) * np.exp(-t * 1.6)
+body = filt(rng.standard_normal(len(t)), "low", 260) * np.exp(-t * 14)
+click = filt(rng.standard_normal(len(t)), "band", [1800, 5200]) * np.exp(-t * 180)
+impact = np.tanh((sub * 1.0 + body * 0.9 + click * 0.35) * 1.4)
+write("impact.wav", with_reverb(impact, 3.0, 0.3, damping=4000))
+
+# --- Flag drop: soft felt thump -------------------------------------------------------------
+t = t_axis(0.6)
+f = 55 + 70 * np.exp(-t * 28)
+thump = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 11)
+thump += filt(rng.standard_normal(len(t)), "low", 900) * np.exp(-t * 60) * 0.4
+write("thump.wav", with_reverb(np.tanh(thump * 1.3), 0.7, 0.15), peak_db=-2)
+
+# --- UI tap (cards, badges): wooden "tock" --------------------------------------------------
+t = t_axis(0.35)
+tap = np.sin(2 * np.pi * 1180 * t) * np.exp(-t * 55) + 0.5 * np.sin(2 * np.pi * 2350 * t) * np.exp(-t * 90)
+tap += filt(rng.standard_normal(len(t)), "band", [2500, 7000]) * np.exp(-t * 400) * 0.35
+write("pop.wav", with_reverb(tap, 0.45, 0.14), peak_db=-3)
+
+# --- Pin: two-note marimba "blip-bloop" ----------------------------------------------------
+t = t_axis(1.2)
 
 
-def whoosh(seconds, lo, hi):
-    n = int(SR * seconds)
-    t = [i / n for i in range(n)]
-    freqs = [lo + (hi - lo) * math.sin(math.pi * x) ** 1.5 for x in t]
-    body = svf_bandpass(noise(n), freqs, q=1.4)
-    air = svf_bandpass(noise(n), [f * 2.6 for f in freqs], q=2.0)
-    env = [math.sin(math.pi * x) ** 2 * (0.6 + 0.4 * x) for x in t]
-    mono = [(b + 0.35 * a) * e for b, a, e in zip(body, air, env)]
-    # Pan left -> right to sell the camera movement.
-    left = [m * math.cos(x * math.pi / 2 * 0.8 + 0.1) for m, x in zip(mono, t)]
-    right = [m * math.sin(x * math.pi / 2 * 0.8 + 0.1) for m, x in zip(mono, t)]
-    return left, right
+def marimba(freq, delay):
+    tt = np.clip(t - delay, 0, None)
+    on = (t >= delay).astype(float)
+    tone = np.sin(2 * np.pi * freq * tt) * np.exp(-tt * 7) + 0.25 * np.sin(2 * np.pi * freq * 3.93 * tt) * np.exp(-tt * 22)
+    return tone * on
 
 
-def sine_sweep(seconds, f0, f1, decay, curve=1.0):
-    n = int(SR * seconds)
-    out, phase = [], 0.0
-    for i in range(n):
-        x = i / n
-        f = f0 * (f1 / f0) ** (x ** curve)
-        phase += 2 * math.pi * f / SR
-        out.append(math.sin(phase) * math.exp(-decay * x))
-    return out
+pin = marimba(784, 0.0) * 0.8 + marimba(1175, 0.085)
+write("ding.wav", with_reverb(pin, 1.2, 0.22), peak_db=-3)
 
+# --- State lift: airy swell ---------------------------------------------------------------
+n = int(SR * 0.75)
+tt = np.linspace(0, 1, n)
+lift = sweep_bandpass(pink(n), 500 + 2600 * tt**1.5, q=1.3) * np.sin(np.pi * tt) ** 1.5
+write("lift.wav", with_reverb(pan_stereo(lift, 0.2, -0.2), 0.9, 0.25), peak_db=-4)
 
-def fade_in(sig, ms):
-    k = int(SR * ms / 1000)
-    return [s * min(1.0, i / max(1, k)) for i, s in enumerate(sig)]
+# --- Intro sting: reverse swell into a soft hit with shimmer ------------------------------
+n_sw = int(SR * 0.55)
+sw = sweep_bandpass(pink(n_sw), 300 + 4000 * np.linspace(0, 1, n_sw) ** 2, q=1.0) * np.linspace(0, 1, n_sw) ** 2.5
+t = t_axis(1.6)
+hit = np.sin(2 * np.pi * np.cumsum(48 + 40 * np.exp(-t * 20)) / SR) * np.exp(-t * 5)
+shimmer = sum(np.sin(2 * np.pi * fq * t) * np.exp(-t * 3.5) for fq in (1568, 2093, 2637)) * 0.12
+sting = np.concatenate([sw * 0.8, np.tanh(hit * 1.2) + shimmer])
+write("riser.wav", with_reverb(sting, 1.8, 0.28))
 
+# --- Follow button: soft mouse click + gentle chime ---------------------------------------
+t = t_axis(0.12)
+clk = filt(rng.standard_normal(len(t)), "band", [1800, 6000]) * (np.exp(-t * 700) + 0.6 * np.exp(-np.clip(t - 0.035, 0, None) * 900) * (t > 0.035))
+write("click.wav", with_reverb(clk, 0.3, 0.1), peak_db=-4)
+t = t_axis(1.4)
+chime = sum(
+    np.sin(2 * np.pi * fq * np.clip(t - d, 0, None)) * np.exp(-np.clip(t - d, 0, None) * 5) * (t >= d)
+    for fq, d in ((1318.5, 0.0), (1760, 0.07), (2637, 0.14))
+)
+write("sparkle.wav", with_reverb(chime, 1.4, 0.3), peak_db=-5)
 
-# Flights
-l, r = whoosh(2.4, 250, 2400)
-write("whoosh-long.wav", l, r, 0.85)
-l, r = whoosh(1.4, 350, 2800)
-write("whoosh-short.wav", l, r, 0.8)
-
-# UI pop (cards, stats)
-pop = sine_sweep(0.14, 950, 320, 9)
-click = [v * math.exp(-i / 90) for i, v in enumerate(noise(int(SR * 0.14)))]
-write("pop.wav", fade_in([p + 0.25 * c for p, c in zip(pop, click)], 2), gain=0.7)
-
-# Flag drop / thump
-thump = sine_sweep(0.45, 150, 55, 6)
-hit = svf_bandpass(noise(len(thump)), [900] * len(thump), 0.9)
-write("thump.wav", fade_in([a + 0.5 * b * math.exp(-i / 1500) for i, (a, b) in enumerate(zip(thump, hit))], 1), gain=0.85)
-
-# Pin ding
-n = int(SR * 1.3)
-ding = []
-for i in range(n):
-    x = i / SR
-    v = (math.sin(2 * math.pi * 1318.5 * x) * 0.6 + math.sin(2 * math.pi * 1977 * x) * 0.3 + math.sin(2 * math.pi * 2637 * x) * 0.15)
-    ding.append(v * math.exp(-x * 4.2))
-write("ding.wav", fade_in(ding, 3), gain=0.6)
-
-# State lift (soft upward sweep)
-lift = sine_sweep(0.55, 280, 900, 2.5, 0.8)
-lift = [v * math.sin(math.pi * i / len(lift)) for i, v in enumerate(lift)]
-write("lift.wav", lift, gain=0.5)
-
-# Hook impact
-n = int(SR * 1.8)
-boom = sine_sweep(1.8, 95, 38, 3.2, 0.5)
-crack = svf_bandpass(noise(n), [1200 - 900 * i / n for i in range(n)], 0.8)
-impact = [b + 0.6 * c * math.exp(-i / 2500) for i, (b, c) in enumerate(zip(boom, crack))]
-write("impact.wav", fade_in(impact, 1), gain=0.95)
-
-# Intro riser
-n = int(SR * 1.4)
-t = [i / n for i in range(n)]
-rise_noise = svf_bandpass(noise(n), [300 + 5000 * x ** 2 for x in t], 1.2)
-tone = sine_sweep(1.4, 180, 720, 0, 1.3)
-riser = [(0.8 * a + 0.35 * b) * x ** 1.6 for a, b, x in zip(rise_noise, tone, t)]
-write("riser.wav", riser, gain=0.75)
-
-# Follow tap + sparkle
-write("click.wav", fade_in([v * math.exp(-i / 160) for i, v in enumerate(noise(int(SR * 0.08)))], 0.5), gain=0.6)
-n = int(SR * 0.9)
-spark = [0.0] * n
-for k in range(9):
-    start = int(random.uniform(0, 0.45) * SR)
-    f = random.uniform(2200, 4200)
-    for i in range(start, n):
-        x = (i - start) / SR
-        spark[i] += math.sin(2 * math.pi * f * x) * math.exp(-x * 11) * 0.4
-write("sparkle.wav", spark, gain=0.5)
-
-# Counter tick
-write("tick.wav", [v * math.exp(-i / 60) for i, v in enumerate(svf_bandpass(noise(int(SR * 0.04)), [5000] * int(SR * 0.04), 1))], gain=0.5)
+# Legacy name kept so older episodes still resolve.
+write("tick.wav", with_reverb(tap * 0.5, 0.3, 0.1), peak_db=-8)
 
 print("SFX written to", os.path.abspath(OUT))

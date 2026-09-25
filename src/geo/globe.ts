@@ -2,8 +2,6 @@ import { geoArea, geoCentroid, geoDistance, geoOrthographic, geoPath } from "d3-
 import { feature, mesh } from "topojson-client";
 import countries50 from "world-atlas/countries-50m.json";
 import countries10 from "world-atlas/countries-10m.json";
-import land50 from "world-atlas/land-50m.json";
-import land10 from "world-atlas/land-10m.json";
 import usStates from "us-atlas/states-10m.json";
 
 type Pos = [number, number];
@@ -21,7 +19,7 @@ export type GeoFeature = {
   geometry: Geometry;
 };
 
-export type Camera = { lon: number; lat: number; zoom: number };
+export type Camera = { lon: number; lat: number; zoom: number; roll?: number };
 export type Lod = "low" | "high";
 
 // A piece of geometry with a bounding cap, so off-screen parts can be skipped per frame.
@@ -48,19 +46,6 @@ const toChunk = (geo: GeoFeature): Chunk => {
   return { geo, center, radius };
 };
 
-const polygonChunks = (topology: unknown, name: string): Chunk[] => {
-  const out: Chunk[] = [];
-  for (const f of featuresOf(topology, name)) {
-    const polys = f.geometry.type === "MultiPolygon" ? f.geometry.coordinates : f.geometry.type === "Polygon" ? [f.geometry.coordinates] : [];
-    for (const coords of polys) {
-      // A few degenerate slivers in the 10m data read as "the whole sphere".
-      if (geoArea({ type: "Polygon", coordinates: coords } as never) > 2 * Math.PI) continue;
-      out.push(toChunk({ type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: coords } }));
-    }
-  }
-  return out;
-};
-
 // Groups the lines of a mesh into ~cell-degree tiles.
 const lineChunks = (lines: Pos[][], cell: number): Chunk[] => {
   const tiles = new Map<string, Pos[][]>();
@@ -80,11 +65,6 @@ const borderLines = (topology: unknown, name: string) =>
   (mesh(topology as never, obj(topology, name), (a: unknown, b: unknown) => a !== b) as unknown as { coordinates: Pos[][] })
     .coordinates;
 
-export const LAND: Record<Lod, Chunk[]> = {
-  low: polygonChunks(land50, "land"),
-  high: polygonChunks(land10, "land"),
-};
-
 export const BORDERS: Record<Lod, Chunk[]> = {
   low: lineChunks(borderLines(countries50, "countries"), 20),
   high: lineChunks(borderLines(countries10, "countries"), 10),
@@ -97,53 +77,6 @@ const COUNTRIES: Record<Lod, GeoFeature[]> = {
   high: featuresOf(countries10, "countries"),
 };
 const STATES = featuresOf(usStates, "states");
-
-// Rough biome regions (lon0, lat0, lon1, lat1) blended over the land for a satellite look.
-const box = (lon0: number, lat0: number, lon1: number, lat1: number): GeoFeature => {
-  const ring: Pos[] = [];
-  const step = 2;
-  for (let x = lon0; x < lon1; x += step) ring.push([x, lat0]);
-  for (let y = lat0; y < lat1; y += step) ring.push([lon1, y]);
-  for (let x = lon1; x > lon0; x -= step) ring.push([x, lat1]);
-  for (let y = lat1; y > lat0; y -= step) ring.push([lon0, y]);
-  ring.push([lon0, lat0]);
-  const geo: GeoFeature = { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [ring] } };
-  // d3 treats rings winding the "wrong" way as the complement of the box.
-  if (geoArea(geo as never) > 2 * Math.PI) (geo.geometry.coordinates as PolygonCoords)[0] = ring.slice().reverse();
-  return geo;
-};
-
-export const BIOMES: { color: string; opacity: number; chunks: Chunk[] }[] = [
-  {
-    color: "#c9a96d", // deserts
-    opacity: 0.9,
-    chunks: [
-      box(-17, 15, 35, 31), box(35, 13, 58, 31), box(52, 25, 70, 36), box(116, -32, 146, -19),
-      box(-118, 28, -103, 38), box(-112, 24, -100, 31), box(12, -28, 25, -18), box(-72, -28, -68, -18),
-      box(68, 24, 74, 29), box(-72, -50, -65, -38),
-    ].map(toChunk),
-  },
-  {
-    color: "#a89a6b", // steppe
-    opacity: 0.8,
-    chunks: [box(55, 38, 118, 48), box(-110, 40, -98, 49), box(20, 45, 55, 52)].map(toChunk),
-  },
-  {
-    color: "#2c5a31", // rainforest / dense forest
-    opacity: 0.85,
-    chunks: [box(-76, -15, -48, 4), box(10, -8, 30, 5), box(95, -8, 125, 15), box(-130, 45, -120, 60), box(60, 55, 130, 66)].map(toChunk),
-  },
-  {
-    color: "#8c9876", // tundra
-    opacity: 0.8,
-    chunks: [box(-170, 64, -60, 74), box(20, 66, 180, 76)].map(toChunk),
-  },
-  {
-    color: "#eef3f6", // ice
-    opacity: 0.97,
-    chunks: [box(-74, 59, -11, 84), box(-179, -89, 179, -60), box(-125, 74, -60, 84), box(10, 76, 110, 84)].map(toChunk),
-  },
-];
 
 // Keeps only the country's big landmasses (drops e.g. Alaska/Hawaii for the USA)
 // so the flag drape and camera framing focus on the main territory.

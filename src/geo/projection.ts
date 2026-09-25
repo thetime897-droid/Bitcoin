@@ -4,7 +4,7 @@ import type { Layout } from "../layout";
 
 export const makeProjection = (camera: Camera, layout: Layout): GeoProjection =>
   geoOrthographic()
-    .rotate([-camera.lon, -camera.lat])
+    .rotate([-camera.lon, -camera.lat, camera.roll ?? 0])
     .translate([layout.focal.x, layout.focal.y])
     .scale(layout.globeRadius * camera.zoom)
     .clipAngle(90)

@@ -59,13 +59,8 @@ const StatCard: React.FC<{ stat: Stat; layout: Layout; inAt: number; outAt: numb
   const sound = (
     <>
       <Sequence from={inAt} durationInFrames={20} layout="none">
-        <Audio src={staticFile("sfx/pop.wav")} volume={0.28} />
+        <Audio src={staticFile("sfx/pop.wav")} volume={0.22} />
       </Sequence>
-      {[8, 16, 24, 32].map((d) => (
-        <Sequence key={d} from={inAt + d} durationInFrames={6} layout="none">
-          <Audio src={staticFile("sfx/tick.wav")} volume={0.18} />
-        </Sequence>
-      ))}
     </>
   );
   if (frame < inAt - 1) return sound;

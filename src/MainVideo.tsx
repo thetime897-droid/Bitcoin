@@ -32,7 +32,7 @@ const Sfx: React.FC<{ at: number; name: string; volume: number }> = ({ at, name,
 const segmentSounds = (seg: Segment, episode: Episode) => {
   const out: React.ReactNode[] = [];
   if (seg.kind === "intro") return out;
-  out.push(<Sfx key={`w${seg.from}`} at={seg.from} name={seg.fly >= 58 ? "whoosh-long" : "whoosh-short"} volume={0.55} />);
+  out.push(<Sfx key={`w${seg.from}`} at={seg.from} name={seg.fly >= 58 ? "whoosh-long" : "whoosh-short"} volume={0.5} />);
   if (seg.kind !== "scene") return out;
   const scene = episode.scenes[seg.index];
   if (scene.countryIso) out.push(<Sfx key={`t${seg.from}`} at={seg.from + seg.fly - 12} name="thump" volume={0.55} />);
@@ -177,8 +177,7 @@ export const MainVideo: React.FC<{ episode: Episode }> = ({ episode }) => {
       <ChannelBadge channelName={episode.channelName} brandLine={episode.brandLine} logoSrc={episode.logoSrc} layout={layout} />
 
       <SfxGain.Provider value={episode.voiceSrc ? 0.55 : 1}>
-        <Sfx at={0} name="riser" volume={0.5} />
-        <Sfx at={6} name="pop" volume={0.35} />
+        <Sfx at={0} name="riser" volume={0.55} />
         {segments.flatMap((s) => segmentSounds(s, episode))}
       </SfxGain.Provider>
       {episode.voiceSrc && <Audio src={staticFile(episode.voiceSrc)} volume={1} />}

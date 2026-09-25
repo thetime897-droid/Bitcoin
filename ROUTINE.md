@@ -118,12 +118,28 @@ Keine Videos committen.
 
 ## 7. Wenn der Nutzer seine Sprachaufnahme schickt
 
-1. Datei nach `public/voice.<ext>` kopieren, in `episode.ts`
-   `voiceSrc: "voice.<ext>"` setzen.
-2. Pausen finden: `ffmpeg -i public/voice.<ext> -af silencedetect=n=-35dB:d=0.35 -f null -`
-3. Die Szenengrenzen auf die Pausen zwischen den Szenen-Texten legen (Reihen-
-   folge = Skript). Szene 1 beginnt bei 1,33 s (Intro), `durationInSeconds`
-   jeder Szene so setzen, dass ihr Text vollständig hineinpasst; das Outro
-   (3,5 s) muss die Abschluss-Sätze abdecken, sonst die letzte Szene
-   verlängern.
-4. Neu rendern (Schritt 5) und schicken.
+1. `pip install --break-system-packages numpy scipy` (falls nötig), Datei nach
+   `public/voice.mp3` kopieren (vorher mit ffmpeg umwandeln, falls kein MP3),
+   in `episode.ts` `voiceSrc: "voice.mp3"` setzen.
+2. `blocks.txt` schreiben: der gesprochene Text je Szene plus Outro als letzter
+   Block, Blöcke durch eine Leerzeile getrennt (Zahlen am besten ausgeschrieben).
+3. `python3 scripts/voice-sync.py public/voice.mp3 blocks.txt` →
+   `durationInSeconds` je Szene und `outroSeconds` in `episode.ts` übernehmen.
+   Szenen unter ~5 s: kurze Flugstrecke wählen (Ziel nahe der Vorszene) und
+   nur eine News-Karte.
+4. Nur die gewünschten Formate rendern (Long: `npx remotion render Long ...`,
+   Details siehe `scripts/cloud-render.sh`).
+
+## 8. Hintergrundmusik (optional)
+
+`python3 scripts/generate-music.py <Sekunden> public/music/newsbed.wav` erzeugt
+ein eigenes, lizenzfreies News-Bed (selbst synthetisiert). Unter das fertige
+Video mischen (Musik duckt automatisch unter der Stimme):
+
+```bash
+ffmpeg -i out/video.mp4 -i public/music/newsbed.wav -filter_complex \
+ "[0:a]asplit=2[k][v];[1:a]volume=0.3[m];[m][k]sidechaincompress=threshold=0.02:ratio=8:attack=15:release=400[md];[v][md]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]" \
+ -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k out/video-musik.mp4
+```
+
+Beide Versionen (mit/ohne Musik) und die Musik-Datei schicken.
