@@ -1,11 +1,12 @@
 import type { Episode } from "../types";
 
-// SKRIPT-ENTWURF "Rüstungsaktien" - noch keine Sprachaufnahme.
-// durationInSeconds sind Schätzungen (~2,9 Woerter/Sekunde); nach der
+// SKRIPT-ENTWURF "Rüstungsaktien" (v2, ausführlicher) - noch keine Sprachaufnahme.
+// durationInSeconds sind Schätzungen (~3 Woerter/Sekunde); nach der
 // Aufnahme mit `scripts/voice-sync.py` auf die echten Satzgrenzen setzen.
-// Quellen (Stand 25. September 2026): CNBC, Investing.com, Barchart,
-// The Defense Post, Defense Daily, Foreign Policy Journal, ad-hoc-news.de,
-// Börse Express - siehe Notizen im Chat.
+// Quellen (Stand 25. September 2026): CNBC, Investing.com, Barchart, Janes,
+// The Defense Post, Defense Daily, Foreign Policy Journal, GuruFocus,
+// Börse Express, IT-BOLTWISE, ad-hoc-news.de, Northrop-Grumman-Newsroom,
+// BAE-Systems-Newsroom - siehe Notizen im Chat.
 export const episode: Episode = {
   dateLabel: "25. SEPTEMBER",
   channelName: "Panda_investiert",
@@ -39,19 +40,23 @@ export const episode: Episode = {
           accent: "#f59e0b",
         },
         {
-          outlet: "Barchart",
-          headline:
-            "Lockheed Martin Stock Looks Well-Positioned to Get a Big Lift From the Very Costly Golden Dome Initiative",
-          accent: "#c8102e",
+          outlet: "Janes",
+          headline: "US DoD, Lockheed Martin finalise contract for nearly 300 F-35s",
+          accent: "#1e3a5f",
+        },
+        {
+          outlet: "CNBC",
+          headline: "Earnings upside for this defense giant isn't being appreciated by investors, says UBS",
+          accent: "#005594",
         },
       ],
       stats: [
         { label: "Kurs", value: 528.09, decimals: 2, prefix: "$", direction: "up" },
-        { label: "Vs. Jahreshoch", value: -24.32, decimals: 2, suffix: " %", showSign: true, direction: "down", tone: "bad" },
+        { label: "UBS-Kursziel", value: 674, decimals: 0, prefix: "$", direction: "up", tone: "good" },
       ],
       voiceover:
-        "Los geht's mit Lockheed Martin: Der US-Rüstungsriese hat gerade einen milliardenschweren F-35-Vertrag mit dem Pentagon finalisiert und ist am Golden-Dome-Raketenschutzschild beteiligt. Die Aktie notiert bei 528 Dollar – trotzdem liegt sie noch rund 24 Prozent unter ihrem Jahreshoch.",
-      durationInSeconds: 11.5,
+        "Los geht's mit Lockheed Martin: Der Rüstungsriese hat gerade einen 12,5-Milliarden-Dollar-Vertrag über 296 neue F-35 mit dem Pentagon finalisiert und ist zusätzlich am milliardenschweren Golden-Dome-Raketenschutzschild beteiligt. UBS hat die Aktie Anfang September von Neutral auf Kaufen hochgestuft, Kursziel 674 Dollar – rund 26 Prozent Potenzial. Trotzdem notiert sie bei 528 Dollar noch 24 Prozent unter ihrem Jahreshoch, die nächsten Zahlen gibt's am 27. Oktober.",
+      durationInSeconds: 21,
     },
     {
       label: "USA · NORTHROP GRUMMAN",
@@ -71,6 +76,12 @@ export const episode: Episode = {
           accent: "#334155",
         },
         {
+          outlet: "Northrop Grumman Newsroom",
+          headline:
+            "Northrop Grumman Breaks Ground on New Facility to Support Strategic Deterrence and Advanced Aerospace Missions in Utah",
+          accent: "#475569",
+        },
+        {
           outlet: "ad-hoc-news",
           headline: "Northrop Grumman stock falls as defense demand meets execution risk",
           accent: "#0f172a",
@@ -81,8 +92,8 @@ export const episode: Episode = {
         { label: "Operative Marge Q2", value: 10.1, decimals: 1, suffix: " %", direction: "down", tone: "bad" },
       ],
       voiceover:
-        "Auch Northrop Grumman punktet mit neuen Aufträgen: Zusammen mit True Anomaly baut der Konzern Aufklärungssatelliten für das Pentagon. Doch im zweiten Quartal ist die operative Marge von 13,8 auf 10,1 Prozent gefallen – Wachstum trifft auf Ausführungsrisiken.",
-      durationInSeconds: 12,
+        "Auch Northrop Grumman punktet mit neuen Aufträgen: Zusammen mit True Anomaly baut der Konzern Aufklärungssatelliten für das Pentagon, parallel wächst in Utah die Sentinel-Fabrik für die neuen Atomraketen weiter. Der Umsatz stieg im zweiten Quartal um 5 Prozent auf 10,88 Milliarden Dollar, doch die operative Marge fiel von 13,8 auf 10,1 Prozent – Wachstum trifft auf Ausführungsrisiken. Die Aktie liegt gut 32 Prozent unter ihrem Jahreshoch, nächste Zahlen: 20. Oktober.",
+      durationInSeconds: 23,
     },
     {
       label: "UK · BAE SYSTEMS",
@@ -100,6 +111,11 @@ export const episode: Episode = {
           accent: "#1d4ed8",
         },
         {
+          outlet: "BAE Systems Newsroom",
+          headline: "BAE Systems Announces 2025 Full Year Results",
+          accent: "#0f766e",
+        },
+        {
           outlet: "Foreign Policy Journal",
           headline:
             "BAE Systems (LSE: BA.) Share Price Rises 0.69% As Order Backlog And 2025 Results Bolster Investor Confidence",
@@ -111,8 +127,8 @@ export const episode: Episode = {
         { label: "Seit Jahresbeginn", value: 19.6, decimals: 1, suffix: " %", showSign: true, direction: "up", tone: "good" },
       ],
       voiceover:
-        "In Großbritannien sichert sich BAE Systems 818 Millionen Dollar vom US-Heer für weitere gepanzerte Fahrzeuge vom Typ AMPV. Die Aktie steht seit Jahresbeginn rund 20 Prozent im Plus, Citi sieht noch 14 Prozent Potenzial nach oben.",
-      durationInSeconds: 11.5,
+        "In Großbritannien sichert sich BAE Systems 818 Millionen Dollar vom US-Heer für weitere gepanzerte Fahrzeuge vom Typ AMPV. Der Rückenwind kommt aber vor allem aus den Jahreszahlen: 2025 wuchs der Umsatz um 10 Prozent auf 30,7 Milliarden Pfund, der Gewinn je Aktie um 12 Prozent, dazu ein Rekord-Auftragsbestand von 83,6 Milliarden Pfund. Die Aktie steht seit Jahresbeginn rund 20 Prozent im Plus, Citi sieht noch 14 Prozent Potenzial nach oben.",
+      durationInSeconds: 23,
     },
     {
       label: "DEUTSCHLAND · RHEINMETALL",
@@ -131,18 +147,24 @@ export const episode: Episode = {
           accent: "#005594",
         },
         {
+          outlet: "GuruFocus",
+          headline:
+            "Rheinmetall AG (RNMBF) (Q2 2026) Earnings Call Highlights: Record Order Intake and Strategic Shifts Amid Naval Setback",
+          accent: "#7c3aed",
+        },
+        {
           outlet: "ad-hoc-news",
           headline: "Die Rheinmetall-Aktie fällt am 25.09.2026 um 1,64 Prozent",
           accent: "#0f172a",
         },
       ],
       stats: [
-        { label: "Kurs heute", value: -1.64, decimals: 2, suffix: " %", showSign: true, direction: "down", tone: "bad" },
+        { label: "Auftragseingang Q2", value: 476, decimals: 0, suffix: " %", showSign: true, direction: "up", tone: "good" },
         { label: "Umsatzziel 2026", value: 14.2, decimals: 1, prefix: "bis € ", suffix: " Mrd.", direction: "down", tone: "bad" },
       ],
       voiceover:
-        "Bei Rheinmetall dagegen bremst die Politik: Nachdem Deutschland das milliardenschwere Fregattenprogramm F126 gestoppt hat, kappt der Konzern seine Umsatzprognose auf bis zu 14,2 Milliarden Euro. Analysten wie Deutsche Bank und Bernstein bleiben trotzdem bei Kaufempfehlungen.",
-      durationInSeconds: 11.5,
+        "Bei Rheinmetall ist die operative Entwicklung stark: Der Umsatz sprang im zweiten Quartal um 69 Prozent auf 3,29 Milliarden Euro, der Auftragseingang sogar um 476 Prozent auf 11,4 Milliarden Euro. Trotzdem bremst die Politik: Weil Deutschland das Fregattenprogramm F126 gestoppt hat, kappt der Konzern seine Umsatzprognose auf bis zu 14,2 Milliarden Euro. Deutsche Bank und Bernstein bleiben mit Kurszielen von 1.800 und 1.900 Euro trotzdem bei Kaufempfehlungen.",
+      durationInSeconds: 22.5,
     },
     {
       label: "DEUTSCHLAND · RENK",
@@ -161,17 +183,22 @@ export const episode: Episode = {
         },
         {
           outlet: "Börse Express",
-          headline: "Renk Group: Aktie nähert sich 52-Wochen-Tief",
+          headline: "Renk Group Aktie: 7,4 Milliarden Auftragsbestand",
           accent: "#16a34a",
+        },
+        {
+          outlet: "IT-BOLTWISE",
+          headline: "Renk nach Halbjahreszahlen: Rekord-Auftragseingang trifft auf Margenfrage",
+          accent: "#b45309",
         },
       ],
       stats: [
-        { label: "Kurs", value: 40.4, decimals: 2, prefix: "€", direction: "up", tone: "good" },
-        { label: "Seit Jahresbeginn", value: -22, decimals: 0, suffix: " %", showSign: true, direction: "down", tone: "bad" },
+        { label: "Auftragseingang H1", value: 29.7, decimals: 1, suffix: " %", showSign: true, direction: "up", tone: "good" },
+        { label: "EPS Q2", value: 0.15, decimals: 2, prefix: "€", direction: "down", tone: "bad" },
       ],
       voiceover:
-        "Und RENK kratzt am 52-Wochen-Tief: Die Aktie ist seit Jahresbeginn rund 22 Prozent gefallen, nachdem US-Außenminister Rubio Putin offiziell zum G20-Gipfel eingeladen hat – Anleger spekulieren auf Entspannung. Dabei meldet RENK ein Rekord-Auftragspolster und bestätigt sein Jahresziel.",
-      durationInSeconds: 13.5,
+        "Und RENK zeigt: operative Stärke schützt nicht vor politischer Stimmung. Der Auftragseingang stieg im ersten Halbjahr um 29,7 Prozent auf 1,2 Milliarden Euro, der Auftragsbestand erreichte mit 7,4 Milliarden Euro ein Rekordhoch, und der Jahresausblick wurde bestätigt. Trotzdem ist die Aktie seit Jahresbeginn rund 22 Prozent gefallen, unter anderem weil US-Außenminister Rubio Putin offiziell zum G20-Gipfel eingeladen hat und Anleger auf Entspannung spekulieren. Der Gewinn je Aktie halbierte sich im zweiten Quartal auf 0,15 Euro.",
+      durationInSeconds: 26.5,
     },
   ],
   outroVoiceover:
