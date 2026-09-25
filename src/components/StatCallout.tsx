@@ -1,6 +1,5 @@
 import React from "react";
-import { Easing, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { Audio } from "@remotion/media";
+import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import type { Stat } from "../types";
 import type { Layout } from "../layout";
 import { COLORS, FONT, directionArrow, formatStat, toneColor } from "../ui";
@@ -56,18 +55,10 @@ const StatCard: React.FC<{ stat: Stat; layout: Layout; inAt: number; outAt: numb
     extrapolateRight: "clamp",
   });
 
-  const sound = (
-    <>
-      <Sequence from={inAt} durationInFrames={20} layout="none">
-        <Audio src={staticFile("sfx/pop.wav")} volume={0.22} />
-      </Sequence>
-    </>
-  );
-  if (frame < inAt - 1) return sound;
+  if (frame < inAt - 1) return null;
 
   return (
     <>
-    {sound}
     <div
       style={{
         opacity: Math.min(1, pop * 1.5) * (1 - exit),

@@ -1,6 +1,5 @@
 import React from "react";
-import { Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { Audio } from "@remotion/media";
+import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import type { Badge as BadgeData } from "../types";
 import type { Layout } from "../layout";
 import { FONT } from "../ui";
@@ -21,12 +20,7 @@ export const Badge: React.FC<Props> = ({ badge, layout, inAt, outAt, centered })
 
   const pop = spring({ frame: frame - inAt, fps, config: { damping: 9, stiffness: 160 } });
   const exit = interpolate(frame, [outAt - 10, outAt], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const sound = (
-    <Sequence from={inAt} durationInFrames={20} layout="none">
-      <Audio src={staticFile("sfx/pop.wav")} volume={0.4} />
-    </Sequence>
-  );
-  if (frame < inAt - 1) return sound;
+  if (frame < inAt - 1) return null;
 
   const size = (centered ? 200 : 150) * u;
   const bob = Math.sin((frame - inAt) / 14) * 8 * u;
@@ -40,8 +34,7 @@ export const Badge: React.FC<Props> = ({ badge, layout, inAt, outAt, centered })
 
   return (
     <div style={{ position: "absolute", inset: 0, opacity: 1 - exit }}>
-      {sound}
-      {!centered && (
+        {!centered && (
         <svg width={layout.width} height={layout.height} style={{ position: "absolute", inset: 0 }}>
           <line
             x1={focal.x}

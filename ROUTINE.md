@@ -138,8 +138,13 @@ Video mischen (Musik duckt automatisch unter der Stimme):
 
 ```bash
 ffmpeg -i out/video.mp4 -i public/music/newsbed.wav -filter_complex \
- "[0:a]asplit=2[k][v];[1:a]volume=0.3[m];[m][k]sidechaincompress=threshold=0.02:ratio=8:attack=15:release=400[md];[v][md]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]" \
+ "[0:a]asplit=2[k][v];[1:a]volume=0.135[m];[m][k]sidechaincompress=threshold=0.02:ratio=8:attack=15:release=400[md];[v][md]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]" \
  -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k out/video-musik.mp4
 ```
+
+`volume=0.135` ist der abgenommene Pegel (Stimme klar im Vordergrund) – nicht
+lauter machen. Sound-Design bewusst sparsam: ein Whoosh nur bei echtem
+Ortswechsel, ein dezenter Impact auf dem Hook, keine Pop-/Ding-Sounds bei
+Einblendungen (Pegel zentral in `src/MainVideo.tsx`, `SFX_WITH_VOICE`).
 
 Beide Versionen (mit/ohne Musik) und die Musik-Datei schicken.

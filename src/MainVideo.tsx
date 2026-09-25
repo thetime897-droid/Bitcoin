@@ -12,16 +12,22 @@ import { RegionMarker } from "./components/RegionMarker";
 import { SceneOverlay } from "./scenes/SceneOverlay";
 import { makeProjection } from "./geo/projection";
 import { useLayout } from "./layout";
+import { geoDistance } from "d3-geo";
 import { buildTimeline, cameraAt, flyProgress, regionRevealAt, segmentAt, type Segment } from "./timeline";
 import type { Episode } from "./types";
+import { SfxGain, useSfxGain } from "./sfx";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-// Sound effects are mixed quieter when a voice-over is present.
-const SfxGain = React.createContext(1);
+// Scene-level effects sit a bit lower than the intro sting.
+const VOICE_FX_TRIM = 0.55;
+// Overall effect level under a voice-over (-60 %, then another -20 % after review).
+const SFX_WITH_VOICE = 0.32;
+// Flights shorter than this (radians on the sphere) are not a real change of place.
+const MIN_TRAVEL = 0.12;
 
 const Sfx: React.FC<{ at: number; name: string; volume: number }> = ({ at, name, volume }) => {
-  const gain = React.useContext(SfxGain);
+  const gain = useSfxGain();
   return (
     <Sequence from={Math.max(0, Math.round(at))} layout="none" name={`SFX ${name}`}>
       <Audio src={staticFile(`sfx/${name}.wav`)} volume={volume * gain} />
@@ -29,19 +35,18 @@ const Sfx: React.FC<{ at: number; name: string; volume: number }> = ({ at, name,
   );
 };
 
-const segmentSounds = (seg: Segment, episode: Episode) => {
+// Deliberately sparse: one whoosh per real location change, a single hit on the hook, a ping on pins.
+const segmentSounds = (seg: Segment, episode: Episode, trim: number) => {
   const out: React.ReactNode[] = [];
-  if (seg.kind === "intro") return out;
-  out.push(<Sfx key={`w${seg.from}`} at={seg.from} name={seg.fly >= 58 ? "whoosh-long" : "whoosh-short"} volume={0.5} />);
   if (seg.kind !== "scene") return out;
-  const scene = episode.scenes[seg.index];
-  if (scene.countryIso) out.push(<Sfx key={`t${seg.from}`} at={seg.from + seg.fly - 12} name="thump" volume={0.55} />);
-  if (seg.index === 0) out.push(<Sfx key={`i${seg.from}`} at={seg.from + seg.fly - 2} name="impact" volume={0.7} />);
-  if (seg.focus) out.push(<Sfx key={`f${seg.from}`} at={seg.from + seg.focusAt} name="whoosh-short" volume={0.3} />);
-  if (scene.region) {
-    const reveal = seg.from + regionRevealAt(seg);
-    if (scene.region.stateFips) out.push(<Sfx key={`l${seg.from}`} at={reveal - 4} name="lift" volume={0.45} />);
-    out.push(<Sfx key={`d${seg.from}`} at={reveal + 8} name="ding" volume={0.35} />);
+  const travel = geoDistance([seg.start.lon, seg.start.lat], [seg.target.lon, seg.target.lat]);
+  if (travel >= MIN_TRAVEL) {
+    out.push(<Sfx key={`w${seg.from}`} at={seg.from} name={seg.fly >= 58 ? "whoosh-long" : "whoosh-short"} volume={0.5 * trim} />);
+  }
+  if (seg.index === 0) out.push(<Sfx key={`i${seg.from}`} at={seg.from + seg.fly - 2} name="impact" volume={0.55 * trim} />);
+  // The ping when the location pin lands (kept on request).
+  if (episode.scenes[seg.index].region) {
+    out.push(<Sfx key={`d${seg.from}`} at={seg.from + regionRevealAt(seg) + 8} name="ding" volume={0.35 * trim} />);
   }
   return out;
 };
@@ -124,6 +129,7 @@ export const MainVideo: React.FC<{ episode: Episode }> = ({ episode }) => {
   const flash = seg.kind === "scene" && seg.index === 0 ? interpolate(local - seg.fly, [-2, 0, 10], [0, 0.5, 0], clamp) : 0;
 
   return (
+    <SfxGain.Provider value={episode.voiceSrc ? SFX_WITH_VOICE : 1}>
     <AbsoluteFill style={{ backgroundColor: "#000" }}>
       <AbsoluteFill style={{ translate: `${shake}px ${shake * 0.6}px` }}>
         <Globe
@@ -176,11 +182,10 @@ export const MainVideo: React.FC<{ episode: Episode }> = ({ episode }) => {
       <HudChips layout={layout} dateLabel={episode.dateLabel} location={location} locationSince={seg.from} />
       <ChannelBadge channelName={episode.channelName} brandLine={episode.brandLine} logoSrc={episode.logoSrc} layout={layout} />
 
-      <SfxGain.Provider value={episode.voiceSrc ? 0.55 : 1}>
-        <Sfx at={0} name="riser" volume={0.55} />
-        {segments.flatMap((s) => segmentSounds(s, episode))}
-      </SfxGain.Provider>
+      <Sfx at={0} name="riser" volume={0.55 * (episode.voiceSrc ? VOICE_FX_TRIM : 1)} />
+      {segments.flatMap((s) => segmentSounds(s, episode, episode.voiceSrc ? VOICE_FX_TRIM : 1))}
       {episode.voiceSrc && <Audio src={staticFile(episode.voiceSrc)} volume={1} />}
     </AbsoluteFill>
+    </SfxGain.Provider>
   );
 };

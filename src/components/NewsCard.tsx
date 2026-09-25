@@ -1,6 +1,5 @@
 import React from "react";
-import { Easing, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { Audio } from "@remotion/media";
+import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import type { News } from "../types";
 import type { Layout } from "../layout";
 import { FONT, SERIF } from "../ui";
@@ -33,12 +32,7 @@ const Card: React.FC<{
     extrapolateRight: "clamp",
     easing: Easing.in(Easing.cubic),
   });
-  const sound = (
-    <Sequence from={inAt} durationInFrames={20} layout="none">
-      <Audio src={staticFile("sfx/pop.wav")} volume={0.3} />
-    </Sequence>
-  );
-  if (frame < inAt - 1 || frame > outAt + 1) return sound;
+  if (frame < inAt - 1 || frame > outAt + 1) return null;
 
   const enterX = first ? 0 : (1 - enter) * 90 * u;
   const enterY = first ? (1 - enter) * -50 * u : 0;
@@ -54,7 +48,6 @@ const Card: React.FC<{
 
   return (
     <>
-    {sound}
     <div
       style={{
         position: "absolute",

@@ -3,6 +3,7 @@ import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "re
 import type { Layout } from "../layout";
 import { COLORS, FONT } from "../ui";
 import { Audio } from "@remotion/media";
+import { useSfxGain } from "../sfx";
 import { Sequence, staticFile } from "remotion";
 import { Avatar } from "./Avatar";
 
@@ -18,6 +19,7 @@ const TAP_AT = 62;
 
 export const FollowCta: React.FC<Props> = ({ layout, channelName, logoSrc, followLabel, followedLabel }) => {
   const frame = useCurrentFrame();
+  const sfxGain = useSfxGain();
   const { fps } = useVideoConfig();
   const { u, portrait, width, height } = layout;
 
@@ -64,10 +66,7 @@ export const FollowCta: React.FC<Props> = ({ layout, channelName, logoSrc, follo
   return (
     <>
     <Sequence from={TAP_AT - 1} layout="none">
-      <Audio src={staticFile("sfx/click.wav")} volume={0.6} />
-    </Sequence>
-    <Sequence from={TAP_AT} layout="none">
-      <Audio src={staticFile("sfx/sparkle.wav")} volume={0.45} />
+      <Audio src={staticFile("sfx/click.wav")} volume={0.4 * sfxGain} />
     </Sequence>
     <div
       style={{
