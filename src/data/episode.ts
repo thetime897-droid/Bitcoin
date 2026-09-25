@@ -1,8 +1,7 @@
 import type { Episode } from "../types";
 
-// SKRIPT-ENTWURF "Rüstungsaktien" (v2, ausführlicher) - noch keine Sprachaufnahme.
-// durationInSeconds sind Schätzungen (~3 Woerter/Sekunde); nach der
-// Aufnahme mit `scripts/voice-sync.py` auf die echten Satzgrenzen setzen.
+// Folge "Rüstungsaktien", synchron zur Sprachaufnahme public/voice.mp3
+// (Szenenlaengen aus scripts/voice-sync.py).
 // Quellen (Stand 25. September 2026): CNBC, Investing.com, Barchart, Janes,
 // The Defense Post, Defense Daily, Foreign Policy Journal, GuruFocus,
 // Börse Express, IT-BOLTWISE, ad-hoc-news.de, Northrop-Grumman-Newsroom,
@@ -12,7 +11,7 @@ export const episode: Episode = {
   channelName: "Panda_investiert",
   brandLine: "MARKTUPDATE",
   logoSrc: "logo.jpg",
-  // voiceSrc: "voice.mp3", // erst setzen, wenn die Aufnahme in public/ liegt
+  voiceSrc: "voice.mp3",
   introTitle: "RÜSTUNGS*AKTIEN*",
   introSubtitle: "5 AKTIEN IM CHECK",
   ticker: [
@@ -56,7 +55,7 @@ export const episode: Episode = {
       ],
       voiceover:
         "Los geht's mit Lockheed Martin: Der Rüstungsriese hat gerade einen 12,5-Milliarden-Dollar-Vertrag über 296 neue F-35 mit dem Pentagon finalisiert und ist zusätzlich am milliardenschweren Golden-Dome-Raketenschutzschild beteiligt. UBS hat die Aktie Anfang September von Neutral auf Kaufen hochgestuft, Kursziel 674 Dollar – rund 26 Prozent Potenzial. Trotzdem notiert sie bei 528 Dollar noch 24 Prozent unter ihrem Jahreshoch, die nächsten Zahlen gibt's am 27. Oktober.",
-      durationInSeconds: 21,
+      durationInSeconds: 26.772,
     },
     {
       label: "USA · NORTHROP GRUMMAN",
@@ -93,7 +92,7 @@ export const episode: Episode = {
       ],
       voiceover:
         "Auch Northrop Grumman punktet mit neuen Aufträgen: Zusammen mit True Anomaly baut der Konzern Aufklärungssatelliten für das Pentagon, parallel wächst in Utah die Sentinel-Fabrik für die neuen Atomraketen weiter. Der Umsatz stieg im zweiten Quartal um 5 Prozent auf 10,88 Milliarden Dollar, doch die operative Marge fiel von 13,8 auf 10,1 Prozent – Wachstum trifft auf Ausführungsrisiken. Die Aktie liegt gut 32 Prozent unter ihrem Jahreshoch, nächste Zahlen: 20. Oktober.",
-      durationInSeconds: 23,
+      durationInSeconds: 28.215,
     },
     {
       label: "UK · BAE SYSTEMS",
@@ -128,7 +127,7 @@ export const episode: Episode = {
       ],
       voiceover:
         "In Großbritannien sichert sich BAE Systems 818 Millionen Dollar vom US-Heer für weitere gepanzerte Fahrzeuge vom Typ AMPV. Der Rückenwind kommt aber vor allem aus den Jahreszahlen: 2025 wuchs der Umsatz um 10 Prozent auf 30,7 Milliarden Pfund, der Gewinn je Aktie um 12 Prozent, dazu ein Rekord-Auftragsbestand von 83,6 Milliarden Pfund. Die Aktie steht seit Jahresbeginn rund 20 Prozent im Plus, Citi sieht noch 14 Prozent Potenzial nach oben.",
-      durationInSeconds: 23,
+      durationInSeconds: 26.11,
     },
     {
       label: "DEUTSCHLAND · RHEINMETALL",
@@ -164,7 +163,7 @@ export const episode: Episode = {
       ],
       voiceover:
         "Bei Rheinmetall ist die operative Entwicklung stark: Der Umsatz sprang im zweiten Quartal um 69 Prozent auf 3,29 Milliarden Euro, der Auftragseingang sogar um 476 Prozent auf 11,4 Milliarden Euro. Trotzdem bremst die Politik: Weil Deutschland das Fregattenprogramm F126 gestoppt hat, kappt der Konzern seine Umsatzprognose auf bis zu 14,2 Milliarden Euro. Deutsche Bank und Bernstein bleiben mit Kurszielen von 1.800 und 1.900 Euro trotzdem bei Kaufempfehlungen.",
-      durationInSeconds: 22.5,
+      durationInSeconds: 28.36,
     },
     {
       label: "DEUTSCHLAND · RENK",
@@ -198,12 +197,12 @@ export const episode: Episode = {
       ],
       voiceover:
         "Und RENK zeigt: operative Stärke schützt nicht vor politischer Stimmung. Der Auftragseingang stieg im ersten Halbjahr um 29,7 Prozent auf 1,2 Milliarden Euro, der Auftragsbestand erreichte mit 7,4 Milliarden Euro ein Rekordhoch, und der Jahresausblick wurde bestätigt. Trotzdem ist die Aktie seit Jahresbeginn rund 22 Prozent gefallen, unter anderem weil US-Außenminister Rubio Putin offiziell zum G20-Gipfel eingeladen hat und Anleger auf Entspannung spekulieren. Der Gewinn je Aktie halbierte sich im zweiten Quartal auf 0,15 Euro.",
-      durationInSeconds: 26.5,
+      durationInSeconds: 32.66,
     },
   ],
   outroVoiceover:
     "Das war dein Rüstungsaktien-Update: Milliardenaufträge auf der einen Seite, Friedens-Spekulation auf der anderen. Folg Panda investiert, damit du nichts verpasst.",
-  outroSeconds: 6.5,
+  outroSeconds: 11.46,
   followLabel: "Folgen",
   followedLabel: "Gefolgt",
 };

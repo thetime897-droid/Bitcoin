@@ -71,7 +71,7 @@ export const SceneSchema = z
     stats: z.array(StatSchema).max(2).optional(),
     // Spoken narration for this scene (not rendered - reference for recording/sync).
     voiceover: z.string(),
-    durationInSeconds: z.number().min(3).max(30),
+    durationInSeconds: z.number().min(3).max(45),
   })
   .refine((scene) => scene.countryIso || scene.lonLat, {
     message: "Either countryIso or lonLat must be set to define the camera target.",
