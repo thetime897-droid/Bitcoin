@@ -46,7 +46,7 @@ const segmentSounds = (seg: Segment, episode: Episode, trim: number) => {
     out.push(<Sfx key={`w${seg.from}`} at={seg.from} name={seg.fly >= 58 ? "whoosh-long" : "whoosh-short"} volume={0.5 * trim} />);
   }
   newsCardTimes(episode.scenes[seg.index].news.length, seg.fly, seg.duration).forEach(({ inAt }, i) => {
-    out.push(<Sfx key={`c${seg.from}-${i}`} at={seg.from + inAt} name="click" volume={0.7 * trim} />);
+    out.push(<Sfx key={`c${seg.from}-${i}`} at={seg.from + inAt} name="click" volume={1.4 * trim} />);
   });
   // The ping when the location pin lands (kept on request).
   if (episode.scenes[seg.index].region) {
