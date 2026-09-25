@@ -162,10 +162,19 @@ const Card: React.FC<{
   );
 };
 
-export const NewsStack: React.FC<Props> = ({ news, layout, arrive, duration, breaking }) => {
+// Scene-local in/out frames of each card; the click sounds are keyed to these.
+export const newsCardTimes = (count: number, arrive: number, duration: number) => {
   const start = arrive + 4;
   const end = duration - 12;
-  const slot = (end - start) / news.length;
+  const slot = (end - start) / count;
+  return Array.from({ length: count }, (_, i) => ({
+    inAt: Math.round(start + i * slot),
+    outAt: i < count - 1 ? Math.round(start + (i + 1) * slot) : end,
+  }));
+};
+
+export const NewsStack: React.FC<Props> = ({ news, layout, arrive, duration, breaking }) => {
+  const times = newsCardTimes(news.length, arrive, duration);
 
   return (
     <div
@@ -181,8 +190,8 @@ export const NewsStack: React.FC<Props> = ({ news, layout, arrive, duration, bre
           key={i}
           item={item}
           layout={layout}
-          inAt={Math.round(start + i * slot)}
-          outAt={i < news.length - 1 ? Math.round(start + (i + 1) * slot) : end}
+          inAt={times[i].inAt}
+          outAt={times[i].outAt}
           first={i === 0}
           last={i === news.length - 1}
           breaking={breaking}

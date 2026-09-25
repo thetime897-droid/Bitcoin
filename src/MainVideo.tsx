@@ -10,6 +10,7 @@ import { IntroIdent } from "./components/IntroIdent";
 import { FollowCta } from "./components/FollowCta";
 import { RegionMarker } from "./components/RegionMarker";
 import { SceneOverlay } from "./scenes/SceneOverlay";
+import { newsCardTimes } from "./components/NewsCard";
 import { makeProjection } from "./geo/projection";
 import { useLayout } from "./layout";
 import { geoDistance } from "d3-geo";
@@ -35,7 +36,8 @@ const Sfx: React.FC<{ at: number; name: string; volume: number }> = ({ at, name,
   );
 };
 
-// Deliberately sparse: one whoosh per real location change, a single hit on the hook, a ping on pins.
+// Deliberately sparse: one whoosh per real location change, a mouse click per news card, a ping on pins.
+// No impact on the flag landing (removed on request).
 const segmentSounds = (seg: Segment, episode: Episode, trim: number) => {
   const out: React.ReactNode[] = [];
   if (seg.kind !== "scene") return out;
@@ -43,7 +45,9 @@ const segmentSounds = (seg: Segment, episode: Episode, trim: number) => {
   if (travel >= MIN_TRAVEL) {
     out.push(<Sfx key={`w${seg.from}`} at={seg.from} name={seg.fly >= 58 ? "whoosh-long" : "whoosh-short"} volume={0.5 * trim} />);
   }
-  if (seg.index === 0) out.push(<Sfx key={`i${seg.from}`} at={seg.from + seg.fly - 2} name="impact" volume={0.55 * trim} />);
+  newsCardTimes(episode.scenes[seg.index].news.length, seg.fly, seg.duration).forEach(({ inAt }, i) => {
+    out.push(<Sfx key={`c${seg.from}-${i}`} at={seg.from + inAt} name="click" volume={0.7 * trim} />);
+  });
   // The ping when the location pin lands (kept on request).
   if (episode.scenes[seg.index].region) {
     out.push(<Sfx key={`d${seg.from}`} at={seg.from + regionRevealAt(seg) + 8} name="ding" volume={0.35 * trim} />);
