@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { AbsoluteFill } from "remotion";
-import { geoDistance, geoInterpolate, geoPath, type GeoProjection } from "d3-geo";
+import { geoDistance, geoInterpolate, geoOrthographic, geoPath, type GeoProjection } from "d3-geo";
 import {
   BORDERS,
   STATE_BORDERS,
@@ -74,6 +74,16 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
   const { width: W, height: H, focal, u } = layout;
   const radius = projection.scale();
   const path = geoPath(projection);
+  // Flags are fitted to the whole country, not the part inside the frame; otherwise
+  // the flag re-fits (slides and stretches) whenever the country crosses the frame edge.
+  const unclippedPath = geoPath(
+    geoOrthographic()
+      .rotate(projection.rotate())
+      .translate(projection.translate())
+      .scale(projection.scale())
+      .clipAngle(90)
+      .precision(projection.precision()),
+  );
   const center: [number, number] = [camera.lon, camera.lat];
   const angle = visibleAngle(radius, maxCornerDistance(layout));
   const lod = lodFor(camera.zoom);
@@ -171,9 +181,9 @@ export const Globe: React.FC<Props> = ({ camera, projection, layout, frame, drap
     if (!main || !getFlag(drape.iso) || drape.opacity <= 0) return null;
     const d = path(main as never);
     if (!d) return null;
-    const bounds = path.bounds(main as never) as [[number, number], [number, number]];
+    const bounds = unclippedPath.bounds(main as never) as [[number, number], [number, number]];
     const [[x0, y0], [x1, y1]] = bounds;
-    const [cx, cy] = path.centroid(main as never);
+    const [cx, cy] = unclippedPath.centroid(main as never);
     const scale = 0.9 + 0.1 * drape.pop;
     const lift = 10 * u * drape.pop;
     const clipId = `drape-${drape.key}`;
