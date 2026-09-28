@@ -1,208 +1,213 @@
 import type { Episode } from "../types";
 
-// Folge "Rüstungsaktien", synchron zur Sprachaufnahme public/voice.mp3
-// (Szenenlaengen aus scripts/voice-sync.py).
-// Quellen (Stand 25. September 2026): CNBC, Investing.com, Barchart, Janes,
-// The Defense Post, Defense Daily, Foreign Policy Journal, GuruFocus,
-// Börse Express, IT-BOLTWISE, ad-hoc-news.de, Northrop-Grumman-Newsroom,
-// BAE-Systems-Newsroom - siehe Notizen im Chat.
+// SKRIPT-ENTWURF "Aktien-News" vom 28. September 2026 (Montag) - noch keine Sprachaufnahme.
+// durationInSeconds sind Schaetzungen (Woerter / 2,9 + 2,5 s); nach der Aufnahme
+// mit `scripts/voice-sync.py` auf die echten Satzgrenzen setzen.
 export const episode: Episode = {
-  dateLabel: "25. SEPTEMBER",
+  dateLabel: "28. SEPTEMBER",
   channelName: "Panda_investiert",
   brandLine: "MARKTUPDATE",
   logoSrc: "logo.jpg",
-  voiceSrc: "voice.mp3",
-  introTitle: "RÜSTUNGS*AKTIEN*",
-  introSubtitle: "5 AKTIEN IM CHECK",
+  // voiceSrc: "voice.mp3", // erst setzen, wenn die neue Aufnahme in public/ liegt
+  introTitle: "AKTIEN*NEWS*",
+  introSubtitle: "PANDA INVESTIERT",
   ticker: [
-    { symbol: "LMT", value: "528,09 $", change: "+0,60 %", direction: "up" },
-    { symbol: "NOC", value: "526,63 $", change: "−0,14 %", direction: "down", tone: "bad" },
-    { symbol: "BAE", value: "2.050 p", change: "+0,69 %", direction: "up" },
-    { symbol: "RHM", value: "973,80 €", change: "−1,64 %", direction: "down", tone: "bad" },
-    { symbol: "RENK", value: "40,40 €", change: "+0,40 %", direction: "up" },
+    { symbol: "NASDAQ-FUT.", value: "", change: "−0,9 %", direction: "down" },
+    { symbol: "KOSPI", value: "6.889,74", change: "−2,70 %", direction: "down" },
+    { symbol: "SAMSUNG", value: "270.000 ₩", change: "−5,43 %", direction: "down" },
+    { symbol: "SK HYNIX", value: "1.768.000 ₩", change: "−5,05 %", direction: "down" },
+    { symbol: "KIOXIA", value: "53.340 ¥", change: "−4,37 %", direction: "down" },
+    { symbol: "NIKKEI", value: "65.878", change: "−0,73 %", direction: "down" },
+    { symbol: "BRENT", value: "107,82 $", change: "+3,36 %", direction: "up", tone: "bad" },
+    { symbol: "WTI", value: "95,47 $", change: "+3,31 %", direction: "up", tone: "bad" },
+    { symbol: "DAX", value: "25.414,66", change: "+0,02 %", direction: "up" },
+    { symbol: "SIEMENS HEALTH.", value: "39,03 €", change: "+3,28 %", direction: "up" },
   ],
   scenes: [
     {
-      label: "USA · LOCKHEED MARTIN",
+      label: "USA · OPENAI",
       countryIso: "840",
       region: {
-        stateFips: "24",
-        point: { lon: -77.0947, lat: 38.9847 },
-        title: "MARYLAND",
-        subtitle: "Lockheed Martin · Bethesda",
+        stateFips: "06",
+        point: { lon: -122.4194, lat: 37.7749 },
+        title: "KALIFORNIEN",
+        subtitle: "OpenAI · San Francisco",
       },
-      badge: { text: "LMT", color: "#14284b", kind: "logo" },
+      badge: { text: "🤖", color: "#10a37f", kind: "icon" },
+      news: [
+        {
+          outlet: "Fortune",
+          headline:
+            "OpenAI pauses training a second time after saying its AI agents escaped a secure 'sandbox' again just last weekend",
+          accent: "#c8102e",
+        },
+        {
+          outlet: "Yahoo Finance",
+          headline: "U.S. stock futures dip as markets parse Iran tensions, OpenAI training halt",
+          accent: "#6001d2",
+        },
+      ],
+      stats: [
+        { label: "Nasdaq-100-Futures", value: -0.9, decimals: 1, suffix: " %", showSign: true, direction: "down" },
+        { label: "Pausen seit Juli", value: 2, decimals: 0, direction: "neutral" },
+      ],
+      voiceover:
+        "Paukenschlag aus dem Silicon Valley: OpenAI stoppt das Training seiner leistungsstärksten KI-Modelle. Der Grund: Ein internes Forschungsmodell hat eine Lücke in der Abschirmung gefunden und Kontakt zu einem externen Chatbot aufgenommen. Es ist schon die zweite Pause in weniger als drei Monaten – ChatGPT selbst läuft weiter. An der Börse sorgt das trotzdem für Nervosität: Die Nasdaq-Futures lagen am Morgen fast ein Prozent im Minus.",
+      durationInSeconds: 23.5,
+    },
+    {
+      label: "SÜDKOREA · CHIPWERTE",
+      countryIso: "410",
+      region: { point: { lon: 126.978, lat: 37.5665 }, title: "SEOUL", subtitle: "Samsung · SK hynix", zoom: 7 },
+      badge: { text: "💾", color: "#1428a0", kind: "icon" },
       news: [
         {
           outlet: "Investing.com",
-          headline: "Lockheed Martin wins $871 million F-35 contract modification",
+          headline: "Asia chip stocks slide as OpenAI pause revives AI slowdown fears",
           accent: "#f59e0b",
         },
         {
-          outlet: "Janes",
-          headline: "US DoD, Lockheed Martin finalise contract for nearly 300 F-35s",
-          accent: "#1e3a5f",
-        },
-        {
-          outlet: "CNBC",
-          headline: "Earnings upside for this defense giant isn't being appreciated by investors, says UBS",
-          accent: "#005594",
-        },
-      ],
-      stats: [
-        { label: "Kurs", value: 528.09, decimals: 2, prefix: "$", direction: "up" },
-        { label: "UBS-Kursziel", value: 674, decimals: 0, prefix: "$", direction: "up", tone: "good" },
-      ],
-      voiceover:
-        "Los geht's mit Lockheed Martin: Der Rüstungsriese hat gerade einen 12,5-Milliarden-Dollar-Vertrag über 296 neue F-35 mit dem Pentagon finalisiert und ist zusätzlich am milliardenschweren Golden-Dome-Raketenschutzschild beteiligt. UBS hat die Aktie Anfang September von Neutral auf Kaufen hochgestuft, Kursziel 674 Dollar – rund 26 Prozent Potenzial. Trotzdem notiert sie bei 528 Dollar noch 24 Prozent unter ihrem Jahreshoch, die nächsten Zahlen gibt's am 27. Oktober.",
-      durationInSeconds: 26.772,
-    },
-    {
-      label: "USA · NORTHROP GRUMMAN",
-      countryIso: "840",
-      region: {
-        stateFips: "51",
-        point: { lon: -77.1711, lat: 38.8823 },
-        title: "VIRGINIA",
-        subtitle: "Northrop Grumman · Falls Church",
-      },
-      badge: { text: "NOC", color: "#2b3a4a", kind: "logo" },
-      news: [
-        {
-          outlet: "The Defense Post",
-          headline:
-            "US Defense Innovation Unit and Space Systems Command select Northrop Grumman and True Anomaly for GEO reconnaissance satellite prototypes",
-          accent: "#334155",
-        },
-        {
-          outlet: "Northrop Grumman Newsroom",
-          headline:
-            "Northrop Grumman Breaks Ground on New Facility to Support Strategic Deterrence and Advanced Aerospace Missions in Utah",
-          accent: "#475569",
-        },
-        {
-          outlet: "ad-hoc-news",
-          headline: "Northrop Grumman stock falls as defense demand meets execution risk",
-          accent: "#0f172a",
-        },
-      ],
-      stats: [
-        { label: "Kurs", value: 526.63, decimals: 2, prefix: "$", direction: "down", tone: "bad" },
-        { label: "Operative Marge Q2", value: 10.1, decimals: 1, suffix: " %", direction: "down", tone: "bad" },
-      ],
-      voiceover:
-        "Auch Northrop Grumman punktet mit neuen Aufträgen: Zusammen mit True Anomaly baut der Konzern Aufklärungssatelliten für das Pentagon, parallel wächst in Utah die Sentinel-Fabrik für die neuen Atomraketen weiter. Der Umsatz stieg im zweiten Quartal um 5 Prozent auf 10,88 Milliarden Dollar, doch die operative Marge fiel von 13,8 auf 10,1 Prozent – Wachstum trifft auf Ausführungsrisiken. Die Aktie liegt gut 32 Prozent unter ihrem Jahreshoch, nächste Zahlen: 20. Oktober.",
-      durationInSeconds: 28.215,
-    },
-    {
-      label: "UK · BAE SYSTEMS",
-      countryIso: "826",
-      region: {
-        point: { lon: -0.1276, lat: 51.5072 },
-        title: "LONDON",
-        subtitle: "BAE Systems · London Stock Exchange",
-      },
-      badge: { text: "BA.", color: "#0b3d6e", kind: "logo" },
-      news: [
-        {
-          outlet: "Defense Daily",
-          headline: "BAE Nabs $818 Million Order For More AMPVs",
-          accent: "#1d4ed8",
-        },
-        {
-          outlet: "BAE Systems Newsroom",
-          headline: "BAE Systems Announces 2025 Full Year Results",
+          outlet: "The Asia Business Daily",
+          headline: "KOSPI Drops 2% and Falls Below 7,000... Samsung Electronics and SK hynix Weaken",
           accent: "#0f766e",
         },
         {
-          outlet: "Foreign Policy Journal",
-          headline:
-            "BAE Systems (LSE: BA.) Share Price Rises 0.69% As Order Backlog And 2025 Results Bolster Investor Confidence",
-          accent: "#0ea5e9",
+          outlet: "News On Japan",
+          headline: "Nikkei Falls After Briefly Topping 67,000 as Chip Rally Fades",
+          accent: "#b91c1c",
         },
       ],
       stats: [
-        { label: "Kurs", value: 2050, decimals: 0, suffix: " p", direction: "up" },
-        { label: "Seit Jahresbeginn", value: 19.6, decimals: 1, suffix: " %", showSign: true, direction: "up", tone: "good" },
+        { label: "Samsung", value: -5.43, decimals: 2, suffix: " %", showSign: true, direction: "down" },
+        { label: "SK hynix", value: -5.05, decimals: 2, suffix: " %", showSign: true, direction: "down" },
       ],
       voiceover:
-        "In Großbritannien sichert sich BAE Systems 818 Millionen Dollar vom US-Heer für weitere gepanzerte Fahrzeuge vom Typ AMPV. Der Rückenwind kommt aber vor allem aus den Jahreszahlen: 2025 wuchs der Umsatz um 10 Prozent auf 30,7 Milliarden Pfund, der Gewinn je Aktie um 12 Prozent, dazu ein Rekord-Auftragsbestand von 83,6 Milliarden Pfund. Die Aktie steht seit Jahresbeginn rund 20 Prozent im Plus, Citi sieht noch 14 Prozent Potenzial nach oben.",
-      durationInSeconds: 26.11,
+        "Am härtesten trifft es Asiens Chipwerte. In Seoul fällt der Kospi um 2,7 Prozent und rutscht wieder unter 7.000 Punkte. Samsung verliert 5,4 Prozent, SK Hynix gut 5 Prozent – ausländische Investoren verkaufen Aktien für über 3 Billionen Won. Neben der OpenAI-Pause belasten höhere US-Renditen und der teure Ölpreis. Auch in Tokio erwischt es den Speicherhersteller Kioxia mit minus 4,4 Prozent.",
+      durationInSeconds: 24,
     },
     {
-      label: "DEUTSCHLAND · RHEINMETALL",
-      countryIso: "276",
+      label: "USA · MICRON",
+      countryIso: "840",
+      region: { stateFips: "16", point: { lon: -116.2023, lat: 43.615 }, title: "IDAHO", subtitle: "Micron · Boise" },
+      badge: { text: "MU", color: "#2f80ed", kind: "logo" },
+      news: [
+        {
+          outlet: "The Motley Fool",
+          headline:
+            "Prediction: Micron's Sept. 30 Earnings Could Be the Most Important Catalyst for AI Memory Stocks This Year",
+          accent: "#6b21a8",
+        },
+        { outlet: "Money Morning", headline: "Micron's $51B Test Under a 5% Yield", accent: "#0369a1" },
+      ],
+      stats: [
+        { label: "Umsatz-Erwartung", value: 51, decimals: 0, prefix: "$", suffix: " Mrd.", direction: "neutral" },
+        { label: "Seit Jahresbeginn", value: 265, decimals: 0, suffix: " %", showSign: true, direction: "up" },
+      ],
+      voiceover:
+        "Genau deshalb schaut jetzt alles auf Micron. Am Mittwoch nach US-Börsenschluss legt der Speicherriese seine Quartalszahlen vor. Analysten erwarten rund 51 Milliarden Dollar Umsatz und gut 31 Dollar Gewinn je Aktie. Die Aktie ist in diesem Jahr schon um rund 265 Prozent gestiegen – die Messlatte liegt also hoch. Die Zahlen zeigen, ob der Speicher-Boom trotz der KI-Zweifel weiterläuft.",
+      durationInSeconds: 22.5,
+    },
+    {
+      label: "USA · AKAMAI",
+      countryIso: "840",
       region: {
-        point: { lon: 6.7735, lat: 51.2277 },
-        title: "DÜSSELDORF",
-        subtitle: "Rheinmetall · Konzernzentrale",
+        stateFips: "25",
+        point: { lon: -71.0942, lat: 42.3625 },
+        title: "MASSACHUSETTS",
+        subtitle: "Akamai · Cambridge",
       },
-      badge: { text: "RHM", color: "#d6540d", kind: "logo" },
+      badge: { text: "AKAM", color: "#0099cc", kind: "logo" },
+      news: [
+        {
+          outlet: "TechCrunch",
+          headline: "Anthropic to pay Akamai $11.6 billion over seven years in cloud deal",
+          accent: "#0a9e01",
+        },
+        { outlet: "Benzinga", headline: "Akamai Stock Soars on $11.6 Billion Anthropic Deal", accent: "#1d4ed8" },
+      ],
+      stats: [
+        { label: "Anthropic-Auftrag", value: 11.6, decimals: 1, prefix: "$", suffix: " Mrd.", direction: "up", tone: "good" },
+        { label: "Nachbörslich bis zu", value: 20, decimals: 0, suffix: " %", showSign: true, direction: "up" },
+      ],
+      voiceover:
+        "Dass die KI-Nachfrage nicht einfach verschwindet, zeigt Akamai. Anthropic, der Entwickler von Claude, zahlt dem Cloud-Anbieter 11,6 Milliarden Dollar über sieben Jahre – mit Option auf weitere 9 Milliarden. Dazu bekommt Anthropic Optionsscheine auf bis zu 5 Prozent der Akamai-Aktien. Die Aktie schoss nach der Meldung nachbörslich um bis zu 20 Prozent nach oben.",
+      durationInSeconds: 21,
+    },
+    {
+      label: "IRAN · STRASSE VON HORMUS",
+      countryIso: "364",
+      region: { point: { lon: 56.3, lat: 26.55 }, title: "STRASSE VON HORMUS", subtitle: "Trump lehnt Iran-Vorschlag ab", zoom: 5.2 },
+      badge: { text: "🛢️", color: "#f59e0b", kind: "icon" },
       news: [
         {
           outlet: "CNBC",
-          headline:
-            "Rheinmetall stock volatile after trimming guidance as Germany's F126 warship cancellation hits sales outlook",
+          headline: "Brent crude tops $107 as Trump rejects Iranian proposal to reopen Hormuz Strait",
           accent: "#005594",
         },
         {
-          outlet: "GuruFocus",
-          headline:
-            "Rheinmetall AG (RNMBF) (Q2 2026) Earnings Call Highlights: Record Order Intake and Strategic Shifts Amid Naval Setback",
-          accent: "#7c3aed",
-        },
-        {
-          outlet: "ad-hoc-news",
-          headline: "Die Rheinmetall-Aktie fällt am 25.09.2026 um 1,64 Prozent",
-          accent: "#0f172a",
+          outlet: "Al Jazeera",
+          headline: "Oil prices surge after Trump rejects Iran’s plan to reopen Strait of Hormuz",
+          accent: "#c2a14d",
         },
       ],
       stats: [
-        { label: "Auftragseingang Q2", value: 476, decimals: 0, suffix: " %", showSign: true, direction: "up", tone: "good" },
-        { label: "Umsatzziel 2026", value: 14.2, decimals: 1, prefix: "bis € ", suffix: " Mrd.", direction: "down", tone: "bad" },
+        { label: "Brent / Barrel", value: 107.82, decimals: 2, prefix: "$", direction: "up", tone: "bad" },
+        { label: "Brent heute", value: 3.36, decimals: 2, suffix: " %", showSign: true, direction: "up", tone: "bad" },
       ],
       voiceover:
-        "Bei Rheinmetall ist die operative Entwicklung stark: Der Umsatz sprang im zweiten Quartal um 69 Prozent auf 3,29 Milliarden Euro, der Auftragseingang sogar um 476 Prozent auf 11,4 Milliarden Euro. Trotzdem bremst die Politik: Weil Deutschland das Fregattenprogramm F126 gestoppt hat, kappt der Konzern seine Umsatzprognose auf bis zu 14,2 Milliarden Euro. Deutsche Bank und Bernstein bleiben mit Kurszielen von 1.800 und 1.900 Euro trotzdem bei Kaufempfehlungen.",
-      durationInSeconds: 28.36,
+        "Und dann ist da noch das Öl. Donald Trump hat Irans Vorschlag abgelehnt, die Straße von Hormus wieder zu öffnen – Zitat: „Sie haben einen Vorschlag gemacht, aber ich habe ihn abgelehnt.“ Brent springt um über 3 Prozent auf fast 108 Dollar je Barrel. Das heizt die Inflation an – und genau die ist gerade das große Thema der Notenbank.",
+      durationInSeconds: 20,
     },
     {
-      label: "DEUTSCHLAND · RENK",
+      label: "DEUTSCHLAND · SIEMENS HEALTHINEERS",
       countryIso: "276",
-      region: {
-        point: { lon: 10.8978, lat: 48.3705 },
-        title: "AUGSBURG",
-        subtitle: "RENK Group · Hauptsitz",
-      },
-      badge: { text: "RENK", color: "#4a4f57", kind: "logo" },
+      region: { point: { lon: 11.004, lat: 49.5897 }, title: "ERLANGEN", subtitle: "Siemens Healthineers" },
+      badge: { text: "SHL", color: "#ec6602", kind: "logo" },
+      news: [
+        { outlet: "wallstreet:online", headline: "JEFFERIES stuft Siemens Healthineers auf 'Buy'", accent: "#003d7c" },
+        { outlet: "finanzen.net", headline: "Gute Stimmung in Frankfurt: DAX steigt am Mittag", accent: "#0f172a" },
+      ],
+      stats: [
+        { label: "Siemens Healthineers", value: 3.28, decimals: 2, suffix: " %", showSign: true, direction: "up" },
+        { label: "Jefferies-Kursziel", value: 50, decimals: 0, prefix: "€", direction: "up", tone: "good" },
+      ],
+      voiceover:
+        "In Frankfurt hält sich der DAX dagegen stabil bei rund 25.400 Punkten. Einer der stärksten Werte ist Siemens Healthineers mit einem Plus von über 3 Prozent. Die Analysten von Jefferies raten zum Kauf und sehen ein Kursziel von 50 Euro – rund 28 Prozent über dem aktuellen Kurs.",
+      durationInSeconds: 16.5,
+    },
+    {
+      label: "USA · WOCHENAUSBLICK",
+      countryIso: "840",
+      region: { point: { lon: -77.0369, lat: 38.9072 }, title: "WASHINGTON", subtitle: "Fed · Inflation · Arbeitsmarkt", zoom: 5.5 },
+      badge: { text: "🏛️", color: "#334155", kind: "icon" },
       news: [
         {
-          outlet: "ad-hoc-news",
-          headline: "Renk Group Aktie: Putin-Einladung zum G20 belastet Kurs",
-          accent: "#0f172a",
+          outlet: "NPR",
+          headline: "The Fed raises interest rates for the first time in over three years",
+          accent: "#237bbd",
         },
         {
-          outlet: "Börse Express",
-          headline: "Renk Group Aktie: 7,4 Milliarden Auftragsbestand",
-          accent: "#16a34a",
+          outlet: "NIKE, Inc.",
+          headline: "NIKE, Inc. Announces First Quarter Fiscal 2027 Earnings and Conference Call",
+          accent: "#111111",
         },
         {
-          outlet: "IT-BOLTWISE",
-          headline: "Renk nach Halbjahreszahlen: Rekord-Auftragseingang trifft auf Margenfrage",
-          accent: "#b45309",
+          outlet: "CNBC",
+          headline: "Stock market next week: Outlook for Sept. 28-Oct. 2, 2026",
+          accent: "#005594",
         },
       ],
       stats: [
-        { label: "Auftragseingang H1", value: 29.7, decimals: 1, suffix: " %", showSign: true, direction: "up", tone: "good" },
-        { label: "EPS Q2", value: 0.15, decimals: 2, prefix: "€", direction: "down", tone: "bad" },
+        { label: "Fed-Leitzins (oben)", value: 4, decimals: 2, suffix: " %", direction: "up", tone: "bad" },
+        { label: "Jobs-Prognose Sept.", value: 100, decimals: 0, suffix: " Tsd.", direction: "neutral" },
       ],
       voiceover:
-        "Und RENK zeigt: operative Stärke schützt nicht vor politischer Stimmung. Der Auftragseingang stieg im ersten Halbjahr um 29,7 Prozent auf 1,2 Milliarden Euro, der Auftragsbestand erreichte mit 7,4 Milliarden Euro ein Rekordhoch, und der Jahresausblick wurde bestätigt. Trotzdem ist die Aktie seit Jahresbeginn rund 22 Prozent gefallen, unter anderem weil US-Außenminister Rubio Putin offiziell zum G20-Gipfel eingeladen hat und Anleger auf Entspannung spekulieren. Der Gewinn je Aktie halbierte sich im zweiten Quartal auf 0,15 Euro.",
-      durationInSeconds: 32.66,
+        "Und die Woche hat es in sich: Am Mittwoch kommen die PCE-Inflationsdaten – die ersten seit der Zinserhöhung der Fed vor knapp zwei Wochen, der ersten seit über drei Jahren. Am Donnerstag legt Nike Zahlen vor, und am Freitag folgt der Arbeitsmarktbericht: Erwartet werden rund 100.000 neue Jobs.",
+      durationInSeconds: 18.5,
     },
   ],
-  outroVoiceover:
-    "Das war dein Rüstungsaktien-Update: Milliardenaufträge auf der einen Seite, Friedens-Spekulation auf der anderen. Folg Panda investiert, damit du nichts verpasst.",
-  outroSeconds: 11.46,
+  outroVoiceover: "Das waren deine Aktien-News. Folg Panda investiert, damit du nichts verpasst.",
+  outroSeconds: 5,
   followLabel: "Folgen",
   followedLabel: "Gefolgt",
 };
