@@ -1,6 +1,7 @@
 /**
- * Markt-Terminal Live: sammelt Finanz-News aus kostenlosen RSS-Feeds und
- * schickt sie per Server-Sent Events an die Stream-Seite.
+ * Markt-Terminal Live: sammelt Finanz-News aus kostenlosen RSS-Feeds sowie
+ * Kurse (markets.mjs) und schickt beides per Server-Sent Events an die
+ * Stream-Seite.
  *
  * Keine Abhängigkeiten, keine API-Schlüssel, keine laufenden Kosten.
  *
@@ -12,6 +13,7 @@ import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { analyse, categorize, isFinanceRelated } from './analysis.mjs';
+import { createMarkets } from './markets.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const PORT = Number(process.env.PORT) || 8080;
@@ -22,6 +24,19 @@ const MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const BREAKING_WINDOW_MS = 30 * 60 * 1000;
 
 const config = JSON.parse(await readFile(join(ROOT, 'feeds.json'), 'utf8'));
+const marketConfig = JSON.parse(await readFile(join(ROOT, 'markets.json'), 'utf8'));
+
+// Kurs-Updates gebündelt verschicken, höchstens alle 2 Sekunden.
+let marketsPending = null;
+const markets = createMarkets(marketConfig, {
+  demo: DEMO,
+  onUpdate() {
+    marketsPending ??= setTimeout(() => {
+      marketsPending = null;
+      broadcast('markets', markets.snapshot());
+    }, 2000);
+  },
+});
 
 /** @type {Map<string, object>} key = normalisierte Überschrift */
 const items = new Map();
@@ -109,6 +124,8 @@ function addItem(raw, feed) {
     ...raw,
     category,
     points,
+    // Aktie/Krypto, um die es geht - die Seite zeigt dann Kurs und Kursziel.
+    symbol: markets.findSymbol(raw.title),
     breaking: important && Date.now() - raw.date < BREAKING_WINDOW_MS,
     demo: !!raw.demo,
   };
@@ -160,7 +177,9 @@ const DEMO_ITEMS = [
   ['EZB lässt Leitzins unverändert und signalisiert Geduld', 'Die Notenbank verweist auf die weiterhin erhöhte Kerninflation.', 'makro'],
   ['Bitcoin steigt über wichtige Marke, Handelsvolumen zieht an', 'Am Kryptomarkt legen auch Ether und Solana zu.', 'krypto'],
   ['Spot-ETF-Zuflüsse: Anleger investieren erneut Millionen', 'Die ETF-Zuflüsse halten die dritte Woche in Folge an.', 'etf'],
-  ['Techkonzern übertrifft Erwartungen mit Quartalszahlen', 'Umsatz und Gewinn liegen über den Prognosen der Analysten.', 'aktien'],
+  ['Nvidia übertrifft Erwartungen mit Quartalszahlen', 'Umsatz und Gewinn liegen über den Prognosen der Analysten.', 'aktien'],
+  ['Rheinmetall erhält Großauftrag, Aktie legt zu', 'Der Auftrag hat laut Unternehmen ein Volumen im Milliardenbereich.', 'aktien'],
+  ['Solana: Netzwerk-Upgrade erfolgreich abgeschlossen', 'Entwickler versprechen schnellere und günstigere Transaktionen.', 'krypto'],
   ['DAX schließt nahe Rekordhoch', 'Autowerte und Banken gehören zu den Gewinnern des Tages.', 'aktien'],
   ['Ölpreis legt nach OPEC-Treffen zu', 'Das Kartell hält an den Förderkürzungen fest.', 'makro'],
   ['Kryptobörse meldet Hack, Auszahlungen vorübergehend gestoppt', 'Kundengelder sollen laut Unternehmen gesichert sein.', 'krypto'],
@@ -191,7 +210,7 @@ const server = createServer(async (req, res) => {
   if (url.pathname === '/events') {
     res.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-cache', connection: 'keep-alive' });
     const list = [...items.values()].sort((a, b) => b.date - a.date);
-    res.write(`event: init\ndata: ${JSON.stringify({ items: list, demo: DEMO })}\n\n`);
+    res.write(`event: init\ndata: ${JSON.stringify({ items: list, demo: DEMO, markets: markets.snapshot() })}\n\n`);
     clients.add(res);
     req.on('close', () => clients.delete(res));
     return;
@@ -199,7 +218,7 @@ const server = createServer(async (req, res) => {
 
   if (url.pathname === '/status') {
     res.writeHead(200, { 'content-type': 'application/json' });
-    res.end(JSON.stringify({ demo: DEMO, items: items.size, feeds: feedStatus }, null, 2));
+    res.end(JSON.stringify({ demo: DEMO, items: items.size, feeds: feedStatus, markets: markets.status }, null, 2));
     return;
   }
 
@@ -221,6 +240,7 @@ server.listen(PORT, () => {
   console.log(`Quellen-Status:      http://localhost:${PORT}/status`);
 });
 
+markets.start();
 if (DEMO) {
   for (let i = 0; i < 5; i++) demoTick();
   setInterval(demoTick, 20000);

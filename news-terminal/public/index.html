@@ -4,25 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Markt-Terminal Live</title>
+  <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="stage">
+    <!-- Dezente Bewegung im Hintergrund -->
+    <div class="bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="grid"></div></div>
+
     <header class="top">
       <div class="brand"><span class="live-dot"></span> MARKT-TERMINAL <span class="live">LIVE</span></div>
-      <div class="prices" id="prices"></div>
+      <div class="upnext">
+        <svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" class="ring-bg"/><circle cx="22" cy="22" r="19" class="ring-fg" id="ring"/></svg>
+        <div class="upnext-text">
+          <div class="upnext-label">Nächste Einblendung in <b id="countdown">–</b></div>
+          <div class="upnext-title" id="upnext">–</div>
+        </div>
+      </div>
       <div class="clock" id="clock">--:--:--</div>
     </header>
 
+    <div class="strip"><div class="strip-track" id="strip"></div></div>
+
     <main class="main">
       <section class="card" id="card">
-        <div class="empty" id="empty">
+        <div class="slide empty" id="empty">
           <div class="spinner"></div>
-          Warte auf die ersten Meldungen …
+          Lade Nachrichten und Kurse …
         </div>
-        <div class="story" id="story" hidden>
+
+        <div class="slide story" id="story" hidden>
           <div class="meta">
             <span class="breaking" id="s-breaking" hidden>⚡ EILMELDUNG</span>
             <span class="chip" id="s-cat"></span>
@@ -35,31 +48,45 @@
             <div class="points-head">Was kann das bedeuten? <span>Allgemeine Einordnung · keine Anlageberatung</span></div>
             <ul id="s-points"></ul>
           </div>
+          <div class="focus" id="s-focus" hidden></div>
         </div>
-        <div class="notice" id="notice" hidden>
+
+        <div class="slide market" id="market" hidden></div>
+
+        <div class="slide notice" id="notice" hidden>
           <div class="notice-icon">⚠</div>
           <h1>Wichtiger Hinweis</h1>
-          <p>Dieser Stream zeigt automatisch zusammengetragene Nachrichten aus öffentlichen Quellen.
+          <p>Dieser Stream zeigt automatisch zusammengetragene Nachrichten und Kurse aus öffentlichen Quellen.
             Er ist <strong>keine Anlageberatung</strong> und <strong>keine Kauf- oder Verkaufsempfehlung</strong>.</p>
-          <p>Die Einordnungen sind allgemeine, automatisch erzeugte Erklärungen und können unvollständig sein.
+          <p>Kurse können verzögert sein. Analysten-Kursziele sind Meinungen Dritter, keine Garantie.
             Alle Angaben ohne Gewähr. Investitionen sind mit Risiken bis hin zum Totalverlust verbunden.</p>
         </div>
+
         <div class="progress"><div id="progress"></div></div>
       </section>
 
       <aside class="side">
-        <div class="side-head">Letzte Meldungen</div>
-        <ol id="list"></ol>
+        <section class="panel movers-panel">
+          <div class="panel-head">
+            <span id="mv-title">Live-Bewegungen</span>
+            <span class="dots" id="mv-dots"></span>
+          </div>
+          <div id="mv-list" class="mv-list"></div>
+        </section>
+        <section class="panel news-panel">
+          <div class="panel-head"><span>Letzte Meldungen</span></div>
+          <ol id="list"></ol>
+        </section>
       </aside>
     </main>
 
     <div class="ticker"><div class="ticker-label">NEWS</div><div class="ticker-track"><div id="ticker"></div></div></div>
 
     <footer class="disclaimer">
-      ⚠ KEINE ANLAGEBERATUNG · Nur zur Information und Unterhaltung · Keine Kauf-/Verkaufsempfehlung · Angaben ohne Gewähr · Quellen: öffentliche RSS-Feeds
+      ⚠ KEINE ANLAGEBERATUNG · Nur zur Information und Unterhaltung · Keine Kauf-/Verkaufsempfehlung · Kurse ggf. verzögert · Angaben ohne Gewähr
     </footer>
 
-    <div class="demo-banner" id="demo" hidden>DEMO-MODUS · Beispielmeldungen, keine echten Nachrichten</div>
+    <div class="demo-banner" id="demo" hidden>DEMO-MODUS · Beispieldaten, keine echten Nachrichten oder Kurse</div>
   </div>
   <script src="app.js"></script>
 </body>

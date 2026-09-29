@@ -3,7 +3,9 @@
 Ein Live-Nachrichten-Terminal für einen Dauer-Livestream auf YouTube oder Twitch.
 Es zeigt laufend die neuesten Meldungen zu **Aktien, ETFs, Krypto und Wirtschaft**.
 Zu jeder Meldung gibt es drei Stichpunkte „Was kann das bedeuten?“. Dazu kommen
-ein Laufband, Live-Kurse und ein dauerhaft sichtbarer Hinweis **„Keine Anlageberatung“**.
+**Kurse von Indizes, Aktien, ETFs/ETCs und etablierten Kryptowährungen**, die
+stärksten Gewinner und Verlierer, **Analysten-Kursziele** und ein dauerhaft
+sichtbarer Hinweis **„Keine Anlageberatung“**.
 
 **Laufende Kosten: 0 €.** Keine Abos, keine API-Schlüssel, keine Programmbibliotheken.
 
@@ -14,15 +16,32 @@ ein Laufband, Live-Kurse und ein dauerhaft sichtbarer Hinweis **„Keine Anlageb
 - **Eilmeldungen:** Frische, wichtige Themen wie Zinsentscheide, Hacks, Crashs,
   ETF-Zulassungen oder Insolvenzen unterbrechen sofort, werden rot markiert und
   spielen einen kurzen Ton
-- **Seitenleiste:** die 7 neuesten Meldungen
-- **Kursleiste:** BTC, ETH, SOL, XRP und BNB live über Binance (kostenlos)
-- **Laufband:** die neuesten Überschriften
+- **Aktie zur Meldung:** Geht es in einer Meldung um eine bekannte Aktie oder
+  Kryptowährung (z. B. „Rheinmetall“, „Nvidia“, „Solana“), erscheint unten ihr
+  Kurs mit Tagesverlauf und, falls vorhanden, dem Analysten-Kursziel
+- **Markt-Folien** nach jeweils 3 Meldungen, abwechselnd:
+  - *Top-Bewegungen Aktien*: die 5 stärksten Gewinner und Verlierer mit Balken und Verlauf
+  - *Top-Bewegungen Krypto*: das Gleiche für etablierte Kryptowährungen (keine Meme-Coins)
+  - *Im Fokus*: die Aktie mit der größten Bewegung heute, mit großem Chart, Tageshoch/-tief
+    und Analysten-Kursziel (Durchschnitt, Spanne, Anzahl Analysten, Konsens)
+  - *Indizes, ETFs & ETCs*: DAX, Euro Stoxx 50, S&P 500, Nasdaq, Dow Jones, Gold, Öl,
+    EUR/USD sowie beliebte ETFs und ETCs als Kacheln
+- **Kurs-Laufband oben:** Indizes, große Kryptos, ETFs/ETCs. Preise blinken bei
+  Änderungen kurz grün oder rot
+- **Countdown oben:** ein Ring zeigt, wann die nächste Einblendung kommt, und
+  darunter steht, was als Nächstes gezeigt wird
+- **Seitenleiste:** oben wechseln alle 9 Sekunden Gewinner und Verlierer
+  (Aktien und Krypto), unten die neuesten Meldungen
+- **Bewegung:** Hintergrund, Charts, die sich zeichnen, und Balken, die wachsen,
+  damit das Bild nie „steht“
+- **News-Laufband:** die neuesten Überschriften
 - **Hinweis-Leiste:** „KEINE ANLAGEBERATUNG …“ steht **immer** unten im Bild.
   Zusätzlich erscheint nach jeweils 8 Meldungen ein großer Hinweis-Bildschirm,
   und jede Einordnung ist mit „keine Anlageberatung“ beschriftet
 
 Wenn nichts Neues kommt, rotiert das Terminal durch die 20 neuesten Meldungen.
-Der Bildschirm ist also nie leer. Neue Meldungen werden alle 2 Minuten abgerufen.
+Der Bildschirm ist also nie leer. Neue Meldungen werden alle 2 Minuten abgerufen,
+Aktienkurse alle 3 Minuten, Kryptokurse alle 15 Sekunden.
 
 ## Starten (Windows)
 
@@ -59,12 +78,20 @@ Welche Quellen gerade funktionieren, zeigt http://localhost:8080/status.
 |---|---|
 | `http://localhost:8080/?sekunden=30` | Jede Meldung 30 statt 25 Sekunden zeigen |
 | `http://localhost:8080/?ton=0` | Eilmeldungs-Ton aus |
-| `http://localhost:8080/?sekunden=20&ton=0` | beides kombiniert |
+| `http://localhost:8080/?markt=25` | Markt-Folien 25 statt 18 Sekunden zeigen |
+| `http://localhost:8080/?sekunden=20&ton=0` | mehrere Einstellungen kombiniert |
 
 **Quellen** stehen in `feeds.json` und lassen sich dort ergänzen oder entfernen.
 Jede Quelle hat eine Standard-Kategorie (`aktien`, `etf`, `krypto`, `makro`).
 Meldungen werden zusätzlich anhand von Stichwörtern einsortiert.
 `"filter": true` bedeutet, dass nur Meldungen mit Finanzbezug übernommen werden.
+
+**Kurslisten** stehen in `markets.json`: Indizes, Aktien (DAX-Schwergewichte und
+große US-Werte), ETFs/ETCs und Kryptowährungen. Aktien, Indizes und ETFs nutzen
+Kürzel von Yahoo Finance (z. B. `SAP.DE`, `AAPL`, `^GDAXI`), Kryptos das Kürzel
+bei Binance (z. B. `BTC`). Über `keywords` wird eine Nachricht einer Aktie zugeordnet.
+Top-Gewinner und -Verlierer werden aus diesen Listen berechnet. Wer mehr Aktien
+aufnimmt, bekommt also eine breitere Auswahl.
 
 **Stichpunkte / Einordnung** stehen in `analysis.mjs`. Sie sind **regelbasiert**:
 Das Programm erkennt Stichwörter wie „Leitzins“, „Übernahme“ oder „Hack“ und zeigt
@@ -75,7 +102,7 @@ Fakten. Es gibt aber keine individuelle Analyse der einzelnen Meldung.
 
 | Posten | Kosten |
 |---|---|
-| Software, Nachrichten, Kurse | 0 € |
+| Software, Nachrichten, Kurse, Kursziele | 0 € |
 | OBS | 0 € |
 | Musik (YouTube Audio-Mediathek / StreamBeats) | 0 € |
 | **Strom für einen PC im 24/7-Betrieb** | **ca. 15–35 € / Monat** (je nach PC, 60–130 W bei ~0,35 €/kWh) |
@@ -98,6 +125,15 @@ ein paar Euro im Monat.
   (max. 160 Zeichen), nie ganze Artikel. Das deutsche Leistungsschutzrecht erlaubt nur
   „sehr kurze Auszüge“. Prüfe die Nutzungsbedingungen der Quellen für kommerzielle
   Streams. Im Zweifel die Quelle aus `feeds.json` entfernen.
+- **Kursdaten:** Aktien-, Index- und ETF-Kurse sowie Kursziele kommen über die
+  inoffizielle, kostenlose Schnittstelle von Yahoo Finance. Sie ist verzögert, nicht
+  garantiert und kann sich jederzeit ändern. Laut Yahoo-Nutzungsbedingungen ist sie für
+  den persönlichen Gebrauch gedacht. Für einen monetarisierten Stream solltest du das
+  prüfen und bei Wachstum auf einen lizenzierten Datenanbieter umsteigen. Kryptokurse
+  kommen von der öffentlichen Binance-Schnittstelle.
+- **Kursziele:** werden immer als „Meinungen Dritter, keine Empfehlung“ gekennzeichnet.
+  Sind sie nicht abrufbar (Yahoo zeigt in der EU teils eine Cookie-Seite), fehlen nur die
+  Kursziele, der Rest läuft weiter.
 - **Impressum:** Monetarisierte Kanäle in Deutschland brauchen in der Regel ein Impressum
   (z. B. im Kanal-Info-Bereich).
 
