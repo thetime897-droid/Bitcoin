@@ -21,6 +21,8 @@ export type Segment = {
   // Optional second camera move inside the scene (country -> state / city).
   focus?: Camera;
   focusAt: number;
+  // Scene-local frame of the pin / state lift reveal (voice cue), if set.
+  regionReveal?: number;
   focusLength: number;
   arcFrom?: [number, number];
   arcTo?: [number, number];
@@ -140,7 +142,9 @@ export const buildTimeline = (episode: Episode, layout: Layout, fps: number): Se
     const duration = sceneFrames(scene, fps);
     const fly = flyFrames(start, target);
     const focus = focusCamera(scene, target, layout);
-    const focusAt = fly + FOCUS_DELAY;
+    const cue = scene.region && scene.regionAt !== undefined ? Math.round(scene.regionAt * fps) : undefined;
+    // With a voice cue the push-in starts so that it lands on the spoken word.
+    const focusAt = cue !== undefined ? Math.max(fly + 8, cue - FOCUS_LENGTH + 16) : fly + FOCUS_DELAY;
     const seg: Segment = {
       kind: "scene",
       index: i,
@@ -154,6 +158,7 @@ export const buildTimeline = (episode: Episode, layout: Layout, fps: number): Se
       focus: focus && duration - (focusAt + FOCUS_LENGTH) >= 45 ? focus : undefined,
       focusAt,
       focusLength: FOCUS_LENGTH,
+      regionReveal: cue !== undefined ? Math.max(fly + 6, cue) : undefined,
     };
     if (prevAnchor) {
       seg.arcFrom = prevAnchor;
@@ -195,4 +200,5 @@ export const flyProgress = (seg: Segment, local: number) =>
   seg.fly > 0 ? smootherstep(clamp01(local / seg.fly)) : 1;
 
 // Frame (scene-local) at which the region pin/state lift should appear.
-export const regionRevealAt = (seg: Segment) => (seg.focus ? seg.focusAt + seg.focusLength - 16 : seg.fly + 14);
+export const regionRevealAt = (seg: Segment) =>
+  seg.regionReveal ?? (seg.focus ? seg.focusAt + seg.focusLength - 16 : seg.fly + 14);

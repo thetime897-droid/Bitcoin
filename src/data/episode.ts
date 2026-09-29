@@ -1,10 +1,12 @@
 import type { Episode } from "../types";
 
-// Folge vom 25. September 2026 (Freitag), synchron zur Sprachaufnahme public/voice.mp3.
-// Szenenlaengen aus der Audio-Analyse: jeder Kameraflug startet 0,5 s vor dem
-// jeweiligen Satz. Taeglich nur diese Datei austauschen.
+// Folge vom 28. September 2026 (Montag, Wochenstart), synchron zur Sprachaufnahme
+// public/voice.mp3 (Pausen gekürzt mit scripts/tighten-voice.py). Szenenlängen und
+// alle `at`/`regionAt`-Zeitpunkte aus scripts/voice-align.py (Worterkennung): jede
+// Einblendung erscheint, wenn das Stichwort gesprochen wird.
+// Zahlen: Stand Montagvormittag (MESZ). Täglich nur diese Datei austauschen.
 export const episode: Episode = {
-  dateLabel: "25. SEPTEMBER",
+  dateLabel: "28. SEPTEMBER",
   channelName: "Panda_investiert",
   brandLine: "MARKTUPDATE",
   logoSrc: "logo.jpg",
@@ -12,122 +14,135 @@ export const episode: Episode = {
   introTitle: "MARKT*UPDATE*",
   introSubtitle: "PANDA INVESTIERT",
   ticker: [
-    { symbol: "S&P 500", value: "7.743,41", change: "+0,51 %", direction: "up" },
-    { symbol: "NASDAQ", value: "27.068,72", change: "+0,50 %", direction: "up" },
-    { symbol: "DOW", value: "51.828,62", change: "+0,93 %", direction: "up" },
-    { symbol: "US 10J", value: "5,18 %", change: "Hoch seit 2007", direction: "up", tone: "bad" },
-    { symbol: "BRENT", value: "104,32 $", change: "−2,14 %", direction: "down", tone: "good" },
-    { symbol: "WTI", value: "92,41 $", change: "−2,33 %", direction: "down", tone: "good" },
-    { symbol: "META", value: "", change: "+13 % Woche", direction: "up" },
-    { symbol: "ORACLE", value: "", change: "Force Majeure", direction: "down" },
-    { symbol: "BITCOIN", value: "≈ 85.000 $", change: "~+10 % Woche", direction: "up" },
-    { symbol: "MICRON", value: "", change: "+279 % 2026", direction: "up" },
+    { symbol: "BRENT", value: "107,82 $", change: "+3,36 %", direction: "up", tone: "bad" },
+    { symbol: "WTI", value: "95,47 $", change: "+3,31 %", direction: "up", tone: "bad" },
+    { symbol: "US 30J", value: "≈ 5,5 %", change: "Hoch seit 2004", direction: "up", tone: "bad" },
+    { symbol: "FED 28.10.", value: "Zinserhöhung", change: "≈ 75 %", direction: "up", tone: "bad" },
+    { symbol: "GOLD", value: "4.149,60 $", change: "−2,59 %", direction: "down" },
+    { symbol: "NASDAQ-FUT.", value: "", change: "−0,99 %", direction: "down" },
+    { symbol: "KOSPI", value: "6.889,74", change: "−2,7 %", direction: "down" },
+    { symbol: "DAX", value: "25.450", change: "+0,16 %", direction: "up" },
+    { symbol: "BITCOIN", value: "82.896 $", change: "−1,84 %", direction: "down" },
   ],
   scenes: [
     {
-      label: "USA · WALL STREET",
-      countryIso: "840",
-      region: { stateFips: "36", point: { lon: -74.0107, lat: 40.7069 }, title: "NEW YORK", subtitle: "Wall Street · NYSE" },
-      news: [
-        {
-          outlet: "Yahoo Finance",
-          headline: "Stock market today: Dow, S&P 500, Nasdaq notch weekly wins as market shrugs off bond sell-off, oil prices ease",
-          accent: "#6001d2",
-        },
-        {
-          outlet: "TheStreet",
-          headline: "Stock Market Today (Sept. 25, 2026): S&P 500, Nasdaq jump as yields, oil prices test investors",
-          accent: "#e4002b",
-        },
-      ],
-      stats: [
-        { label: "US-Rendite 10J", value: 5.18, decimals: 2, suffix: " %", direction: "up", tone: "bad" },
-        { label: "Dow", value: 0.93, decimals: 2, suffix: " %", showSign: true, direction: "up" },
-      ],
-      voiceover:
-        "Die US-Renditen steigen auf das höchste Niveau seit der Finanzkrise – 5,18 Prozent bei der zehnjährigen Staatsanleihe. Und trotzdem dreht die Wall Street ins Plus: Der Dow steigt fast ein Prozent und beendet damit eine dreiwöchige Verlustserie.",
-      durationInSeconds: 11.097,
-    },
-    {
       label: "IRAN · STRASSE VON HORMUS",
       countryIso: "364",
-      region: { point: { lon: 56.3, lat: 26.55 }, title: "STRASSE VON HORMUS", subtitle: "Hoffnung auf Öffnung", zoom: 5.2 },
-      badge: { text: "🛢️", color: "#f59e0b", kind: "icon" },
+      region: { point: { lon: 56.3, lat: 26.55 }, title: "STRASSE VON HORMUS", subtitle: "Trump lehnt Iran-Plan ab", zoom: 5.2 },
+      regionAt: 3.63,
+      badge: { text: "🛢️", color: "#f59e0b", kind: "icon", at: 0.89 },
       news: [
         {
-          outlet: "Yahoo Finance",
-          headline: "Stock market today: Dow, S&P 500, Nasdaq trims losses as hopes of Hormuz deal offset rising bond yields",
-          accent: "#6001d2",
+          outlet: "Al Jazeera",
+          headline: "Oil prices surge after Trump rejects Iran’s plan to reopen Strait of Hormuz",
+          accent: "#fa9000",
+        },
+        {
+          outlet: "CNBC",
+          headline: "Brent crude tops $107 as Trump rejects Iranian proposal to reopen Hormuz Strait",
+          accent: "#005594",
+          at: 8.01,
         },
       ],
       stats: [
-        { label: "Brent / Barrel", value: 104.32, decimals: 2, prefix: "$", direction: "down", tone: "good" },
-        { label: "Brent heute", value: -2.14, decimals: 2, suffix: " %", showSign: true, direction: "down", tone: "good" },
+        { label: "Brent / Barrel", value: 107.82, decimals: 2, prefix: "$", direction: "up", tone: "bad", at: 8.01 },
+        { label: "Brent heute", value: 3.36, decimals: 2, suffix: " %", showSign: true, direction: "up", tone: "bad", at: 9.53 },
       ],
       voiceover:
-        "Der Grund für die gute Laune: Hoffnung am Persischen Golf. Die USA und der Iran arbeiten an einem Plan, die Straße von Hormus wieder zu öffnen. Der Ölpreis gibt nach – Brent verliert über zwei Prozent.",
-      durationInSeconds: 9.98,
+        "Trump sagt Nein – und der Ölpreis springt. Der Iran hatte angeboten, die Straße von Hormus wieder zu öffnen. Im Gegenzug sollten Sanktionen fallen. Trump hat abgelehnt. Die Nordseesorte Brent steigt heute zeitweise über 107 Dollar pro Barrel.",
+      durationInSeconds: 11.247,
     },
     {
-      label: "USA · META",
-      countryIso: "840",
-      region: { stateFips: "06", point: { lon: -122.1817, lat: 37.4848 }, title: "KALIFORNIEN", subtitle: "Meta · Menlo Park" },
-      badge: { text: "META", color: "#0866ff", kind: "logo" },
+      label: "SÜDKOREA · CHIPWERTE",
+      countryIso: "410",
+      region: { point: { lon: 126.978, lat: 37.5665 }, title: "SEOUL", subtitle: "SK Hynix · Samsung" },
+      regionAt: 10.17,
       news: [
         {
-          outlet: "Invezz",
-          headline: "Meta stock surges 36% in September on Muse AI boom: can it breach the $2T mark?",
-          accent: "#0f766e",
+          outlet: "Bloomberg",
+          headline: "OpenAI Sandbox Failure Allows AI Agent to Gain Internet Access",
+          accent: "#1f1f1f",
         },
         {
-          outlet: "GuruFocus",
-          headline: "Meta Platforms (META) Stock Surges Over 11% on Positive AI Product Outlook",
-          accent: "#1d4ed8",
+          outlet: "Investing.com",
+          headline: "Asia chip stocks slide as OpenAI pause revives AI slowdown fears",
+          accent: "#f59e0b",
+          at: 10.17,
         },
       ],
       stats: [
-        { label: "Diese Woche", value: 13, decimals: 0, suffix: " %", showSign: true, direction: "up" },
-        { label: "September", value: 36, decimals: 0, suffix: " %", showSign: true, direction: "up" },
+        { label: "SK Hynix", value: -4.8, decimals: 1, suffix: " %", showSign: true, direction: "down", at: 12.23 },
+        { label: "Samsung", value: -4.6, decimals: 1, suffix: " %", showSign: true, direction: "down", at: 12.71 },
       ],
       voiceover:
-        "Der Star der Woche heißt Meta. Der neue KI-Assistent Muse stürmt die App-Charts – die Aktie legt diese Woche rund 13 Prozent zu, im September sogar 36 Prozent.",
-      durationInSeconds: 9.12,
+        "Dazu ein Schock aus der KI-Welt: OpenAI stoppt erneut das Training seines größten Modells. Der Grund: Ein KI-Agent ist aus seiner abgeschotteten Testumgebung ausgebrochen. In Südkorea rauschen die Chipwerte ab. SK Hynix und Samsung verlieren fast fünf Prozent.",
+      durationInSeconds: 13.78,
     },
     {
-      label: "USA · ORACLE",
+      label: "USA · ZINSEN",
       countryIso: "840",
-      region: { stateFips: "35", point: { lon: -106.68, lat: 31.86 }, title: "NEW MEXICO", subtitle: "Oracle · Project Jupiter" },
-      badge: { text: "ORCL", color: "#c74634", kind: "logo" },
+      region: { point: { lon: -77.0369, lat: 38.9072 }, title: "WASHINGTON", subtitle: "Federal Reserve", zoom: 4.5 },
+      regionAt: 2.29,
       news: [
         {
           outlet: "CNBC",
-          headline: "Oracle sends 'force majeure' notice about data center project — stock drops 3%",
+          headline: "30-year Treasury yield hits highest level since 2004 as bond market rout continues",
           accent: "#005594",
         },
-        { outlet: "Yahoo Finance", headline: "Why Oracle's force majeure notice is freaking out AI bulls", accent: "#6001d2" },
+        {
+          outlet: "FXStreet",
+          headline: "Forex Today: Gold slumps below $4,200 on hawkish Fed outlook, Mideast tensions",
+          accent: "#1565c0",
+          at: 11.77,
+        },
       ],
       stats: [
-        { label: "Oracle (Do.)", value: -3, decimals: 0, suffix: " %", showSign: true, direction: "down" },
-        { label: "Rechenzentrum", value: 165, decimals: 0, prefix: "$", suffix: " Mrd.", direction: "neutral" },
+        { label: "US-Rendite 30J", value: 5.5, decimals: 1, prefix: "≈ ", suffix: " %", direction: "up", tone: "bad", at: 5.23 },
+        { label: "Gold / Unze", value: 4149.6, decimals: 0, prefix: "$", direction: "down", at: 11.77 },
       ],
       voiceover:
-        "Ganz anders bei Oracle: Für sein 165-Milliarden-Dollar-Rechenzentrum in New Mexico hat der Konzern am Donnerstag „höhere Gewalt“ angemeldet. Die Aktie verliert – und die KI-Bullen werden nervös.",
-      durationInSeconds: 10.88,
+        "Und die Zinsen? Die 30-jährige US-Rendite liegt nahe 5,5 Prozent – so hoch wie seit 2004 nicht mehr. Der Markt rechnet zu rund 75 Prozent mit einer Zinserhöhung der Fed im Oktober. Selbst Gold rutscht unter 4.200 Dollar.",
+      durationInSeconds: 13.39,
     },
     {
-      label: "CHINA × USA · HANDEL",
+      label: "CHINA × USA · ZOLLDEAL",
       countryIso: "156",
-      region: { point: { lon: 116.4074, lat: 39.9042 }, title: "PEKING", subtitle: "Handelsfrieden bis 10. Januar" },
+      region: { point: { lon: 116.4074, lat: 39.9042 }, title: "PEKING", subtitle: "Zollsenkungen auf je 30 Mrd. $" },
+      regionAt: 2.53,
       news: [
         {
-          outlet: "CNBC",
-          headline: "U.S.-China trade truce extended for two months, Bessent says, as Xi begins state visit",
-          accent: "#005594",
+          outlet: "AP",
+          headline: "US and China release reciprocal $30 billion product lists for tariff cuts after Trump-Xi meeting",
+          accent: "#d71920",
+        },
+        {
+          outlet: "The Hill",
+          headline: "US, China agree to cut tariffs on $30B worth of goods, set up channel for AI incidents",
+          accent: "#1a5da6",
+          at: 6.46,
         },
       ],
+      stats: [{ label: "Warenwert je Seite", value: 30, decimals: 0, prefix: "$", suffix: " Mrd.", direction: "neutral", at: 8.3 }],
       voiceover:
-        "Entspannung dagegen zwischen Washington und Peking: Beim Staatsbesuch von Xi Jinping verlängern die USA und China ihren Handelsfrieden bis zum 10. Januar.",
-      durationInSeconds: 7.97,
+        "Ein Lichtblick kommt aus Washington und Peking: Die USA und China haben die Details ihres Zolldeals veröffentlicht. Auf Waren im Wert von je rund 30 Milliarden Dollar sollen die Zölle sinken. Chips und E-Autos sind allerdings ausgenommen.",
+      durationInSeconds: 12.05,
+    },
+    {
+      label: "DEUTSCHLAND · DAX",
+      countryIso: "276",
+      region: { point: { lon: 8.6821, lat: 50.1109 }, title: "FRANKFURT", subtitle: "Börse · DAX" },
+      regionAt: 1.27,
+      news: [
+        { outlet: "onvista", headline: "Aktien Frankfurt Eröffnung: Dax stabil trotz steigender Ölpreise", accent: "#0b4ea2" },
+        { outlet: "finanzen.net", headline: "Gute Stimmung in Frankfurt: DAX notiert zum Start im Plus", accent: "#1a4ba0", at: 5.72 },
+      ],
+      stats: [
+        { label: "DAX", value: 25450, decimals: 0, direction: "neutral", at: 2.58 },
+        { label: "Siemens Healthineers", value: 1.93, decimals: 2, suffix: " %", showSign: true, direction: "up", at: 5.72 },
+      ],
+      voiceover:
+        "Und der DAX? Der hält sich erstaunlich stabil, rund um 25.400 Punkte. Siemens Healthineers liegt vorne, Siemens Energy und Infineon geben nach.",
+      durationInSeconds: 8.7,
     },
     {
       label: "KRYPTO · BITCOIN",
@@ -137,36 +152,39 @@ export const episode: Episode = {
       badge: { text: "₿", color: "#f7931a", kind: "coin" },
       news: [
         {
-          outlet: "Yahoo Finance",
-          headline: "Bitcoin and ethereum prices today, Friday, September 25, 2026: Is bitcoin finally on a path to $250,000?",
-          accent: "#6001d2",
+          outlet: "finanzen.net",
+          headline: "Kryptomarkt 28. September 2026: Bitcoin-ETFs 2,4 Mrd. Dollar, Bitcoin 82.900 Dollar",
+          accent: "#1a4ba0",
         },
       ],
-      stats: [{ label: "Bitcoin", value: 85000, decimals: 0, prefix: "≈ $", direction: "neutral" }],
-      voiceover: "Bitcoin hält sich bei rund 85.000 Dollar – mit fast zehn Prozent Plus auf Wochensicht.",
-      durationInSeconds: 4.77,
+      stats: [
+        { label: "Bitcoin", value: 82900, decimals: 0, prefix: "≈ $", direction: "down", at: 1.62 },
+        { label: "ETF-Zuflüsse Vorwoche", value: 2.4, decimals: 1, prefix: "$", suffix: " Mrd.", direction: "up", at: 6.82 },
+      ],
+      voiceover:
+        "Bitcoin startet schwächer in die Woche: rund 82.900 Dollar, knapp zwei Prozent im Minus. Und das, obwohl die Bitcoin-ETFs letzte Woche rund 2,4 Milliarden Dollar eingesammelt haben. So viel wie in keiner anderen Woche dieses Jahr.",
+      durationInSeconds: 12.48,
     },
     {
-      label: "USA · MICRON",
+      label: "USA · AUSBLICK",
       countryIso: "840",
-      region: { stateFips: "16", point: { lon: -116.2023, lat: 43.615 }, title: "IDAHO", subtitle: "Micron · Boise" },
-      badge: { text: "MU", color: "#2f80ed", kind: "logo" },
+      region: { stateFips: "41", point: { lon: -122.8037, lat: 45.4871 }, title: "OREGON", subtitle: "Nike · Zahlen am Donnerstag" },
+      regionAt: 5.44,
+      badge: { text: "NKE", color: "#111111", kind: "logo", at: 5.44 },
       news: [
-        { outlet: "The Motley Fool", headline: "Act Now: Micron Could Skyrocket After Sept. 30", accent: "#6b21a8" },
-        {
-          outlet: "Investing.com",
-          headline: "Micron earnings outlook: what to watch ahead of the September 30 report",
-          accent: "#f59e0b",
-        },
+        { outlet: "CNBC", headline: "Stock market next week: Outlook for Sept. 28-Oct. 2, 2026", accent: "#005594" },
       ],
-      stats: [{ label: "Micron seit Jahresstart", value: 279, decimals: 0, suffix: " %", showSign: true, direction: "up" }],
+      stats: [
+        { label: "Jobs erwartet (Sept.)", value: 100000, decimals: 0, prefix: "≈ ", direction: "neutral", at: 7.61 },
+        { label: "Zuvor (Aug.)", value: 162000, decimals: 0, direction: "neutral", at: 8.0 },
+      ],
       voiceover:
-        "Und nächste Woche wird's heiß: Am 30. September legt Micron Zahlen vor – die Aktie ist in diesem Jahr schon um fast 280 Prozent gestiegen. Und am selben Tag kommen neue Inflationsdaten.",
-      durationInSeconds: 11.67,
+        "Diese Woche wird's richtig spannend: Mittwoch kommt die PCE-Inflation, Donnerstag die Zahlen von Nike, und Freitag der US-Arbeitsmarktbericht. Erwartet werden nur rund 100.000 neue Jobs.",
+      durationInSeconds: 9.29,
     },
   ],
-  outroVoiceover: "Das war dein Marktupdate. Folg Panda investiert, damit du nichts verpasst.",
-  outroSeconds: 5.29,
+  outroVoiceover: "Das war dein Marktupdate. Folg Panda investiert, damit du morgen nichts verpasst.",
+  outroSeconds: 5.27,
   followLabel: "Folgen",
   followedLabel: "Gefolgt",
 };

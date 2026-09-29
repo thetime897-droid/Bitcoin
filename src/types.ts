@@ -10,6 +10,9 @@ export const NewsSchema = z.object({
   outlet: z.string(),
   headline: z.string(),
   accent: zColor().optional(),
+  // Seconds from scene start when this appears (set by scripts/voice-align.py
+  // so it pops up exactly when the voice-over mentions it). Default: automatic.
+  at: z.number().min(0).optional(),
 });
 
 export const StatSchema = z.object({
@@ -23,12 +26,18 @@ export const StatSchema = z.object({
   // Colour: "good" = green, "bad" = red. Defaults to up=good / down=bad.
   // Use "bad" for rising yields, oil or mortgage rates.
   tone: z.enum(["good", "bad", "neutral"]).optional(),
+  // Seconds from scene start when this appears (set by scripts/voice-align.py
+  // so it pops up exactly when the voice-over mentions it). Default: automatic.
+  at: z.number().min(0).optional(),
 });
 
 export const BadgeSchema = z.object({
   text: z.string(),
   color: zColor(),
   kind: z.enum(["logo", "coin", "icon"]),
+  // Seconds from scene start when this appears (set by scripts/voice-align.py
+  // so it pops up exactly when the voice-over mentions it). Default: automatic.
+  at: z.number().min(0).optional(),
 });
 
 export const TickerItemSchema = z.object({
@@ -64,6 +73,9 @@ export const SceneSchema = z
     zoom: z.number().min(0.8).max(20).optional(),
     // Where exactly the news comes from: pin + label, optional lifted US state.
     region: RegionSchema.optional(),
+    // Seconds from scene start when the pin / state lift appears (the camera
+    // push-in is timed to land then). Default: shortly after arrival.
+    regionAt: z.number().min(0).optional(),
     // Animated network of arcs between financial hubs (e.g. for crypto).
     network: z.boolean().optional(),
     badge: BadgeSchema.optional(),

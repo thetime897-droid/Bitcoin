@@ -122,6 +122,7 @@ const StatCard: React.FC<{ stat: Stat; layout: Layout; inAt: number; outAt: numb
 };
 
 export const StatCallout: React.FC<Props> = ({ stats, layout, arrive, duration }) => {
+  const { fps } = useVideoConfig();
   if (stats.length === 0) return null;
   const { stats: box, u } = layout;
   return (
@@ -139,7 +140,14 @@ export const StatCallout: React.FC<Props> = ({ stats, layout, arrive, duration }
       }}
     >
       {stats.map((stat, i) => (
-        <StatCard key={i} stat={stat} layout={layout} inAt={arrive + 16 + i * 12} outAt={duration - 10} seed={i + stat.value} />
+        <StatCard
+          key={i}
+          stat={stat}
+          layout={layout}
+          inAt={stat.at !== undefined ? Math.max(arrive + 8, Math.round(stat.at * fps)) : arrive + 16 + i * 12}
+          outAt={duration - 10}
+          seed={i + stat.value}
+        />
       ))}
     </div>
   );

@@ -118,17 +118,32 @@ Keine Videos committen.
 
 ## 7. Wenn der Nutzer seine Sprachaufnahme schickt
 
-1. `pip install --break-system-packages numpy scipy` (falls nötig), Datei nach
-   `public/voice.mp3` kopieren (vorher mit ffmpeg umwandeln, falls kein MP3),
-   in `episode.ts` `voiceSrc: "voice.mp3"` setzen.
+Ziel: kurze Pausen (Watchtime) und jede Einblendung genau auf dem Wort, das
+gerade gesprochen wird.
+
+1. `pip install --break-system-packages numpy scipy` (falls nötig).
 2. `blocks.txt` schreiben: der gesprochene Text je Szene plus Outro als letzter
-   Block, Blöcke durch eine Leerzeile getrennt (Zahlen am besten ausgeschrieben).
-3. `python3 scripts/voice-sync.py public/voice.mp3 blocks.txt` →
-   `durationInSeconds` je Szene und `outroSeconds` in `episode.ts` übernehmen.
-   Szenen unter ~5 s: kurze Flugstrecke wählen (Ziel nahe der Vorszene) und
-   nur eine News-Karte.
-4. Nur die gewünschten Formate rendern (Long: `npx remotion render Long ...`,
-   Details siehe `scripts/cloud-render.sh`).
+   Block, Blöcke durch eine Leerzeile getrennt (Zahlen ausgeschrieben).
+3. Pausen und Atmer kürzen (Pausen > 0,1 s → 0,07 s, Szenenwechsel 0,15 s,
+   Lautheit auf den abgenommenen Pegel):
+   `python3 scripts/voice-sync.py <aufnahme> blocks.txt` liefert grobe
+   Szenenwechsel (`voiceStarts`), dann
+   `python3 scripts/tighten-voice.py <aufnahme> public/voice.mp3 <Wechsel,kommagetrennt>`.
+   In `episode.ts` `voiceSrc: "voice.mp3"` setzen.
+4. `cues.txt` schreiben – je Zeile `<Szene> <Cue> <Stichwort>`; Cues:
+   `news2`/`news3` (2./3. News-Karte), `stat1`/`stat2`, `region` (Pin bzw.
+   Bundesstaat + Kamera-Push), `badge`. Stichwort = ein Wort aus dem Block,
+   bei dem das Element erscheinen soll (Zahlen-Wörter meiden, besser das Wort
+   davor). Die 1. News-Karte kommt immer mit der Ankunft.
+5. `python3 scripts/voice-align.py public/voice.mp3 blocks.txt cues.txt`
+   (lokale Spracherkennung, kein Netz nötig, ca. 1 Min.) → `durationInSeconds`,
+   `outroSeconds` und alle Cues (Sekunden ab Szenenstart) in `episode.ts`
+   eintragen: `news[i].at`, `stats[i].at`, `badge.at`, Szene `regionAt`.
+   Die stderr-Ausgabe zeigt, was erkannt wurde – Blockstarts müssen
+   aufsteigen. Ein Cue nach Szenenende (letztes Wort der Szene) → auf ein
+   früheres Stichwort legen.
+6. Standbilder um die Cues prüfen (Abschnitt 4), dann rendern. Musik auf die
+   Videolänge erzeugen (Abschnitt 8) – sonst endet sie zu früh.
 
 ## 8. Hintergrundmusik (optional)
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill } from "remotion";
+import { AbsoluteFill, useVideoConfig } from "remotion";
 import { NewsStack } from "../components/NewsCard";
 import { StatCallout } from "../components/StatCallout";
 import { Badge } from "../components/Badge";
@@ -15,6 +15,7 @@ type Props = {
 };
 
 export const SceneOverlay: React.FC<Props> = ({ scene, index, layout, arrive, duration }) => {
+  const { fps } = useVideoConfig();
   const centered = !scene.countryIso && !scene.region;
   // The region label sits right of the pin, so the badge moves to the other side.
   const badgeLayout: Layout = scene.region
@@ -23,7 +24,7 @@ export const SceneOverlay: React.FC<Props> = ({ scene, index, layout, arrive, du
   return (
     <AbsoluteFill>
       {scene.badge && (
-        <Badge badge={scene.badge} layout={badgeLayout} inAt={centered ? arrive - 6 : arrive + 30} outAt={duration - 8} centered={centered} />
+        <Badge badge={scene.badge} layout={badgeLayout} inAt={scene.badge.at !== undefined ? Math.max(arrive + 6, Math.round(scene.badge.at * fps)) : centered ? arrive - 6 : arrive + 30} outAt={duration - 8} centered={centered} />
       )}
       {scene.stats && <StatCallout stats={scene.stats} layout={layout} arrive={arrive} duration={duration} />}
       <NewsStack news={scene.news} layout={layout} arrive={arrive} duration={duration} breaking={index === 0} />

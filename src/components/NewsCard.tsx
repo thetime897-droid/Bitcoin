@@ -163,9 +163,12 @@ const Card: React.FC<{
 };
 
 export const NewsStack: React.FC<Props> = ({ news, layout, arrive, duration, breaking }) => {
+  const { fps } = useVideoConfig();
   const start = arrive + 4;
   const end = duration - 12;
   const slot = (end - start) / news.length;
+  // Voice cue (seconds from scene start) wins over the even split.
+  const inAt = news.map((item, i) => (item.at !== undefined ? Math.max(start, Math.round(item.at * fps)) : Math.round(start + i * slot)));
 
   return (
     <div
@@ -181,8 +184,8 @@ export const NewsStack: React.FC<Props> = ({ news, layout, arrive, duration, bre
           key={i}
           item={item}
           layout={layout}
-          inAt={Math.round(start + i * slot)}
-          outAt={i < news.length - 1 ? Math.round(start + (i + 1) * slot) : end}
+          inAt={inAt[i]}
+          outAt={i < news.length - 1 ? inAt[i + 1] : end}
           first={i === 0}
           last={i === news.length - 1}
           breaking={breaking}
