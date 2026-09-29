@@ -14,9 +14,9 @@ breaths and makes the read feel continuous:
   0.6 s  <= gap < 1.0 s -> 0.32 s (sentence)
   gap >= 1.0 s          -> 0.50 s (paragraph = new scene)
 
---tight (Short-Video-Flow, keine hoerbare Stille): every gap of 0.10 s or more
-is cut out completely and word edges are trimmed closer; only the tiny gaps
-inside words stay as recorded.
+--tight (Short-Video-Flow, keine hoerbare Stille): every gap between words is
+capped at 0.05 s and word edges are trimmed closer; gaps inside words stay
+as recorded.
 
 Prints the kept speech spans and the new paragraph-pause positions (useful as
 scene boundaries) as JSON.
@@ -35,7 +35,7 @@ HOP = 0.01
 KEEP_BELOW = 0.25
 SHORT, SENTENCE, PARAGRAPH = 0.22, 0.32, 0.50
 PRE_ONSET, POST_OFFSET = 0.10, 0.14
-TIGHT_MIN, TIGHT_GAP = 0.10, 0.0
+TIGHT_MIN, TIGHT_GAP = 0.05, 0.05
 FADE = 0.012
 
 src, dst = sys.argv[1], sys.argv[2]
