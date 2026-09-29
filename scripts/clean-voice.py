@@ -1,6 +1,6 @@
 """Removes breaths and tightens pauses in a voice-over recording.
 
-Usage: python3 scripts/clean-voice.py <in-audio> <out.wav> [--report]
+Usage: python3 scripts/clean-voice.py <in-audio> <out.wav> [--tight] [--report]
 
 Speech is located by voicing (pitch periodicity), so breaths - loud but
 unpitched noise - are not mistaken for words. Each voiced run is widened a
@@ -13,6 +13,10 @@ breaths and makes the read feel continuous:
   0.25 s <= gap < 0.6 s -> 0.22 s (comma / short breath)
   0.6 s  <= gap < 1.0 s -> 0.32 s (sentence)
   gap >= 1.0 s          -> 0.50 s (paragraph = new scene)
+
+--tight (Short-Video-Flow, keine hoerbare Stille): every gap of 0.10 s or more
+is cut out completely and word edges are trimmed closer; only the tiny gaps
+inside words stay as recorded.
 
 Prints the kept speech spans and the new paragraph-pause positions (useful as
 scene boundaries) as JSON.
@@ -31,10 +35,14 @@ HOP = 0.01
 KEEP_BELOW = 0.25
 SHORT, SENTENCE, PARAGRAPH = 0.22, 0.32, 0.50
 PRE_ONSET, POST_OFFSET = 0.10, 0.14
+TIGHT_MIN, TIGHT_GAP = 0.10, 0.0
 FADE = 0.012
 
 src, dst = sys.argv[1], sys.argv[2]
 report = "--report" in sys.argv
+tight = "--tight" in sys.argv
+if tight:
+    PRE_ONSET, POST_OFFSET = 0.06, 0.08
 
 with tempfile.NamedTemporaryFile(suffix=".wav") as tmp:
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src, "-ac", "1", "-ar", str(SR), tmp.name], check=True)
@@ -80,7 +88,7 @@ while i < n:
         i += 1
 
 # Widen runs to keep word-edge consonants, but only over audible frames.
-floor = speech_level - 30
+floor = speech_level - (24 if tight else 30)
 wide = mask.copy()
 for i in range(1, n):
     if mask[i] and not mask[i - 1]:
@@ -150,18 +158,21 @@ spans = []
 for k, (a, b) in enumerate(runs):
     if k > 0:
         gap = a - runs[k - 1][1]
-        if gap < KEEP_BELOW:
+        if gap < (TIGHT_MIN if tight else KEEP_BELOW):
             piece = x[int(runs[k - 1][1] * SR) : int(a * SR)].copy()
             out.append(piece)
             t_out += len(piece) / SR
         else:
-            new = SHORT if gap < 0.6 else SENTENCE if gap < 1.0 else PARAGRAPH
+            if tight:
+                new = TIGHT_GAP
+            else:
+                new = SHORT if gap < 0.6 else SENTENCE if gap < 1.0 else PARAGRAPH
             gap_audio = x[int(runs[k - 1][1] * SR) : int(a * SR)]
-            removed.append({"at": round(runs[k - 1][1], 2), "len": round(gap, 2), "peakDb": round(float(20 * np.log10(np.abs(gap_audio).max() + 1e-9)), 1)})
             out.append(np.zeros(int(new * SR), np.float32))
             if gap >= 1.0:
                 paragraphs.append(round(t_out + new / 2, 2))
             t_out += new
+            removed.append({"at": round(runs[k - 1][1], 2), "len": round(gap, 2), "nextStart": round(t_out, 2), "peakDb": round(float(20 * np.log10(np.abs(gap_audio).max() + 1e-9)), 1)})
     piece = fade(x[int(a * SR) : int(b * SR)].copy())
     spans.append([round(t_out, 2), round(t_out + len(piece) / SR, 2)])
     out.append(piece)

@@ -120,10 +120,12 @@ Keine Videos committen.
 
 1. `pip install --break-system-packages numpy scipy` (falls nötig). Aufnahme
    bereinigen (Atmer raus, lange Pausen auf 0,22/0,32/0,5 s gekürzt):
-   `python3 scripts/clean-voice.py <aufnahme> /tmp/voice.wav`, dann
+   `python3 scripts/clean-voice.py <aufnahme> /tmp/voice.wav --tight --report`
+   (Standard beim Nutzer: `--tight` = gar keine Pausen, kompletter Flow), dann
    `ffmpeg -i /tmp/voice.wav -b:a 192k public/voice.mp3`, in `episode.ts`
    `voiceSrc: "voice.mp3"` setzen. Die Ausgabe `paragraphPauses` zeigt die
-   Absatzpausen – Szenenwechsel dort ansetzen (0,5 s vor dem nächsten Satz).
+   Absatzpausen; mit `--report` steht bei jeder entfernten Pause `nextStart`
+   (Beginn des nächsten Satzes in der neuen Datei) – Szenenwechsel = 0,5 s davor.
 2. `blocks.txt` schreiben: der gesprochene Text je Szene plus Outro als letzter
    Block, Blöcke durch eine Leerzeile getrennt (Zahlen am besten ausgeschrieben).
 3. `python3 scripts/voice-sync.py public/voice.mp3 blocks.txt` →
