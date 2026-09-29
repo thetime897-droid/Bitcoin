@@ -1,0 +1,13 @@
+{
+  "name": "markt-terminal",
+  "private": true,
+  "type": "module",
+  "description": "Live-Finanznachrichten-Terminal für OBS-Livestreams",
+  "scripts": {
+    "start": "node server.mjs",
+    "demo": "node server.mjs --demo"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "_hinweis": "Hier kannst du Quellen hinzufügen oder entfernen. category: aktien | etf | krypto | makro. filter: true = nur Meldungen mit Finanz-Bezug übernehmen (für allgemeine Wirtschafts-Feeds).",
+  "pollSeconds": 120,
+  "feeds": [
+    { "name": "tagesschau", "url": "https://www.tagesschau.de/wirtschaft/index~rss2.xml", "category": "makro", "filter": true },
+    { "name": "n-tv", "url": "https://www.n-tv.de/wirtschaft/rss", "category": "makro", "filter": true },
+    { "name": "SPIEGEL", "url": "https://www.spiegel.de/wirtschaft/index.rss", "category": "makro", "filter": true },
+    { "name": "manager magazin", "url": "https://www.manager-magazin.de/finanzen/index.rss", "category": "aktien", "filter": true },
+    { "name": "Cointelegraph", "url": "https://de.cointelegraph.com/rss", "category": "krypto" },
+    { "name": "BTC-ECHO", "url": "https://www.btc-echo.de/feed/", "category": "krypto" },
+    { "name": "Google News", "url": "https://news.google.com/rss/search?q=ETF+when:1d&hl=de&gl=DE&ceid=DE:de", "category": "etf" },
+    { "name": "Google News", "url": "https://news.google.com/rss/search?q=Aktien+B%C3%B6rse+when:1d&hl=de&gl=DE&ceid=DE:de", "category": "aktien" },
+    { "name": "Google News", "url": "https://news.google.com/rss/search?q=Bitcoin+Krypto+when:1d&hl=de&gl=DE&ceid=DE:de", "category": "krypto" }
+  ]
+}
