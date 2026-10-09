@@ -25,6 +25,12 @@ Nicht ohne ausdrücklichen Wunsch ändern.
 - Intro mit LIVE-Balken + Laufband, Outro mit „Mehr Börsennews?“ + Folgen-Button.
 - TikTok-Safe-Zone: wichtige Inhalte nicht ganz rechts (Buttons) und nicht unter y≈1600.
 
+## Panda-Qualität
+- `assets_hd/` wird mit `python3 tools/hd_panda.py assets assets_hd 6` erzeugt (Entrauschen → Lanczos → kantenmaskierter
+  Shock-Filter → Anti-Aliasing). KI-Upscaler-Modelle sind im Netz nicht ladbar, Vektorisierung (vtracer) sah posterisiert aus.
+- Beste Qualität: Posen einzeln in hoher Auflösung (≥ 1024 px Höhe) vom Nutzer → in `assets/` ersetzen und neu erzeugen.
+- Canvas zeichnet mit `imageSmoothingQuality = 'high'`; Upload-Encode mit ≥ 6,5 Mbit/s (`-tune animation`).
+
 ## Sound
 - Voice-Over immer klar im Vordergrund; SFX **leise** (MASTER 0.15, Spitzen ≈ -20 dBFS) und **sparsam** – nur Akzente
   an Schlüsselmomenten, kein Dauer-Geklimper. SFX-Bus via `tools/mix_sfx.py` (leichte Zufallsvariation je Einsatz).

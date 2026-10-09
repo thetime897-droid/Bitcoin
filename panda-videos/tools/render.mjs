@@ -52,7 +52,7 @@ const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate
 const t0 = Date.now();
 for (let i = 0; i < n; i++) {
   const t = from + i / fps;
-  const data = await page.evaluate((t) => E.frameJpeg(t, 0.95), t);
+  const data = await page.evaluate((t) => E.frameJpeg(t, 0.98), t);
   if (!ff.stdin.write(Buffer.from(data.split(',')[1], 'base64'))) await new Promise((r) => ff.stdin.once('drain', r));
   if (i % 60 === 0) process.stdout.write(`\rFrame ${i}/${n}  (${((Date.now() - t0) / 1000).toFixed(0)} s)`);
 }

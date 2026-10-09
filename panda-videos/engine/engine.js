@@ -137,6 +137,7 @@
     ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(0, -6, w * 0.42, 22, 0, 0, 7); ctx.fill();
     ctx.translate(0, bob * 0.3); ctx.rotate(Math.sin(t * 1.7) * 0.012);
     ctx.scale((o.flip ? -1 : 1) * s / sq, s * sq);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(img, -w / 2, -h + bob, w, h);
     ctx.restore();
   }
@@ -474,7 +475,7 @@
   }
   async function init(video) {
     VIDEO = video; CAPS = prepCaptions(video.captions);
-    const cv = document.getElementById('c'); cv.width = W; cv.height = H; ctx = cv.getContext('2d');
+    const cv = document.getElementById('c'); cv.width = W; cv.height = H; ctx = cv.getContext('2d'); ctx.imageSmoothingQuality = 'high';
     await Promise.all([document.fonts.load(`100px ${FONT_COMIC}`), document.fonts.load(`900 70px ${FONT_BOLD}`), document.fonts.load(`800 70px ${FONT_BOLD}`)]);
     const poses = new Set(); video.scenes.forEach((s) => (s.poses || []).forEach((p) => poses.add(p)));
     await Promise.all([...poses].map((p) => new Promise((res, rej) => { const im = new Image(); im.onload = () => { IMG[p] = im; res(); }; im.onerror = () => rej(new Error('Bild fehlt: ' + p)); im.src = `../assets_hd/${p}.png`; })));

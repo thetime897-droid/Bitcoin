@@ -6,7 +6,7 @@ Charts und Wort-für-Wort-Untertitel.
 
 ## Aufbau
 - `assets/` – freigestellter Panda (aus `assets/referenzblatt_v2.png`, via `tools/crop_panda.py`)
-- `assets_hd/` – 4× hochgerechnete Version für das Video (`tools/upscale_assets.py`)
+- `assets_hd/` – 6× hochgerechnete, nachgeschärfte Version für das Video (`tools/hd_panda.py`)
 - `engine/engine.js` – Zeichen-Engine (Hintergründe, Panda, Effekte, Requisiten, Untertitel, Kamera)
 - `videos/<name>/video.js` – ein Video: Untertitel mit Zeiten + Szenen
 - `tools/render.mjs` – rendert Frames in Chromium, mischt Soundeffekte + Voice-Over
