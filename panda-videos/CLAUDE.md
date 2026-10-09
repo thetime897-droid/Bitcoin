@@ -22,7 +22,9 @@ Nicht ohne ausdrücklichen Wunsch ändern.
 - Effekte: Pop-ins mit Überschwinger, Explosionen, rote ↓ / grüne ↑ Pfeile, Charts auf Whiteboard, Stempel, Geldregen.
 - Untertitel: Montserrat 900, Großbuchstaben, weiß mit schwarzer Kontur bei y≈1470, aktuelles Wort gelb.
 - Kein echtes Firmenlogo – Cartoon-Symbole (z. B. Apfel statt Apple-Logo).
-- Intro mit LIVE-Balken + Laufband, Outro mit „Mehr Börsennews?“ + Folgen-Button.
+- Intro mit LIVE-Balken + Laufband. **Kein Outro/Folgen-Button**: Video endet exakt mit dem Voice-Over (`endFade: false`).
+- Politur (ab iran-wahlkampf): `xfade: 0.3` (weiche Szenen-Überblendung), `grain: 0.06` (Filmkorn), `bokeh: true`,
+  Headline-Zeilen mit `ribbon: <farbe>` als Banner-Band. Requisiten in `engine/props.js` (`E.P.*`).
 - TikTok-Safe-Zone: wichtige Inhalte nicht ganz rechts (Buttons) und nicht unter y≈1600.
 
 ## Panda-Qualität
@@ -36,7 +38,9 @@ Nicht ohne ausdrücklichen Wunsch ändern.
   an Schlüsselmomenten, kein Dauer-Geklimper. SFX-Bus via `tools/mix_sfx.py` (leichte Zufallsvariation je Einsatz).
 - Typen: `whoosh` (nur wenn Szene `whoosh: true` setzt), `pop` (Pop-ins), `ping` (Hinweis/Info), `cash` (Preise, Geld, Umsatz),
   `boom` (Impact/Shake), `stamp` (Stempel, Schloss), `paper` (Zeitung/Report), `down` (negativer Akzent).
-- In Szenen: `pops: [t]`, `shake: [t]` (+ `shakeSfx`), `sfx: [[t, 'typ', gain]]`.
+- In Szenen: `pops: [t]`, `shake: [t]` (+ `shakeSfx`), `sfx: [[t, 'typ', gain, pan]]` – pan = Position im Bild (-1 links … 1 rechts).
+- Sounddesign: `swell` (Rückwärts-Hall) endet auf der Enthüllung; Zähler bekommen `tick`-Folgen, die sich zum Ziel verdichten;
+  `horn` für Schiffe; Mix duckt Effekte automatisch unter der Stimme (bis -6 dB) und lässt 2,8 kHz frei.
 - Eigene Sounds (z. B. Pixabay) als `sfx/custom/<typ>.mp3` ablegen → ersetzen die eingebauten automatisch.
 - `sfx/lib` neu bauen: `python3 tools/build_sfx.py` – organische/weiche CC0-Sounds (`sfx/uisfx`: organic, soft) + natürliche
   Geräusch-Schichten (Münzen, Papier, Thud). Keine synthetischen Ton-Sweeps (klangen dem Nutzer zu generisch).

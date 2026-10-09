@@ -63,7 +63,7 @@ await browser.close(); server.close();
 // ---- Soundeffekte: Bibliothek (sfx/lib bzw. sfx/custom) an den Cue-Zeiten mischen ----
 const sfxWav = outFile.replace(/\.mp4$/, '_sfx.wav'), cuesJson = outFile.replace(/\.mp4$/, '_cues.json');
 fs.writeFileSync(cuesJson, JSON.stringify(meta.sfx.map((c) => ({ ...c, t: c.t - from }))));
-const mixr = spawnSync('python3', [path.join(ROOT, 'tools/mix_sfx.py'), cuesJson, String(to - from), sfxWav], { stdio: 'inherit' });
+const mixr = spawnSync('python3', [path.join(ROOT, 'tools/mix_sfx.py'), cuesJson, String(to - from), sfxWav, ...(audio && !from ? [audio] : [])], { stdio: 'inherit' });
 if (mixr.status !== 0) process.exit(mixr.status);
 fs.unlinkSync(cuesJson);
 
@@ -71,7 +71,7 @@ fs.unlinkSync(cuesJson);
 const dur = to - from;
 const inputs = audio ? ['-ss', String(from), '-t', String(dur), '-i', audio] : [];
 const filter = audio
-  ? `[1:a]aresample=48000,apad=whole_dur=${dur},afade=t=out:st=${dur - 0.3}:d=0.3[v];[2:a]anull[s];[v][s]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]`
+  ? `[1:a]aresample=48000,apad=whole_dur=${dur},afade=t=out:st=${dur - (meta.endFade === false ? 0.06 : 0.3)}:d=${meta.endFade === false ? 0.06 : 0.3}[v];[2:a]anull[s];[v][s]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]`
   : `[1:a]anull[a]`;
 const r = spawnSync('ffmpeg', ['-v', 'error', '-y', '-i', silent, ...inputs, '-i', sfxWav, '-filter_complex', filter, '-map', '0:v', '-map', '[a]',
   '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-t', String(dur), outFile], { stdio: 'inherit' });

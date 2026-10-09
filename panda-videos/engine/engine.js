@@ -79,7 +79,13 @@
       const size = fitSize(ctx, ln.t, ln.size || 128, 960);
       const s = pop(lt, (o.delay || 0) + i * 0.12, 0.45);
       const rot = (ln.rot ?? -0.035) + Math.sin(lt * 1.4 + i) * 0.006;
-      comicText(ctx, ln.t, 540 + (ln.dx || 0), y, { size, fill: ln.c || C.white, scale: s, rot, gradient: ln.g });
+      if (ln.ribbon && s > 0.001) {
+        ctx.save(); ctx.font = `${size}px ${FONT_COMIC}`; const tw = ctx.measureText(ln.t).width + size * 0.7, th = size * 1.18;
+        ctx.translate(540 + (ln.dx || 0), y + size * 0.02); ctx.rotate(rot); ctx.scale(s, s);
+        rr(ctx, -tw / 2 + 10, -th / 2 + 14, tw, th, th * 0.22); ctx.fillStyle = 'rgba(0,0,0,0.28)'; ctx.fill();
+        rr(ctx, -tw / 2, -th / 2, tw, th, th * 0.22); ink(ctx, ln.ribbon, 9); ctx.restore();
+      }
+      comicText(ctx, ln.t, 540 + (ln.dx || 0), y, { size, fill: ln.c || C.white, scale: s, rot, gradient: ln.g, shadow: !ln.ribbon });
       y += size * 1.02;
     });
   }
@@ -443,25 +449,56 @@
   // ---------- Szenen-Steuerung ----------
   let VIDEO = null, CAPS = null, ctx = null;
   function sceneAt(t) { let s = VIDEO.scenes[0]; for (const sc of VIDEO.scenes) if (t >= sc.start) s = sc; return s; }
-  function renderFrame(t) {
-    const sc = sceneAt(t), idx = VIDEO.scenes.indexOf(sc), next = VIDEO.scenes[idx + 1];
+  function bokeh(c, t, mood) {
+    const r = rng(77), dark = mood === 'dark';
+    c.save(); c.globalCompositeOperation = dark ? 'lighter' : 'source-over';
+    for (let i = 0; i < 16; i++) {
+      const x = (r() * 1300 - 110 + t * (8 + r() * 14)) % 1300 - 110, y = (r() * 2100 - 90 - t * (10 + r() * 18) + 2100) % 2100 - 90, rad = 30 + r() * 90;
+      const g = c.createRadialGradient(x, y, 0, x, y, rad), a = (0.06 + r() * 0.1) * (0.6 + 0.4 * Math.sin(t * 0.8 + i));
+      const col = dark ? (i % 3 ? '120,220,255' : '255,214,120') : '255,255,255';
+      g.addColorStop(0, `rgba(${col},${a})`); g.addColorStop(1, `rgba(${col},0)`); c.fillStyle = g; c.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+    }
+    c.restore();
+  }
+  let grainTiles = null;
+  function grain(c, t) {
+    if (!grainTiles) {
+      grainTiles = []; const r = rng(5);
+      for (let k = 0; k < 4; k++) { const g = document.createElement('canvas'); g.width = g.height = 256; const gc = g.getContext('2d'), im = gc.createImageData(256, 256);
+        for (let i = 0; i < im.data.length; i += 4) { const v = 128 + (r() - 0.5) * 120; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; }
+        gc.putImageData(im, 0, 0); grainTiles.push(c.createPattern(g, 'repeat')); }
+    }
+    c.save(); c.globalCompositeOperation = 'overlay'; c.globalAlpha = VIDEO.grain; c.fillStyle = grainTiles[Math.floor(t * 24) % 4]; c.fillRect(0, 0, W, H); c.restore();
+  }
+  function drawScene(c, sc, t) {
+    const idx = VIDEO.scenes.indexOf(sc), next = VIDEO.scenes[idx + 1];
     const lt = t - sc.start, dur = (next ? next.start : VIDEO.duration) - sc.start;
-    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none';
-    // Kamera: Punch-In beim Schnitt, langsamer Zoom, Shakes
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.filter = 'none';
     const f = sc.focus || { x: 540, y: 880 };
     let z = 1 + (sc.zoom ?? 0.05) * eInOut(lt / dur) + (sc.punch === false ? 0 : 0.06 * (1 - eOut(lt / 0.55)));
     let sx = 0, sy = 0;
     (sc.shake || []).forEach((st) => { if (lt >= st) { const k = Math.max(0, 1 - (lt - st) / 0.4); sx += Math.sin(lt * 70) * 12 * k; sy += Math.cos(lt * 61) * 10 * k; } });
-    ctx.save(); ctx.translate(sx * 0.5, sy * 0.5); ctx.translate(540, 960); ctx.scale(1.04, 1.04); ctx.translate(-540, -960);
-    background(ctx, sc.mood, t, sc.bg || {}); ctx.restore();
-    ctx.save(); ctx.translate(f.x + sx, f.y + sy); ctx.scale(z, z); ctx.translate(-f.x, -f.y);
-    sc.draw(ctx, lt, t, dur);
-    ctx.restore();
+    c.save(); c.translate(sx * 0.5, sy * 0.5); c.translate(540, 960); c.scale(1.04, 1.04); c.translate(-540, -960);
+    background(c, sc.mood, t, sc.bg || {}); if (VIDEO.bokeh) bokeh(c, t, sc.mood); c.restore();
+    c.save(); c.translate(f.x + sx, f.y + sy); c.scale(z, z); c.translate(-f.x, -f.y);
+    sc.draw(c, lt, t, dur);
+    c.restore();
+  }
+  let xfCanvas = null;
+  function renderFrame(t) {
+    const sc = sceneAt(t), idx = VIDEO.scenes.indexOf(sc), lt = t - sc.start, XF = VIDEO.xfade || 0;
+    if (idx > 0 && XF && lt < XF) {
+      drawScene(ctx, VIDEO.scenes[idx - 1], t);
+      if (!xfCanvas) { xfCanvas = document.createElement('canvas'); xfCanvas.width = W; xfCanvas.height = H; }
+      const xc = xfCanvas.getContext('2d'); xc.imageSmoothingQuality = 'high'; drawScene(xc, sc, t);
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.save(); ctx.globalAlpha = eInOut(lt / XF); ctx.drawImage(xfCanvas, 0, 0); ctx.restore();
+    } else drawScene(ctx, sc, t);
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1;
     if (VIDEO.brand !== false && !sc.noBrand) brandBug(ctx);
     captions(ctx, CAPS, t);
-    // Blitz beim Szenenwechsel
-    if (idx > 0 && sc.flash !== false) { const a = 0.22 * (1 - prog(lt, 0, 0.2)); if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
-    if (t > VIDEO.duration - 0.25) { ctx.fillStyle = `rgba(0,0,0,${prog(t, VIDEO.duration - 0.25, 0.25)})`; ctx.fillRect(0, 0, W, H); }
+    if (VIDEO.grain) grain(ctx, t);
+    if (!XF && idx > 0 && sc.flash !== false) { const a = 0.22 * (1 - prog(lt, 0, 0.2)); if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
+    if (VIDEO.endFade !== false && t > VIDEO.duration - 0.25) { ctx.fillStyle = `rgba(0,0,0,${prog(t, VIDEO.duration - 0.25, 0.25)})`; ctx.fillRect(0, 0, W, H); }
   }
   function sfxCues() {
     const cues = [];
@@ -469,7 +506,7 @@
       if (i > 0 && sc.whoosh) cues.push({ t: sc.start - 0.08, type: 'whoosh', gain: sc.whoosh === true ? 1 : sc.whoosh });
       (sc.shake || []).forEach((st) => cues.push({ t: sc.start + st, type: sc.shakeSfx || 'boom' }));
       (sc.pops || []).forEach((st) => cues.push({ t: sc.start + st, type: 'pop' }));
-      (sc.sfx || []).forEach(([st, type, gain]) => cues.push({ t: sc.start + st, type, gain }));
+      (sc.sfx || []).forEach(([st, type, gain, pan]) => cues.push({ t: sc.start + st, type, gain, pan }));
     });
     return cues;
   }
@@ -479,11 +516,11 @@
     await Promise.all([document.fonts.load(`100px ${FONT_COMIC}`), document.fonts.load(`900 70px ${FONT_BOLD}`), document.fonts.load(`800 70px ${FONT_BOLD}`)]);
     const poses = new Set(); video.scenes.forEach((s) => (s.poses || []).forEach((p) => poses.add(p)));
     await Promise.all([...poses].map((p) => new Promise((res, rej) => { const im = new Image(); im.onload = () => { IMG[p] = im; res(); }; im.onerror = () => rej(new Error('Bild fehlt: ' + p)); im.src = `../assets_hd/${p}.png`; })));
-    return { duration: video.duration, fps: video.fps || 30, sfx: sfxCues() };
+    return { duration: video.duration, fps: video.fps || 30, sfx: sfxCues(), endFade: video.endFade };
   }
   function frameJpeg(t, q = 0.93) { renderFrame(t); return document.getElementById('c').toDataURL('image/jpeg', q); }
 
-  window.E = { W, H, C, clamp, lerp, prog, eOut, eIn, eInOut, eBack, eElastic, pop, rng, rr, ink, withT, dropShadow, comicText, plainText, fitSize, headline,
+  window.E = { W, H, C, FONT_COMIC, FONT_BOLD, clamp, lerp, prog, eOut, eIn, eInOut, eBack, eElastic, pop, rng, rr, ink, withT, dropShadow, comicText, plainText, fitSize, headline,
     background, drawPanda, burst, explosion, speedLines, moneyBill, moneyRain, arrowDown, arrowUp, iphone, apple, whiteboard, lineChart, pill, stamp,
     newspaper, factory, clipboard, gauge, priceTag, serverRack, chip, ramStick, cart, questionMarks, liveBar, init, renderFrame, frameJpeg };
 })();

@@ -170,7 +170,36 @@ def make_down():
     return room(mix((ui("organic/error"), 0, 1.0),), rt=0.5, wet=0.1)
 
 
+# ---------- TICK: leiser Zaehl-Tick (Holz) ----------
+def make_tick():
+    t = t_axis(0.05)
+    click = bp(rng.standard_normal(len(t)), 1800, 6000) * np.exp(-t / 0.004) * 0.6
+    return room(mix((ui("organic/typing"), 0, 0.8), (st(click), 0, 0.5)), rt=0.25, wet=0.05)
+
+
+# ---------- SWELL: Rueckwaerts-Hall, laeuft auf eine Enthuellung zu ----------
+def make_swell():
+    hit = mix((ui("soft/drop"), 0, 1.0), (ui("organic/notification"), 0, 0.5))
+    tail = room(hit, rt=1.6, wet=1.4, seed=9)
+    x = tail[::-1].copy()
+    n = len(x); env = np.linspace(0, 1, n) ** 1.6
+    x *= env[:, None]
+    return lp(x.T, 6000).T
+
+
+# ---------- HORN: Schiffshorn in der Ferne ----------
+def make_horn():
+    d = 1.6; t = t_axis(d)
+    f0 = 98 * (1 + 0.004 * np.sin(2 * np.pi * 5.2 * t))
+    ph = 2 * np.pi * np.cumsum(f0) / SR
+    tone = sum((1 / k ** 0.9) * np.sin(k * ph) for k in range(1, 22))
+    tone = lp(tone, 1400) + 0.15 * bp(rng.standard_normal(len(t)), 200, 900)
+    env = np.minimum(1, t / 0.18) * np.where(t > d - 0.45, np.maximum(0, (d - t) / 0.45), 1)
+    x = st(np.tanh(tone * env * 0.6), -0.2)
+    return room(x, rt=2.2, wet=0.35, seed=4)
+
+
 if __name__ == "__main__":
     for name, fn in [("pop", make_pop), ("ping", make_ping), ("cash", make_cash), ("whoosh", make_whoosh),
-                     ("boom", make_boom), ("stamp", make_stamp), ("paper", make_paper), ("down", make_down)]:
+                     ("boom", make_boom), ("stamp", make_stamp), ("paper", make_paper), ("down", make_down), ("tick", make_tick), ("swell", make_swell), ("horn", make_horn)]:
         finish(fn(), name)
