@@ -9,7 +9,9 @@ Charts und Wort-für-Wort-Untertitel.
 - `assets_hd/` – 4× hochgerechnete Version für das Video (`tools/upscale_assets.py`)
 - `engine/engine.js` – Zeichen-Engine (Hintergründe, Panda, Effekte, Requisiten, Untertitel, Kamera)
 - `videos/<name>/video.js` – ein Video: Untertitel mit Zeiten + Szenen
-- `tools/render.mjs` – rendert Frames in Chromium, synthetisiert Soundeffekte, mischt Voice-Over
+- `tools/render.mjs` – rendert Frames in Chromium, mischt Soundeffekte + Voice-Over
+- `sfx/lib/` – Soundeffekte (`tools/build_sfx.py`), `sfx/custom/` – eigene Sounds (haben Vorrang), `sfx/uisfx/` – CC0-Quellen
+- `CLAUDE.md` – verbindliche Stil- und Schnitt-Vorlage
 
 ## Rendern
 ```

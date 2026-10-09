@@ -466,8 +466,9 @@
     const cues = [];
     VIDEO.scenes.forEach((sc, i) => {
       if (i > 0 && sc.whoosh !== false) cues.push({ t: sc.start - 0.08, type: 'whoosh' });
-      (sc.shake || []).forEach((st) => cues.push({ t: sc.start + st, type: 'boom' }));
+      (sc.shake || []).forEach((st) => cues.push({ t: sc.start + st, type: sc.shakeSfx || 'boom' }));
       (sc.pops || []).forEach((st) => cues.push({ t: sc.start + st, type: 'pop' }));
+      (sc.sfx || []).forEach(([st, type, gain]) => cues.push({ t: sc.start + st, type, gain }));
     });
     return cues;
   }

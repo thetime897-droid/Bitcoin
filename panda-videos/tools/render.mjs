@@ -60,30 +60,21 @@ ff.stdin.end(); await new Promise((r) => ff.on('close', r));
 console.log(`\nVideo fertig in ${((Date.now() - t0) / 1000).toFixed(0)} s`);
 await browser.close(); server.close();
 
-// ---- Soundeffekte synthetisieren (deterministisch) ----
-const SR = 48000, len = Math.ceil((to - from) * SR), sfx = new Float32Array(len);
-let seed = 1; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647) * 2 - 1;
-function add(t, fn, dur) { const s0 = Math.floor((t - from) * SR); for (let i = 0; i < dur * SR; i++) { const k = s0 + i; if (k >= 0 && k < len) sfx[k] += fn(i / SR); } }
-for (const c of meta.sfx) {
-  if (c.type === 'whoosh') { let lp = 0; add(c.t, (x) => { const d = 0.32, e = Math.sin(Math.PI * Math.min(1, x / d)) ** 2; const a = 0.05 + 0.25 * (x / d); lp += a * (rnd() - lp); return lp * e * 0.55; }, 0.32); }
-  if (c.type === 'boom') add(c.t, (x) => { const f = 110 * Math.exp(-x * 9) + 38; return (Math.sin(2 * Math.PI * f * x) * 0.9 + rnd() * 0.25 * Math.exp(-x * 25)) * Math.exp(-x * 6) * 0.7; }, 0.6);
-  if (c.type === 'pop') add(c.t, (x) => Math.sin(2 * Math.PI * (500 + 900 * x * 10) * x) * Math.exp(-x * 30) * 0.35, 0.12);
-}
-const sfxWav = outFile.replace(/\.mp4$/, '_sfx.wav');
-const buf = Buffer.alloc(44 + len * 2);
-buf.write('RIFF', 0); buf.writeUInt32LE(36 + len * 2, 4); buf.write('WAVEfmt ', 8); buf.writeUInt32LE(16, 16); buf.writeUInt16LE(1, 20); buf.writeUInt16LE(1, 22);
-buf.writeUInt32LE(SR, 24); buf.writeUInt32LE(SR * 2, 28); buf.writeUInt16LE(2, 32); buf.writeUInt16LE(16, 34); buf.write('data', 36); buf.writeUInt32LE(len * 2, 40);
-for (let i = 0; i < len; i++) buf.writeInt16LE(Math.max(-32767, Math.min(32767, Math.round(sfx[i] * 32767))), 44 + i * 2);
-fs.writeFileSync(sfxWav, buf);
+// ---- Soundeffekte: Bibliothek (sfx/lib bzw. sfx/custom) an den Cue-Zeiten mischen ----
+const sfxWav = outFile.replace(/\.mp4$/, '_sfx.wav'), cuesJson = outFile.replace(/\.mp4$/, '_cues.json');
+fs.writeFileSync(cuesJson, JSON.stringify(meta.sfx.map((c) => ({ ...c, t: c.t - from }))));
+const mixr = spawnSync('python3', [path.join(ROOT, 'tools/mix_sfx.py'), cuesJson, String(to - from), sfxWav], { stdio: 'inherit' });
+if (mixr.status !== 0) process.exit(mixr.status);
+fs.unlinkSync(cuesJson);
 
 // ---- Mischen: Voice-Over + SFX ----
 const dur = to - from;
 const inputs = audio ? ['-ss', String(from), '-t', String(dur), '-i', audio] : [];
 const filter = audio
-  ? `[1:a]aresample=48000,afade=t=out:st=${dur - 0.3}:d=0.3[v];[2:a]volume=0.35[s];[v][s]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]`
-  : `[1:a]volume=0.35[a]`;
+  ? `[1:a]aresample=48000,apad=whole_dur=${dur},afade=t=out:st=${dur - 0.3}:d=0.3[v];[2:a]anull[s];[v][s]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]`
+  : `[1:a]anull[a]`;
 const r = spawnSync('ffmpeg', ['-v', 'error', '-y', '-i', silent, ...inputs, '-i', sfxWav, '-filter_complex', filter, '-map', '0:v', '-map', '[a]',
-  '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', outFile], { stdio: 'inherit' });
+  '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-t', String(dur), outFile], { stdio: 'inherit' });
 if (r.status !== 0) process.exit(r.status);
 fs.unlinkSync(silent); fs.unlinkSync(sfxWav);
 console.log('Fertig:', outFile);
