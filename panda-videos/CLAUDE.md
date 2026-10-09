@@ -11,12 +11,14 @@ Nicht ohne ausdrücklichen Wunsch ändern.
 4. Final: `node tools/render.mjs <name> --audio <original.mp4> --out out/<name>.mp4`.
 
 ## Stil-Regeln
-- 1080×1920, 30 fps. Neue Szene alle **~1–3 s**, passend zum gesprochenen Satz.
+- 1080×1920, 30 fps. **Ruhiger Schnitt: neue Szene alle ~2,5–5 s** (Nutzer spricht nicht schnell – Feedback v2).
+  Inhalte innerhalb einer Szene wechseln weich (Headline tauscht, Elemente blenden/poppen), statt hart zu schneiden.
+  Animationen gemächlich: Pop-ins ~0,45 s, sanfter Punch-In, schwacher Blitz, wenig Shake.
 - Jede Szene: Comic-Headline oben (Luckiest Guy, weiße/farbige Füllung, dicke schwarze Kontur, leicht schräg),
   Illustration in der Mitte, Panda (freigestellt, Ganzkörper) unten links oder rechts – Panda-Pose zur Stimmung.
 - Hintergrund: Sonnenstrahlen + Rasterpunkte. Stimmung = Farbe: `bad` rot (negativ), `good` grün (positiv),
   `neutral` creme, `blue` Info/Quelle, `dark` Spannung/Frage/Tech.
-- Kamera: Punch-In bei jedem Schnitt + weißer Blitz, langsamer Zoom, Shake bei schlechten Nachrichten / Stempeln.
+- Kamera: leichter Punch-In bei jedem Schnitt + schwacher Blitz, langsamer Zoom, dezenter Shake nur bei Stempel/Impact.
 - Effekte: Pop-ins mit Überschwinger, Explosionen, rote ↓ / grüne ↑ Pfeile, Charts auf Whiteboard, Stempel, Geldregen.
 - Untertitel: Montserrat 900, Großbuchstaben, weiß mit schwarzer Kontur bei y≈1470, aktuelles Wort gelb.
 - Kein echtes Firmenlogo – Cartoon-Symbole (z. B. Apfel statt Apple-Logo).
@@ -24,9 +26,12 @@ Nicht ohne ausdrücklichen Wunsch ändern.
 - TikTok-Safe-Zone: wichtige Inhalte nicht ganz rechts (Buttons) und nicht unter y≈1600.
 
 ## Sound
-- Voice-Over immer im Vordergrund; SFX-Bus via `tools/mix_sfx.py` (leichte Zufallsvariation je Einsatz).
-- Typen: `whoosh` (jeder Schnitt automatisch), `pop` (Pop-ins), `ping` (Hinweis/Info), `cash` (Preise, Geld, Umsatz),
+- Voice-Over immer klar im Vordergrund; SFX **leise** (MASTER 0.15, Spitzen ≈ -20 dBFS) und **sparsam** – nur Akzente
+  an Schlüsselmomenten, kein Dauer-Geklimper. SFX-Bus via `tools/mix_sfx.py` (leichte Zufallsvariation je Einsatz).
+- Typen: `whoosh` (nur wenn Szene `whoosh: true` setzt), `pop` (Pop-ins), `ping` (Hinweis/Info), `cash` (Preise, Geld, Umsatz),
   `boom` (Impact/Shake), `stamp` (Stempel, Schloss), `paper` (Zeitung/Report), `down` (negativer Akzent).
 - In Szenen: `pops: [t]`, `shake: [t]` (+ `shakeSfx`), `sfx: [[t, 'typ', gain]]`.
 - Eigene Sounds (z. B. Pixabay) als `sfx/custom/<typ>.mp3` ablegen → ersetzen die eingebauten automatisch.
-- `sfx/lib` neu bauen: `python3 tools/build_sfx.py` (Synthese + CC0-Schichten aus `sfx/uisfx`).
+- `sfx/lib` neu bauen: `python3 tools/build_sfx.py` – organische/weiche CC0-Sounds (`sfx/uisfx`: organic, soft) + natürliche
+  Geräusch-Schichten (Münzen, Papier, Thud). Keine synthetischen Ton-Sweeps (klangen dem Nutzer zu generisch).
+- Pixabay/Freesound sind im Netz gesperrt → für echte Aufnahmen Nutzer-Uploads in `sfx/custom/` verwenden.

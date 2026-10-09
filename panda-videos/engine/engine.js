@@ -15,10 +15,10 @@
   const eOut = (t) => 1 - Math.pow(1 - clamp(t), 3);
   const eIn = (t) => Math.pow(clamp(t), 3);
   const eInOut = (t) => { t = clamp(t); return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
-  const eBack = (t) => { t = clamp(t); const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
+  const eBack = (t) => { t = clamp(t); const c1 = 1.4, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
   const eElastic = (t) => { t = clamp(t); if (t === 0 || t === 1) return t; return Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * (2 * Math.PI / 3)) + 1; };
   // Skalierung fuer "Pop-in" (0 vor Start, Ueberschwinger, dann 1)
-  const pop = (t, s, d = 0.35) => (t < s ? 0 : eBack(prog(t, s, d)));
+  const pop = (t, s, d = 0.45) => (t < s ? 0 : eBack(prog(t, s, d)));
   const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed); x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
 
   // ---------- Grundformen ----------
@@ -77,8 +77,8 @@
     let y = o.y ?? 330;
     lines.forEach((ln, i) => {
       const size = fitSize(ctx, ln.t, ln.size || 128, 960);
-      const s = pop(lt, (o.delay || 0) + i * 0.09, 0.32);
-      const rot = (ln.rot ?? -0.035) + Math.sin(lt * 2.2 + i) * 0.008;
+      const s = pop(lt, (o.delay || 0) + i * 0.12, 0.45);
+      const rot = (ln.rot ?? -0.035) + Math.sin(lt * 1.4 + i) * 0.006;
       comicText(ctx, ln.t, 540 + (ln.dx || 0), y, { size, fill: ln.c || C.white, scale: s, rot, gradient: ln.g });
       y += size * 1.02;
     });
@@ -105,7 +105,7 @@
     const [bg, ray, dot] = MOODS[mood] || MOODS.neutral;
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
     const cx = o.cx ?? 540, cy = o.cy ?? 860, n = 22, R = 2400;
-    ctx.save(); ctx.translate(cx, cy); ctx.rotate(t * 0.06);
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(t * 0.025);
     ctx.fillStyle = ray; ctx.globalAlpha = mood === 'dark' ? 0.55 : 0.75;
     for (let i = 0; i < n; i++) {
       const a0 = (i / n) * Math.PI * 2, a1 = a0 + Math.PI / n;
@@ -128,14 +128,14 @@
     const img = IMG[pose]; if (!img) throw new Error('Pose fehlt: ' + pose);
     const { x, y, h, lt, t } = o;
     let dx = 0, s = 1;
-    if (o.enter) { const p = prog(lt, o.enterAt || 0, 0.42); dx = (1 - eBack(p)) * (o.from === 'right' ? 760 : -760); }
-    if (o.swapAt != null && lt >= o.swapAt) s = lerp(0.9, 1, eBack(prog(lt, o.swapAt, 0.25)));
-    const bob = Math.sin(t * 5.2) * 7, sq = 1 + Math.sin(t * 10.4) * 0.012;
+    if (o.enter) { const p = prog(lt, o.enterAt || 0, 0.6); dx = (1 - eBack(p)) * (o.from === 'right' ? 760 : -760); }
+    if (o.swapAt != null && lt >= o.swapAt) s = lerp(0.94, 1, eBack(prog(lt, o.swapAt, 0.35)));
+    const bob = Math.sin(t * 3.2) * 6, sq = 1 + Math.sin(t * 6.4) * 0.008;
     const w = h * img.width / img.height;
     ctx.save(); ctx.translate(x + dx, y);
     // Bodenschatten
     ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(0, -6, w * 0.42, 22, 0, 0, 7); ctx.fill();
-    ctx.translate(0, bob * 0.3); ctx.rotate(Math.sin(t * 2.6) * 0.018);
+    ctx.translate(0, bob * 0.3); ctx.rotate(Math.sin(t * 1.7) * 0.012);
     ctx.scale((o.flip ? -1 : 1) * s / sq, s * sq);
     ctx.drawImage(img, -w / 2, -h + bob, w, h);
     ctx.restore();
@@ -422,7 +422,7 @@
     ctx.save(); ctx.font = `900 ${size}px ${FONT_BOLD}`;
     const lines = [[]]; let lw = 0;
     cur.words.forEach((w) => { const ww = ctx.measureText(w.w.toUpperCase()).width; if (lw + ww > maxW && lines[lines.length - 1].length) { lines.push([]); lw = 0; } lines[lines.length - 1].push({ ...w, ww }); lw += ww + sp; });
-    const s0 = lerp(0.82, 1, eBack(prog(t, cur.s, 0.16)));
+    const s0 = lerp(0.92, 1, eOut(prog(t, cur.s, 0.18)));
     const baseY = 1470 - (lines.length - 1) * lh / 2;
     ctx.translate(540, baseY); ctx.scale(s0, s0);
     lines.forEach((ln, li) => {
@@ -448,9 +448,9 @@
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none';
     // Kamera: Punch-In beim Schnitt, langsamer Zoom, Shakes
     const f = sc.focus || { x: 540, y: 880 };
-    let z = 1 + (sc.zoom ?? 0.07) * eInOut(lt / dur) + (sc.punch === false ? 0 : 0.14 * (1 - eOut(lt / 0.38)));
+    let z = 1 + (sc.zoom ?? 0.05) * eInOut(lt / dur) + (sc.punch === false ? 0 : 0.06 * (1 - eOut(lt / 0.55)));
     let sx = 0, sy = 0;
-    (sc.shake || []).forEach((st) => { if (lt >= st) { const k = Math.max(0, 1 - (lt - st) / 0.45); sx += Math.sin(lt * 95) * 26 * k; sy += Math.cos(lt * 81) * 22 * k; } });
+    (sc.shake || []).forEach((st) => { if (lt >= st) { const k = Math.max(0, 1 - (lt - st) / 0.4); sx += Math.sin(lt * 70) * 12 * k; sy += Math.cos(lt * 61) * 10 * k; } });
     ctx.save(); ctx.translate(sx * 0.5, sy * 0.5); ctx.translate(540, 960); ctx.scale(1.04, 1.04); ctx.translate(-540, -960);
     background(ctx, sc.mood, t, sc.bg || {}); ctx.restore();
     ctx.save(); ctx.translate(f.x + sx, f.y + sy); ctx.scale(z, z); ctx.translate(-f.x, -f.y);
@@ -459,13 +459,13 @@
     if (VIDEO.brand !== false && !sc.noBrand) brandBug(ctx);
     captions(ctx, CAPS, t);
     // Blitz beim Szenenwechsel
-    if (idx > 0 && sc.flash !== false) { const a = 0.55 * (1 - prog(lt, 0, 0.15)); if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
+    if (idx > 0 && sc.flash !== false) { const a = 0.22 * (1 - prog(lt, 0, 0.2)); if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
     if (t > VIDEO.duration - 0.25) { ctx.fillStyle = `rgba(0,0,0,${prog(t, VIDEO.duration - 0.25, 0.25)})`; ctx.fillRect(0, 0, W, H); }
   }
   function sfxCues() {
     const cues = [];
     VIDEO.scenes.forEach((sc, i) => {
-      if (i > 0 && sc.whoosh !== false) cues.push({ t: sc.start - 0.08, type: 'whoosh' });
+      if (i > 0 && sc.whoosh) cues.push({ t: sc.start - 0.08, type: 'whoosh', gain: sc.whoosh === true ? 1 : sc.whoosh });
       (sc.shake || []).forEach((st) => cues.push({ t: sc.start + st, type: sc.shakeSfx || 'boom' }));
       (sc.pops || []).forEach((st) => cues.push({ t: sc.start + st, type: 'pop' }));
       (sc.sfx || []).forEach(([st, type, gain]) => cues.push({ t: sc.start + st, type, gain }));

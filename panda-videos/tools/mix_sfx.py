@@ -11,8 +11,8 @@ from scipy.io import wavfile
 
 SR = 48000
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-GAIN = {"whoosh": 0.5, "pop": 0.55, "ping": 0.5, "cash": 0.7, "boom": 0.8, "stamp": 0.85, "paper": 0.5, "down": 0.55}
-MASTER = 0.42
+GAIN = {"whoosh": 0.35, "pop": 0.5, "ping": 0.45, "cash": 0.6, "boom": 0.6, "stamp": 0.7, "paper": 0.5, "down": 0.45}
+MASTER = 0.15  # deutlich unter der Stimme
 
 
 def load(path):
@@ -45,6 +45,8 @@ def main(cues_path, dur, out):
         x = signal.resample(x, int(len(x) / pitch), axis=0)
         g = GAIN.get(c["type"], 0.5) * c.get("gain", 1) * 10 ** (rng.uniform(-1.5, 1.5) / 20)
         i = max(0, int(c["t"] * SR))
+        if i >= len(bus):
+            continue
         bus[i:i + len(x)] += x[: len(bus) - i] * g
     bus = np.tanh(bus[:n] * MASTER * 1.3) / 1.3
     wavfile.write(out, SR, (bus * 32767).astype(np.int16))

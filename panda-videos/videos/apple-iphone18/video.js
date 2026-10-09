@@ -111,123 +111,91 @@
   ];
 
   const scenes = [
-    { // 0 Breaking News
-      start: 0, mood: 'bad', poses: ['emotions/ueberrascht'], punch: false, flash: false, noBrand: true, pops: [0.25], sfx: [[0.0, 'ping']],
+    { // A 0-2 s: Breaking News -> Aktie faellt (eine Szene, weicher Wechsel)
+      start: 0, mood: 'bad', poses: ['emotions/ueberrascht'], punch: false, flash: false, noBrand: true, shake: [1.75], focus: { x: 660, y: 900 },
+      sfx: [[0.0, 'ping', 0.7]],
       draw(ctx, lt, t) {
         E.liveBar(ctx, lt, 'BREAKING  •  APPLE  -2,16 %  •  iPHONE 18 PRO: WENIGER BESTELLUNGEN  •  ');
-        E.headline(ctx, [{ t: 'BREAKING', c: C.yellow, size: 150 }, { t: 'NEWS!', c: C.white, size: 150 }], lt, { y: 480, delay: 0.12 });
-        const s = pop(lt, 0.25, 0.4);
-        E.withT(ctx, 680, 960, s, Math.sin(lt * 3) * 0.05, () => {
-          E.burst(ctx, 0, 0, 200, 290, 14, C.yellow, lt * 0.4, 9);
+        if (lt < 1.0) E.headline(ctx, [{ t: 'BREAKING', c: C.yellow, size: 150 }, { t: 'NEWS!', c: C.white, size: 150 }], lt, { y: 480, delay: 0.1 });
+        else E.headline(ctx, [{ t: 'APPLE-AKTIE', c: C.white, size: 125 }, { t: 'FÄLLT!', c: C.red, size: 160 }], lt - 1.0, { y: 480 });
+        const out = eOut(prog(lt, 0.85, 0.35));
+        if (out < 1) E.withT(ctx, 680, 980, pop(lt, 0.2, 0.5) * (1 - out), Math.sin(lt * 2) * 0.04, () => {
+          E.burst(ctx, 0, 0, 200, 290, 14, C.yellow, lt * 0.25, 9);
           E.apple(ctx, 0, 10, 170, C.red);
-          E.comicText(ctx, '!', 190, -170, { size: 170, fill: C.red, rot: 0.2, scale: pop(lt, 0.5) });
         });
-        panda(ctx, 'emotions/ueberrascht', lt, t, { x: 250, h: 600 });
+        if (lt > 0.9) E.withT(ctx, 660, 1010, pop(lt, 0.9, 0.5), 0, () => {
+          ctx.translate(-660, -1010);
+          E.whiteboard(ctx, 660, 1010, 640, 440);
+          const pts = [[0.05, 0.25], [0.2, 0.2], [0.32, 0.42], [0.45, 0.35], [0.58, 0.6], [0.7, 0.52], [0.82, 0.8], [0.94, 0.92]];
+          const e = E.lineChart(ctx, 380, 860, 560, 290, pts, eOut(prog(lt, 1.05, 0.7)), C.red, { area: true });
+          E.explosion(ctx, e[0], e[1], lt, 1.75, { size: 0.7, seed: 3 });
+          E.pill(ctx, '-2,16 %', 820, 845, 46, C.red, C.white, pop(lt, 1.6, 0.4), 0.06);
+        });
+        panda(ctx, 'emotions/ueberrascht', lt, t, { x: 220, h: 560 });
       },
     },
-    { // 1 Aktie faellt
-      start: 1.0, mood: 'bad', poses: ['poses/zeigen'], shake: [0.62], focus: { x: 700, y: 860 },
+    { // B 2-5,75 s: weniger iPhones -> mindestens -15 %
+      start: 2.0, mood: 'bad', poses: ['emotions/nachdenklich', 'emotions/wuetend'], shake: [2.5], focus: { x: 620, y: 900 }, zoom: 0.05,
+      sfx: [[0.95, 'pop', 0.6], [1.35, 'pop', 0.5], [1.75, 'down', 0.6]],
       draw(ctx, lt, t) {
-        E.headline(ctx, [{ t: 'AKTIE', c: C.white }, { t: 'FÄLLT!', c: C.red, size: 150 }], lt);
-        E.whiteboard(ctx, 650, 900, 720, 520);
-        E.apple(ctx, 370, 720, 46, C.red); E.plainText(ctx, 'APPLE', 470, 722, 44, C.ink, { weight: 900, align: 'left' });
-        const pts = [[0.05, 0.25], [0.18, 0.2], [0.28, 0.42], [0.4, 0.33], [0.52, 0.6], [0.63, 0.5], [0.76, 0.78], [0.9, 0.9]];
-        const e = E.lineChart(ctx, 320, 760, 660, 330, pts, eOut(prog(lt, 0.05, 0.6)), C.red, { area: true });
-        E.explosion(ctx, e[0], e[1], lt, 0.62, { size: 0.8, seed: 3 });
-        E.pill(ctx, '-2,16 %', 820, 735, 52, C.red, C.white, pop(lt, 0.55), 0.06);
-        panda(ctx, 'poses/zeigen', lt, t, { x: 215, h: 560 });
-      },
-    },
-    { // 2 weniger iPhones
-      start: 2.0, mood: 'neutral', poses: ['emotions/nachdenklich'], pops: [0.1, 0.85, 1.01, 1.17, 1.33],
-      draw(ctx, lt, t) {
-        E.headline(ctx, [{ t: 'WENIGER', c: C.red, size: 140 }, { t: 'iPHONES', c: C.white }], lt);
-        const gone = [1, 3, 5, 8];
+        if (lt < 1.75) E.headline(ctx, [{ t: 'WENIGER', c: C.red, size: 140 }, { t: 'iPHONES', c: C.white }], lt);
+        else E.headline(ctx, [{ t: 'MINDESTENS', c: C.white, size: 130 }], lt - 1.75);
+        const dim = 1 - 0.65 * eOut(prog(lt, 2.3, 0.4)), gone = [1, 3, 5, 8];
+        ctx.save(); ctx.globalAlpha = dim;
         for (let i = 0; i < 9; i++) {
-          const gx = 470 + (i % 3) * 190, gy = 720 + Math.floor(i / 3) * 250;
-          const sIn = pop(lt, 0.05 + i * 0.05, 0.3);
-          const gi = gone.indexOf(i), tg = 0.85 + gi * 0.16;
+          const gx = 470 + (i % 3) * 190, gy = 720 + Math.floor(i / 3) * 250, gi = gone.indexOf(i), tg = 0.95 + gi * 0.2;
           if (gi >= 0 && lt > tg) {
-            const p = prog(lt, tg, 0.3);
-            ctx.save(); ctx.globalAlpha = 1 - p; E.iphone(ctx, gx, gy, 210 * (1 - p * 0.6), { label: '18 PRO' }); ctx.restore();
-            E.explosion(ctx, gx, gy, lt, tg, { size: 0.45, seed: i + 1, c1: C.greyD, c2: C.white });
-            ctx.save(); ctx.globalAlpha = clamp(p * 3); E.comicText(ctx, 'X', gx, gy, { size: 170, fill: C.red, scale: pop(lt, tg + 0.05) }); ctx.restore();
-          } else E.withT(ctx, gx, gy, sIn, Math.sin(t * 3 + i) * 0.04, () => E.iphone(ctx, 0, 0, 210, { label: '18 PRO' }));
+            const p = prog(lt, tg, 0.45);
+            ctx.save(); ctx.globalAlpha *= 1 - p; E.iphone(ctx, gx, gy, 210 * (1 - p * 0.4), { label: '18 PRO' }); ctx.restore();
+            E.comicText(ctx, 'X', gx, gy, { size: 160, fill: C.red, scale: pop(lt, tg + 0.05, 0.45) });
+          } else E.withT(ctx, gx, gy, pop(lt, 0.05 + i * 0.07, 0.45), Math.sin(t * 2 + i) * 0.03, () => E.iphone(ctx, 0, 0, 210, { label: '18 PRO' }));
         }
-        panda(ctx, 'emotions/nachdenklich', lt, t, { x: 200, h: 540 });
+        ctx.restore();
+        E.explosion(ctx, 600, 860, lt, 2.5, { size: 1.3, seed: 5, dur: 1.0 });
+        E.comicText(ctx, '-15 %', 600, 860, { size: 280, fill: C.red, scale: pop(lt, 2.45, 0.5), rot: -0.06, lw: 44 });
+        if (lt < 2.5) panda(ctx, 'emotions/nachdenklich', lt, t, { x: 200, h: 520 });
+        else panda(ctx, 'emotions/wuetend', lt, t, { x: 200, h: 520, enter: false, swapAt: 2.5 });
       },
     },
-    { // 3 -15 %
-      start: 3.75, mood: 'bad', poses: ['emotions/wuetend'], shake: [0.78], focus: { x: 600, y: 900 }, sfx: [[0.15, 'down', 0.6]],
+    { // C 5,75-10 s: Warum das Topmodell? KI? -> Jetzt!
+      start: 5.75, mood: 'dark', poses: ['emotions/nachdenklich', 'poses/tipp_geben'], focus: { x: 620, y: 860 }, zoom: 0.06,
+      sfx: [[2.5, 'pop', 0.6], [3.65, 'ping', 0.6]],
       draw(ctx, lt, t) {
-        E.headline(ctx, [{ t: 'MINDESTENS', c: C.white, size: 120 }], lt);
-        // Balken "Bestellungen" laeuft von 100 % auf 85 %
-        const p = eInOut(prog(lt, 0.1, 0.65)), val = lerp(1, 0.85, p);
-        E.plainText(ctx, 'iPHONE-BESTELLUNGEN', 400, 1105, 40, C.ink, { weight: 900 });
-        E.rr(ctx, 110, 1140, 580, 80, 40); E.ink(ctx, C.white, 8);
-        E.rr(ctx, 120, 1150, 560 * val, 60, 30); E.ink(ctx, p < 0.5 ? C.green : C.red, 0);
-        E.plainText(ctx, Math.round(val * 100) + ' %', 400, 1182, 44, C.ink, { weight: 900 });
-        // Rote Pfeile regnen
-        for (let i = 0; i < 4; i++) { const ph = (lt * 0.9 + i * 0.27) % 1; E.arrowDown(ctx, 260 + i * 200 + (i % 2) * 40, lerp(520, 1050, ph), 0.6 * pop(lt, 0.78), C.red); }
-        E.explosion(ctx, 520, 820, lt, 0.78, { size: 1.5, seed: 5, dur: 0.9 });
-        const s = pop(lt, 0.78, 0.4);
-        E.comicText(ctx, '-15 %', 520, 820, { size: 300, fill: C.red, scale: s * (1 + Math.sin(lt * 7) * 0.015), rot: -0.06, lw: 46 });
-        panda(ctx, 'emotions/wuetend', lt, t, { x: 840, h: 520, from: 'right' });
-      },
-    },
-    { // 4 Warum das Topmodell? / KI?
-      start: 5.75, mood: 'dark', poses: ['emotions/nachdenklich'], focus: { x: 620, y: 850 }, zoom: 0.1, pops: [2.5],
-      draw(ctx, lt, t) {
-        const second = lt >= 2.5;
-        if (!second) E.headline(ctx, [{ t: 'WARUM DAS', c: C.white, size: 120 }, { t: 'TOPMODELL?', c: C.yellow, size: 140 }], lt);
-        else E.headline(ctx, [{ t: 'UND WAS HAT', c: C.white, size: 115 }, { t: 'KI DAMIT ZU TUN?', c: C.cyan, size: 120 }], lt - 2.5);
-        // Spotlight
+        const second = lt >= 2.5, third = lt >= 3.6;
+        if (third) E.headline(ctx, [{ t: 'DAS ERFÄHRST', c: C.white, size: 115 }, { t: 'DU JETZT!', c: C.green, size: 150 }], lt - 3.6);
+        else if (second) E.headline(ctx, [{ t: 'UND WAS HAT', c: C.white, size: 115 }, { t: 'KI DAMIT ZU TUN?', c: C.cyan, size: 120 }], lt - 2.5);
+        else E.headline(ctx, [{ t: 'WARUM DAS', c: C.white, size: 120 }, { t: 'TOPMODELL?', c: C.yellow, size: 140 }], lt);
         const g = ctx.createRadialGradient(620, 1000, 40, 620, 900, 520); g.addColorStop(0, 'rgba(255,240,190,0.45)'); g.addColorStop(1, 'rgba(255,240,190,0)');
         ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(470, 380); ctx.lineTo(770, 380); ctx.lineTo(980, 1240); ctx.lineTo(260, 1240); ctx.closePath(); ctx.fill();
-        // Podest
         ctx.beginPath(); ctx.ellipse(620, 1200, 260, 50, 0, 0, 7); E.ink(ctx, '#3B4150', 8);
         E.rr(ctx, 360, 1130, 520, 70, 10); E.ink(ctx, '#4C5468', 8);
         ctx.beginPath(); ctx.ellipse(620, 1130, 260, 50, 0, 0, 7); E.ink(ctx, '#646E86', 8);
-        const weak = prog(lt, 1.4, 0.6);
-        E.withT(ctx, 620, 860 + weak * 20, pop(lt, 0.1, 0.4), -weak * 0.08, () => E.iphone(ctx, 0, 0, 480, { label: 'iPHONE 18 PRO', c1: '#C9B79C', c2: '#8E7D63', crack: weak > 0.5 }));
-        // Krone rutscht ab
-        E.withT(ctx, 620 + weak * 140, 590 + weak * weak * 160, pop(lt, 0.35), weak * 0.7, () => {
+        const weak = eInOut(prog(lt, 1.3, 0.9));
+        E.withT(ctx, 620, 860 + weak * 20, pop(lt, 0.1, 0.5), -weak * 0.08, () => E.iphone(ctx, 0, 0, 480, { label: 'iPHONE 18 PRO', c1: '#C9B79C', c2: '#8E7D63', crack: weak > 0.5 }));
+        E.withT(ctx, 620 + weak * 140, 590 + weak * weak * 160, pop(lt, 0.4, 0.5), weak * 0.7, () => {
           ctx.beginPath(); ctx.moveTo(-90, 40); ctx.lineTo(-100, -40); ctx.lineTo(-50, 0); ctx.lineTo(0, -60); ctx.lineTo(50, 0); ctx.lineTo(100, -40); ctx.lineTo(90, 40); ctx.closePath(); E.ink(ctx, C.gold, 8);
         });
-        if (weak > 0) E.arrowDown(ctx, 880, 1000 + Math.sin(lt * 6) * 10, 0.8 * pop(lt, 1.5), C.red);
+        if (weak > 0) E.arrowDown(ctx, 880, 1000 + Math.sin(lt * 3) * 10, 0.8 * pop(lt, 1.5, 0.5), C.red);
         if (second) {
           const lt2 = lt - 2.5;
-          E.withT(ctx, 870 - (1 - eOut(prog(lt2, 0, 0.4))) * -400, 600, pop(lt2, 0, 0.45), 0, () => {
-            E.chip(ctx, 0, 0, 190, 'KI', { glow: 0.8 + Math.sin(lt * 8) * 0.2 });
-          });
-          for (let i = 0; i < 3; i++) { const a = lt * 6 + i * 2.1; ctx.strokeStyle = C.cyan; ctx.lineWidth = 7; ctx.beginPath();
-            ctx.moveTo(870 + Math.cos(a) * 130, 600 + Math.sin(a) * 130); ctx.lineTo(870 + Math.cos(a) * 170 + 15, 600 + Math.sin(a) * 170); ctx.lineTo(870 + Math.cos(a) * 200, 600 + Math.sin(a) * 200 + 15); ctx.globalAlpha = 0.8 * pop(lt2, 0.1); ctx.stroke(); ctx.globalAlpha = 1; }
-          E.questionMarks(ctx, 860, 900, lt2, 3, C.yellow);
+          E.withT(ctx, 870, 600, pop(lt2, 0, 0.5), 0, () => E.chip(ctx, 0, 0, 190, 'KI', { glow: 0.85 + Math.sin(lt * 4) * 0.15 }));
+          E.questionMarks(ctx, 860, 900, lt2 * 0.7, 3, C.yellow);
         }
-        panda(ctx, 'emotions/nachdenklich', lt, t, { x: 215, h: 520 });
+        if (!third) panda(ctx, 'emotions/nachdenklich', lt, t, { x: 215, h: 520 });
+        else panda(ctx, 'poses/tipp_geben', lt, t, { x: 215, h: 540, enter: false, swapAt: 3.6 });
       },
     },
-    { // 5 JETZT
-      start: 9.25, mood: 'good', poses: ['poses/tipp_geben'], sfx: [[0.03, 'ping']], focus: { x: 540, y: 800 },
+    { // D 10-12,5 s: Laut Nikkei Asia ... bei Zulieferern
+      start: 10.0, mood: 'blue', poses: ['poses/praesentieren'], focus: { x: 640, y: 880 }, sfx: [[0.05, 'paper', 0.8]],
       draw(ctx, lt, t) {
-        E.speedLines(ctx, 540, 760, t);
-        E.burst(ctx, 540, 640, 230, 330, 16, C.yellow, lt * 0.8, 9);
-        E.comicText(ctx, 'JETZT!', 540, 640, { size: 230, fill: C.green, scale: pop(lt, 0.03, 0.3), rot: -0.07, lw: 38 });
-        E.comicText(ctx, 'ERFÄHRST DU ES', 540, 400, { size: 95, fill: C.white, scale: pop(lt, 0.1), rot: -0.03 });
-        panda(ctx, 'poses/tipp_geben', lt, t, { x: 540, h: 620, enter: false, swapAt: 0 });
-      },
-    },
-    { // 6 Laut Nikkei Asia
-      start: 10.0, mood: 'blue', poses: ['poses/praesentieren'], focus: { x: 640, y: 880 }, sfx: [[0.0, 'paper']],
-      draw(ctx, lt, t) {
-        E.headline(ctx, [{ t: 'LAUT', c: C.white, size: 110 }, { t: 'NIKKEI ASIA', c: C.yellow, size: 140 }], lt);
-        const p = eOut(prog(lt, 0.05, 0.5));
-        E.withT(ctx, 660, 930, lerp(0.05, 1, p), lerp(Math.PI * 4, -0.06, p), () => E.newspaper(ctx, 0, 0, 580, {
+        if (lt < 1.6) E.headline(ctx, [{ t: 'LAUT', c: C.white, size: 110 }, { t: 'NIKKEI ASIA', c: C.yellow, size: 140 }], lt);
+        else E.headline(ctx, [{ t: 'APPLE KÜRZT', c: C.white, size: 120 }, { t: 'BEI ZULIEFERERN', c: C.yellow, size: 110 }], lt - 1.6);
+        const p = eOut(prog(lt, 0.05, 0.75));
+        E.withT(ctx, 660, 930, lerp(0.05, 1, p), lerp(Math.PI * 2, -0.06, p), () => E.newspaper(ctx, 0, 0, 580, {
           masthead: 'NIKKEI ASIA', headline: ['APPLE KÜRZT', 'iPHONE-ORDERS'],
           picture: (x, y, w, h) => { E.iphone(ctx, x + w * 0.4, y + h * 0.5, h * 0.8, {}); E.arrowDown(ctx, x + w * 0.78, y + h * 0.45, 0.45, C.red); },
         }));
-        // Globus
-        E.withT(ctx, 900, 640, pop(lt, 0.45), Math.sin(lt * 2) * 0.1, () => {
+        E.withT(ctx, 920, 600, pop(lt, 0.6, 0.5), Math.sin(lt * 1.5) * 0.08, () => {
           ctx.beginPath(); ctx.arc(0, 0, 70, 0, 7); E.ink(ctx, '#4FA3F7', 7);
           ctx.fillStyle = C.green; ctx.beginPath(); ctx.ellipse(-15, -10, 30, 22, 0.4, 0, 7); ctx.fill(); ctx.beginPath(); ctx.ellipse(25, 25, 18, 12, -0.3, 0, 7); ctx.fill();
           ctx.beginPath(); ctx.arc(0, 0, 70, 0, 7); E.ink(ctx, null, 7);
@@ -235,29 +203,17 @@
         panda(ctx, 'poses/praesentieren', lt, t, { x: 230, h: 560 });
       },
     },
-    { // 7 Zulieferer
-      start: 11.6, mood: 'neutral', poses: ['poses/zeigen'], focus: { x: 620, y: 950 },
-      draw(ctx, lt, t) {
-        E.headline(ctx, [{ t: 'ZULIEFERER', c: C.white, size: 140 }], lt);
-        E.factory(ctx, 640, 1130, 720, lt, { sign: 'iPHONE-FABRIK', signScale: pop(lt, 0.15) });
-        // Foerderband
-        E.rr(ctx, 260, 1150, 760, 46, 23); E.ink(ctx, '#4A4F57', 8);
-        for (let i = 0; i < 4; i++) { const x = 300 + ((lt * 260 + i * 200) % 760); if (x < 980) E.iphone(ctx, x, 1095, 110, {}); }
-        panda(ctx, 'poses/zeigen', lt, t, { x: 205, h: 520 });
-      },
-    },
-    { // 8 Bestellung gekuerzt
-      start: 12.5, mood: 'neutral', poses: ['poses/analysieren'], shake: [2.33], shakeSfx: 'stamp', pops: [0.85, 1.7], focus: { x: 640, y: 900 }, zoom: 0.09,
+    { // E 12,5-15,5 s: Bestellung gekuerzt
+      start: 12.5, mood: 'neutral', poses: ['poses/analysieren'], shake: [2.33], shakeSfx: 'stamp', focus: { x: 640, y: 900 }, zoom: 0.06,
       draw(ctx, lt, t) {
         E.headline(ctx, [{ t: 'BESTELLUNG', c: C.white, size: 130 }, { t: 'iPHONE 18 PRO & MAX', c: C.yellow, size: 92 }], lt);
         const cut = lt >= 2.33;
-        E.withT(ctx, 660, 920, pop(lt, 0.05, 0.4), -0.03, () => {
+        E.withT(ctx, 660, 920, pop(lt, 0.05, 0.5), -0.03, () => {
           E.clipboard(ctx, 0, 0, 560, 640);
           E.plainText(ctx, 'BESTELLUNG', 0, -210, 54, C.ink, { weight: 900 });
           ctx.fillStyle = C.ink; ctx.fillRect(-200, -172, 400, 6);
-          const rows = [['iPHONE 18 PRO', 0.85], ['iPHONE 18 PRO MAX', 1.7]];
-          rows.forEach(([name, at], i) => {
-            const s = pop(lt, at, 0.3), y = -90 + i * 170; if (s <= 0) return;
+          [['iPHONE 18 PRO', 0.85], ['iPHONE 18 PRO MAX', 1.7]].forEach(([name, at], i) => {
+            const s = pop(lt, at, 0.45), y = -90 + i * 170; if (s <= 0) return;
             E.withT(ctx, 0, y, s, 0, () => {
               E.iphone(ctx, -175, 20, 110, {});
               E.plainText(ctx, name, 40, -10, 34, C.ink, { weight: 900 });
@@ -270,111 +226,96 @@
         panda(ctx, 'poses/analysieren', lt, t, { x: 215, h: 520 });
       },
     },
-    { // 9 Oktober -15 % weniger als geplant
-      start: 15.5, mood: 'bad', poses: ['poses/zeigen'], shake: [1.6], focus: { x: 470, y: 900 }, pops: [1.6],
+    { // F 15,5-19 s: Oktober, 15 % weniger als geplant
+      start: 15.5, mood: 'bad', poses: ['poses/zeigen'], focus: { x: 470, y: 900 }, zoom: 0.05, sfx: [[1.6, 'pop', 0.7]],
       draw(ctx, lt, t) {
         if (lt < 1.5) E.headline(ctx, [{ t: 'IM OKTOBER', c: C.white, size: 135 }], lt);
         else E.headline(ctx, [{ t: 'WENIGER ALS', c: C.white, size: 110 }, { t: 'GEPLANT!', c: C.red, size: 150 }], lt - 1.5);
         E.whiteboard(ctx, 460, 900, 660, 600);
-        // Kalenderblatt
-        E.withT(ctx, 230, 680, pop(lt, 0.1), -0.08, () => { E.rr(ctx, -70, -70, 140, 150, 14); E.ink(ctx, C.white, 7); E.rr(ctx, -70, -70, 140, 45, 14); E.ink(ctx, C.red, 7); E.plainText(ctx, 'OKT', 0, -46, 30, C.white, { weight: 900 }); E.plainText(ctx, '10', 0, 25, 64, C.ink, { weight: 900 }); });
+        E.withT(ctx, 230, 680, pop(lt, 0.1, 0.45), -0.08, () => { E.rr(ctx, -70, -70, 140, 150, 14); E.ink(ctx, C.white, 7); E.rr(ctx, -70, -70, 140, 45, 14); E.ink(ctx, C.red, 7); E.plainText(ctx, 'OKT', 0, -46, 30, C.white, { weight: 900 }); E.plainText(ctx, '10', 0, 25, 64, C.ink, { weight: 900 }); });
         const base = 1130, maxH = 380;
-        const h1 = maxH * eOut(prog(lt, 0.2, 0.5)), h2 = maxH * lerp(0, 0.85, eOut(prog(lt, 0.8, 0.6)));
+        const h1 = maxH * eOut(prog(lt, 0.2, 0.7)), h2 = maxH * lerp(0, 0.85, eOut(prog(lt, 0.8, 0.8)));
         E.rr(ctx, 300, base - h1, 140, Math.max(h1, 1), 10); E.ink(ctx, C.green, 7);
         E.rr(ctx, 520, base - h2, 140, Math.max(h2, 1), 10); E.ink(ctx, C.red, 7);
         E.plainText(ctx, 'GEPLANT', 370, base + 40, 32, C.ink, { weight: 900 }); E.plainText(ctx, 'NEU', 590, base + 40, 32, C.ink, { weight: 900 });
         if (h1 > 40) E.plainText(ctx, '100 %', 370, base - h1 + 35, 34, C.white, { weight: 900 });
         if (h2 > 40) E.plainText(ctx, '85 %', 590, base - h2 + 35, 34, C.white, { weight: 900 });
-        // Luecke markieren
-        if (lt > 1.5) { ctx.setLineDash([16, 12]); ctx.strokeStyle = C.red; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(510, base - maxH); ctx.lineTo(680, base - maxH); ctx.stroke(); ctx.setLineDash([]);
-          E.rr(ctx, 520, base - maxH, 140, maxH * 0.15, 6); ctx.fillStyle = 'rgba(240,54,43,0.25)'; ctx.fill(); }
-        E.pill(ctx, '-15 %', 690, base - maxH - 50, 64, C.red, C.white, pop(lt, 1.6), 0.08);
+        if (lt > 1.5) { ctx.save(); ctx.globalAlpha = prog(lt, 1.5, 0.4); ctx.setLineDash([16, 12]); ctx.strokeStyle = C.red; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(510, base - maxH); ctx.lineTo(680, base - maxH); ctx.stroke(); ctx.setLineDash([]);
+          E.rr(ctx, 520, base - maxH, 140, maxH * 0.15, 6); ctx.fillStyle = 'rgba(240,54,43,0.25)'; ctx.fill(); ctx.restore(); }
+        E.pill(ctx, '-15 %', 690, base - maxH - 50, 64, C.red, C.white, pop(lt, 1.6, 0.45), 0.08);
         panda(ctx, 'poses/zeigen', lt, t, { x: 880, h: 500, flip: true, from: 'right' });
       },
     },
-    { // 10 Nachfrage schwaecher als erwartet
-      start: 19.0, mood: 'bad', poses: ['emotions/traurig'], focus: { x: 520, y: 900 }, shake: [1.55], sfx: [[1.2, 'down', 0.7], [2.0, 'pop']],
+    { // G 19-21,9 s: Nachfrage schwaecher als erwartet
+      start: 19.0, mood: 'bad', poses: ['emotions/traurig'], focus: { x: 520, y: 900 }, zoom: 0.05, sfx: [[1.2, 'down', 0.6], [2.0, 'pop', 0.6]],
       draw(ctx, lt, t) {
         if (lt < 1.0) E.headline(ctx, [{ t: 'DER GRUND?', c: C.white, size: 140 }], lt);
         else E.headline(ctx, [{ t: 'NACHFRAGE', c: C.white, size: 130 }, { t: 'SCHWÄCHER!', c: C.red, size: 140 }], lt - 1.0);
         const exp = 0.8;
-        const v = lt < 1.2 ? exp + Math.sin(lt * 9) * 0.02 : lerp(exp, 0.16, E.eElastic(prog(lt, 1.2, 0.9)));
-        E.withT(ctx, 470, 980, pop(lt, 0.05, 0.4), 0, () => E.gauge(ctx, 0, 0, 290, v, { label: 'NACHFRAGE', ghost: lt > 1.2 ? exp : null, ghostAlpha: 0.9 }));
-        if (lt > 2.0) E.pill(ctx, 'ERWARTET', 470 + Math.cos(Math.PI + exp * Math.PI) * 360 + 30, 980 + Math.sin(Math.PI + exp * Math.PI) * 360 - 20, 40, C.greenD, C.white, pop(lt, 2.0), 0.1);
-        if (lt > 1.6) E.arrowDown(ctx, 160, 700 + Math.sin(lt * 6) * 12, 0.7 * pop(lt, 1.6), C.red);
+        const v = lt < 1.2 ? exp + Math.sin(lt * 5) * 0.015 : lerp(exp, 0.16, eInOut(prog(lt, 1.2, 1.1)));
+        E.withT(ctx, 470, 980, pop(lt, 0.05, 0.5), 0, () => E.gauge(ctx, 0, 0, 290, v, { label: 'NACHFRAGE', ghost: lt > 1.2 ? exp : null, ghostAlpha: 0.9 }));
+        if (lt > 2.0) E.pill(ctx, 'ERWARTET', 470 + Math.cos(Math.PI + exp * Math.PI) * 360 + 30, 980 + Math.sin(Math.PI + exp * Math.PI) * 360 - 20, 40, C.greenD, C.white, pop(lt, 2.0, 0.45), 0.1);
+        if (lt > 1.6) E.arrowDown(ctx, 160, 700 + Math.sin(lt * 3) * 12, 0.7 * pop(lt, 1.6, 0.5), C.red);
         panda(ctx, 'emotions/traurig', lt, t, { x: 905, h: 470, from: 'right' });
       },
     },
-    { // 11 Der Preis
-      start: 21.9, mood: 'neutral', poses: ['emotions/nachdenklich'], focus: { x: 640, y: 860 }, pops: [0.1],
+    { // H 21,9-27,45 s: Und der Preis -> Pro 1.199 $ / Pro Max 1.299 $
+      start: 21.9, mood: 'neutral', poses: ['emotions/nachdenklich', 'poses/zeigen'], focus: { x: 640, y: 880 }, zoom: 0.06,
+      sfx: [[2.55, 'cash', 0.7], [3.75, 'cash', 0.8]],
       draw(ctx, lt, t) {
-        E.headline(ctx, [{ t: 'UND DER', c: C.white, size: 110 }, { t: 'PREIS!', c: C.yellow, size: 160 }], lt);
-        const sw = Math.sin(lt * 3.2) * 0.25 * Math.exp(-lt * 0.6);
-        E.withT(ctx, 680, 640, 1, sw, () => E.priceTag(ctx, 0, 330, 560, '$$$', { color: C.yellow, scale: pop(lt, 0.05, 0.45), rot: 0.0 }));
-        ctx.beginPath(); ctx.arc(680, 640, 14, 0, 7); E.ink(ctx, C.greyD, 6);
-        E.moneyRain(ctx, lt, 0.3, { x: 700, y: 900, n: 10, seed: 4 });
-        panda(ctx, 'emotions/nachdenklich', lt, t, { x: 220, h: 520 });
+        const P = 1.4; // ab hier: Preise
+        if (lt < P) E.headline(ctx, [{ t: 'UND DER', c: C.white, size: 110 }, { t: 'PREIS!', c: C.yellow, size: 160 }], lt);
+        else E.headline(ctx, [{ t: 'SO TEUER', c: C.white, size: 120 }, { t: 'IST DAS iPHONE 18', c: C.yellow, size: 90 }], lt - P);
+        const away = eInOut(prog(lt, P - 0.2, 0.5));
+        if (away < 1) {
+          const sw = Math.sin(lt * 2.4) * 0.22 * Math.exp(-lt * 0.6);
+          ctx.save(); ctx.globalAlpha = 1 - away;
+          E.withT(ctx, 680, 640 - away * 200, 1, sw, () => E.priceTag(ctx, 0, 330, 560, '$$$', { color: C.yellow, scale: pop(lt, 0.05, 0.55) }));
+          ctx.beginPath(); ctx.arc(680, 640 - away * 200, 14, 0, 7); E.ink(ctx, C.greyD, 6); ctx.restore();
+        }
+        if (lt > P - 0.1) {
+          const l2 = lt - P;
+          E.withT(ctx, 520, 820, pop(l2, 0.0, 0.5), -0.05, () => E.iphone(ctx, 0, 0, 380, { label: 'PRO', c1: '#C9B79C', c2: '#8E7D63' }));
+          E.withT(ctx, 840, 800, pop(l2, 0.2, 0.5), 0.05, () => E.iphone(ctx, 0, 0, 440, { label: 'PRO MAX', c1: '#9AA6B8', c2: '#5D6B80' }));
+          E.priceTag(ctx, 520, 1100, 300, '1.199 $', { color: C.yellow, scale: pop(l2, 1.15, 0.45), rot: Math.sin(lt * 2.5) * 0.04 - 0.05 });
+          if (l2 > 3.0) E.burst(ctx, 850, 1120, 150, 230, 14, C.yellow, lt * 0.3, 7);
+          E.priceTag(ctx, 850, 1120, 320, '1.299 $', { color: C.orange, scale: pop(l2, 2.35, 0.45) * (l2 > 3.0 ? 1.08 : 1), rot: Math.sin(lt * 2.5 + 1) * 0.04 + 0.04 });
+          if (l2 > 3.0) E.comicText(ctx, 'FAST 1.300 $!', 700, 1260, { size: 80, fill: C.red, scale: pop(l2, 3.0, 0.45), rot: -0.05 });
+        }
+        if (lt < P) panda(ctx, 'emotions/nachdenklich', lt, t, { x: 200, h: 500 });
+        else panda(ctx, 'poses/zeigen', lt, t, { x: 180, h: 460, enter: false, swapAt: P });
       },
     },
-    { // 12 Preise Pro / Pro Max
-      start: 23.3, mood: 'neutral', poses: ['poses/zeigen'], focus: { x: 640, y: 880 }, shake: [3.0], shakeSfx: 'ping', sfx: [[1.1, 'cash', 0.8], [2.3, 'cash']],
+    { // I 27,45-29,45 s: +100 $ mehr als beim Vorgaenger
+      start: 27.45, mood: 'bad', poses: ['emotions/ueberrascht'], focus: { x: 600, y: 880 }, zoom: 0.05, sfx: [[0.3, 'cash', 0.8]],
       draw(ctx, lt, t) {
-        E.headline(ctx, [{ t: 'SO TEUER', c: C.white, size: 120 }, { t: 'IST DAS iPHONE 18', c: C.yellow, size: 90 }], lt);
-        E.withT(ctx, 520, 820, pop(lt, 0.05, 0.4), -0.05, () => E.iphone(ctx, 0, 0, 380, { label: 'PRO', c1: '#C9B79C', c2: '#8E7D63' }));
-        E.withT(ctx, 840, 800, pop(lt, 0.2, 0.4), 0.05, () => E.iphone(ctx, 0, 0, 440, { label: 'PRO MAX', c1: '#9AA6B8', c2: '#5D6B80' }));
-        E.priceTag(ctx, 520, 1100, 300, '1.199 $', { color: C.yellow, scale: pop(lt, 1.1, 0.35), rot: Math.sin(lt * 4) * 0.05 - 0.05 });
-        if (lt > 3) E.burst(ctx, 850, 1120, 150, 230, 14, C.yellow, lt * 0.6, 7);
-        E.priceTag(ctx, 850, 1120, 320, '1.299 $', { color: C.orange, scale: pop(lt, 2.3, 0.35) * (lt > 3 ? 1.12 + Math.sin(lt * 10) * 0.02 : 1), rot: Math.sin(lt * 4 + 1) * 0.05 + 0.04 });
-                if (lt > 3) E.comicText(ctx, 'FAST 1.300 $!', 700, 1260, { size: 80, fill: C.red, scale: pop(lt, 3.0), rot: -0.05 });
-        panda(ctx, 'poses/zeigen', lt, t, { x: 180, h: 460 });
-      },
-    },
-    { // 13 +100 $ mehr als Vorgaenger
-      start: 27.45, mood: 'bad', poses: ['emotions/ueberrascht'], shake: [0.25], shakeSfx: 'cash', focus: { x: 600, y: 880 }, sfx: [[1.25, 'pop']],
-      draw(ctx, lt, t) {
-        E.moneyRain(ctx, lt, 0.2, { x: 600, n: 10, seed: 21, spread: 900, fall: true });
+        E.moneyRain(ctx, lt, 0.3, { x: 600, n: 7, seed: 21, spread: 900, fall: true });
         E.headline(ctx, [{ t: '+100 $', c: C.red, size: 170 }, { t: 'TEURER ALS VORHER', c: C.white, size: 88 }], lt);
-        // alt -> neu
-        E.withT(ctx, 400, 880, pop(lt, 0.05), 0, () => { ctx.globalAlpha = 0.75; E.iphone(ctx, 0, 0, 330, { label: '17 PRO', c1: '#B0B4BC', c2: '#7A7F88' }); ctx.globalAlpha = 1; });
-        E.withT(ctx, 800, 860, pop(lt, 0.15), 0, () => E.iphone(ctx, 0, 0, 380, { label: '18 PRO', c1: '#C9B79C', c2: '#8E7D63' }));
-        E.priceTag(ctx, 400, 1120, 280, '1.099 $', { color: C.white, scale: pop(lt, 0.1) });
-        if (lt > 0.3) { ctx.strokeStyle = C.red; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(300, 1150 - 30 * eOut(prog(lt, 0.3, 0.2))); ctx.lineTo(300 + 210 * eOut(prog(lt, 0.3, 0.2)), 1095); ctx.stroke(); }
-        E.priceTag(ctx, 800, 1140, 300, '1.199 $', { color: C.yellow, scale: pop(lt, 0.25) });
-        // Pfeil
-        E.withT(ctx, 600, 870, pop(lt, 0.2), 0, () => { ctx.beginPath(); ctx.moveTo(-60, -22); ctx.lineTo(20, -22); ctx.lineTo(20, -50); ctx.lineTo(70, 0); ctx.lineTo(20, 50); ctx.lineTo(20, 22); ctx.lineTo(-60, 22); ctx.closePath(); E.ink(ctx, C.red, 7); });
-        if (lt > 1.25) E.pill(ctx, 'VORGÄNGER', 400, 640, 40, C.greyD, C.white, pop(lt, 1.25), -0.06);
+        E.withT(ctx, 400, 880, pop(lt, 0.05, 0.5), 0, () => { ctx.globalAlpha = 0.75; E.iphone(ctx, 0, 0, 330, { label: '17 PRO', c1: '#B0B4BC', c2: '#7A7F88' }); ctx.globalAlpha = 1; });
+        E.withT(ctx, 800, 860, pop(lt, 0.2, 0.5), 0, () => E.iphone(ctx, 0, 0, 380, { label: '18 PRO', c1: '#C9B79C', c2: '#8E7D63' }));
+        E.priceTag(ctx, 400, 1120, 280, '1.099 $', { color: C.white, scale: pop(lt, 0.15, 0.45) });
+        if (lt > 0.45) { const q = eOut(prog(lt, 0.45, 0.35)); ctx.strokeStyle = C.red; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(300, 1150 - 30 * q); ctx.lineTo(300 + 210 * q, 1095); ctx.stroke(); }
+        E.priceTag(ctx, 800, 1140, 300, '1.199 $', { color: C.yellow, scale: pop(lt, 0.35, 0.45) });
+        E.withT(ctx, 600, 870, pop(lt, 0.3, 0.45), 0, () => { ctx.beginPath(); ctx.moveTo(-60, -22); ctx.lineTo(20, -22); ctx.lineTo(20, -50); ctx.lineTo(70, 0); ctx.lineTo(20, 50); ctx.lineTo(20, 22); ctx.lineTo(-60, 22); ctx.closePath(); E.ink(ctx, C.red, 7); });
+        if (lt > 1.25) E.pill(ctx, 'VORGÄNGER', 400, 640, 40, C.greyD, C.white, pop(lt, 1.25, 0.45), -0.06);
         panda(ctx, 'emotions/ueberrascht', lt, t, { x: 170, h: 430 });
       },
     },
-    { // 14 KI-Rechenzentren kaufen
-      start: 29.45, mood: 'dark', poses: ['emotions/cool'], focus: { x: 640, y: 880 }, pops: [0.9],
+    { // J 29,45-32,85 s: KI-Rechenzentren kaufen Speicherchips leer
+      start: 29.45, mood: 'dark', poses: ['emotions/cool', 'emotions/ueberrascht'], shake: [2.75], shakeSfx: 'stamp', focus: { x: 640, y: 880 }, zoom: 0.05,
       draw(ctx, lt, t) {
-        E.headline(ctx, [{ t: 'KI-RECHENZENTREN', c: C.cyan, size: 110 }, { t: 'KAUFEN ALLES!', c: C.white, size: 115 }], lt);
-        for (let i = 0; i < 3; i++) E.withT(ctx, 0, (1 - eOut(prog(lt, i * 0.08, 0.4))) * 900, 1, 0, () => E.serverRack(ctx, 330 + i * 230, 760, 200, 470, t, i + 2));
-        E.withT(ctx, 640, 640, pop(lt, 0.2), 0, () => E.chip(ctx, 0, 0, 170, 'KI', { glow: 0.9 + Math.sin(lt * 7) * 0.1 }));
-        // Wagen voller Chips faehrt rein
-        const cx = lerp(1300, 760, eOut(prog(lt, 0.8, 0.6)));
+        if (lt < 1.75) E.headline(ctx, [{ t: 'KI-RECHENZENTREN', c: C.cyan, size: 110 }, { t: 'KAUFEN ALLES!', c: C.white, size: 115 }], lt);
+        else E.headline(ctx, [{ t: 'SPEICHERCHIPS', c: C.white, size: 120 }, { t: 'AUSVERKAUFT!', c: C.red, size: 130 }], lt - 1.75);
+        for (let i = 0; i < 3; i++) E.withT(ctx, 0, (1 - eOut(prog(lt, i * 0.12, 0.6))) * 900, 1, 0, () => E.serverRack(ctx, 330 + i * 230, 760, 200, 470, t * 0.6, i + 2));
+        E.withT(ctx, 640, 640, pop(lt, 0.3, 0.5), 0, () => E.chip(ctx, 0, 0, 170, 'KI', { glow: 0.9 + Math.sin(lt * 4) * 0.1 }));
+        const cx = lerp(1300, 760, eOut(prog(lt, 0.8, 0.9)));
         E.cart(ctx, cx, 1300, 300, lt);
-        for (let i = 0; i < 5; i++) E.ramStick(ctx, cx - 110 + (i % 3) * 100, 1130 - Math.floor(i / 3) * 45, 120, (i - 2) * 0.15);
-        panda(ctx, 'emotions/cool', lt, t, { x: 200, h: 500 });
-      },
-    },
-    { // 15 Speicherchips leer gekauft
-      start: 31.2, mood: 'bad', poses: ['emotions/ueberrascht'], shake: [0.95], shakeSfx: 'stamp', focus: { x: 620, y: 900 },
-      draw(ctx, lt, t) {
-        E.headline(ctx, [{ t: 'SPEICHERCHIPS', c: C.white, size: 120 }, { t: 'AUSVERKAUFT!', c: C.red, size: 130 }], lt);
-        // Regal
-        const sx = 330, sw = 600;
-        E.rr(ctx, sx, 640, sw, 560, 12); E.ink(ctx, '#C89A6A', 9);
-        for (let r = 0; r < 3; r++) { E.rr(ctx, sx + 20, 820 + r * 170, sw - 40, 18, 4); E.ink(ctx, '#8F633A', 5); }
-        E.plainText(ctx, 'SPEICHERCHIPS', sx + sw / 2, 690, 40, C.ink, { weight: 900 });
-        for (let r = 0; r < 3; r++) for (let k = 0; k < 4; k++) {
-          const i = r * 4 + k, tg = 0.05 + i * 0.06, p = prog(lt, tg, 0.35);
-          const x = sx + 95 + k * 135 + p * (700 + i * 20), y = 780 + r * 170 - Math.sin(p * Math.PI) * 120;
-          if (p < 1) E.ramStick(ctx, x, y, 115, -0.6 * p);
-        }
-        E.stamp(ctx, 'LEER!', 630, 1000, lt, 0.95, { size: 150, rot: -0.18 });
-        panda(ctx, 'emotions/ueberrascht', lt, t, { x: 200, h: 480 });
+        const n = 3 + Math.floor(prog(lt, 1.8, 0.8) * 5);
+        for (let i = 0; i < n; i++) E.ramStick(ctx, cx - 110 + (i % 3) * 100, 1130 - Math.floor(i / 3) * 45, 120, (i - 2) * 0.15);
+        for (let k = 0; k < 4; k++) { const p = prog(lt, 1.8 + k * 0.2, 0.5); if (p > 0 && p < 1) E.ramStick(ctx, lerp(-100, cx - 50, p), lerp(900, 1100, p) - Math.sin(p * Math.PI) * 160, 115, p * 2); }
+        E.stamp(ctx, 'LEER!', 640, 960, lt, 2.75, { size: 150, rot: -0.18 });
+        if (lt < 1.75) panda(ctx, 'emotions/cool', lt, t, { x: 200, h: 500 });
+        else panda(ctx, 'emotions/ueberrascht', lt, t, { x: 200, h: 480, enter: false, swapAt: 1.75 });
       },
     },
     // ================= Teil 2 =================
