@@ -1,0 +1,12 @@
+{
+  "name": "panda-videos",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node tools/render.mjs"
+  },
+  "dependencies": {
+    "@fontsource/luckiest-guy": "^5.0.0",
+    "@fontsource/montserrat": "^5.0.0"
+  }
+}
