@@ -48,4 +48,10 @@ Nicht ohne ausdrücklichen Wunsch ändern.
 - Eigene Sounds (z. B. Pixabay) als `sfx/custom/<typ>.mp3` ablegen → ersetzen die eingebauten automatisch.
 - `sfx/lib` neu bauen: `python3 tools/build_sfx.py` – organische/weiche CC0-Sounds (`sfx/uisfx`: organic, soft) + natürliche
   Geräusch-Schichten (Münzen, Papier, Thud). Keine synthetischen Ton-Sweeps (klangen dem Nutzer zu generisch).
-- Pixabay/Freesound sind im Netz gesperrt → für echte Aufnahmen Nutzer-Uploads in `sfx/custom/` verwenden.
+- **Echte CC0-Aufnahmen (ab spacex-telekom v2):** `sfx/cc0/` = Freesound-Samples aus der Sonic-Pi-Bibliothek (CC0, Quellen in
+  `sfx/cc0/SOURCES.md`; per `git clone` von github.com/sonic-pi-net/sonic-pi erreichbar, Pixabay/Freesound direkt sind gesperrt).
+  `python3 tools/build_sfx_cc0.py` baut daraus `sfx/lib` mit mehreren Varianten je Typ (`<typ>_2.wav` …), der Mixer wählt zufällig.
+  Neue Typen: `snap`, `ding`, `impact`, `roll` (Trommelwirbel, endet auf Cue), `door`. Riser = rückwärts gespieltes echtes Becken.
+- **Hook (erste ~10–14 s):** schnelle Jump-Cuts (`hard: true`, `baseZoom` 1.1, `punchAmt` 0.1), Szene alle ~1–1,5 s, jeder Schnitt mit
+  Whoosh/Snap/Impact. Danach wieder ruhiges Tempo mit weichen Überblendungen und leisem Whoosh pro Wechsel.
+- MASTER (SFX) = 0.21; Musik separat über `music.abs`.

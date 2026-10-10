@@ -18,9 +18,9 @@ from scipy.io import wavfile
 
 SR = 48000
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-GAIN = {"riser": 0.45, "sub": 0.7, "rocket": 0.55, "signal": 0.35, "glitch": 0.4, "whoosh": 0.35, "pop": 0.5, "ping": 0.45, "cash": 0.6, "boom": 0.6, "stamp": 0.7, "paper": 0.5, "down": 0.45,
+GAIN = {"snap": 0.4, "ding": 0.4, "impact": 0.55, "roll": 0.35, "door": 0.4, "riser": 0.45, "sub": 0.7, "rocket": 0.55, "signal": 0.35, "glitch": 0.4, "whoosh": 0.35, "pop": 0.5, "ping": 0.45, "cash": 0.6, "boom": 0.6, "stamp": 0.7, "paper": 0.5, "down": 0.45,
         "tick": 0.3, "swell": 0.5, "horn": 0.55}
-MASTER = 0.15  # deutlich unter der Stimme
+MASTER = 0.21  # Effekte klar unter der Stimme (~18 dB), Musik separat
 SWELL_LEN = 1.1
 
 
@@ -30,21 +30,21 @@ def load(path):
     return np.frombuffer(raw, dtype=np.float32).reshape(-1, 2).astype(np.float64)
 
 
-def source(kind, cache={}):
+def source(kind, rng, cache={}):
+    """Liefert eine Variante: sfx/custom/<typ>.* hat Vorrang, sonst sfx/lib/<typ>.wav + <typ>_N.wav (zufaellig)."""
     if kind not in cache:
-        for ext in ("wav", "mp3", "ogg"):
+        for ext in ("wav", "mp3", "ogg", "flac"):
             p = os.path.join(ROOT, "sfx", "custom", f"{kind}.{ext}")
             if os.path.exists(p):
-                x = load(p)
-                cache[kind] = x / (np.max(np.abs(x)) + 1e-9) * 0.89
-                break
+                x = load(p); cache[kind] = [x / (np.max(np.abs(x)) + 1e-9) * 0.89]; break
         else:
-            cache[kind] = load(os.path.join(ROOT, "sfx", "lib", f"{kind}.wav"))
-        if kind == "swell":
-            x = cache[kind][-int(SWELL_LEN * SR):].copy()
-            x *= np.linspace(0, 1, len(x))[:, None] ** 1.2
-            cache[kind] = x
-    return cache[kind]
+            import glob
+            files = [os.path.join(ROOT, "sfx", "lib", f"{kind}.wav")] + sorted(glob.glob(os.path.join(ROOT, "sfx", "lib", f"{kind}_[0-9]*.wav")))
+            cache[kind] = [load(f) for f in files if os.path.exists(f)]
+        if kind == "swell" and not os.path.exists(os.path.join(ROOT, "sfx", "lib", "swell_2.wav")):
+            cache[kind] = [x[-int(SWELL_LEN * SR):] * np.linspace(0, 1, min(len(x), int(SWELL_LEN * SR)))[:, None] ** 1.2 for x in cache[kind]]
+    vs = cache[kind]
+    return vs[int(rng.integers(len(vs)))]
 
 
 def pan(x, p):
@@ -85,12 +85,12 @@ def main(cues_path, dur, out, voice_path=None):
     bus = np.zeros((n + SR * 4, 2))
     rng = np.random.default_rng(7)
     for c in sorted(cues, key=lambda c: c["t"]):
-        x = source(c["type"])
+        x = source(c["type"], rng)
         pitch = rng.uniform(0.98, 1.02)
         x = signal.resample(x, int(len(x) / pitch), axis=0)
         x = pan(x, c.get("pan", 0))
         g = GAIN.get(c["type"], 0.5) * (c.get("gain") if c.get("gain") is not None else 1) * 10 ** (rng.uniform(-1, 1) / 20)
-        i = int(c["t"] * SR) - (len(x) if c["type"] in ("swell", "riser") else 0)
+        i = int(c["t"] * SR) - (len(x) if c["type"] in ("swell", "riser", "roll") else 0)
         if i >= n:
             continue
         if i < 0:

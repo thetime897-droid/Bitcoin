@@ -475,7 +475,7 @@
     const lt = t - sc.start, dur = (next ? next.start : VIDEO.duration) - sc.start;
     c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.filter = 'none';
     const f = sc.focus || { x: 540, y: 880 };
-    let z = 1 + (sc.zoom ?? 0.05) * eInOut(lt / dur) + (sc.punch === false ? 0 : 0.06 * (1 - eOut(lt / 0.55)));
+    let z = (sc.baseZoom || 1) * (1 + (sc.zoom ?? 0.05) * eInOut(lt / dur) + (sc.punch === false ? 0 : (sc.punchAmt ?? 0.06) * (1 - eOut(lt / (sc.hard ? 0.35 : 0.55)))));
     let sx = 0, sy = 0;
     (sc.shake || []).forEach((st) => { if (lt >= st) { const k = Math.max(0, 1 - (lt - st) / 0.4); sx += Math.sin(lt * 70) * 12 * k; sy += Math.cos(lt * 61) * 10 * k; } });
     c.save(); c.translate(sx * 0.5, sy * 0.5); c.translate(540, 960); c.scale(1.04, 1.04); c.translate(-540, -960);
@@ -486,7 +486,7 @@
   }
   let xfCanvas = null;
   function renderFrame(t) {
-    const sc = sceneAt(t), idx = VIDEO.scenes.indexOf(sc), lt = t - sc.start, XF = VIDEO.xfade || 0;
+    const sc = sceneAt(t), idx = VIDEO.scenes.indexOf(sc), lt = t - sc.start, XF = sc.hard ? 0 : (VIDEO.xfade || 0);
     if (idx > 0 && XF && lt < XF) {
       drawScene(ctx, VIDEO.scenes[idx - 1], t);
       if (!xfCanvas) { xfCanvas = document.createElement('canvas'); xfCanvas.width = W; xfCanvas.height = H; }
@@ -497,7 +497,7 @@
     if (VIDEO.brand !== false && !sc.noBrand) brandBug(ctx);
     captions(ctx, CAPS, t);
     if (VIDEO.grain) grain(ctx, t);
-    if (!XF && idx > 0 && sc.flash !== false) { const a = 0.22 * (1 - prog(lt, 0, 0.2)); if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
+    if (!XF && idx > 0 && sc.flash !== false) { const a = (sc.flashAmt ?? 0.22) * (1 - prog(lt, 0, 0.2)); if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
     if (VIDEO.endFade !== false && t > VIDEO.duration - 0.25) { ctx.fillStyle = `rgba(0,0,0,${prog(t, VIDEO.duration - 0.25, 0.25)})`; ctx.fillRect(0, 0, W, H); }
   }
   function sfxCues() {

@@ -69,7 +69,7 @@
     [61.25, 62.66, 'bei der Telekom übertrieben?'],
   ];
 
-  const scenes = [
+  const base = [
     { // 1 0–3,6: Breaking – Rakete, massives Kurspotenzial
       start: 0, mood: 'dark', poses: ['emotions/begeistert'], punch: false, noBrand: true, focus: { x: 640, y: 950 },
       sfx: [[0.0, 'ping', 0.6, 0], [0.3, 'rocket', 0.6, 0.3], [2.25, 'riser', 0.35, 0], [2.3, 'sub', 0.5, 0]],
@@ -333,6 +333,42 @@
       },
     },
   ];
+
+
+  // ---------- Hook (0–13,75 s): schnelle Jump-Cuts mit Zoom-Spruengen, Whoosh/Impact auf jedem Schnitt ----------
+  const cut = (sc, start, off, extra = {}) => ({ ...sc, start, sfx: [], shake: [], pops: [], hard: true, punchAmt: 0.1, flashAmt: 0.3, music: undefined,
+    draw: (ctx, lt, t, d) => sc.draw(ctx, lt + off, t, d), ...extra });
+  const [s1, s2, s3, s4] = base;
+  const hook = [
+    { ...s1, hard: true, punchAmt: 0.12, sfx: [[0.0, 'impact', 0.55, 0], [0.02, 'ping', 0.5, 0], [0.3, 'rocket', 0.5, 0.3], [0.85, 'pop', 0.4, 0.2]] },
+    cut(s1, 1.5, 1.5, { baseZoom: 1.1, noBrand: true, focus: { x: 620, y: 1150 }, sfx: [[-0.06, 'whoosh', 0.45, 0.3], [0.05, 'snap', 0.5, 0]] }),
+    cut(s1, 2.25, 2.25, { baseZoom: 1.0, sfx: [[-0.06, 'whoosh', 0.4, -0.3], ...ticks(0.1, 0.85, 7, 0.5, -0.2), [0.9, 'ding', 0.45, -0.2]] }),
+    cut(s2, 3.6, 0, { sfx: [[-0.06, 'whoosh', 0.45, -0.4], [0.35, 'snap', 0.45, 0.3], [1.15, 'riser', 0.4, 0]] }),
+    cut(s2, 4.75, 1.15, { baseZoom: 1.12, noBrand: true, focus: { x: 640, y: 1180 }, shake: [0.4], sfx: [[0.4, 'boom', 0.65, 0.3], [0.42, 'sub', 0.5, 0], [0.55, 'cash', 0.5, 0.3]] }),
+    cut(s3, 6.3, 0, { sfx: [[-0.06, 'whoosh', 0.4, 0.2], [0.1, 'snap', 0.4, -0.1], [0.25, 'snap', 0.4, 0.2], [0.4, 'snap', 0.4, -0.1]] }),
+    cut(s3, 7.55, 1.25, { baseZoom: 1.1, noBrand: true, focus: { x: 640, y: 1150 }, sfx: [[0.5, 'stamp', 0.45, 0.2], [0.52, 'ding', 0.5, 0.2]] }),
+    cut(s4, 8.75, 0, { sfx: [[-0.06, 'whoosh', 0.45, -0.3], [0.2, 'paper', 0.45, -0.2], [0.6, 'pop', 0.4, -0.2]] }),
+    cut(s4, 10.0, 1.25, { baseZoom: 1.1, noBrand: true, focus: { x: 640, y: 1160 }, shake: [1.3], sfx: [[-0.06, 'whoosh', 0.4, 0.3], [1.25, 'riser', 0.35, 0.3], [1.3, 'glitch', 0.45, 0.3], [1.32, 'boom', 0.5, 0.3]] }),
+    cut(s4, 12.0, 3.25, { baseZoom: 1.0, sfx: [[-0.06, 'whoosh', 0.4, 0], [0.05, 'pop', 0.4, 0.3], [1.25, 'roll', 0.4, 0], [1.25, 'ding', 0.5, 0]] }),
+  ];
+  // ---------- Rest: weiche Ueberblendungen, jeder Szenenwechsel mit leisem Whoosh ----------
+  const more = { // zusaetzliche Akzente (echte CC0-Aufnahmen) je Szenenstart
+    13.75: [[1.9, 'ding', 0.35, 0.3]],
+    16.75: [[1.85, 'snap', 0.35, 0], [4.35, 'ding', 0.35, 0]],
+    22.0: [[0.2, 'pop', 0.3, 0.2], [1.25, 'ding', 0.4, 0]],
+    25.3: [[0.15, 'snap', 0.35, -0.2], [2.5, 'impact', 0.4, 0]],
+    29.75: [[0.1, 'pop', 0.35, 0.1], [2.3, 'ding', 0.35, 0.1]],
+    32.75: [[2.25, 'impact', 0.45, 0]],
+    35.5: [[0.3, 'snap', 0.35, 0], [2.3, 'whoosh', 0.3, 0], [3.1, 'impact', 0.4, 0]],
+    40.0: [[1.25, 'snap', 0.35, 0.1], [3.0, 'whoosh', 0.3, 0.3]],
+    45.75: [[1.05, 'impact', 0.4, 0]],
+    48.2: [[0.1, 'door', 0.3, 0], [2.55, 'paper', 0.3, 0.3]],
+    51.7: [[1.3, 'snap', 0.35, 0.3]],
+    55.6: [[1.5, 'impact', 0.3, 0.2]],
+    58.1: [[0.1, 'snap', 0.35, -0.3], [2.5, 'snap', 0.35, 0.3]],
+  };
+  const rest = base.slice(4).map((sc) => ({ ...sc, sfx: [[-0.12, 'whoosh', 0.25, 0], ...(sc.sfx || []), ...(more[sc.start] || [])] }));
+  const scenes = [...hook, ...rest];
 
   // Musikbett: Spannungsbogen (Hook gespannt -> Info ruhig -> Story treibt -> Crash gespannt -> Ausklang)
   const music = {
