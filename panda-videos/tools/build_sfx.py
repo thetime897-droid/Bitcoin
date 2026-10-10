@@ -199,7 +199,68 @@ def make_horn():
     return room(x, rt=2.2, wet=0.35, seed=4)
 
 
+# ---------- RISER: Spannung auf eine Enthuellung (Rauschen + steigender Ton, endet abrupt) ----------
+def make_riser():
+    d = 1.6; t = t_axis(d); u = t / d
+    f = 180 * (2 ** (u * 2.2))
+    tone = np.sin(2 * np.pi * np.cumsum(f) / SR) + 0.4 * np.sin(2 * np.pi * np.cumsum(f * 1.5) / SR)
+    noise = rng.standard_normal(len(t))
+    out = np.zeros(len(t)); blk = 512
+    for s0 in range(0, len(t), blk):
+        fc = 400 + 6000 * (s0 / len(t)) ** 2
+        b, a = signal.butter(2, [fc * 0.6 / (SR / 2), min(0.99, fc * 1.4 / (SR / 2))], "band")
+        out[s0:s0 + blk] = signal.lfilter(b, a, noise[s0:s0 + blk])
+    env = u ** 2.4
+    x = (0.35 * tone * env + 1.6 * out * env)
+    trem = 1 + 0.25 * np.sin(2 * np.pi * (4 + 14 * u) * t)
+    return room(st(np.tanh(x * trem)), rt=0.6, wet=0.2)
+
+
+# ---------- SUB: tiefer Sub-Drop / Impact fuer grosse Zahlen ----------
+def make_sub():
+    t = t_axis(1.4)
+    f = 32 + 85 * np.exp(-t / 0.08)
+    sub = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.55)
+    click = bp(rng.standard_normal(len(t)), 1500, 6000) * np.exp(-t / 0.004) * 0.5
+    thump = lp(rng.standard_normal(len(t)), 300) * np.exp(-t / 0.05) * 0.8
+    return room(st(np.tanh(1.6 * sub) + click + thump), rt=1.2, wet=0.12)
+
+
+# ---------- ROCKET: Raketenstart (Grollen + Zischen, Doppler) ----------
+def make_rocket():
+    d = 2.6; t = t_axis(d); u = t / d
+    rum = lp(rng.standard_normal(len(t)), 160) * 3
+    hiss = bp(rng.standard_normal(len(t)), 900, 6000)
+    crackle = (rng.random(len(t)) > 0.9985) * rng.standard_normal(len(t)) * 3
+    env = np.minimum(1, t / 0.25) * np.exp(-np.maximum(0, t - 1.2) / 0.7)
+    x = (np.tanh(rum) + 0.35 * hiss + lp(crackle, 3000)) * env
+    pan = np.linspace(-0.2, 0.5, len(t))
+    stereo = np.stack([x * np.cos((pan + 1) * np.pi / 4), x * np.sin((pan + 1) * np.pi / 4)], axis=1) * 1.414
+    return room(stereo, rt=1.6, wet=0.25)
+
+
+# ---------- SIGNAL: Satelliten-Datensignal (kurze Piep-Sequenz) ----------
+def make_signal():
+    out = np.zeros(int(0.7 * SR))
+    for k, (f, st0) in enumerate([(1760, 0.0), (2350, 0.11), (1760, 0.22), (2640, 0.33)]):
+        t = t_axis(0.07); tone = np.sin(2 * np.pi * f * t) * np.minimum(1, t / 0.003) * np.exp(-t / 0.05)
+        i = int(st0 * SR); out[i:i + len(t)] += tone * (0.8 - k * 0.1)
+    return room(st(lp(out, 6000) * 0.7), rt=0.9, wet=0.3)
+
+
+# ---------- GLITCH: digitaler Stoerer fuer Kurssturz / Funkloch ----------
+def make_glitch():
+    d = 0.45; n = int(d * SR); x = np.zeros(n); i = 0
+    while i < n:
+        L = int(rng.uniform(0.008, 0.04) * SR); kind = rng.integers(3)
+        seg = rng.standard_normal(L) if kind == 0 else np.sign(np.sin(2 * np.pi * rng.uniform(200, 1500) * np.arange(L) / SR))
+        if kind == 2: seg = np.zeros(L)
+        x[i:i + L] = seg[: n - i] * rng.uniform(0.3, 0.9); i += L
+    x = np.round(x * 6) / 6
+    return room(st(bp(x, 300, 7000) * np.exp(-np.arange(n) / (0.3 * SR))), rt=0.3, wet=0.08)
+
+
 if __name__ == "__main__":
     for name, fn in [("pop", make_pop), ("ping", make_ping), ("cash", make_cash), ("whoosh", make_whoosh),
-                     ("boom", make_boom), ("stamp", make_stamp), ("paper", make_paper), ("down", make_down), ("tick", make_tick), ("swell", make_swell), ("horn", make_horn)]:
+                     ("boom", make_boom), ("stamp", make_stamp), ("paper", make_paper), ("down", make_down), ("tick", make_tick), ("swell", make_swell), ("horn", make_horn), ("riser", make_riser), ("sub", make_sub), ("rocket", make_rocket), ("signal", make_signal), ("glitch", make_glitch)]:
         finish(fn(), name)

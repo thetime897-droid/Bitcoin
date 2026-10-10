@@ -516,7 +516,7 @@
     await Promise.all([document.fonts.load(`100px ${FONT_COMIC}`), document.fonts.load(`900 70px ${FONT_BOLD}`), document.fonts.load(`800 70px ${FONT_BOLD}`)]);
     const poses = new Set(); video.scenes.forEach((s) => (s.poses || []).forEach((p) => poses.add(p)));
     await Promise.all([...poses].map((p) => new Promise((res, rej) => { const im = new Image(); im.onload = () => { IMG[p] = im; res(); }; im.onerror = () => rej(new Error('Bild fehlt: ' + p)); im.src = `../assets_hd/${p}.png`; })));
-    return { duration: video.duration, fps: video.fps || 30, sfx: sfxCues(), endFade: video.endFade };
+    return { duration: video.duration, fps: video.fps || 30, sfx: sfxCues(), endFade: video.endFade, music: video.music || null };
   }
   function frameJpeg(t, q = 0.93) { renderFrame(t); return document.getElementById('c').toDataURL('image/jpeg', q); }
 

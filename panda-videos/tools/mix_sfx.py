@@ -11,13 +11,14 @@ Sounddesign-Regeln im Mix:
 - Kleine Variation in Tonhoehe/Lautstaerke je Einsatz, damit Wiederholungen nicht mechanisch klingen.
 """
 import json, os, subprocess, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np
 from scipy import signal
 from scipy.io import wavfile
 
 SR = 48000
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-GAIN = {"whoosh": 0.35, "pop": 0.5, "ping": 0.45, "cash": 0.6, "boom": 0.6, "stamp": 0.7, "paper": 0.5, "down": 0.45,
+GAIN = {"riser": 0.45, "sub": 0.7, "rocket": 0.55, "signal": 0.35, "glitch": 0.4, "whoosh": 0.35, "pop": 0.5, "ping": 0.45, "cash": 0.6, "boom": 0.6, "stamp": 0.7, "paper": 0.5, "down": 0.45,
         "tick": 0.3, "swell": 0.5, "horn": 0.55}
 MASTER = 0.15  # deutlich unter der Stimme
 SWELL_LEN = 1.1
@@ -78,7 +79,8 @@ def duck_curve(voice, n):
 
 
 def main(cues_path, dur, out, voice_path=None):
-    cues = json.load(open(cues_path))
+    data = json.load(open(cues_path))
+    cues, music = (data, None) if isinstance(data, list) else (data["cues"], data.get("music"))
     n = int(float(dur) * SR)
     bus = np.zeros((n + SR * 4, 2))
     rng = np.random.default_rng(7)
@@ -88,7 +90,7 @@ def main(cues_path, dur, out, voice_path=None):
         x = signal.resample(x, int(len(x) / pitch), axis=0)
         x = pan(x, c.get("pan", 0))
         g = GAIN.get(c["type"], 0.5) * (c.get("gain") if c.get("gain") is not None else 1) * 10 ** (rng.uniform(-1, 1) / 20)
-        i = int(c["t"] * SR) - (len(x) if c["type"] == "swell" else 0)
+        i = int(c["t"] * SR) - (len(x) if c["type"] in ("swell", "riser") else 0)
         if i >= n:
             continue
         if i < 0:
@@ -99,8 +101,13 @@ def main(cues_path, dur, out, voice_path=None):
     b, a = signal.butter(2, 70 / (SR / 2), "high"); bus = signal.lfilter(b, a, bus, axis=0)
     b, a = peaking(2800, -4.5, 1.1); bus = signal.lfilter(b, a, bus, axis=0)
     b, a = peaking(9000, -2.0, 0.7); bus = signal.lfilter(b, a, bus, axis=0)
-    if voice_path:
-        bus *= duck_curve(load(voice_path), n)[:, None]
+    duck = duck_curve(load(voice_path), n) if voice_path else np.ones(n)
+    bus *= duck[:, None]
+    if music:
+        import music_bed
+        bed = music_bed.generate(n / SR, music)[:n]
+        mduck = 1 - (1 - duck) * 1.3  # Musik tiefer ducken als Effekte (bis ~ -10 dB)
+        bus += bed * np.clip(mduck, 0.25, 1)[:, None] / MASTER * music.get("abs", 0.06)
     bus = np.tanh(bus * MASTER * 1.3) / 1.3
     wavfile.write(out, SR, (bus * 32767).astype(np.int16))
 

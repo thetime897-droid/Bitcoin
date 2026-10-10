@@ -41,6 +41,10 @@ Nicht ohne ausdrücklichen Wunsch ändern.
 - In Szenen: `pops: [t]`, `shake: [t]` (+ `shakeSfx`), `sfx: [[t, 'typ', gain, pan]]` – pan = Position im Bild (-1 links … 1 rechts).
 - Sounddesign: `swell` (Rückwärts-Hall) endet auf der Enthüllung; Zähler bekommen `tick`-Folgen, die sich zum Ziel verdichten;
   `horn` für Schiffe; Mix duckt Effekte automatisch unter der Stimme (bis -6 dB) und lässt 2,8 kHz frei.
+- Zuschauerbindung (ab spacex-telekom): dezentes Musikbett `music: {bpm, chords, sections, drops, abs}` (tools/music_bed.py),
+  Spannungsbogen über `sections` (tension → pulse → full), `drops` = 0,5 s Stille direkt vor großen Zahlen,
+  `riser` endet auf der Enthüllung, `sub` für große Zahlen/Crashs, `glitch` für Kurssturz/Funkloch, `signal` Satellit,
+  `rocket` Raketenstart. Musik duckt unter der Stimme bis ~ -10 dB; Pegel `abs: 0.1` (≈ 20 dB unter der Stimme).
 - Eigene Sounds (z. B. Pixabay) als `sfx/custom/<typ>.mp3` ablegen → ersetzen die eingebauten automatisch.
 - `sfx/lib` neu bauen: `python3 tools/build_sfx.py` – organische/weiche CC0-Sounds (`sfx/uisfx`: organic, soft) + natürliche
   Geräusch-Schichten (Münzen, Papier, Thud). Keine synthetischen Ton-Sweeps (klangen dem Nutzer zu generisch).

@@ -62,7 +62,7 @@ await browser.close(); server.close();
 
 // ---- Soundeffekte: Bibliothek (sfx/lib bzw. sfx/custom) an den Cue-Zeiten mischen ----
 const sfxWav = outFile.replace(/\.mp4$/, '_sfx.wav'), cuesJson = outFile.replace(/\.mp4$/, '_cues.json');
-fs.writeFileSync(cuesJson, JSON.stringify(meta.sfx.map((c) => ({ ...c, t: c.t - from }))));
+fs.writeFileSync(cuesJson, JSON.stringify({ cues: meta.sfx.map((c) => ({ ...c, t: c.t - from })), music: meta.music && !from ? meta.music : null }));
 const mixr = spawnSync('python3', [path.join(ROOT, 'tools/mix_sfx.py'), cuesJson, String(to - from), sfxWav, ...(audio && !from ? [audio] : [])], { stdio: 'inherit' });
 if (mixr.status !== 0) process.exit(mixr.status);
 fs.unlinkSync(cuesJson);
