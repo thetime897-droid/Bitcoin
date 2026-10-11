@@ -25,6 +25,8 @@ Nicht ohne ausdrücklichen Wunsch ändern.
 - Intro mit LIVE-Balken + Laufband. **Kein Outro/Folgen-Button**: Video endet exakt mit dem Voice-Over (`endFade: false`).
 - Politur (ab iran-wahlkampf): `xfade: 0.3` (weiche Szenen-Überblendung), `grain: 0.06` (Filmkorn), `bokeh: true`,
   Headline-Zeilen mit `ribbon: <farbe>` als Banner-Band. Requisiten in `engine/props.js` (`E.P.*`).
+- **Panda immer komplett im Bild (ab realty-income):** `pandaFixed: true` im VIDEO-Objekt – der Panda wird nach der Kamera
+  im Bildschirm-Raum gezeichnet (Zoom/Jump-Cuts schneiden ihn nie an) und horizontal auf den sichtbaren Bereich begrenzt.
 - TikTok-Safe-Zone: wichtige Inhalte nicht ganz rechts (Buttons) und nicht unter y≈1600.
 
 ## Panda-Qualität

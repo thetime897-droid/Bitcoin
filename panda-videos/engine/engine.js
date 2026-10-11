@@ -130,9 +130,17 @@
 
   // ---------- Panda ----------
   const IMG = {};
+  // Panda wird (wenn VIDEO.pandaFixed) gesammelt und NACH der Kamera im Bildschirm-Raum gezeichnet:
+  // Zoom, Punch-In und Jump-Cuts koennen ihn so nie anschneiden. x wird so begrenzt, dass er komplett im Bild bleibt.
+  let PANDA_Q = null;
   function drawPanda(ctx, pose, o) {
+    if (PANDA_Q) { PANDA_Q.push([pose, o]); return; }
+    drawPandaNow(ctx, pose, o);
+  }
+  function drawPandaNow(ctx, pose, o) {
     const img = IMG[pose]; if (!img) throw new Error('Pose fehlt: ' + pose);
-    const { x, y, h, lt, t } = o;
+    let { x, y, h, lt, t } = o;
+    if (VIDEO && VIDEO.pandaFixed) { const hw = h * img.width / img.height / 2 + 24; x = Math.max(hw, Math.min(W - hw, x)); y = Math.min(y, H - 40); }
     let dx = 0, s = 1;
     if (o.enter) { const p = prog(lt, o.enterAt || 0, 0.6); dx = (1 - eBack(p)) * (o.from === 'right' ? 760 : -760); }
     if (o.swapAt != null && lt >= o.swapAt) s = lerp(0.94, 1, eBack(prog(lt, o.swapAt, 0.35)));
@@ -480,9 +488,11 @@
     (sc.shake || []).forEach((st) => { if (lt >= st) { const k = Math.max(0, 1 - (lt - st) / 0.4); sx += Math.sin(lt * 70) * 12 * k; sy += Math.cos(lt * 61) * 10 * k; } });
     c.save(); c.translate(sx * 0.5, sy * 0.5); c.translate(540, 960); c.scale(1.04, 1.04); c.translate(-540, -960);
     background(c, sc.mood, t, sc.bg || {}); if (VIDEO.bokeh) bokeh(c, t, sc.mood); c.restore();
+    if (VIDEO.pandaFixed) PANDA_Q = [];
     c.save(); c.translate(f.x + sx, f.y + sy); c.scale(z, z); c.translate(-f.x, -f.y);
     sc.draw(c, lt, t, dur);
     c.restore();
+    if (PANDA_Q) { const q = PANDA_Q; PANDA_Q = null; c.save(); c.translate(sx * 0.4, sy * 0.4); q.forEach(([pose, o]) => drawPandaNow(c, pose, o)); c.restore(); }
   }
   let xfCanvas = null;
   function renderFrame(t) {
