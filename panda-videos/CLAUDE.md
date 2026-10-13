@@ -67,3 +67,10 @@ Nicht ohne ausdrücklichen Wunsch ändern.
   Funken `sparks`, Zähler, Leuchtpunkte) und auf jede Bewegung ein `pop`/`ping` (5 bzw. 3 Varianten). Panda im Hook nur
   Posenwechsel (`enter: false`), kein Reinfliegen bei jedem Schnitt.
 - MASTER (SFX) = 0.21; Musik separat über `music.abs`.
+
+## Einflüge (ab trade-republic-avd, Nutzerwunsch „Bilder/ganze Szenen neu einfliegen lassen“)
+- **Szenen-Einflug:** in der Szene `trans: 'left'|'right'|'up'|'down'|'zoom'` (+ `transDur` ≈ 0.4–0.5) – die neue Szene schiebt
+  die alte aus dem Bild (Push mit Schatten) bzw. fliegt aus der Tiefe mit leichter Drehung ein (`zoom`, `transRot`). Ersetzt xfade/hard.
+  Richtungen abwechseln; Whoosh bei ca. -0.15 s.
+- **Element-Einflug:** lokaler Helfer `fly(ctx, x, y, lt, at, from, () => zeichnen bei 0,0, {dist, rot, dur, scale})` mit Überschwinger,
+  Drehung und Speed-Streifen; Sound `flySfx(at, pan)` = Whoosh + Pop beim Landen.

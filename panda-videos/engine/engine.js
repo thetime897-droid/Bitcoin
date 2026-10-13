@@ -544,10 +544,26 @@
     c.restore();
     if (PANDA_Q) { const q = PANDA_Q; PANDA_Q = null; c.save(); c.translate(sx * 0.4, sy * 0.4); q.forEach(([pose, o]) => drawPandaNow(c, pose, o)); c.restore(); }
   }
-  let xfCanvas = null;
+  let xfCanvas2 = null, xfCanvas = null;
   function renderFrame(t) {
-    const sc = sceneAt(t), idx = VIDEO.scenes.indexOf(sc), lt = t - sc.start, XF = sc.hard ? 0 : (VIDEO.xfade || 0);
-    if (idx > 0 && XF && lt < XF) {
+    const sc = sceneAt(t), idx = VIDEO.scenes.indexOf(sc), lt = t - sc.start, XF = sc.hard || sc.trans ? 0 : (VIDEO.xfade || 0);
+    const TD = sc.transDur || 0.42;
+    if (idx > 0 && sc.trans && lt < TD) { // Szenen-Einflug: neue Szene schiebt die alte aus dem Bild (left/right/up/down) oder zoomt rein (zoom)
+      if (!xfCanvas) { xfCanvas = document.createElement('canvas'); xfCanvas.width = W; xfCanvas.height = H; }
+      if (!xfCanvas2) { xfCanvas2 = document.createElement('canvas'); xfCanvas2.width = W; xfCanvas2.height = H; }
+      const a = xfCanvas2.getContext('2d'), b = xfCanvas.getContext('2d'); a.imageSmoothingQuality = b.imageSmoothingQuality = 'high';
+      a.setTransform(1, 0, 0, 1, 0, 0); b.setTransform(1, 0, 0, 1, 0, 0);
+      drawScene(a, VIDEO.scenes[idx - 1], t); drawScene(b, sc, t);
+      const p = eInOut(lt / TD), d = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1] }[sc.trans];
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#020617'; ctx.fillRect(0, 0, W, H);
+      if (d) { // neue Szene kommt aus Richtung d
+        ctx.drawImage(xfCanvas2, -d[0] * W * p, -d[1] * H * p);
+        ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 60; ctx.drawImage(xfCanvas, d[0] * W * (1 - p), d[1] * H * (1 - p)); ctx.restore();
+      } else { // zoom: alte Szene zoomt weg, neue fliegt aus der Tiefe ein
+        ctx.save(); ctx.globalAlpha = 1 - p; ctx.translate(W / 2, H / 2); ctx.scale(1 + 0.5 * p, 1 + 0.5 * p); ctx.drawImage(xfCanvas2, -W / 2, -H / 2); ctx.restore();
+        ctx.save(); ctx.globalAlpha = Math.min(1, p * 1.6); const s = lerp(0.55, 1, eOut(lt / TD)); ctx.translate(W / 2, H / 2); ctx.rotate((1 - p) * (sc.transRot ?? 0.12)); ctx.scale(s, s); ctx.drawImage(xfCanvas, -W / 2, -H / 2); ctx.restore();
+      }
+    } else if (idx > 0 && XF && lt < XF) {
       drawScene(ctx, VIDEO.scenes[idx - 1], t);
       if (!xfCanvas) { xfCanvas = document.createElement('canvas'); xfCanvas.width = W; xfCanvas.height = H; }
       const xc = xfCanvas.getContext('2d'); xc.imageSmoothingQuality = 'high'; drawScene(xc, sc, t);
