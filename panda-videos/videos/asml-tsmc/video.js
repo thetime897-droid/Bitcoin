@@ -11,6 +11,16 @@
   const de = (v, d = 0) => v.toFixed(d).replace('.', ',');
 
   // ---------- Clean-Bausteine ----------
+  // Funken: kleine Leuchtpartikel, die bei einem Ereignis radial ausbrechen
+  function sparks(ctx, x, y, lt, t0, n = 16, col = '#FACC15') {
+    const p = (lt - t0) / 0.9; if (p < 0 || p > 1) return;
+    const r = E.rng(Math.round(x * 7 + y * 3 + t0 * 100));
+    ctx.save(); ctx.shadowColor = col; ctx.shadowBlur = 14; ctx.fillStyle = col;
+    for (let i = 0; i < n; i++) { const a = r() * 6.28, d = eOut(p) * (120 + r() * 220), s = (1 - p) * (5 + r() * 7);
+      ctx.globalAlpha = 1 - p; ctx.beginPath(); ctx.arc(x + Math.cos(a) * d, y + Math.sin(a) * d + p * p * 60, s, 0, 7); ctx.fill(); }
+    ctx.restore();
+  }
+
   // Glas-Karte: halbtransparent, feiner Rand, weicher Schatten
   function glass(ctx, x, y, w, h, o = {}) {
     E.withT(ctx, x, y, o.scale ?? 1, o.rot || 0, () => {
@@ -147,49 +157,100 @@
 
   const HC = { hard: true, punchAmt: 0.06, flashAmt: 0.18 };
   const scenes = [
-    // ===== HOOK 0–14,25 s =====
+    // ===== HOOK 0–14,25 s: 9 Schnitte, mehrere animierte Elemente pro Schnitt, Pings/Plopps auf jeder Bewegung =====
     { start: 0, mood: 'dark', poses: ['poses/zeigen'], punch: false, noBrand: true, ...HC, focus: { x: 540, y: 1000 },
-      sfx: [[0.0, 'impact', 0.45, 0], [0.05, 'ping', 0.45, 0], [0.4, 'pop', 0.4, -0.2], [0.65, 'pop', 0.4, 0.3], [1.5, 'snap', 0.4, 0]],
+      sfx: [[0.0, 'impact', 0.45, 0], [0.05, 'ping', 0.5, 0], [0.12, 'pop', 0.45, -0.1], [0.24, 'pop', 0.4, 0.1], [0.45, 'pop', 0.5, -0.2], [0.7, 'pop', 0.5, 0.35], [1.0, 'ping', 0.4, -0.2], [1.2, 'ping', 0.4, 0.35]],
       draw(ctx, lt, t) {
         E.liveBar(ctx, lt, 'CHIP-WOCHE  •  MI 14.10. ASML  •  DO 15.10. TSMC  •  KI-BOOM: WEITER ODER PAUSE?  •  ');
-        H(ctx, lt, [[0, [{ t: 'DIESE 2 AKTIEN', c: C.white, size: 120 }, { t: 'ENTSCHEIDEN', c: GOLD, size: 130 }], { y: 480, delay: 0.05 }],
-          [1.5, [{ t: 'LÄUFT DER', c: C.white, size: 120 }, { t: 'KI-BOOM WEITER?', c: C.white, size: 105, ribbon: '#7C3AED' }], { y: 480 }]]);
-        glass(ctx, 560, 960, 320, 240, { scale: pop(lt, 0.35), accent: ASML, body: () => bigNum(ctx, 'ASML', 0, 10, 80, C.white) });
-        glass(ctx, 880, 960, 320, 240, { scale: pop(lt, 0.6), accent: TSMC, body: () => bigNum(ctx, 'TSMC', 0, 10, 80, C.white) });
+        E.headline(ctx, [{ t: 'DIESE 2 AKTIEN', c: C.white, size: 120 }, { t: 'ENTSCHEIDEN', c: GOLD, size: 130 }], lt, { y: 480, delay: 0.05 });
+        sparks(ctx, 720, 1000, lt, 0.45, 18, GOLD); sparks(ctx, 880, 1000, lt, 0.7, 14, '#60A5FA');
+        glass(ctx, 560, 980 - 30 * eOut(prog(lt, 0.45, 0.6)), 320, 240, { scale: pop(lt, 0.45), accent: ASML, body: () => { bigNum(ctx, 'ASML', 0, -10, 80, C.white); tag(ctx, 'MI', 0, 70, ASML, pop(lt, 1.0)); } });
+        glass(ctx, 880, 980 - 30 * eOut(prog(lt, 0.7, 0.6)), 320, 240, { scale: pop(lt, 0.7), accent: TSMC, body: () => { bigNum(ctx, 'TSMC', 0, -10, 80, C.white); tag(ctx, 'DO', 0, 70, TSMC, pop(lt, 1.2)); } });
         panda(ctx, 'poses/zeigen', lt, t, { x: 170, h: 460 });
       } },
-    { start: 2.6, mood: 'dark', poses: ['emotions/cool'], ...HC, focus: { x: 640, y: 1000 },
-      sfx: [[-0.06, 'whoosh', 0.4, 0.3], [0.2, 'signal', 0.35, 0.2], [1.3, 'riser', 0.3, 0]],
+    { start: 1.5, mood: 'dark', poses: ['emotions/begeistert'], ...HC, focus: { x: 640, y: 1000 },
+      sfx: [[-0.06, 'whoosh', 0.4, 0.3], [0.05, 'pop', 0.45, 0], [0.17, 'pop', 0.45, 0], ...ticks(0.25, 0.95, 7, 0.4, 0.2), [1.0, 'ping', 0.5, 0.3]],
       draw(ctx, lt, t) {
-        H(ctx, lt, [[0, [{ t: 'KI-BOOM', c: C.white, size: 140, ribbon: '#7C3AED' }, { t: 'BEI CHIPS', c: CHIP, size: 125 }]],
-          [1.4, [{ t: 'EINE ZAHL', c: C.white, size: 130 }, { t: 'IST SCHON BEKANNT', c: GOLD, size: 95 }]]]);
-        chip(ctx, 700, 960, 1.15 * pop(lt, 0.05, 0.5), CHIP, 'KI', t);
-        panda(ctx, 'emotions/cool', lt, t, { x: 170, h: 460 });
+        E.headline(ctx, [{ t: 'LÄUFT DER', c: C.white, size: 120 }, { t: 'KI-BOOM WEITER?', c: C.white, size: 105, ribbon: '#7C3AED' }], lt, { y: 400 });
+        glass(ctx, 680, 980, 600, 440, { scale: pop(lt, 0.0, 0.4), title: 'KI-CHIPS · NACHFRAGE', body: (w, h) => {
+          const e = E.lineChart(ctx, -240, -110, 480, 230, [[0, 0.95], [0.2, 0.8], [0.4, 0.78], [0.6, 0.5], [0.8, 0.35], [1, 0.05]], eOut(prog(lt, 0.2, 0.8)), '#22C55E', { lw: 12, area: true });
+          if (lt > 1.0) { tag(ctx, '?', e[0] - 10, e[1] - 60, '#7C3AED', pop(lt, 1.0, 0.35)); } } });
+        sparks(ctx, 900, 820, lt, 1.0, 14, '#A78BFA');
+        panda(ctx, 'emotions/begeistert', lt, t, { x: 170, h: 460, enter: false, swapAt: 0 });
       } },
-    { start: 6.0, mood: 'blue', poses: ['poses/tipp_geben'], ...HC, focus: { x: 640, y: 1000 },
-      sfx: [[-0.06, 'whoosh', 0.4, -0.3], [0.1, 'snap', 0.4, 0], [1.25, 'roll', 0.35, 0], [1.3, 'ding', 0.45, 0]],
+    { start: 2.6, mood: 'dark', poses: ['emotions/cool'], ...HC, focus: { x: 640, y: 1000 },
+      sfx: [[-0.06, 'whoosh', 0.4, -0.3], [0.05, 'impact', 0.3, 0], [0.15, 'signal', 0.35, 0.2], [0.5, 'pop', 0.35, -0.3], [0.65, 'pop', 0.35, 0.3], [0.8, 'pop', 0.35, 0], [1.0, 'ping', 0.45, 0.2]],
       draw(ctx, lt, t) {
-        H(ctx, lt, [[0, [{ t: 'WELCHE?', c: GOLD, size: 150 }]], [1.25, [{ t: 'ERFÄHRST DU', c: C.white, size: 120 }, { t: 'GLEICH!', c: C.white, size: 140, ribbon: '#16A34A' }]]]);
-        glass(ctx, 700, 960, 480, 480, { scale: pop(lt, 0.05, 0.5), body: () => { bigNum(ctx, '?', 0, 20, 300, GOLD); } });
-        panda(ctx, 'poses/tipp_geben', lt, t, { x: 170, h: 470 });
+        E.headline(ctx, [{ t: 'KI-BOOM', c: C.white, size: 140, ribbon: '#7C3AED' }, { t: 'BEI CHIPS', c: CHIP, size: 125 }], lt);
+        chip(ctx, 700, 960, 1.15 * pop(lt, 0.0, 0.45), CHIP, 'KI', t);
+        [[-1, -1, 0.5], [1, -1, 0.65], [1, 1, 0.8]].forEach(([dx, dy, at]) => { const p = eOut(prog(lt, at, 0.5)); if (p <= 0) return;
+          const x = 700 + dx * 330 * p, y = 960 + dy * 300 * p; ctx.strokeStyle = CHIP; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(700 + dx * 150, 960 + dy * 150); ctx.lineTo(x, y); ctx.stroke();
+          ctx.save(); ctx.shadowColor = CHIP; ctx.shadowBlur = 20; ctx.beginPath(); ctx.arc(x, y, 16 * pop(lt, at + 0.3, 0.3), 0, 7); ctx.fillStyle = CHIP; ctx.fill(); ctx.restore(); });
+        panda(ctx, 'emotions/cool', lt, t, { x: 170, h: 460, enter: false, swapAt: 0 });
+      } },
+    { start: 4.0, mood: 'blue', poses: ['poses/tipp_geben'], ...HC, focus: { x: 640, y: 1000 },
+      sfx: [[-0.06, 'whoosh', 0.4, 0.3], [0.05, 'pop', 0.45, 0], [0.4, 'pop', 0.45, 0.2], [0.75, 'snap', 0.4, 0.2], [1.3, 'ping', 0.5, 0.2], [1.5, 'pop', 0.4, 0.3]],
+      draw(ctx, lt, t) {
+        E.headline(ctx, [{ t: 'EINE ZAHL', c: C.white, size: 130 }, { t: 'IST SCHON BEKANNT', c: GOLD, size: 95 }], lt);
+        glass(ctx, 690, 980, 520, 400, { scale: pop(lt, 0.05, 0.45), accent: GOLD, title: 'KENNZAHL', body: () => {
+          ctx.save(); if (lt < 1.3) ctx.filter = 'blur(10px)'; bigNum(ctx, '46,7 MRD.', 0, 0, 90, C.white); ctx.restore();
+          if (lt < 1.3) E.withT(ctx, 0, 0, pop(lt, 0.4, 0.35), Math.sin(lt * 14) * 0.08 * (lt > 0.75 ? 1 : 0), () => { E.rr(ctx, -46, -30, 92, 76, 14); ctx.fillStyle = GOLD; ctx.fill(); ctx.beginPath(); ctx.arc(0, -30, 30, Math.PI, 0); ctx.lineWidth = 12; ctx.strokeStyle = GOLD; ctx.stroke(); ctx.beginPath(); ctx.arc(0, 6, 9, 0, 7); ctx.fillStyle = '#0F172A'; ctx.fill(); });
+          else tag(ctx, 'TSMC · Q3', 0, 110, TSMC, pop(lt, 1.5)); } });
+        sparks(ctx, 690, 980, lt, 1.3, 22, GOLD);
+        panda(ctx, 'poses/tipp_geben', lt, t, { x: 170, h: 470, enter: false, swapAt: 0 });
+      } },
+    { start: 6.0, mood: 'blue', poses: ['emotions/nachdenklich'], ...HC, focus: { x: 640, y: 1000 },
+      sfx: [[-0.06, 'whoosh', 0.4, -0.3], [0.05, 'pop', 0.5, 0], [0.3, 'pop', 0.35, -0.3], [0.45, 'pop', 0.35, 0.3], [0.6, 'pop', 0.35, 0]],
+      draw(ctx, lt, t) {
+        E.headline(ctx, [{ t: 'UND WELCHE?', c: GOLD, size: 140 }], lt);
+        glass(ctx, 700, 960, 460, 460, { scale: pop(lt, 0.0, 0.4), body: () => { bigNum(ctx, '?', 0, 20, 300 * (1 + 0.04 * Math.sin(lt * 6)), GOLD); } });
+        for (let i = 0; i < 3; i++) { const s = pop(lt, 0.3 + i * 0.15, 0.3); const a = t * 1.6 + i * 2.1; ctx.save(); ctx.shadowColor = GOLD; ctx.shadowBlur = 16; ctx.beginPath(); ctx.arc(700 + Math.cos(a) * 300, 960 + Math.sin(a) * 300, 14 * s, 0, 7); ctx.fillStyle = GOLD; ctx.fill(); ctx.restore(); }
+        panda(ctx, 'emotions/nachdenklich', lt, t, { x: 170, h: 470, enter: false, swapAt: 0 });
+      } },
+    { start: 7.25, mood: 'good', poses: ['poses/tipp_geben'], ...HC, focus: { x: 640, y: 1000 },
+      sfx: [[-0.06, 'whoosh', 0.4, 0.3], [0.05, 'pop', 0.45, 0.2], [0.35, 'snap', 0.4, 0.2], [0.6, 'ding', 0.45, 0.2]],
+      draw(ctx, lt, t) {
+        E.headline(ctx, [{ t: 'ERFÄHRST DU', c: C.white, size: 120 }, { t: 'AM MITTWOCH!', c: C.white, size: 120, ribbon: '#16A34A' }], lt);
+        const flip = eInOut(prog(lt, 0.35, 0.4));
+        glass(ctx, 700, 980, 380, 440, { scale: pop(lt, 0.0, 0.4), accent: '#16A34A', body: () => {
+          label(ctx, 'MITTWOCH', 0, -130, 32); ctx.save(); ctx.scale(1, Math.abs(Math.cos(flip * Math.PI)) || 0.01); bigNum(ctx, flip < 0.5 ? '13' : '14', 0, 10, 170, C.white); ctx.restore(); label(ctx, 'OKTOBER', 0, 140, 30); } });
+        sparks(ctx, 700, 980, lt, 0.6, 16, '#4ADE80');
+        panda(ctx, 'poses/tipp_geben', lt, t, { x: 170, h: 470, enter: false, swapAt: 0 });
       } },
     { start: 8.4, mood: 'blue', poses: ['poses/praesentieren'], ...HC, focus: { x: 640, y: 1000 },
-      sfx: [[-0.06, 'whoosh', 0.4, 0.2], [0.1, 'pop', 0.4, 0.2], [2.2, 'snap', 0.35, 0.2], [2.6, 'signal', 0.3, 0.3]],
+      sfx: [[-0.06, 'whoosh', 0.4, -0.3], [0.05, 'pop', 0.45, 0], [0.3, 'pop', 0.4, 0.2], ...ticks(0.5, 1.6, 8, 0.4, 0.2), [1.7, 'ping', 0.5, 0.2]],
       draw(ctx, lt, t) {
-        H(ctx, lt, [[0, [{ t: 'MITTWOCH:', c: GOLD, size: 130 }, { t: 'ASML-ZAHLEN', c: C.white, size: 120, ribbon: ASML }]],
-          [2.2, [{ t: 'BAUT DIE', c: C.white, size: 125 }, { t: 'CHIP-MASCHINEN', c: C.white, size: 110, ribbon: ASML }]]]);
-        if (lt < 2.2) glass(ctx, 700, 960, 500, 440, { scale: pop(lt, 0.05, 0.5), accent: ASML, title: 'VOR BÖRSENSTART', body: () => { bigNum(ctx, 'MI 14.10.', 0, 10, 100, C.white); label(ctx, 'ASML · QUARTALSZAHLEN', 0, 110, 26); } });
-        else E.withT(ctx, 0, 0, 1, 0, () => { ctx.save(); ctx.globalAlpha = prog(lt, 2.2, 0.4); machine(ctx, 700, 1210, 560, t); ctx.restore(); });
-        panda(ctx, 'poses/praesentieren', lt, t, { x: 170, h: 460 });
+        E.headline(ctx, [{ t: 'VOR BÖRSENSTART:', c: C.white, size: 110 }, { t: 'ASML-ZAHLEN', c: C.white, size: 120, ribbon: ASML }], lt);
+        glass(ctx, 700, 980, 520, 460, { scale: pop(lt, 0.0, 0.4), accent: ASML, title: 'MI 14.10. · VORBÖRSLICH', body: () => {
+          const hh = lerp(5, 7, eOut(prog(lt, 0.5, 1.2))), mm = Math.round(lerp(0, 0, 1));
+          ctx.beginPath(); ctx.arc(0, 10, 130, 0, 7); ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.stroke();
+          for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; ctx.beginPath(); ctx.moveTo(Math.cos(a) * 110, 10 + Math.sin(a) * 110); ctx.lineTo(Math.cos(a) * 124, 10 + Math.sin(a) * 124); ctx.stroke(); }
+          const ah = -Math.PI / 2 + (hh / 12) * Math.PI * 2, am = -Math.PI / 2 + ((hh % 1) * Math.PI * 2) + lt * 6;
+          ctx.lineCap = 'round'; ctx.strokeStyle = C.white; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(0, 10); ctx.lineTo(Math.cos(ah) * 70, 10 + Math.sin(ah) * 70); ctx.stroke();
+          ctx.strokeStyle = ASML; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(0, 10); ctx.lineTo(Math.cos(am) * 100, 10 + Math.sin(am) * 100); ctx.stroke();
+          if (lt > 1.7) tag(ctx, 'BEVOR DIE BÖRSE ÖFFNET', 0, 190, ASML, pop(lt, 1.7)); } });
+        panda(ctx, 'poses/praesentieren', lt, t, { x: 170, h: 460, enter: false, swapAt: 0 });
+      } },
+    { start: 10.6, mood: 'blue', poses: ['poses/zeigen'], ...HC, focus: { x: 640, y: 1000 },
+      sfx: [[-0.06, 'whoosh', 0.4, 0.3], [0.1, 'pop', 0.45, 0.3], [0.35, 'pop', 0.45, 0.2], [0.6, 'pop', 0.45, 0.4], [0.85, 'snap', 0.4, 0.3], [1.1, 'ping', 0.45, 0.3]],
+      draw(ctx, lt, t) {
+        E.headline(ctx, [{ t: 'ASML BAUT DIE', c: C.white, size: 115 }, { t: 'CHIP-MASCHINEN', c: C.white, size: 110, ribbon: ASML }], lt);
+        const k = eOut(prog(lt, 0.0, 0.7));
+        ctx.save(); ctx.translate(0, (1 - k) * 200); ctx.globalAlpha = k; machine(ctx, 700, 1210, 560, t); ctx.restore();
+        [['LASER', 0.1, 470, 700], ['OPTIK', 0.35, 700, 640], ['WAFER', 0.6, 930, 700]].forEach(([n, at, x, y]) => tag(ctx, n, x, y, '#334155', pop(lt, at, 0.35)));
+        sparks(ctx, 700, 980, lt, 1.1, 16, '#A78BFA');
+        panda(ctx, 'poses/zeigen', lt, t, { x: 160, h: 440, enter: false, swapAt: 0 });
       } },
     { start: 12.1, mood: 'dark', poses: ['emotions/cool'], ...HC, focus: { x: 640, y: 1000 },
-      sfx: [[-0.06, 'whoosh', 0.35, 0.3], [0.8, 'impact', 0.35, 0], [1.6, 'ding', 0.35, 0.2]],
+      sfx: [[-0.06, 'whoosh', 0.35, 0.3], [0.4, 'signal', 0.35, 0.2], [0.8, 'impact', 0.35, 0], [0.85, 'ping', 0.5, 0.3], [1.3, 'pop', 0.4, 0.3], [1.6, 'ding', 0.35, 0.2]],
       draw(ctx, lt, t) {
-        H(ctx, lt, [[0, [{ t: 'OHNE ASML', c: C.white, size: 130 }, { t: 'KEIN MODERNER CHIP', c: C.white, size: 92, ribbon: ASML }]]]);
+        E.headline(ctx, [{ t: 'OHNE ASML', c: C.white, size: 130 }, { t: 'KEIN MODERNER CHIP', c: C.white, size: 92, ribbon: ASML }], lt);
         machine(ctx, 560, 1180, 420, t);
-        const p = eOut(prog(lt, 0.4, 0.8)); ctx.strokeStyle = CHIP; ctx.lineWidth = 6; ctx.setLineDash([14, 12]); ctx.beginPath(); ctx.moveTo(780, 1020); ctx.lineTo(780 + 80 * p, 960); ctx.stroke(); ctx.setLineDash([]);
-        chip(ctx, 900, 900, 0.55 * pop(lt, 0.8, 0.5), CHIP, '', t);
-        panda(ctx, 'emotions/cool', lt, t, { x: 160, h: 440 });
+        const p = eOut(prog(lt, 0.3, 0.6)); ctx.save(); ctx.shadowColor = '#A78BFA'; ctx.shadowBlur = 20; ctx.strokeStyle = '#A78BFA'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(760, 1040); ctx.lineTo(760 + 140 * p, 1040 - 140 * p); ctx.stroke(); ctx.restore();
+        chip(ctx, 900, 880, 0.55 * pop(lt, 0.8, 0.45), CHIP, '', t);
+        if (lt > 1.3) tag(ctx, 'MONOPOL', 900, 1080, '#7C3AED', pop(lt, 1.3));
+        sparks(ctx, 900, 880, lt, 0.8, 20, CHIP);
+        panda(ctx, 'emotions/cool', lt, t, { x: 160, h: 440, enter: false, swapAt: 0 });
       } },
 
     // ===== Ruhiger Teil =====

@@ -63,4 +63,7 @@ Nicht ohne ausdrücklichen Wunsch ändern.
   Neue Typen: `snap`, `ding`, `impact`, `roll` (Trommelwirbel, endet auf Cue), `door`. Riser = rückwärts gespieltes echtes Becken.
 - **Hook (erste ~10–14 s):** schnelle Jump-Cuts (`hard: true`, `baseZoom` 1.1, `punchAmt` 0.1), Szene alle ~1–1,5 s, jeder Schnitt mit
   Whoosh/Snap/Impact. Danach wieder ruhiges Tempo mit weichen Überblendungen und leisem Whoosh pro Wechsel.
+- **Hook-Dichte (Nutzer-Feedback asml v2):** erste ~15 s ≈ 9 Schnitte, pro Schnitt 2–4 gestaffelte Animationen (Pop-ins,
+  Funken `sparks`, Zähler, Leuchtpunkte) und auf jede Bewegung ein `pop`/`ping` (5 bzw. 3 Varianten). Panda im Hook nur
+  Posenwechsel (`enter: false`), kein Reinfliegen bei jedem Schnitt.
 - MASTER (SFX) = 0.21; Musik separat über `music.abs`.

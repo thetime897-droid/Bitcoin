@@ -74,10 +74,10 @@ def reverse_riser(name, dur, extra=None):
 def build():
     for f in glob.glob(os.path.join(LIB, "*.wav")): os.remove(f)
     V = {}
-    V["pop"] = [room(trim(gate_start(load("elec_pop")), 0, 0.12)), room(trim(gate_start(load("elec_plip")), 0, 0.2)), room(mix((trim(gate_start(load("perc_snap2")), 0, 0.17), 0, 0.7), (trim(gate_start(load("elec_pop")), 0, 0.1), 0, 0.6)))]
+    V["pop"] = [room(trim(gate_start(load("elec_pop")), 0, 0.12)), room(trim(gate_start(load("elec_plip")), 0, 0.2)), room(mix((trim(gate_start(load("perc_snap2")), 0, 0.17), 0, 0.7), (trim(gate_start(load("elec_pop")), 0, 0.1), 0, 0.6))), room(trim(gate_start(load("elec_blip")), 0, 0.16)), room(trim(gate_start(load("elec_blup")), 0, 0.3, fade_out=0.1))]
     V["snap"] = [room(trim(gate_start(load("perc_snap")), 0, 0.3), 0.4, 0.15), room(trim(gate_start(load("perc_snap2")), 0, 0.17), 0.4, 0.15)]
     V["ping"] = [room(mix((trim(gate_start(load("elec_ping")), 0, 0.21), 0, 1.0), (trim(gate_start(load("elec_triangle")), 0, 0.22), 0.0, 0.5)), 0.8, 0.2),
-                 room(trim(gate_start(load("elec_chime")), 0, 1.2, fade_out=0.5), 0.8, 0.12)]
+                 room(trim(gate_start(load("elec_chime")), 0, 1.2, fade_out=0.5), 0.8, 0.12), room(pitch(trim(gate_start(load("elec_triangle")), 0, 0.22), 1.25), 0.9, 0.25)]
     V["ding"] = [trim(gate_start(load("perc_bell")), 0, 2.2, fade_out=1.2), trim(gate_start(load("perc_bell2")), 0, 2.0, fade_out=1.0)]
     V["cash"] = [trim(gate_start(load("perc_till")), 0, 2.0, fade_out=0.6)]
     V["whoosh"] = [trim(gate_start(load("perc_swoosh")), 0, 0.62), trim(gate_start(load("perc_swash")), 0, 0.32), trim(load("ambi_swoosh"), 0.2, 1.1, fade_in=0.05, fade_out=0.3)]
