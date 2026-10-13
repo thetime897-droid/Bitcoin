@@ -2,6 +2,7 @@
 // Ein Video (videos/<name>/video.js) beschreibt Szenen + Untertitel; render.mjs ruft E.renderFrame(t) pro Frame auf.
 (() => {
   const W = 1080, H = 1920;
+  let CLEAN = false; // VIDEO.style === 'clean': moderner Motion-Design-Look
   const C = {
     ink: '#16120F', cream: '#FFF4DE', white: '#FFFFFF', green: '#2FCB5B', greenD: '#1A9A40',
     red: '#F0362B', redD: '#A91B14', yellow: '#FFD60A', orange: '#FF8A1F', blue: '#2D7FF9',
@@ -18,7 +19,8 @@
   const eBack = (t) => { t = clamp(t); const c1 = 1.4, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
   const eElastic = (t) => { t = clamp(t); if (t === 0 || t === 1) return t; return Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * (2 * Math.PI / 3)) + 1; };
   // Skalierung fuer "Pop-in" (0 vor Start, Ueberschwinger, dann 1)
-  const pop = (t, s, d = 0.45) => (t < s ? 0 : eBack(prog(t, s, d)));
+  const eSoft = (t) => { t = clamp(t); const c1 = 0.7, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
+  const pop = (t, s, d = 0.45) => (t < s ? 0 : (CLEAN ? eSoft(prog(t, s, d * 1.15)) : eBack(prog(t, s, d))));
   const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let x = Math.imul(seed ^ (seed >>> 15), 1 | seed); x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
 
   // ---------- Grundformen ----------
@@ -29,6 +31,11 @@
   }
   // Comic-Stil: Fuellung + dicke dunkle Kontur (Pfad muss vorher gebaut sein)
   function ink(ctx, fill, lw = 8, stroke = C.ink) {
+    if (CLEAN) {
+      if (fill) { ctx.save(); if (lw >= 6) { ctx.shadowColor = 'rgba(2,6,23,0.35)'; ctx.shadowBlur = 28; ctx.shadowOffsetY = 12; } ctx.fillStyle = fill; ctx.fill(); ctx.restore(); }
+      if (lw) { ctx.lineWidth = Math.max(2, lw * 0.4); ctx.strokeStyle = stroke === C.ink ? 'rgba(15,23,42,0.55)' : stroke; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(); }
+      return;
+    }
     if (fill) { ctx.fillStyle = fill; ctx.fill(); }
     if (lw) { ctx.lineWidth = lw; ctx.strokeStyle = stroke; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(); }
   }
@@ -39,6 +46,11 @@
     ctx.save(); ctx.translate(dx, dy); ctx.globalAlpha *= a; ctx.filter = 'brightness(0)'; fn(); ctx.restore(); fn();
   }
 
+  function shade(hex, k) { // k<0 dunkler, k>0 heller
+    const n = parseInt(hex.slice(1), 16); let r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+    const f = (c) => Math.round(k < 0 ? c * (1 + k) : c + (255 - c) * k);
+    return `rgb(${f(r)},${f(g)},${f(b)})`;
+  }
   // ---------- Text ----------
   const FONT_COMIC = '"Luckiest Guy"';
   const FONT_BOLD = 'Montserrat';
@@ -47,8 +59,15 @@
     if (s <= 0.001) return;
     ctx.save(); ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot); ctx.scale(s, s);
     ctx.globalAlpha *= o.alpha ?? 1;
-    ctx.font = `${o.weight || ''} ${size}px ${o.font || FONT_COMIC}`;
+    ctx.font = CLEAN && !o.font ? `900 ${size * 0.86}px ${FONT_BOLD}` : `${o.weight || ''} ${size}px ${o.font || FONT_COMIC}`;
     ctx.textAlign = o.align || 'center'; ctx.textBaseline = 'middle';
+    if (CLEAN) {
+      const dark = (o.fill || C.white) === C.ink;
+      if (o.shadow !== false && !dark) { ctx.shadowColor = 'rgba(2,6,23,0.55)'; ctx.shadowBlur = size * 0.22; ctx.shadowOffsetY = size * 0.06; }
+      if (o.gradient) { const g = ctx.createLinearGradient(0, -size / 2, 0, size / 2); g.addColorStop(0, o.gradient[0]); g.addColorStop(1, o.gradient[1]); ctx.fillStyle = g; }
+      else ctx.fillStyle = o.fill || C.white;
+      ctx.fillText(txt, 0, size * 0.02); ctx.restore(); return;
+    }
     const lw = o.lw ?? size * 0.17;
     ctx.lineJoin = 'round'; ctx.miterLimit = 2;
     if (o.shadow !== false) {
@@ -68,7 +87,7 @@
     ctx.fillText(txt, x, y); ctx.restore();
   }
   function fitSize(ctx, txt, size, maxW, font = FONT_COMIC) {
-    ctx.save(); ctx.font = `${size}px ${font}`; const w = ctx.measureText(txt).width; ctx.restore();
+    ctx.save(); ctx.font = CLEAN && font === FONT_COMIC ? `900 ${size * 0.86}px ${FONT_BOLD}` : `${size}px ${font}`; const w = ctx.measureText(txt).width; ctx.restore();
     return w > maxW ? size * maxW / w : size;
   }
 
@@ -76,17 +95,25 @@
   function headline(ctx, lines, lt, o = {}) {
     let y = o.y ?? 330;
     lines.forEach((ln, i) => {
-      const size = fitSize(ctx, ln.t, ln.size || 128, 960);
+      const size = fitSize(ctx, ln.t, ln.size || 128, CLEAN && ln.ribbon ? 820 : (CLEAN ? 940 : 960));
       const s = pop(lt, (o.delay || 0) + i * 0.12, 0.45);
-      const rot = (ln.rot ?? -0.035) + Math.sin(lt * 1.4 + i) * 0.006;
-      if (ln.ribbon && s > 0.001) {
+      const rot = CLEAN ? 0 : (ln.rot ?? -0.035) + Math.sin(lt * 1.4 + i) * 0.006;
+      if (CLEAN && ln.ribbon && s > 0.001) {
+        ctx.save(); ctx.font = `900 ${size * 0.86}px ${FONT_BOLD}`; const tw = ctx.measureText(ln.t).width + size * 0.8, th = size * 1.12;
+        ctx.translate(540 + (ln.dx || 0), y); ctx.scale(s, s);
+        const g = ctx.createLinearGradient(0, -th / 2, 0, th / 2); g.addColorStop(0, ln.ribbon); g.addColorStop(1, shade(ln.ribbon, -0.25));
+        ctx.shadowColor = 'rgba(2,6,23,0.45)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 10;
+        rr(ctx, -tw / 2, -th / 2, tw, th, th / 2); ctx.fillStyle = g; ctx.fill(); ctx.shadowColor = 'transparent';
+        rr(ctx, -tw / 2 + 3, -th / 2 + 3, tw - 6, th * 0.45, th / 2); ctx.fillStyle = 'rgba(255,255,255,0.14)'; ctx.fill();
+        ctx.restore();
+      } else if (ln.ribbon && s > 0.001) {
         ctx.save(); ctx.font = `${size}px ${FONT_COMIC}`; const tw = ctx.measureText(ln.t).width + size * 0.7, th = size * 1.18;
         ctx.translate(540 + (ln.dx || 0), y + size * 0.02); ctx.rotate(rot); ctx.scale(s, s);
         rr(ctx, -tw / 2 + 10, -th / 2 + 14, tw, th, th * 0.22); ctx.fillStyle = 'rgba(0,0,0,0.28)'; ctx.fill();
         rr(ctx, -tw / 2, -th / 2, tw, th, th * 0.22); ink(ctx, ln.ribbon, 9); ctx.restore();
       }
       comicText(ctx, ln.t, 540 + (ln.dx || 0), y, { size, fill: ln.c || C.white, scale: s, rot, gradient: ln.g, shadow: !ln.ribbon });
-      y += size * 1.02;
+      y += size * (CLEAN ? 1.12 : 1.02);
     });
   }
 
@@ -107,7 +134,27 @@
     }
     return dotPattern[color];
   }
+  const CLEAN_MOODS = { // [Basis oben, Basis unten, Akzent-Licht 1, Akzent-Licht 2]
+    neutral: ['#141B2D', '#0B1020', 'rgba(250,204,21,0.22)', 'rgba(56,189,248,0.14)'],
+    good: ['#0E2A22', '#06140F', 'rgba(34,197,94,0.32)', 'rgba(250,204,21,0.12)'],
+    bad: ['#2A1014', '#12070A', 'rgba(239,68,68,0.32)', 'rgba(249,115,22,0.14)'],
+    blue: ['#0F1E3A', '#070D1C', 'rgba(59,130,246,0.34)', 'rgba(34,211,238,0.14)'],
+    dark: ['#111827', '#05070D', 'rgba(139,92,246,0.24)', 'rgba(34,211,238,0.12)'],
+  };
+  let gridPat = null;
+  function backgroundClean(ctx, mood, t) {
+    const [a, b, l1, l2] = CLEAN_MOODS[mood] || CLEAN_MOODS.neutral;
+    let g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, a); g.addColorStop(1, b); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    const blob = (x, y, r, col) => { const gg = ctx.createRadialGradient(x, y, 0, x, y, r); gg.addColorStop(0, col); gg.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = gg; ctx.fillRect(0, 0, W, H); };
+    blob(540 + Math.sin(t * 0.25) * 160, 760 + Math.cos(t * 0.2) * 90, 820, l1);
+    blob(880 + Math.cos(t * 0.18) * 120, 1500 + Math.sin(t * 0.22) * 120, 700, l2);
+    blob(160 + Math.sin(t * 0.15) * 80, 300, 600, l2);
+    if (!gridPat) { const c = document.createElement('canvas'); c.width = c.height = 72; const x = c.getContext('2d'); x.strokeStyle = 'rgba(255,255,255,0.045)'; x.lineWidth = 2; x.beginPath(); x.moveTo(0, 0.5); x.lineTo(72, 0.5); x.moveTo(0.5, 0); x.lineTo(0.5, 72); x.stroke(); gridPat = ctx.createPattern(c, 'repeat'); }
+    ctx.save(); ctx.translate(0, (t * 12) % 72); ctx.fillStyle = gridPat; ctx.fillRect(0, -72, W, H + 72); ctx.restore();
+    g = ctx.createRadialGradient(540, 900, 600, 540, 900, 1350); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.55)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  }
   function background(ctx, mood, t, o = {}) {
+    if (CLEAN) return backgroundClean(ctx, mood, t);
     const [bg, ray, dot] = MOODS[mood] || MOODS.neutral;
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
     const cx = o.cx ?? 540, cy = o.cy ?? 860, n = 22, R = 2400;
@@ -147,11 +194,13 @@
     const bob = Math.sin(t * 3.2) * 6, sq = 1 + Math.sin(t * 6.4) * 0.008;
     const w = h * img.width / img.height;
     ctx.save(); ctx.translate(x + dx, y);
+    if (CLEAN) { const gg = ctx.createRadialGradient(0, -h * 0.5, 10, 0, -h * 0.5, h * 0.62); gg.addColorStop(0, 'rgba(255,255,255,0.20)'); gg.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = gg; ctx.fillRect(-h, -h * 1.2, 2 * h, h * 1.3); }
     // Bodenschatten
-    ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(0, -6, w * 0.42, 22, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = CLEAN ? 'rgba(0,0,0,0.45)' : 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(0, -6, w * 0.42, 22, 0, 0, 7); ctx.fill();
     ctx.translate(0, bob * 0.3); ctx.rotate(Math.sin(t * 1.7) * 0.012);
     ctx.scale((o.flip ? -1 : 1) * s / sq, s * sq);
     ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    if (CLEAN) { ctx.shadowColor = 'rgba(255,255,255,0.35)'; ctx.shadowBlur = 18; }
     ctx.drawImage(img, -w / 2, -h + bob, w, h);
     ctx.restore();
   }
@@ -446,7 +495,8 @@
         const active = t >= w.s && t < w.e + 0.02, ws = active ? 1.07 : 1;
         ctx.save(); ctx.translate(x + w.ww / 2, y); ctx.scale(ws, ws); ctx.rotate(active ? -0.03 : 0);
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
-        ctx.lineWidth = 17; ctx.strokeStyle = C.ink; ctx.strokeText(w.w.toUpperCase(), 0, 6); ctx.strokeText(w.w.toUpperCase(), 0, 0);
+        if (CLEAN) { ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 16; ctx.shadowOffsetY = 4; ctx.lineWidth = 11; ctx.strokeStyle = 'rgba(2,6,23,0.9)'; ctx.strokeText(w.w.toUpperCase(), 0, 0); ctx.shadowColor = 'transparent'; }
+        else { ctx.lineWidth = 17; ctx.strokeStyle = C.ink; ctx.strokeText(w.w.toUpperCase(), 0, 6); ctx.strokeText(w.w.toUpperCase(), 0, 0); }
         ctx.fillStyle = active ? C.yellow : C.white; ctx.fillText(w.w.toUpperCase(), 0, 0);
         ctx.restore(); x += w.ww + sp;
       });
@@ -521,7 +571,7 @@
     return cues;
   }
   async function init(video) {
-    VIDEO = video; CAPS = prepCaptions(video.captions);
+    VIDEO = video; CAPS = prepCaptions(video.captions); CLEAN = video.style === 'clean';
     const cv = document.getElementById('c'); cv.width = W; cv.height = H; ctx = cv.getContext('2d'); ctx.imageSmoothingQuality = 'high';
     await Promise.all([document.fonts.load(`100px ${FONT_COMIC}`), document.fonts.load(`900 70px ${FONT_BOLD}`), document.fonts.load(`800 70px ${FONT_BOLD}`)]);
     const poses = new Set(); video.scenes.forEach((s) => (s.poses || []).forEach((p) => poses.add(p)));
@@ -530,7 +580,7 @@
   }
   function frameJpeg(t, q = 0.93) { renderFrame(t); return document.getElementById('c').toDataURL('image/jpeg', q); }
 
-  window.E = { W, H, C, FONT_COMIC, FONT_BOLD, clamp, lerp, prog, eOut, eIn, eInOut, eBack, eElastic, pop, rng, rr, ink, withT, dropShadow, comicText, plainText, fitSize, headline,
+  window.E = { W, H, C, FONT_COMIC, FONT_BOLD, shade, isClean: () => CLEAN, clamp, lerp, prog, eOut, eIn, eInOut, eBack, eElastic, pop, rng, rr, ink, withT, dropShadow, comicText, plainText, fitSize, headline,
     background, drawPanda, burst, explosion, speedLines, moneyBill, moneyRain, arrowDown, arrowUp, iphone, apple, whiteboard, lineChart, pill, stamp,
     newspaper, factory, clipboard, gauge, priceTag, serverRack, chip, ramStick, cart, questionMarks, liveBar, init, renderFrame, frameJpeg };
 })();

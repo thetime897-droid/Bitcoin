@@ -29,6 +29,13 @@ Nicht ohne ausdrücklichen Wunsch ändern.
   im Bildschirm-Raum gezeichnet (Zoom/Jump-Cuts schneiden ihn nie an) und horizontal auf den sichtbaren Bereich begrenzt.
 - TikTok-Safe-Zone: wichtige Inhalte nicht ganz rechts (Buttons) und nicht unter y≈1600.
 
+## Clean-Stil (ab asml-tsmc, Nutzerwunsch „cleaner, professioneller“)
+- `style: 'clean'` im VIDEO-Objekt: dunkle Verlaufs-Hintergründe mit farbigem Licht je Stimmung + feines bewegtes Raster
+  (statt Comic-Strahlen/Raster-Punkte), Montserrat 900 statt Comic-Font, gerade Headlines, Banner als Verlaufs-Pillen,
+  feine Konturen + weiche Schatten statt dicker schwarzer Linien, sanfteres Pop-in ohne starkes Überschwingen,
+  Panda mit Lichtkranz. Bausteine im Video: Glas-Karten (`glass`), leuchtende Balken, Pill-Tags, Termin-Karten, Umfrage.
+- Ältere Videos ohne `style` rendern unverändert im Comic-Look.
+
 ## Panda-Qualität
 - `assets_hd/` wird mit `python3 tools/hd_panda.py assets assets_hd 6` erzeugt (Entrauschen → Lanczos → kantenmaskierter
   Shock-Filter → Anti-Aliasing). KI-Upscaler-Modelle sind im Netz nicht ladbar, Vektorisierung (vtracer) sah posterisiert aus.
