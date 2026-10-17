@@ -579,7 +579,7 @@
     } else drawScene(ctx, sc, t);
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1;
     if (VIDEO.brand !== false && !sc.noBrand) brandBug(ctx);
-    captions(ctx, CAPS, t);
+    if (!VIDEO.noCaptions) captions(ctx, CAPS, t);
     if (VIDEO.grain) grain(ctx, t);
     if (!XF && idx > 0 && sc.flash !== false) { const a = (sc.flashAmt ?? 0.22) * (1 - prog(lt, 0, 0.2)); if (a > 0) { ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.fillRect(0, 0, W, H); } }
     if (VIDEO.endFade !== false && t > VIDEO.duration - 0.25) { ctx.fillStyle = `rgba(0,0,0,${prog(t, VIDEO.duration - 0.25, 0.25)})`; ctx.fillRect(0, 0, W, H); }
