@@ -75,3 +75,9 @@ Nicht ohne ausdrücklichen Wunsch ändern.
   Richtungen abwechseln; Whoosh bei ca. -0.15 s.
 - **Element-Einflug:** lokaler Helfer `fly(ctx, x, y, lt, at, from, () => zeichnen bei 0,0, {dist, rot, dur, scale})` mit Überschwinger,
   Drehung und Speed-Streifen; Sound `flySfx(at, pan)` = Whoosh + Pop beim Landen.
+
+## YouTube-Querformat 1920×1080 (ab tr-zinsen-abmahnung-yt)
+- `format: 'landscape'` im VIDEO-Objekt → Engine rendert 1920×1080. Headline (Faktor 0,8) und LIVE-Balken oben mittig,
+  Untertitel unten bei y≈1010 (Mitte `capX`, rechts vom Panda), Panda unten links groß (`{x:250, y:1055, h:600}`).
+- Bestehende Hochformat-Szenen lassen sich übernehmen: Inhalt per Transform in den Bereich rechts vom Panda setzen
+  (`S = 0.88, TX = 1190 - 740*S, TY = 280 - 640*S`, `focus {x:1190,y:620}`), siehe `videos/tr-zinsen-abmahnung-yt`.

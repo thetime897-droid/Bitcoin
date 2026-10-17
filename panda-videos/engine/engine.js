@@ -1,7 +1,7 @@
 // Panda-Investiert Video-Engine: zeichnet jedes Frame deterministisch auf ein 1080x1920-Canvas.
 // Ein Video (videos/<name>/video.js) beschreibt Szenen + Untertitel; render.mjs ruft E.renderFrame(t) pro Frame auf.
 (() => {
-  const W = 1080, H = 1920;
+  let W = 1080, H = 1920, LAND = false; // LAND: Querformat 1920×1080 (VIDEO.format = 'landscape')
   let CLEAN = false; // VIDEO.style === 'clean': moderner Motion-Design-Look
   const C = {
     ink: '#16120F', cream: '#FFF4DE', white: '#FFFFFF', green: '#2FCB5B', greenD: '#1A9A40',
@@ -93,6 +93,9 @@
 
   // Ueberschrift oben: Zeilen poppen gestaffelt rein, leichtes Wackeln
   function headline(ctx, lines, lt, o = {}) {
+    if (LAND && !o._land) { // Querformat: Hochformat-Headline verkleinert oben mittig, unabhängig von Kamera/Inhalts-Transform
+      const k = 0.8; ctx.save(); ctx.setTransform(k, 0, 0, k, W / 2 - 540 * k, -139); headline(ctx, lines, lt, { ...o, _land: true }); ctx.restore(); return;
+    }
     let y = o.y ?? 330;
     lines.forEach((ln, i) => {
       const size = fitSize(ctx, ln.t, ln.size || 128, CLEAN && ln.ribbon ? 820 : (CLEAN ? 940 : 960));
@@ -146,12 +149,15 @@
     const [a, b, l1, l2] = CLEAN_MOODS[mood] || CLEAN_MOODS.neutral;
     let g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, a); g.addColorStop(1, b); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     const blob = (x, y, r, col) => { const gg = ctx.createRadialGradient(x, y, 0, x, y, r); gg.addColorStop(0, col); gg.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = gg; ctx.fillRect(0, 0, W, H); };
-    blob(540 + Math.sin(t * 0.25) * 160, 760 + Math.cos(t * 0.2) * 90, 820, l1);
-    blob(880 + Math.cos(t * 0.18) * 120, 1500 + Math.sin(t * 0.22) * 120, 700, l2);
-    blob(160 + Math.sin(t * 0.15) * 80, 300, 600, l2);
+    ctx.save(); if (LAND) ctx.scale(W / 1080, H / 1920);
+    const blob2 = (x, y, r, col) => { const gg = ctx.createRadialGradient(x, y, 0, x, y, r); gg.addColorStop(0, col); gg.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = gg; ctx.fillRect(-1080, -1920, 3240, 5760); };
+    blob2(540 + Math.sin(t * 0.25) * 160, 760 + Math.cos(t * 0.2) * 90, 820, l1);
+    blob2(880 + Math.cos(t * 0.18) * 120, 1500 + Math.sin(t * 0.22) * 120, 700, l2);
+    blob2(160 + Math.sin(t * 0.15) * 80, 300, 600, l2);
+    ctx.restore();
     if (!gridPat) { const c = document.createElement('canvas'); c.width = c.height = 72; const x = c.getContext('2d'); x.strokeStyle = 'rgba(255,255,255,0.045)'; x.lineWidth = 2; x.beginPath(); x.moveTo(0, 0.5); x.lineTo(72, 0.5); x.moveTo(0.5, 0); x.lineTo(0.5, 72); x.stroke(); gridPat = ctx.createPattern(c, 'repeat'); }
     ctx.save(); ctx.translate(0, (t * 12) % 72); ctx.fillStyle = gridPat; ctx.fillRect(0, -72, W, H + 72); ctx.restore();
-    g = ctx.createRadialGradient(540, 900, 600, 540, 900, 1350); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.55)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    g = LAND ? ctx.createRadialGradient(W / 2, H / 2, 500, W / 2, H / 2, 1250) : ctx.createRadialGradient(540, 900, 600, 540, 900, 1350); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.55)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   }
   function background(ctx, mood, t, o = {}) {
     if (CLEAN) return backgroundClean(ctx, mood, t);
@@ -449,7 +455,8 @@
     for (let i = 0; i < n; i++) { const ph = lt * 1.3 + i * 1.7;
       comicText(ctx, '?', x + Math.sin(ph) * 30 + (i - 1) * 90, y - ((lt * 60 + i * 70) % 160), { size: 110 - i * 15, fill: color, rot: Math.sin(ph * 1.3) * 0.3, scale: pop(lt, i * 0.12) }); }
   }
-  function liveBar(ctx, lt, ticker) {
+  function liveBar(ctx, lt, ticker, _in) {
+    if (LAND && !_in) { const k = 0.8; ctx.save(); ctx.setTransform(k, 0, 0, k, W / 2 - 540 * k, -100); liveBar(ctx, lt, ticker, true); ctx.restore(); return; }
     const y = lerp(-140, 150, eOut(prog(lt, 0, 0.35)));
     ctx.save();
     rr(ctx, 40, y, 1000, 92, 14); ink(ctx, C.ink, 0);
@@ -466,7 +473,7 @@
   }
   function brandBug(ctx) {
     ctx.save(); ctx.globalAlpha = 0.9;
-    pill(ctx, 'PANDA INVESTIERT', 225, 190, 30, C.ink, C.white);
+    pill(ctx, 'PANDA INVESTIERT', LAND ? 200 : 225, LAND ? 60 : 190, 30, C.ink, C.white);
     ctx.restore();
   }
 
@@ -482,13 +489,13 @@
     let cur = null;
     for (let i = 0; i < caps.length; i++) { const c = caps[i], nx = caps[i + 1]; if (t >= c.s && t < (nx ? Math.min(nx.s, c.e + 0.6) : c.e + 0.6)) cur = c; }
     if (!cur) return;
-    const size = 66, maxW = 880, lh = 90, sp = 34;
+    const size = LAND ? 58 : 66, maxW = LAND ? 1250 : 880, lh = LAND ? 78 : 90, sp = LAND ? 28 : 34;
     ctx.save(); ctx.font = `900 ${size}px ${FONT_BOLD}`;
     const lines = [[]]; let lw = 0;
     cur.words.forEach((w) => { const ww = ctx.measureText(w.w.toUpperCase()).width; if (lw + ww > maxW && lines[lines.length - 1].length) { lines.push([]); lw = 0; } lines[lines.length - 1].push({ ...w, ww }); lw += ww + sp; });
     const s0 = lerp(0.92, 1, eOut(prog(t, cur.s, 0.18)));
-    const baseY = 1470 - (lines.length - 1) * lh / 2;
-    ctx.translate(540, baseY); ctx.scale(s0, s0);
+    const baseY = (LAND ? 1010 : 1470) - (lines.length - 1) * lh / 2;
+    ctx.translate(LAND ? (VIDEO.capX ?? W / 2 + 130) : 540, baseY); ctx.scale(s0, s0);
     lines.forEach((ln, li) => {
       const tw = ln.reduce((a, w) => a + w.ww, 0) + sp * (ln.length - 1); let x = -tw / 2; const y = li * lh;
       ln.forEach((w) => {
@@ -532,11 +539,11 @@
     const idx = VIDEO.scenes.indexOf(sc), next = VIDEO.scenes[idx + 1];
     const lt = t - sc.start, dur = (next ? next.start : VIDEO.duration) - sc.start;
     c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.filter = 'none';
-    const f = sc.focus || { x: 540, y: 880 };
+    const f = sc.focus || { x: W / 2, y: LAND ? H / 2 : 880 };
     let z = (sc.baseZoom || 1) * (1 + (sc.zoom ?? 0.05) * eInOut(lt / dur) + (sc.punch === false ? 0 : (sc.punchAmt ?? 0.06) * (1 - eOut(lt / (sc.hard ? 0.35 : 0.55)))));
     let sx = 0, sy = 0;
     (sc.shake || []).forEach((st) => { if (lt >= st) { const k = Math.max(0, 1 - (lt - st) / 0.4); sx += Math.sin(lt * 70) * 12 * k; sy += Math.cos(lt * 61) * 10 * k; } });
-    c.save(); c.translate(sx * 0.5, sy * 0.5); c.translate(540, 960); c.scale(1.04, 1.04); c.translate(-540, -960);
+    c.save(); c.translate(sx * 0.5, sy * 0.5); c.translate(W / 2, H / 2); c.scale(1.04, 1.04); c.translate(-W / 2, -H / 2);
     background(c, sc.mood, t, sc.bg || {}); if (VIDEO.bokeh) bokeh(c, t, sc.mood); c.restore();
     if (VIDEO.pandaFixed) PANDA_Q = [];
     c.save(); c.translate(f.x + sx, f.y + sy); c.scale(z, z); c.translate(-f.x, -f.y);
@@ -588,6 +595,7 @@
   }
   async function init(video) {
     VIDEO = video; CAPS = prepCaptions(video.captions); CLEAN = video.style === 'clean';
+    if (video.format === 'landscape') { W = 1920; H = 1080; LAND = true; } window.E.W = W; window.E.H = H; window.E.LAND = LAND;
     const cv = document.getElementById('c'); cv.width = W; cv.height = H; ctx = cv.getContext('2d'); ctx.imageSmoothingQuality = 'high';
     await Promise.all([document.fonts.load(`100px ${FONT_COMIC}`), document.fonts.load(`900 70px ${FONT_BOLD}`), document.fonts.load(`800 70px ${FONT_BOLD}`)]);
     const poses = new Set(); video.scenes.forEach((s) => (s.poses || []).forEach((p) => poses.add(p)));
