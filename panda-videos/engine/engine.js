@@ -537,7 +537,8 @@
   }
   function drawScene(c, sc, t) {
     const idx = VIDEO.scenes.indexOf(sc), next = VIDEO.scenes[idx + 1];
-    const lt = t - sc.start, dur = (next ? next.start : VIDEO.duration) - sc.start;
+    const k = sc.ts || 1; // ts: Szenen-Zeitfaktor (>1 = Animation läuft schneller, z. B. nach Neu-Timing aufs Sprechtempo)
+    const lt = (t - sc.start) * k, dur = ((next ? next.start : VIDEO.duration) - sc.start) * k;
     c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.filter = 'none';
     const f = sc.focus || { x: W / 2, y: LAND ? H / 2 : 880 };
     let z = (sc.baseZoom || 1) * (1 + (sc.zoom ?? 0.05) * eInOut(lt / dur) + (sc.punch === false ? 0 : (sc.punchAmt ?? 0.06) * (1 - eOut(lt / (sc.hard ? 0.35 : 0.55)))));
@@ -587,9 +588,9 @@
     const cues = [];
     VIDEO.scenes.forEach((sc, i) => {
       if (i > 0 && sc.whoosh) cues.push({ t: sc.start - 0.08, type: 'whoosh', gain: sc.whoosh === true ? 1 : sc.whoosh });
-      (sc.shake || []).forEach((st) => cues.push({ t: sc.start + st, type: sc.shakeSfx || 'boom' }));
-      (sc.pops || []).forEach((st) => cues.push({ t: sc.start + st, type: 'pop' }));
-      (sc.sfx || []).forEach(([st, type, gain, pan]) => cues.push({ t: sc.start + st, type, gain, pan }));
+      (sc.shake || []).forEach((st) => cues.push({ t: sc.start + st / (sc.ts || 1), type: sc.shakeSfx || 'boom' }));
+      (sc.pops || []).forEach((st) => cues.push({ t: sc.start + st / (sc.ts || 1), type: 'pop' }));
+      (sc.sfx || []).forEach(([st, type, gain, pan]) => cues.push({ t: sc.start + (st < 0 ? st : st / (sc.ts || 1)), type, gain, pan }));
     });
     return cues;
   }

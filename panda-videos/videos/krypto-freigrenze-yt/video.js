@@ -53,7 +53,7 @@
     ctx.restore();
   }
 
-  const captions = [[0.25, 2.17, "Kryptos steuerfrei verkaufen,"], [2.17, 4.61, "auch vor Ablauf der 1-Jahresfrist,"], [4.61, 6.88, "das klingt nach einem Steuertrick,"], [6.88, 8.01, "der zu gut ist,"], [8.01, 9.2, "um wahr zu sein,"], [9.2, 10.66, "ist er aber nicht."], [10.66, 12.64, "Du kannst nämlich Kryptogewinne"], [12.64, 14.55, "komplett steuerfrei behalten,"], [14.55, 16.27, "ohne ein Jahr dafür warten"], [16.27, 17.2, "zu müssen."], [17.2, 19.68, "Es gibt nämlich eine Freigrenze:"], [19.68, 21.56, "Bleibt dein gesamter Gewinn"], [21.56, 23.31, "aus privaten Verkäufen im"], [23.31, 24.98, "Jahr unter 1.000 €,"], [24.98, 26.29, "zahlst du nichts,"], [26.29, 28.33, "null, auch wenn du erst vor"], [28.33, 30.65, "2 Monaten investiert hast."], [30.65, 31.89, "Und jetzt der Teil,"], [31.89, 33.64, "bei dem ich beim ersten Lesen"], [33.64, 35.49, "ehrlich gesagt zweimal hingucken"], [35.49, 37.37, "musste. Das ist nämlich eine"], [37.37, 38.11, "Freigrenze,"], [38.11, 39.27, "kein Freibetrag."], [39.27, 40.7, "Riesiger Unterschied:"], [40.7, 42.81, "Bei 999 € Gewinn nichts zu"], [42.81, 45.37, "zahlen, bei 1.001 € der komplette"], [45.37, 47.36, "Betrag wird steuerpflichtig,"], [47.36, 49.34, "nicht der eine Euro drüber,"], [49.34, 50.42, "sondern alles,"], [50.42, 52.31, "und das wird versteuert mit"], [52.31, 55.25, "deinem persönlichen Einkommenssteuersatz."], [55.25, 56.74, "Kurz zum Mitschreiben:"], [56.74, 58.29, "Nach einem Jahr gehalten,"], [58.29, 59.36, "immer steuerfrei,"], [59.36, 60.43, "egal wie viel;"], [60.43, 61.45, "vorher verkauft,"], [61.45, 62.95, "unter 1.000 € Gewinn,"], [62.95, 64.1, "auch steuerfrei;"], [64.1, 65.75, "vorher verkauft und drüber,"], [65.75, 67.5, "der ganze Betrag ist dran."], [67.5, 68.9, "Heißt für dich:"], [68.9, 70.86, "Verkaufst du ab und zu mal"], [70.86, 72.0, "etwas Kleines,"], [72.0, 74.2, "kannst du das bewusst nutzen;"], [74.2, 75.43, "handelst du öfter,"], [75.43, 77.12, "würde ich mich nicht darauf"], [77.12, 77.85, "verlassen,"], [77.85, 79.63, "lieber sauber dokumentieren,"], [79.63, 81.19, "zumal das Finanzamt durch"], [81.19, 82.72, "die neue EU-Meldepflichten"], [82.72, 84.23, "seit diesem Jahr sowieso"], [84.23, 84.95, "mitkriegt,"], [84.95, 86.8, "dass gehandelt wurde."]];
+  const captions = [[0.2, 1.49, "Kryptos steuerfrei verkaufen,"], [1.49, 3.13, "auch vor Ablauf der 1-Jahresfrist,"], [3.13, 4.66, "das klingt nach einem Steuertrick,"], [4.66, 5.42, "der zu gut ist,"], [5.42, 6.22, "um wahr zu sein,"], [6.22, 7.2, "ist er aber nicht."], [7.2, 8.53, "Du kannst nämlich Kryptogewinne"], [8.53, 9.82, "komplett steuerfrei behalten,"], [9.82, 10.97, "ohne ein Jahr dafür warten"], [10.97, 11.6, "zu müssen."], [11.6, 13.2, "Es gibt nämlich eine Freigrenze:"], [13.2, 14.41, "Bleibt dein gesamter Gewinn"], [14.41, 15.55, "aus privaten Verkäufen im"], [15.55, 16.62, "Jahr unter 1.000 €,"], [16.62, 17.47, "zahlst du nichts,"], [17.47, 18.79, "null, auch wenn du erst vor"], [18.79, 20.29, "2 Monaten investiert hast."], [20.29, 21.24, "Und jetzt der Teil,"], [21.24, 22.58, "bei dem ich beim ersten Lesen"], [22.58, 23.99, "ehrlich gesagt zweimal hingucken"], [23.99, 25.62, "musste. Das ist nämlich eine"], [25.62, 26.31, "Freigrenze,"], [26.31, 27.39, "kein Freibetrag."], [27.39, 28.71, "Riesiger Unterschied:"], [28.71, 30.37, "Bei 999 € Gewinn nichts zu"], [30.37, 32.4, "zahlen, bei 1.001 € der komplette"], [32.4, 33.96, "Betrag wird steuerpflichtig,"], [33.96, 35.53, "nicht der eine Euro drüber,"], [35.53, 36.39, "sondern alles,"], [36.39, 37.88, "und das wird versteuert mit"], [37.88, 40.2, "deinem persönlichen Einkommenssteuersatz."], [40.2, 41.44, "Kurz zum Mitschreiben:"], [41.44, 42.73, "Nach einem Jahr gehalten,"], [42.73, 43.62, "immer steuerfrei,"], [43.62, 44.51, "egal wie viel;"], [44.51, 45.36, "vorher verkauft,"], [45.36, 46.6, "unter 1.000 € Gewinn,"], [46.6, 47.56, "auch steuerfrei;"], [47.56, 48.94, "vorher verkauft und drüber,"], [48.94, 50.4, "der ganze Betrag ist dran."], [50.4, 51.33, "Heißt für dich:"], [51.33, 52.64, "Verkaufst du ab und zu mal"], [52.64, 53.4, "etwas Kleines,"], [53.4, 54.99, "kannst du das bewusst nutzen;"], [54.99, 55.95, "handelst du öfter,"], [55.95, 57.28, "würde ich mich nicht darauf"], [57.28, 57.85, "verlassen,"], [57.85, 59.24, "lieber sauber dokumentieren,"], [59.24, 60.46, "zumal das Finanzamt durch"], [60.46, 61.66, "die neue EU-Meldepflichten"], [61.66, 62.84, "seit diesem Jahr sowieso"], [62.84, 63.4, "mitkriegt,"], [63.4, 64.6, "dass gehandelt wurde."]];
 
   const HC = { hard: true, punchAmt: 0.04, flashAmt: 0.12 };
   const TS = (dir, extra = {}) => ({ trans: dir, transDur: 0.6, punchAmt: 0.03, flashAmt: 0.0, zoom: 0.03, ...extra });
@@ -255,6 +255,45 @@
     sections: [[0, 'pulse'], [4.61, 'tension'], [8.01, 'full'], [17.2, 'pulse'], [24.98, 'full'], [30.65, 'tension'], [40.7, 'full'], [55.25, 'pulse'], [67.5, 'full'], [74.2, 'tension'], [79.63, 'pulse']],
     drops: [43.2],
   };
+
+
+  // ===== Neu-Timing v2 (Nutzer: Untertitel hingen nach) =====
+  // Die Tonspur enthält nach dem Transkript noch Reform-Teil + Outro (ab ~65 s, laut Original-Folien). Der Transkript-Text
+  // läuft daher nur bis ~64,6 s; Anker = Folienwechsel des Originals (12 / 25 / 41 / 65 s) → gleichmäßig ~20 Zeichen/s.
+  // Szenen werden per Zeit-Warp auf die neue Achse gesetzt; ts = Zeitfaktor, damit Animationen/SFX in der Szene mitlaufen.
+  const WARP = [[0, 0], [17.2, 11.6], [35.8, 24.5], [55.25, 40.2], [86.8, 64.6]];
+  const warp = (x) => { for (let i = 1; i < WARP.length; i++) { const [a, A] = WARP[i - 1], [b, B] = WARP[i]; if (x <= b) return A + (x - a) * (B - A) / (b - a); } return WARP[WARP.length - 1][1]; };
+  const OLD_END = 87.17;
+  scenes.forEach((sc, i) => { const os = sc.start, oe = i + 1 < scenes.length ? scenes[i + 1].start : OLD_END; sc._ns = warp(os); sc._ne = i + 1 < scenes.length ? warp(oe) : 64.6; sc.ts = (oe - os) / (sc._ne - sc._ns); });
+  scenes.forEach((sc) => { sc.start = sc._ns; });
+  music.sections = music.sections.map(([x, k]) => [warp(x), k]); music.drops = music.drops.map(warp);
+  music.sections.push([64.6, 'tension'], [79.2, 'full']);
+
+  scenes.push(
+    { // 64,6–79,25: Reform geplant (noch kein Gesetz) – 25 % + Soli statt persönlichem Satz (lt. Original-Folie: Haushaltsentwurf 3. Juli 2026)
+      start: 64.6, mood: 'dark', poses: ['emotions/nachdenklich', 'poses/analysieren'], ...TS('up'), focus: F,
+      sfx: [SW(), [0.4, 'swell', 0.35, 0], [0.5, 'ding', 0.4, 0.2], ...flySfx(1.5, 0.3), [3.0, 'paper', 0.35, 0.3], [5.0, 'pop', 0.4, -0.2], ...ticks(5.3, 6.6, 8, 0.35, -0.2), [7.4, 'pop', 0.4, 0.2], ...ticks(7.7, 8.8, 7, 0.35, 0.2), [8.9, 'impact', 0.35, 0.2], [11.5, 'ping', 0.4, 0.3]],
+      draw(ctx, lt, t) {
+        H(ctx, lt, [[0, [{ t: 'REFORM GEPLANT', c: C.white, size: 125, ribbon: '#F59E0B' }, { t: '(NOCH KEIN GESETZ)', c: C.white, size: 95 }]], [4.8, [{ t: 'PERSÖNLICHER SATZ', c: C.white, size: 105 }, { t: '→ 25 % + SOLI?', c: GOLD, size: 125 }]]]);
+        fly(ctx, 860, 640, lt, 1.5, 'left', () => doc(ctx, 0, 0, 0.8, { title: 'ENTWURF', sign: 0 }), { rot: 0.2 });
+        if (lt > 2.4) tag(ctx, '3. JULI 2026', 860, 880, '#334155', 1.2 * pop(lt, 2.4, 0.4));
+        panel(ctx, 1450, 640, 640, 520, pop(lt, 4.8, 0.5), { title: 'STEUERSATZ: HEUTE VS. GEPLANT', body: () => {} });
+        if (lt > 4.8) { axis(ctx, 1210, 830, 480, 290, { rows: 3, yl: ['0 %', '15 %', '30 %', '45 %'] });
+          bar(ctx, 1340, 830, 150, 290, '#22C55E', eOut(prog(lt, 5.0, 1.6)) * 45 / 45, '14–45 %', 'HEUTE');
+          bar(ctx, 1560, 830, 150, 290, '#F59E0B', eOut(prog(lt, 7.4, 1.4)) * 26.4 / 45, '25 % + SOLI', 'GEPLANT'); }
+        if (lt > 11.5) tag(ctx, 'NOCH NICHT BESCHLOSSEN', 1450, 330, RED, 1.1 * pop(lt, 11.5, 0.4));
+        pandaSeq(ctx, [[0, 'emotions/nachdenklich'], [4.8, 'poses/analysieren']], lt, t);
+      } },
+    { // 79,25–Ende: Outro – nächste Woche Haltefrist im Detail
+      start: 79.25, mood: 'good', poses: ['emotions/freundlich'], ...TS('zoom'), focus: F,
+      sfx: [SW(), [0.3, 'swell', 0.35, 0], [0.4, 'ding', 0.45, 0.2], ...flySfx(1.2, 0.3), [2.4, 'pop', 0.45, 0.3], [3.2, 'ping', 0.4, 0.3]],
+      draw(ctx, lt, t) {
+        H(ctx, lt, [[0, [{ t: 'NÄCHSTE WOCHE:', c: C.white, size: 120 }, { t: 'HALTEFRIST IM DETAIL', c: C.white, size: 100, ribbon: GRN }]]]);
+        fly(ctx, 1000, 620, lt, 1.2, 'up', () => panel(ctx, 0, 0, 640, 380, 1, { accent: GRN, title: 'NÄCHSTES VIDEO', body: () => {} }));
+        if (lt > 1.4) holdLine(ctx, 760, 660, 480, lt, 1.5, lerp(0, 12, eInOut(prog(lt, 1.8, 2.2))), { flag: lt > 4 ? '12 M. → STEUERFREI' : 'HALTEFRIST', flagCol: GRN });
+        P.heart(ctx, 1560, 560, 1.3 * pop(lt, 2.4, 0.4) * (1 + Math.sin(t * 6) * 0.05)); tag(ctx, '+ ABONNIEREN', 1560, 780, '#FF3B5C', 1.4 * pop(lt, 3.2, 0.45));
+        panda(ctx, 'emotions/freundlich', lt, t);
+      } });
 
   window.VIDEO = { format: 'landscape', capX: 1190, name: 'krypto-freigrenze-yt', style: 'clean', fps: 30, duration: 87.17, scenes, captions, xfade: 0.35, grain: 0.03, bokeh: false, endFade: false, pandaFixed: true, music };
 })();
