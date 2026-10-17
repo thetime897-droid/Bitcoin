@@ -20,7 +20,7 @@ SR = 48000
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 GAIN = {"snap": 0.4, "ding": 0.4, "impact": 0.55, "roll": 0.35, "door": 0.4, "riser": 0.45, "sub": 0.7, "rocket": 0.55, "signal": 0.35, "glitch": 0.4, "whoosh": 0.35, "pop": 0.5, "ping": 0.45, "cash": 0.6, "boom": 0.6, "stamp": 0.7, "paper": 0.5, "down": 0.45,
         "tick": 0.3, "swell": 0.5, "horn": 0.55}
-MASTER = 0.25  # Effekte klar unter der Stimme; v2: +20 % lauter (Nutzerwunsch), Musik separat
+MASTER = 0.30  # Effekte unter der Stimme; v3: nochmal +20 % (krypto-freigrenze), Musik separat
 SWELL_LEN = 1.1
 
 

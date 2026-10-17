@@ -80,7 +80,16 @@ def build():
                  room(trim(gate_start(load("elec_chime")), 0, 1.2, fade_out=0.5), 0.8, 0.12), room(pitch(trim(gate_start(load("elec_triangle")), 0, 0.22), 1.25), 0.9, 0.25)]
     V["ding"] = [trim(gate_start(load("perc_bell")), 0, 2.2, fade_out=1.2), trim(gate_start(load("perc_bell2")), 0, 2.0, fade_out=1.0)]
     V["cash"] = [trim(gate_start(load("perc_till")), 0, 2.0, fade_out=0.6)]
-    V["whoosh"] = [trim(gate_start(load("perc_swoosh")), 0, 0.62), trim(gate_start(load("perc_swash")), 0, 0.32), trim(load("ambi_swoosh"), 0.2, 1.1, fade_in=0.05, fade_out=0.3)]
+    sw, sh, amb, dark = gate_start(load("perc_swoosh")), gate_start(load("perc_swash")), load("ambi_swoosh"), load("ambi_dark_woosh")
+    V["whoosh"] = [trim(sw, 0, 0.62), trim(sh, 0, 0.32), trim(amb, 0.2, 1.1, fade_in=0.05, fade_out=0.3),
+                   trim(pitch(sw, 1.18), 0, 0.55), trim(pitch(sw, 0.86), 0, 0.7), room(trim(pitch(sh, 0.8), 0, 0.42), 0.4, 0.12)]
+    # swish: kurz + hell, fuer einfliegende Elemente (ab krypto-freigrenze)
+    V["swish"] = [hp(trim(pitch(sh, 1.35), 0, 0.24), 900), hp(trim(pitch(sw, 1.5), 0, 0.36), 700), hp(trim(pitch(sh, 1.15), 0, 0.28), 800),
+                  mix((hp(trim(pitch(sw, 1.7), 0, 0.3), 1200), 0, 0.9), (trim(gate_start(load("hat_tap")), 0, 0.08), 0.18, 0.25))]
+    # sweep: tief + voll, fuer ganze Szenenwechsel
+    V["sweep"] = [mix((trim(dark, 0.0, 1.2, fade_in=0.03, fade_out=0.4), 0, 0.9), (trim(sw, 0, 0.62), 0.15, 0.8)),
+                  mix((lp(trim(pitch(sw, 0.75), 0, 0.85), 2500), 0, 1.0), (trim(amb, 0.3, 0.8, fade_in=0.05, fade_out=0.3), 0.05, 0.6)),
+                  mix((trim(dark, 0.1, 1.0, fade_in=0.05, fade_out=0.35), 0, 0.8), (trim(pitch(sh, 0.9), 0, 0.4), 0.2, 0.7))]
     V["boom"] = [trim(gate_start(load("perc_impact1")), 0, 1.1, fade_out=0.4), trim(gate_start(load("perc_impact2")), 0, 0.86, fade_out=0.3),
                  mix((trim(gate_start(load("bd_boom")), 0, 1.4, fade_out=0.5), 0, 0.9), (trim(gate_start(load("perc_impact2")), 0, 0.5), 0, 0.5))]
     V["impact"] = [trim(gate_start(load("misc_cineboom")), 0, 3.2, fade_out=1.4)]

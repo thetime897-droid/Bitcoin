@@ -116,7 +116,7 @@
         ctx.beginPath(); ctx.moveTo(px + dx * 140, py + dy * 140); ctx.lineTo(px + dx * (140 + len), py + dy * (140 + len)); ctx.stroke(); } ctx.restore(); }
     E.withT(ctx, x + ox, y + oy, o.scale ?? 1, rot + (o.baseRot || 0), () => fn());
   }
-  const flySfx = (at, pan = 0.2, g = 0.32) => [[at - 0.04, 'whoosh', g, pan], [at + 0.48, 'pop', 0.45, pan]];
+  const flySfx = (at, pan = 0.2, g = 0.4) => [[at - 0.04, 'swish', g, pan], [at + 0.48, 'pop', 0.45, pan]];
 
   function appPhone(ctx, x, y, h, t, o = {}) { // stilisiertes Depot-Handy
     const w = h * 0.5;

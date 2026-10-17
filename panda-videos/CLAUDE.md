@@ -66,7 +66,7 @@ Nicht ohne ausdrücklichen Wunsch ändern.
 - **Hook-Dichte (Nutzer-Feedback asml v2):** erste ~15 s ≈ 9 Schnitte, pro Schnitt 2–4 gestaffelte Animationen (Pop-ins,
   Funken `sparks`, Zähler, Leuchtpunkte) und auf jede Bewegung ein `pop`/`ping` (5 bzw. 3 Varianten). Panda im Hook nur
   Posenwechsel (`enter: false`), kein Reinfliegen bei jedem Schnitt.
-- MASTER (SFX) = 0.25 (ab trade-republic v2: +20 %, Nutzer will Whoosh/Pop/Ping/Cash beim Einfliegen klar hören); Musik separat über `music.abs`.
+- MASTER (SFX) = 0.30 (trade-republic v2: +20 %, krypto-freigrenze: nochmal +20 %; Nutzer will Whoosh/Pop/Ping/Cash klar hören). Neue Typen: `swish` (kurz, Element-Einflug, in `flySfx`), `sweep` (tief, Szenenwechsel), `whoosh` 6 Varianten.
 - Hook nicht zu hektisch: lieber ~7 Schnitte à ~2 s mit Inhaltswechsel innerhalb der Szene als 11 Schnitte (Feedback trade-republic).
 
 ## Einflüge (ab trade-republic-avd, Nutzerwunsch „Bilder/ganze Szenen neu einfliegen lassen“)
