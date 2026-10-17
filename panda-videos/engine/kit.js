@@ -126,7 +126,7 @@
       E.rr(ctx, -w * 0.15, -h / 2 + 16, w * 0.3, 16, 8); ctx.fillStyle = '#1F2937'; ctx.fill();
       E.plainText(ctx, o.title || 'DEPOT', -w / 2 + 30, -h / 2 + 70, h * 0.045, 'rgba(255,255,255,0.7)', { weight: 800, align: 'left' });
       E.plainText(ctx, o.value || '9.015,80 €', -w / 2 + 30, -h / 2 + 125, h * 0.07, C.white, { weight: 900, align: 'left' });
-      E.lineChart(ctx, -w / 2 + 24, -h * 0.18, w - 48, h * 0.28, [[0, 0.7], [0.2, 0.55], [0.35, 0.62], [0.5, 0.4], [0.7, 0.45], [0.85, 0.2], [1, 0.1]], o.chart ?? 1, '#22C55E', { lw: 7, area: true });
+      if ((o.chart ?? 1) > 0.01) E.lineChart(ctx, -w / 2 + 24, -h * 0.18, w - 48, h * 0.28, [[0, 0.7], [0.2, 0.55], [0.35, 0.62], [0.5, 0.4], [0.7, 0.45], [0.85, 0.2], [1, 0.1]], o.chart ?? 1, '#22C55E', { lw: 7, area: true });
       if (o.body) o.body(w, h);
     });
   }
