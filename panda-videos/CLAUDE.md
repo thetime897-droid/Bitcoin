@@ -81,3 +81,10 @@ Nicht ohne ausdrücklichen Wunsch ändern.
   Untertitel unten bei y≈1010 (Mitte `capX`, rechts vom Panda), Panda unten links groß (`{x:250, y:1055, h:600}`).
 - Bestehende Hochformat-Szenen lassen sich übernehmen: Inhalt per Transform in den Bereich rechts vom Panda setzen
   (`S = 0.88, TX = 1190 - 740*S, TY = 280 - 640*S`, `focus {x:1190,y:620}`), siehe `videos/tr-zinsen-abmahnung-yt`.
+
+## Profi-Bühne (ab meta-q3-2026, Nutzerwunsch „Hintergrund professioneller, Grafiken besser zur Geltung“)
+- `bg: 'pro'` im VIDEO-Objekt (nur mit `style: 'clean'`): dunkler, ruhiger Grund, Stimmungsfarbe nur als Rand-Akzent,
+  weiche Lichtkegel von oben, Spotlight hinter der Grafik-Bühne (Hochformat 700/1000, Querformat 1210/640),
+  Perspektiv-Boden mit Horizontlinie, feine Partikel, kräftige Vignette. Ältere Videos bleiben unverändert.
+- SFX dichter setzen: Szenenwechsel = whoosh + sweep (`SW()`), jeder Einflug `flySfx`, Geldbeträge `cash` (Registrierkasse),
+  Zähler `ticks` + `cash`/`ding` am Ziel, Negatives `down`/`impact`, Stempel `stamp`, Konfetti/Party `snap` + `boom` + `pop`s.

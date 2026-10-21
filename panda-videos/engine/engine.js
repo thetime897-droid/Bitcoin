@@ -159,7 +159,43 @@
     ctx.save(); ctx.translate(0, (t * 12) % 72); ctx.fillStyle = gridPat; ctx.fillRect(0, -72, W, H + 72); ctx.restore();
     g = LAND ? ctx.createRadialGradient(W / 2, H / 2, 500, W / 2, H / 2, 1250) : ctx.createRadialGradient(540, 900, 600, 540, 900, 1350); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.55)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   }
+  // Profi-Bühne (VIDEO.bg === 'pro'): ruhiger, dunkler Grund, Spotlight hinter der Grafik-Bühne, weiche Lichtkegel,
+  // Perspektiv-Boden und feine Partikel – Grafiken heben sich klar ab, Stimmungsfarbe nur als Akzent am Rand.
+  let dust = null;
+  function backgroundPro(ctx, mood, t) {
+    const [, , l1, l2] = CLEAN_MOODS[mood] || CLEAN_MOODS.neutral;
+    let g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0A0F1C'); g.addColorStop(0.55, '#070B15'); g.addColorStop(1, '#04060C'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    const blob = (x, y, r, col, a = 1) => { ctx.globalAlpha = a; const gg = ctx.createRadialGradient(x, y, 0, x, y, r); gg.addColorStop(0, col); gg.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = gg; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; };
+    const sx = W / (LAND ? 1920 : 1080), sy = H / (LAND ? 1080 : 1920);
+    const st = LAND ? { x: 1210, y: 640 } : { x: 700, y: 1000 }; // Grafik-Bühne
+    // Stimmungs-Akzente an den Rändern (gedämpft)
+    blob(W * 0.15 + Math.sin(t * 0.2) * 40, H * 0.12, Math.max(W, H) * 0.45, l1, 0.75);
+    blob(W * 0.9 + Math.cos(t * 0.17) * 40, H * 0.88, Math.max(W, H) * 0.42, l2, 0.8);
+    // Lichtkegel von oben
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    [[0.32, 0.18, 0.05], [0.62, -0.12, 0.04], [0.86, -0.3, 0.03]].forEach(([fx, rot, a], i) => {
+      ctx.save(); ctx.translate(W * fx, -40); ctx.rotate(rot + Math.sin(t * 0.3 + i * 2) * 0.04);
+      const len = H * 1.1, wd = 260 * sx; const bg = ctx.createLinearGradient(0, 0, 0, len); bg.addColorStop(0, `rgba(200,220,255,${a})`); bg.addColorStop(1, 'rgba(200,220,255,0)');
+      ctx.fillStyle = bg; ctx.beginPath(); ctx.moveTo(-wd * 0.15, 0); ctx.lineTo(wd * 0.15, 0); ctx.lineTo(wd, len); ctx.lineTo(-wd, len); ctx.closePath(); ctx.fill(); ctx.restore(); });
+    ctx.restore();
+    // Spotlight hinter der Bühne
+    g = ctx.createRadialGradient(st.x * sx, st.y * sy, 0, st.x * sx, st.y * sy, 620 * sx); g.addColorStop(0, 'rgba(148,163,255,0.13)'); g.addColorStop(0.5, 'rgba(99,102,241,0.05)'); g.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // Perspektiv-Boden
+    const hz = H * (LAND ? 0.80 : 0.80), vx = W / 2; ctx.save(); ctx.beginPath(); ctx.rect(0, hz, W, H - hz); ctx.clip();
+    ctx.strokeStyle = 'rgba(148,163,184,0.10)'; ctx.lineWidth = 1.5;
+    for (let i = -14; i <= 14; i++) { ctx.beginPath(); ctx.moveTo(vx + i * 40 * sx, hz); ctx.lineTo(vx + i * 260 * sx, H); ctx.stroke(); }
+    for (let k = 0; k < 9; k++) { const p = ((k + (t * 0.35) % 1) / 9); const y = hz + (H - hz) * p * p; ctx.globalAlpha = p; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); } ctx.globalAlpha = 1;
+    g = ctx.createLinearGradient(0, hz, 0, hz + 120 * sy); g.addColorStop(0, 'rgba(7,11,21,1)'); g.addColorStop(1, 'rgba(7,11,21,0)'); ctx.fillStyle = g; ctx.fillRect(0, hz, W, 120 * sy); ctx.restore();
+    // Horizontlinie mit Glanz
+    g = ctx.createLinearGradient(0, 0, W, 0); g.addColorStop(0, 'rgba(148,163,184,0)'); g.addColorStop(0.5, 'rgba(148,163,184,0.25)'); g.addColorStop(1, 'rgba(148,163,184,0)'); ctx.fillStyle = g; ctx.fillRect(0, hz, W, 2);
+    // Partikel
+    if (!dust) { dust = []; let s = 7; const r = () => (s = (s * 9301 + 49297) % 233280) / 233280; for (let i = 0; i < 46; i++) dust.push([r(), r(), 0.6 + r() * 1.8, 0.2 + r() * 0.6, r() * 6]); }
+    ctx.fillStyle = '#C7D2FE'; dust.forEach(([x, y, rr, sp, ph]) => { const yy = ((y - t * 0.012 * sp) % 1 + 1) % 1; ctx.globalAlpha = 0.10 + 0.12 * Math.sin(t * sp + ph) ** 2; ctx.beginPath(); ctx.arc(x * W, yy * H, rr * sx * 1.6, 0, 7); ctx.fill(); }); ctx.globalAlpha = 1;
+    // Vignette
+    g = ctx.createRadialGradient(W / 2, H * 0.5, Math.min(W, H) * 0.35, W / 2, H * 0.5, Math.max(W, H) * 0.75); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.7)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  }
   function background(ctx, mood, t, o = {}) {
+    if (CLEAN && VIDEO.bg === 'pro') return backgroundPro(ctx, mood, t);
     if (CLEAN) return backgroundClean(ctx, mood, t);
     const [bg, ray, dot] = MOODS[mood] || MOODS.neutral;
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
