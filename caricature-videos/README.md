@@ -23,6 +23,7 @@ MP4 9:16 (1080×1920) und/oder 16:9 (1920×1080)  +  .srt
 | Datei | Inhalt |
 |---|---|
 | `demo/demo_short.mp4` | 9:16-Short, ca. 38 s: Inflation, FOMO, Crash, Sparplan, Zinseszins, Bank |
+| `demo/nvidia_original_audio_short.mp4` | 9:16-Short, 16 s: **Originalton + Original-Untertitel** aus dem Clip, darüber CEO-Karikatur, Musik und SFX |
 | `demo/nvidia_short.mp4` | 9:16-Short, ca. 28 s: Die „Aktien für eine S-Klasse“-Story, mit CEO-Karikatur und freier Neural-Stimme |
 | `demo/boerse_long.mp4` | 16:9-Longform, ca. 55 s: Bulle vs. Bär, Hype, Crash, Schulden, Steuern, Rakete, Geldregen |
 
@@ -43,6 +44,17 @@ python -m toonfin make --script examples/nvidia_auto.txt --voice de-thorsten-low
 ```
 
 `--hero ceo` macht die Hauptfigur zur Chef-Karikatur (Lederjacke, Brille, graue Haare).
+
+### Standard-Workflow: Originalton und Originaluntertitel
+
+Bei `--media` bleibt der Ton des Videos immer erhalten, und die Untertitel kommen aus dem Video selbst:
+entweder aus einer mitgelieferten `.srt` (eine Zeile pro Wort ergibt die genauesten Wort-Highlights,
+siehe `examples/nvidia_original_words.srt`) oder automatisch per faster-whisper. Darunter liegen nur
+eigene Musik und eigene Soundeffekte (Ducking unter der Stimme).
+
+```bash
+python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --out out/clip
+```
 
 ## Benutzung
 
