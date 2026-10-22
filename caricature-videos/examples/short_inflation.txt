@@ -1,0 +1,15 @@
+# Demo-Short (~40 s). Eine Zeile = ein Gedanke.
+# Optional: [szene] am Zeilenanfang erzwingt eine Szene
+# (hook, explain, think, inflation, crash, moon, bullbear, save, compound,
+#  debt, fomo, bank, tax, moneyrain, outro). Ohne Tag wählt der Planer selbst.
+Dein Geld auf dem Konto wird jedes Jahr weniger wert!
+Schuld daran ist die Inflation.
+Bei 7% Inflation kostet dein Brötchen bald fast das Doppelte.
+Also wollen viele schnell reich werden und springen auf jeden Hype.
+Und dann kommt der Crash.
+Was ist die bessere Idee?
+Jeden Monat 100 € in einen Sparplan.
+Dank Zinseszins wächst dein Geld wie ein Schneeball.
+Nach 30 Jahren können daraus über 100.000 € werden.
+Und die Bank? Die kassiert trotzdem fleißig Gebühren.
+Folge für mehr Finanzwissen!
