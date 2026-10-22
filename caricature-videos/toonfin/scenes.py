@@ -396,9 +396,9 @@ def bullbear(ink, s):
         props.burst(ink, xc, s.G - 470, 120, "VS", k, 6, GOLD, RED, s.seed + 3)
     if t > s.dur * 0.7 and s.sentiment:
         k = pop(t, s.dur * 0.7, 0.35)
-        ink.text(xc + d * 260 * sc, s.G - 450, "BULLEN!" if d > 0 and s.lang == "de" else
+        ink.text(xc + d * (120 if s.short else 260) * sc, s.G - 450, "BULLEN!" if d > 0 and s.lang == "de" else
                  ("BULLS!" if d > 0 else ("BÄREN!" if s.lang == "de" else "BEARS!")),
-                 90 * k, "caption", fill=GREEN if d > 0 else RED, rot=-d * 6, shadow=0.06)
+                 (70 if s.short else 90) * k, "caption", fill=GREEN if d > 0 else RED, rot=-d * 6, shadow=0.06)
 
 
 def _save_coins(s):
@@ -467,7 +467,7 @@ def debt(ink, s):
     hx = s.W2 * 0.18
     o = hero(ink, s, hx, "walk", "sad", talk=True)
     bxx = hx - 300
-    props.ball_chain(ink, hx - 30, s.G - 20, bxx, s.G - 70, (s.number or ("SCHULDEN" if s.lang == "de" else "DEBT")).upper())
+    props.ball_chain(ink, hx - 30, s.G - 20, bxx, s.G - 70, (s.number or s.sub or ("SCHULDEN" if s.lang == "de" else "DEBT")).upper())
     cx, cy = hx + 10, s.G - 470 + math.sin(t * 2) * 6
     for i in range(7):
         rx = cx - 90 + i * 30
