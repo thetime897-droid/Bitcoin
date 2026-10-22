@@ -20,6 +20,9 @@ def main(argv=None):
     mk.add_argument("--pip", action="store_true", help="show the original video as a round picture-in-picture")
     mk.add_argument("--music", default="auto", help="auto | funny | serious | none | path/to/track.mp3")
     mk.add_argument("--model", default="small", help="faster-whisper model size")
+    mk.add_argument("--voice", default=None, help="Piper voice model (.onnx) for --script; default espeak-ng")
+    mk.add_argument("--speed", type=int, default=168, help="speaking rate for --script (words/min-ish)")
+    mk.add_argument("--hero", default="hero", help="main character: hero | ceo | banker | bro")
     mk.add_argument("--plan-only", action="store_true", help="only write the editable plan JSON")
     mk.add_argument("--ss", type=int, default=2, help="supersampling (1 = fast preview)")
     mk.add_argument("--fps", type=int, default=30)
@@ -43,7 +46,7 @@ def main(argv=None):
     out = Path(a.out)
     work = out.parent / (out.name + "_work")
     if a.script:
-        wav, words, forced = sources.tts_script(a.script, work, a.lang)
+        wav, words, forced = sources.tts_script(a.script, work, a.lang, a.speed, a.voice)
     else:
         wav, words, forced = sources.from_media(a.media, work, a.lang, a.srt, a.model)
     music_file = None
@@ -55,6 +58,7 @@ def main(argv=None):
         # your own media keeps its full length; a TTS script ends shortly after the last word
         dur = len(audio.load(wav)) / audio.SR if a.media else None
         plan = planner.build(words, fmt, a.lang, a.fps, wav.resolve(), dur, forced=forced, music=music)
+        plan["hero"] = a.hero
         if a.pip and a.media:
             plan["pip"] = str(Path(a.media).resolve())
         base = out.parent / f"{out.name}_{fmt}"

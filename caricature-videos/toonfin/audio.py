@@ -213,6 +213,16 @@ def sfx(name, seed=0):
             parts.append(tone * env)
         x = np.concatenate(parts)
         return 0.18 * x / (np.max(np.abs(x)) + 1e-9) * 2
+    if name == "vroom":
+        d = 1.2
+        t = _t(d)
+        f = 55 + 70 * np.sin(np.pi * np.minimum(1, t / d * 1.2)) ** 2
+        eng = _tone(f, d, tuple(1 / (h ** 0.8) for h in range(1, 12)))
+        eng *= 1 + 0.35 * np.sin(2 * np.pi * f * np.arange(len(t)) / SR / 2)
+        nz = _shaped_noise(d, lambda k: 300 + 500 * k, lambda k: 400, rng)
+        env = np.minimum(1, t / 0.08) * np.minimum(1, (d - t) / 0.35)
+        x = np.tanh(1.5 * (eng / (np.max(np.abs(eng)) + 1e-9) + 0.4 * nz))
+        return 0.45 * x * env
     if name == "tada":
         x = np.zeros(int(1.3 * SR))
         for i, f in enumerate((523.3, 659.3, 784.0, 1046.5)):

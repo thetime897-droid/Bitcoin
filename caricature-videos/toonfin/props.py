@@ -376,3 +376,50 @@ def curly_arrow(ink, p0, p1, bend=60.0, prog=1.0, color=INK, w=9):
         a = math.atan2(by - ay, bx - ax)
         for da in (2.5, -2.5):
             ink.line([(bx + math.cos(a + da) * 34, by + math.sin(a + da) * 34), (bx, by)], color, w)
+
+
+def car(ink, x, y, s=1.0, t=0.0, spin=0.0, color=(34, 34, 40)):
+    """Luxury sedan standing on y, facing right."""
+    with ink.at(x, y, 0, s):
+        body = [(-200, -40), (-196, -86), (-150, -96), (-100, -150), (40, -152), (100, -100), (190, -86),
+                (206, -56), (204, -40)]
+        ink.shape(body, fill=color, w=7, smooth=True)
+        ink.shape([(-88, -100), (-56, -140), (0, -142), (0, -100)], fill=SKY, w=5)
+        ink.shape([(14, -100), (14, -142), (34, -142), (82, -100)], fill=SKY, w=5)
+        ink.line([(-190, -70), (196, -70)], (200, 200, 210), 4, wob=0.4)
+        ink.ellipse(192, -78, 12, 8, fill=GOLD, w=3)
+        ink.rect(-205, -62, -192, -48, fill=RED, w=3)
+        for wx in (-120, 120):
+            ink.circle(wx, -36, 38, fill=INK, w=5)
+            ink.circle(wx, -36, 22, fill=(190, 190, 200), w=4)
+            for k in range(3):
+                a = math.radians(spin + k * 60)
+                ink.line([(wx - math.cos(a) * 20, -36 - math.sin(a) * 20),
+                          (wx + math.cos(a) * 20, -36 + math.sin(a) * 20)], INK, 3, wob=0)
+
+
+def certificate(ink, x, y, s=1.0, rot=0.0, label="AKTIE"):
+    with ink.at(x, y, rot, s):
+        ink.rect(-80, -56, 80, 56, fill=(250, 244, 220), w=6, r=4)
+        ink.rect(-68, -44, 68, 44, fill=None, outline=GOLD, w=4, r=3)
+        ink.text(0, -14, label, 34, "comic", fill=DKGREEN, stroke=None)
+        ink.line([(-50, 16), (30, 16)], GREY, 4)
+        ink.line([(-50, 30), (10, 30)], GREY, 4)
+        ink.circle(48, 26, 14, fill=RED, w=3)
+
+
+def balance(ink, x, y, tilt, left_fn, right_fn, arm=230, drop=170):
+    """Balance scale with pivot at (x, y). tilt>0 lowers the right pan."""
+    ink.line([(x, y), (x, y + 520)], BROWN, 14)
+    ink.shape([(x - 90, y + 540), (x + 90, y + 540), (x + 60, y + 500), (x - 60, y + 500)], fill=BROWN, w=6)
+    a = math.radians(tilt)
+    ends = [(x - math.cos(a) * arm, y - math.sin(a) * arm), (x + math.cos(a) * arm, y + math.sin(a) * arm)]
+    ink.line(ends, INK, 12)
+    ink.circle(x, y, 16, fill=GOLD, w=5)
+    for (ex, ey), fn in zip(ends, (left_fn, right_fn)):
+        py = ey + drop
+        ink.line([(ex, ey), (ex - 90, py)], GREY, 4)
+        ink.line([(ex, ey), (ex + 90, py)], GREY, 4)
+        ink.arc(ex, py, 110, 34, 0, 180, INK, 7)
+        ink.line([(ex - 110, py), (ex + 110, py)], INK, 7)
+        fn(ex, py)

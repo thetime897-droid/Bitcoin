@@ -97,6 +97,8 @@ def shadow(ink, x, y, rx, dark=False):
 
 
 def hero(ink, s, x, pose, face, sc=1.0, flip=False, talk=True, kind="hero", **kw):
+    if kind == "hero":
+        kind = getattr(s, "hero", "hero")
     shadow(ink, x, s.G, 70 * sc)
     return figure(ink, x, s.G, pose, s.t, face, sc, flip, kind, s.talk if talk else None,
                   seed=s.seed % 7, **kw)
@@ -166,7 +168,7 @@ def explain(ink, s):
         k = ease_out(seg(t, 0.15, 0.95))
         txt = count_fmt(s.number, k).upper()
         col = GREEN if s.sentiment >= 0 else RED
-        size = fit(ink, [txt], s.W2 * 1.6, 230)
+        size = fit(ink, [txt], s.W2 * 1.45, 230)
         sc = 1 + 0.25 * decay(t, 0.95, 0.4) * math.sin((t - 0.95) * 20)
         with ink.at(0, -200, -3, sc):
             ink.text(0, 0, txt, size, "caption", fill=col, sw=0.1, shadow=0.07)
@@ -361,10 +363,10 @@ def moon(ink, s):
     ang = math.degrees(math.atan2(nx, -ny)) if abs(nx) + abs(ny) > 0.01 else 0
     with ink.at(cx, cy, ang * 0.7 + math.sin(t * 18) * 1.5, 1.05 if s.short else 1.3):
         props.rocket(ink, 0, 0, 1.0, 0, t)
-        figure(ink, 0, 45, "cheer", t, "money", 0.55, talk=s.talk, seed=1)
+        figure(ink, 0, 45, "cheer", t, "money", 0.55, talk=s.talk, seed=1, kind=getattr(s, "hero", "hero"))
     if s.number:
         kk = pop(t, 0.6, 0.4)
-        ink.text(-s.W2 * 0.42, -230, s.number.upper(), 120 * kk, "caption", fill=GOLD, rot=-6, sw=0.1, shadow=0.07)
+        ink.text(-s.W2 * 0.3, -230, s.number.upper(), fit(ink, [s.number.upper()], s.W2 * 1.1, 120) * kk, "caption", fill=GOLD, rot=-6, sw=0.1, shadow=0.07)
 
 
 def _bb_cues(s):
@@ -592,3 +594,65 @@ def outro(ink, s):
             ink.rect(-220, -80, 220, 80, fill=RED, w=8, r=60)
             ink.text(0, 6, s.cta, 96, "caption", fill=WHITE, sw=0.1, shadow=0.06)
         props.curly_arrow(ink, (bx - 250, by + 260), (bx - 120, by + 95), 70, seg(t, 0.6, 0.9))
+
+
+def _car_t(s):
+    return min(1.0, s.dur * 0.35)
+
+
+@scene("car", lambda s: [("sfx", 0.0, "vroom"), ("sfx", _car_t(s), "whoosh"), ("sfx", _car_t(s) + 0.35, "kaching"),
+                         ("shake", _car_t(s) * 0.9, 8)])
+def car(ink, s):
+    t, ta = s.t, _car_t(s)
+    ground(ink, s)
+    k = ease_out(seg(t, 0.0, ta * 0.9))
+    cx = lerp(s.W2 * 1.9, s.W2 * 0.32, k)
+    bounce = 10 * math.sin((t - ta * 0.9) * 18) * math.exp(-(t - ta * 0.9) * 5) if t > ta * 0.9 else 0
+    if k < 1:
+        props.speedlines(ink, cx + 180, s.W2 * 1.6, [s.G - 40, s.G - 100, s.G - 150], t, mix(INK, PAPER, 0.4), 3)
+    sc = 0.85 if s.short else 1.0
+    shadow(ink, cx, s.G, 200 * sc)
+    props.car(ink, cx, s.G - abs(bounce), sc, t, spin=-cx * 1.2)
+    if t > ta:
+        for i in range(5):
+            a = i * 72 + t * 60
+            props.sparkle(ink, cx + math.cos(math.radians(a)) * 220 * sc, s.G - 110 + math.sin(math.radians(a)) * 90,
+                          18 * pop(t, ta + i * 0.06, 0.3), GOLD)
+    o = hero(ink, s, -s.W2 * 0.6, "present" if t < ta + 0.2 else "cheer", "happy" if t < ta else "grin")
+    hx, hy = o["hands"]["r"]
+    fk = ease_in_out(seg(t, ta * 0.7, ta + 0.3))
+    if fk < 1:
+        props.certificate(ink, lerp(hx + 30, cx, fk), lerp(hy - 20, s.G - 260, fk) - math.sin(fk * math.pi) * 200,
+                          0.75 * (1 - 0.6 * fk), fk * 540, "AKTIE" if s.lang == "de" else "STOCK")
+    elif t < ta + 0.6:
+        r = 40 + 200 * seg(t, ta + 0.3, ta + 0.6)
+        ink.circle(cx, s.G - 260, r * 0.4, fill=mix(PAPER, GREY, 0.5 * (1 - seg(t, ta + 0.3, ta + 0.6))), outline=None)
+
+
+def _vs_t(s):
+    return min(1.2, max(0.6, s.dur * 0.3))
+
+
+@scene("versus", lambda s: [("sfx", 0.15, "pop"), ("sfx", _vs_t(s), "clank"), ("sfx", _vs_t(s) + 0.45, "impact"),
+                            ("shake", _vs_t(s) + 0.45, 12), ("sfx", _vs_t(s) + 0.7, "kaching")])
+def versus(ink, s):
+    t, tt = s.t, _vs_t(s)
+    ground(ink, s)
+    tilt = 24 * ease_out_back(seg(t, tt, tt + 0.5), 1.4) + 1.5 * math.sin(t * 3)
+    px, py = s.W2 * (0.06 if s.short else 0.18), s.G - 540
+    pile = pop(t, 0.2, 0.4)
+
+    def left(x, y):
+        props.car(ink, x, y - 4, 0.42, t)
+        ink.text(x, y + 70, s.left_label, 40, "caption", fill=WHITE, rot=-4, sw=0.12)
+
+    def right(x, y):
+        if pile > 0:
+            with ink.at(x, y, 0, pile):
+                props.moneybag(ink, 30, -78, 0.7, wiggle(t, 0.6) * 4, "$")
+                for i, (dx, dy) in enumerate(((-70, -18), (-40, -40), (-80, -54), (60, -16), (-50, -76))):
+                    props.coin(ink, dx, dy, 26, "$", flip=math.cos(t * 6 + i))
+        ink.text(x, y + 70, s.right_label, 40, "caption", fill=GOLD, rot=3, sw=0.12)
+
+    props.balance(ink, px, py, tilt, left, right, arm=210 if s.short else 260)
+    hero(ink, s, -s.W2 * 0.76, "facepalm" if t > tt + 0.5 else "talk", "sad" if t > tt + 0.5 else "neutral", 0.85)

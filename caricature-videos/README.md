@@ -23,11 +23,26 @@ MP4 9:16 (1080×1920) und/oder 16:9 (1920×1080)  +  .srt
 | Datei | Inhalt |
 |---|---|
 | `demo/demo_short.mp4` | 9:16-Short, ca. 38 s: Inflation, FOMO, Crash, Sparplan, Zinseszins, Bank |
+| `demo/nvidia_short.mp4` | 9:16-Short, ca. 28 s: Die „Aktien für eine S-Klasse“-Story, mit CEO-Karikatur und freier Neural-Stimme |
 | `demo/boerse_long.mp4` | 16:9-Longform, ca. 55 s: Bulle vs. Bär, Hype, Crash, Schulden, Steuern, Rakete, Geldregen |
 
 Die Stimme in den Demos ist eine **Platzhalter-Roboterstimme** (espeak-ng/mbrola).
 Im echten Einsatz kommt der Ton aus deinem Video oder einer guten TTS
 (z. B. ElevenLabs). Die Visuals, Untertitel und Effekte bleiben gleich.
+
+### Komplett copyrightfreie Stimme (kostenlos)
+
+Für `--script` kann statt der Roboterstimme die neuronale Piper-Stimme
+**Thorsten** (Datensatz unter CC0, also frei nutzbar) verwendet werden:
+
+```bash
+pip install piper-tts
+curl -LO https://github.com/rhasspy/piper/releases/download/v0.0.2/voice-de-thorsten-low.tar.gz
+tar xzf voice-de-thorsten-low.tar.gz
+python -m toonfin make --script examples/nvidia_auto.txt --voice de-thorsten-low.onnx --hero ceo --out out/nvidia
+```
+
+`--hero ceo` macht die Hauptfigur zur Chef-Karikatur (Lederjacke, Brille, graue Haare).
 
 ## Benutzung
 
@@ -77,6 +92,8 @@ Der Planer liest jeden Satz und wählt passend zum Inhalt (Deutsch + Englisch):
 | `fomo` | Hype, Gier, FOMO | Herde rennt zur glühenden Münze (₿, wenn es um Krypto geht) |
 | `bank` | Bank, Gebühren, Berater | Münzen fliegen von dir zum Banker mit Zylinder und Monokel |
 | `moneyrain` | reich, Millionär, Dividende | Geldregen, Figur tanzt mit Dollar-Augen |
+| `car` | Mercedes, Porsche, Sportwagen | Luxusauto rauscht heran (Motorsound), Aktie fliegt rein, Figur jubelt |
+| `versus` | nur per Tag `[versus]` | Waage: Auto gegen einen Berg Geld, kippt mit Knall |
 | `think` | Satz endet mit „?“ | Gedankenblase: erst „?“, dann Glühbirne |
 | `explain` | alles andere | Flipchart, Sprechblase oder riesige hochzählende Zahl (wenn eine Zahl im Satz steht) |
 | `outro` | Folge, abonnieren, Teil 2 | Winken, pulsierender „FOLGEN!“-Button |

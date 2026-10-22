@@ -1,0 +1,668 @@
+{
+ "version": 1,
+ "format": "short",
+ "width": 1080,
+ "height": 1920,
+ "fps": 30,
+ "lang": "de",
+ "audio": "",
+ "duration": 27.576,
+ "music": "funny",
+ "pip": null,
+ "words": [
+  {
+   "w": "Er",
+   "s": 0.25,
+   "e": 0.405,
+   "tag": ""
+  },
+  {
+   "w": "hat",
+   "s": 0.425,
+   "e": 0.623,
+   "tag": ""
+  },
+  {
+   "w": "Aktien",
+   "s": 0.643,
+   "e": 0.972,
+   "tag": ""
+  },
+  {
+   "w": "für",
+   "s": 0.992,
+   "e": 1.191,
+   "tag": ""
+  },
+  {
+   "w": "ein",
+   "s": 1.211,
+   "e": 1.409,
+   "tag": ""
+  },
+  {
+   "w": "Auto",
+   "s": 1.429,
+   "e": 1.671,
+   "tag": ""
+  },
+  {
+   "w": "verkauft,",
+   "s": 1.691,
+   "e": 2.108,
+   "tag": ""
+  },
+  {
+   "w": "die",
+   "s": 2.128,
+   "e": 2.326,
+   "tag": ""
+  },
+  {
+   "w": "heute",
+   "s": 2.346,
+   "e": 2.631,
+   "tag": ""
+  },
+  {
+   "w": "Milliarden",
+   "s": 2.651,
+   "e": 3.155,
+   "tag": ""
+  },
+  {
+   "w": "wert",
+   "s": 3.175,
+   "e": 3.417,
+   "tag": ""
+  },
+  {
+   "w": "wären!",
+   "s": 3.437,
+   "e": 3.723,
+   "tag": ""
+  },
+  {
+   "w": "Der",
+   "s": 4.023,
+   "e": 4.279,
+   "tag": ""
+  },
+  {
+   "w": "Nvidia-Chef",
+   "s": 4.299,
+   "e": 4.94,
+   "tag": ""
+  },
+  {
+   "w": "verkaufte",
+   "s": 4.96,
+   "e": 5.546,
+   "tag": ""
+  },
+  {
+   "w": "Aktien,",
+   "s": 5.566,
+   "e": 5.987,
+   "tag": ""
+  },
+  {
+   "w": "als",
+   "s": 6.007,
+   "e": 6.263,
+   "tag": ""
+  },
+  {
+   "w": "die",
+   "s": 6.283,
+   "e": 6.539,
+   "tag": ""
+  },
+  {
+   "w": "Firma",
+   "s": 6.559,
+   "e": 6.925,
+   "tag": ""
+  },
+  {
+   "w": "nur",
+   "s": 6.945,
+   "e": 7.2,
+   "tag": ""
+  },
+  {
+   "w": "300",
+   "s": 7.22,
+   "e": 7.476,
+   "tag": "num"
+  },
+  {
+   "w": "Millionen",
+   "s": 7.496,
+   "e": 8.082,
+   "tag": ""
+  },
+  {
+   "w": "Dollar",
+   "s": 8.102,
+   "e": 8.523,
+   "tag": ""
+  },
+  {
+   "w": "wert",
+   "s": 8.543,
+   "e": 8.854,
+   "tag": ""
+  },
+  {
+   "w": "war.",
+   "s": 8.874,
+   "e": 9.129,
+   "tag": ""
+  },
+  {
+   "w": "Von",
+   "s": 9.429,
+   "e": 9.642,
+   "tag": ""
+  },
+  {
+   "w": "dem",
+   "s": 9.662,
+   "e": 9.874,
+   "tag": ""
+  },
+  {
+   "w": "Geld",
+   "s": 9.894,
+   "e": 10.153,
+   "tag": ""
+  },
+  {
+   "w": "gab",
+   "s": 10.173,
+   "e": 10.385,
+   "tag": ""
+  },
+  {
+   "w": "es",
+   "s": 10.405,
+   "e": 10.571,
+   "tag": ""
+  },
+  {
+   "w": "eine",
+   "s": 10.591,
+   "e": 10.85,
+   "tag": ""
+  },
+  {
+   "w": "Mercedes",
+   "s": 10.87,
+   "e": 11.314,
+   "tag": ""
+  },
+  {
+   "w": "S-Klasse.",
+   "s": 11.334,
+   "e": 11.733,
+   "tag": ""
+  },
+  {
+   "w": "Er",
+   "s": 12.033,
+   "e": 12.174,
+   "tag": ""
+  },
+  {
+   "w": "nennt",
+   "s": 12.194,
+   "e": 12.456,
+   "tag": ""
+  },
+  {
+   "w": "sie",
+   "s": 12.476,
+   "e": 12.657,
+   "tag": ""
+  },
+  {
+   "w": "heute",
+   "s": 12.677,
+   "e": 12.94,
+   "tag": ""
+  },
+  {
+   "w": "das",
+   "s": 12.96,
+   "e": 13.141,
+   "tag": ""
+  },
+  {
+   "w": "teuerste",
+   "s": 13.161,
+   "e": 13.544,
+   "tag": "neg"
+  },
+  {
+   "w": "Auto",
+   "s": 13.564,
+   "e": 13.786,
+   "tag": ""
+  },
+  {
+   "w": "der",
+   "s": 13.806,
+   "e": 13.987,
+   "tag": ""
+  },
+  {
+   "w": "Welt.",
+   "s": 14.007,
+   "e": 14.229,
+   "tag": ""
+  },
+  {
+   "w": "Denn",
+   "s": 14.529,
+   "e": 14.795,
+   "tag": ""
+  },
+  {
+   "w": "Nvidia",
+   "s": 14.815,
+   "e": 15.176,
+   "tag": ""
+  },
+  {
+   "w": "ist",
+   "s": 15.196,
+   "e": 15.414,
+   "tag": ""
+  },
+  {
+   "w": "inzwischen",
+   "s": 15.434,
+   "e": 15.985,
+   "tag": ""
+  },
+  {
+   "w": "Billionen",
+   "s": 16.005,
+   "e": 16.509,
+   "tag": ""
+  },
+  {
+   "w": "Dollar",
+   "s": 16.529,
+   "e": 16.89,
+   "tag": ""
+  },
+  {
+   "w": "wert.",
+   "s": 16.91,
+   "e": 17.176,
+   "tag": ""
+  },
+  {
+   "w": "Ein",
+   "s": 17.476,
+   "e": 17.664,
+   "tag": ""
+  },
+  {
+   "w": "Auto",
+   "s": 17.684,
+   "e": 17.914,
+   "tag": ""
+  },
+  {
+   "w": "gegen",
+   "s": 17.934,
+   "e": 18.206,
+   "tag": ""
+  },
+  {
+   "w": "ein",
+   "s": 18.226,
+   "e": 18.415,
+   "tag": ""
+  },
+  {
+   "w": "Vermögen",
+   "s": 18.435,
+   "e": 18.832,
+   "tag": ""
+  },
+  {
+   "w": "in",
+   "s": 18.852,
+   "e": 18.999,
+   "tag": ""
+  },
+  {
+   "w": "Aktien.",
+   "s": 19.019,
+   "e": 19.333,
+   "tag": ""
+  },
+  {
+   "w": "Und",
+   "s": 19.633,
+   "e": 19.822,
+   "tag": ""
+  },
+  {
+   "w": "was",
+   "s": 19.842,
+   "e": 20.032,
+   "tag": ""
+  },
+  {
+   "w": "lernen",
+   "s": 20.052,
+   "e": 20.367,
+   "tag": ""
+  },
+  {
+   "w": "wir",
+   "s": 20.387,
+   "e": 20.576,
+   "tag": ""
+  },
+  {
+   "w": "daraus?",
+   "s": 20.596,
+   "e": 20.912,
+   "tag": ""
+  },
+  {
+   "w": "Gute",
+   "s": 21.212,
+   "e": 21.502,
+   "tag": ""
+  },
+  {
+   "w": "Aktien",
+   "s": 21.522,
+   "e": 21.915,
+   "tag": ""
+  },
+  {
+   "w": "zu",
+   "s": 21.935,
+   "e": 22.122,
+   "tag": ""
+  },
+  {
+   "w": "früh",
+   "s": 22.142,
+   "e": 22.432,
+   "tag": ""
+  },
+  {
+   "w": "verkaufen",
+   "s": 22.452,
+   "e": 23.0,
+   "tag": ""
+  },
+  {
+   "w": "kostet",
+   "s": 23.02,
+   "e": 23.413,
+   "tag": ""
+  },
+  {
+   "w": "dich",
+   "s": 23.433,
+   "e": 23.723,
+   "tag": ""
+  },
+  {
+   "w": "den",
+   "s": 23.743,
+   "e": 23.982,
+   "tag": ""
+  },
+  {
+   "w": "Zinseszins.",
+   "s": 24.002,
+   "e": 24.602,
+   "tag": "pos"
+  },
+  {
+   "w": "Folge",
+   "s": 24.902,
+   "e": 25.19,
+   "tag": ""
+  },
+  {
+   "w": "für",
+   "s": 25.21,
+   "e": 25.41,
+   "tag": ""
+  },
+  {
+   "w": "mehr",
+   "s": 25.43,
+   "e": 25.675,
+   "tag": ""
+  },
+  {
+   "w": "verrückte",
+   "s": 25.695,
+   "e": 26.159,
+   "tag": ""
+  },
+  {
+   "w": "Finanz-Storys!",
+   "s": 26.179,
+   "e": 26.776,
+   "tag": ""
+  }
+ ],
+ "scenes": [
+  {
+   "template": "hook",
+   "variant": "",
+   "start": 0.0,
+   "end": 3.973,
+   "text": "Er hat Aktien für ein Auto verkauft, die heute Milliarden wert wären!",
+   "headline": "MILLIARDEN",
+   "sub": "",
+   "hook_text": "Aktien für ein Auto verkauft?!",
+   "number": "",
+   "sentiment": 0,
+   "mood": "funny",
+   "seed": 3,
+   "emph": [
+    3.437
+   ],
+   "coin_sym": "€",
+   "lang": "de",
+   "left_label": "AUTO",
+   "right_label": "MILLIARDEN",
+   "cta": "FOLGEN!",
+   "bank_label": "BANK"
+  },
+  {
+   "template": "explain",
+   "variant": "stat",
+   "start": 3.973,
+   "end": 9.379,
+   "text": "Der Nvidia-Chef verkaufte Aktien, als die Firma nur 300 Millionen Dollar wert war.",
+   "headline": "$300 MIO.",
+   "sub": "Firmenwert damals",
+   "hook_text": "nur 300 Millionen Dollar wert war.",
+   "number": "$300 Mio.",
+   "sentiment": 0,
+   "mood": "funny",
+   "seed": 10,
+   "emph": [
+    7.22,
+    7.496
+   ],
+   "coin_sym": "€",
+   "lang": "de",
+   "left_label": "AUTO",
+   "right_label": "MILLIARDEN",
+   "cta": "FOLGEN!",
+   "bank_label": "BANK"
+  },
+  {
+   "template": "car",
+   "variant": "",
+   "start": 9.379,
+   "end": 11.983,
+   "text": "Von dem Geld gab es eine Mercedes S-Klasse.",
+   "headline": "S-KLASSE",
+   "sub": "",
+   "hook_text": "Von dem Geld gab es eine Mercedes S-Klasse.",
+   "number": "",
+   "sentiment": 0,
+   "mood": "funny",
+   "seed": 17,
+   "emph": [
+    10.87
+   ],
+   "coin_sym": "€",
+   "lang": "de",
+   "left_label": "AUTO",
+   "right_label": "MILLIARDEN",
+   "cta": "FOLGEN!",
+   "bank_label": "BANK"
+  },
+  {
+   "template": "explain",
+   "variant": "board",
+   "start": 11.983,
+   "end": 14.479,
+   "text": "Er nennt sie heute das teuerste Auto der Welt.",
+   "headline": "Teuerstes Auto der Welt",
+   "sub": "",
+   "hook_text": "Er nennt sie heute das teuerste Auto der Welt.",
+   "number": "",
+   "sentiment": 0,
+   "mood": "funny",
+   "seed": 24,
+   "emph": [],
+   "coin_sym": "€",
+   "lang": "de",
+   "left_label": "AUTO",
+   "right_label": "MILLIARDEN",
+   "cta": "FOLGEN!",
+   "bank_label": "BANK"
+  },
+  {
+   "template": "moon",
+   "variant": "",
+   "start": 14.479,
+   "end": 17.426,
+   "text": "Denn Nvidia ist inzwischen Billionen Dollar wert.",
+   "headline": "BILLIONEN $",
+   "sub": "",
+   "hook_text": "Denn Nvidia ist inzwischen Billionen Dollar wert.",
+   "number": "Billionen $",
+   "sentiment": 1,
+   "mood": "funny",
+   "seed": 31,
+   "emph": [],
+   "coin_sym": "€",
+   "lang": "de",
+   "left_label": "AUTO",
+   "right_label": "MILLIARDEN",
+   "cta": "FOLGEN!",
+   "bank_label": "BANK"
+  },
+  {
+   "template": "versus",
+   "variant": "",
+   "start": 17.426,
+   "end": 19.583,
+   "text": "Ein Auto gegen ein Vermögen in Aktien.",
+   "headline": "AUTO VS. AKTIEN",
+   "sub": "",
+   "hook_text": "Ein Auto gegen ein Vermögen in Aktien.",
+   "number": "",
+   "sentiment": -1,
+   "mood": "funny",
+   "seed": 38,
+   "emph": [],
+   "coin_sym": "€",
+   "lang": "de",
+   "left_label": "AUTO",
+   "right_label": "MILLIARDEN",
+   "cta": "FOLGEN!",
+   "bank_label": "BANK"
+  },
+  {
+   "template": "think",
+   "variant": "",
+   "start": 19.583,
+   "end": 21.162,
+   "text": "Und was lernen wir daraus?",
+   "headline": "DIE LEHRE",
+   "sub": "",
+   "hook_text": "Und was lernen wir daraus?",
+   "number": "",
+   "sentiment": 0,
+   "mood": "funny",
+   "seed": 45,
+   "emph": [],
+   "coin_sym": "€",
+   "lang": "de",
+   "left_label": "AUTO",
+   "right_label": "MILLIARDEN",
+   "cta": "FOLGEN!",
+   "bank_label": "BANK"
+  },
+  {
+   "template": "compound",
+   "variant": "",
+   "start": 21.162,
+   "end": 24.852,
+   "text": "Gute Aktien zu früh verkaufen kostet dich den Zinseszins.",
+   "headline": "ZINSESZINS",
+   "sub": "",
+   "hook_text": "Gute Aktien zu früh verkaufen kostet dich den Zinseszins.",
+   "number": "",
+   "sentiment": 1,
+   "mood": "funny",
+   "seed": 52,
+   "emph": [
+    24.002
+   ],
+   "coin_sym": "€",
+   "lang": "de",
+   "left_label": "AUTO",
+   "right_label": "MILLIARDEN",
+   "cta": "FOLGEN!",
+   "bank_label": "BANK"
+  },
+  {
+   "template": "outro",
+   "variant": "",
+   "start": 24.852,
+   "end": 27.576,
+   "text": "Folge für mehr verrückte Finanz-Storys!",
+   "headline": "FOLGE",
+   "sub": "",
+   "hook_text": "Folge für mehr verrückte Finanz-Storys!",
+   "number": "",
+   "sentiment": 0,
+   "mood": "funny",
+   "seed": 59,
+   "emph": [
+    24.902,
+    26.179
+   ],
+   "coin_sym": "€",
+   "lang": "de",
+   "left_label": "AUTO",
+   "right_label": "MILLIARDEN",
+   "cta": "FOLGEN!",
+   "bank_label": "BANK"
+  }
+ ],
+ "hero": "ceo"
+}

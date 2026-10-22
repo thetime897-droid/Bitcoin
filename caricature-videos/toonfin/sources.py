@@ -7,6 +7,7 @@ to a scene template chosen with a ``[template]`` tag in the script.
 import re
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -44,20 +45,30 @@ def _voice(lang):
     return prefs[-1]
 
 
-def tts_script(script_path, workdir, lang="de", speed=168):
-    if not shutil.which("espeak-ng"):
-        raise SystemExit("espeak-ng is needed for the placeholder TTS voice (apt install espeak-ng mbrola-de2)")
+def _synth(text, out, lang, voice_model, speed, voice):
+    if voice_model:
+        # Piper neural TTS, e.g. the CC0 "Thorsten" German voice
+        subprocess.run([sys.executable, "-m", "piper", "-m", str(voice_model), "-f", str(out),
+                        "--length-scale", f"{168 / speed:.3f}"], input=text, text=True, check=True,
+                       capture_output=True)
+        return
+    spoken = text.replace("€", " Euro").replace("%", " Prozent") if lang == "de" else text
+    subprocess.run(["espeak-ng", "-v", voice, "-s", str(speed), "-p", "48", "-w", str(out), spoken],
+                   check=True, capture_output=True)
+
+
+def tts_script(script_path, workdir, lang="de", speed=168, voice_model=None):
+    if not voice_model and not shutil.which("espeak-ng"):
+        raise SystemExit("Need a voice: --voice model.onnx (Piper) or espeak-ng (apt install espeak-ng mbrola-de2)")
     sents, forced = parse_script(Path(script_path).read_text(encoding="utf-8"))
     workdir = Path(workdir)
     workdir.mkdir(parents=True, exist_ok=True)
-    voice = _voice(lang)
+    voice = None if voice_model else _voice(lang)
     gap = 0.28
     pieces, words, t = [np.zeros(int(0.25 * audio.SR))], [], 0.25
     for si, s in enumerate(sents):
-        spoken = s.replace("€", " Euro").replace("%", " Prozent") if lang == "de" else s
         tmp = workdir / f"_tts_{si}.wav"
-        subprocess.run(["espeak-ng", "-v", voice, "-s", str(speed), "-p", "48", "-w", str(tmp), spoken],
-                       check=True, capture_output=True)
+        _synth(s, tmp, lang, voice_model, speed, voice)
         x = audio.load(tmp)
         tmp.unlink()
         nz = np.where(np.abs(x) > 0.02)[0]

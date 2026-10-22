@@ -22,6 +22,8 @@ RULES = [
     ("save", ["spar", "notgroschen", "rücklage", "zurücklegen", "saving", "save "]),
     ("compound", ["zinseszins", "compound", "exponentiell", "schneeball", "langfristig", "jahrzehnt", "etf",
                   "wächst", "wachstum", "snowball"]),
+    ("car", ["mercedes", "porsche", "ferrari", "lamborghini", "sportwagen", "luxusauto", "auto gekauft",
+             "car "]),
     ("bank", ["bank", "banker", "gebühr", "provision", "berater", "ezb", "fed ", "zentralbank", "fees"]),
     ("moneyrain", ["reich", "millionär", "million", "passives einkommen", "cashflow", "dividende",
                    "ausschüttung", "finanzielle freiheit", "rich", "wealth"]),
@@ -217,7 +219,8 @@ def build(words, fmt="short", lang="de", fps=30, audio="", duration=None, forced
             template=tmpl, variant=variant, start=round(start, 3), end=None, text=text,
             headline=headline, sub=sub, hook_text=hook_text, number=number, sentiment=sen,
             mood="serious" if serious else "funny", seed=gi * 7 + 3, emph=emph[:4],
-            coin_sym=coin_sym, lang=lang, cta="FOLGEN!" if lang == "de" else "FOLLOW!",
+            coin_sym=coin_sym, lang=lang, left_label="AUTO" if lang == "de" else "CAR",
+            right_label=number.upper() if (tmpl == "versus" and number) else "MILLIARDEN" if lang == "de" else "BILLIONS", cta="FOLGEN!" if lang == "de" else "FOLLOW!",
             bank_label=(kw.upper() if tmpl == "bank" and kw and len(kw) <= 10 and kw.lower() != "banker"
                         else "BANK"),
         ))

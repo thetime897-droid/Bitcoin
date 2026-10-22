@@ -30,17 +30,17 @@ def get_pose(name, t=0.0, seed=0.0):
         p["la"] = (-25 + w(0.9, 8, 1), -40 + w(1.3, 20, 2))
         p["tilt"] = w(0.7, 6)
     elif name == "wave":
-        p["ra"] = (130, 165 + w(2.2, 28))
+        p["ra"] = (115, 158 + w(2.2, 26))
         p["tilt"] = 6
     elif name == "point":
         p["ra"] = (95 + w(0.8, 3), 88)
         p["tilt"] = 5
     elif name == "point_up":
-        p["ra"] = (150, 176)
+        p["ra"] = (122, 168)
         p["tilt"] = -4
     elif name == "cheer":
-        p["la"] = (-150 + w(2, 10), -168 + w(2, 18))
-        p["ra"] = (150 - w(2, 10), 168 - w(2, 18))
+        p["la"] = (-118 + w(2, 10), -152 + w(2, 18))
+        p["ra"] = (118 - w(2, 10), 152 - w(2, 18))
         p["bob"] = -abs(math.sin(t * 6.283 * 1.6 + seed)) * 26
         p["ll"], p["rl"] = (-14, -6), (14, 6)
     elif name == "panic":
@@ -100,7 +100,7 @@ def get_pose(name, t=0.0, seed=0.0):
         p["lean"] = 24 + w(2, 3)
     elif name == "sit":
         p["ll"], p["rl"] = (85, 5), (95, 15)
-        p["la"], p["ra"] = (-150 + w(2, 12), -168), (150 - w(2, 12), 168)
+        p["la"], p["ra"] = (-118 + w(2, 12), -152), (118 - w(2, 12), 152)
     return p
 
 
@@ -176,25 +176,37 @@ def figure(ink, x, y, pose="idle", t=0.0, face="happy", s=1.0, flip=False, kind=
             if kind == "hero":
                 with ink.at(neck[0], neck[1], lean):
                     ink.shape([(-7, 6), (7, 6), (9, 46), (0, 58), (-9, 46)], fill=accent, w=4)
+            if kind == "ceo":
+                with ink.at(neck[0], neck[1], lean):
+                    ink.shape([(-34, 4), (34, 4), (30, 96), (-30, 96)], fill=(40, 40, 46), w=6)
+                    ink.shape([(-12, 4), (12, 4), (0, 34)], fill=(70, 70, 78), w=3)
+                    ink.line([(-12, 4), (-20, 40), (-6, 60)], (110, 110, 120), 3)
+                    ink.line([(12, 4), (20, 40), (6, 60)], (110, 110, 120), 3)
+                    ink.line([(-6, 62), (-6, 92)], (150, 150, 160), 3, wob=0.3)
             if kind == "bro":
                 with ink.at(neck[0], neck[1], lean):
                     ink.arc(0, 4, 24, 26, 20, 160, GOLD, 5, wob=0.5)
-        # arms
-        hands = {}
-        for key, (a1, a2) in (("l", p["la"]), ("r", p["ra"])):
-            d1, d2 = _d(a1 + lean), _d(a2 + lean)
-            elbow = (sh[0] + d1[0] * UPPER, sh[1] + d1[1] * UPPER)
-            hand = (elbow[0] + d2[0] * LOWER, elbow[1] + d2[1] * LOWER)
-            ink.line([sh, elbow, hand], INK, LIMB)
-            hands[key] = hand
-        if pose == "thumbs":
-            hx, hy = hands["l" if flip else "r"]
-            ink.line([(hx, hy), (hx, hy - 20)], INK, 8)
         # head
         ink.circle(head[0], head[1], HEAD, fill=WHITE, w=7)
         with ink.at(head[0], head[1], lean + p["tilt"]):
             _face(ink, f, t, seed, talk, look + (-4 if flip else 4) * (kind != "crowd"), kind)
             _accessory(ink, kind, accent, flip)
+        # arms last, so hands can touch the face (facepalm, thinking) and never hide behind the head
+        hands = {}
+        for key, (a1, a2) in (("l", p["la"]), ("r", p["ra"])):
+            d1, d2 = _d(a1 + lean), _d(a2 + lean)
+            elbow = (sh[0] + d1[0] * UPPER, sh[1] + d1[1] * UPPER)
+            hand = (elbow[0] + d2[0] * LOWER, elbow[1] + d2[1] * LOWER)
+            if kind == "ceo":
+                ink.line([sh, elbow, hand], INK, 22)
+                ink.line([sh, elbow, hand], (62, 62, 70), 13, wob=0.6)
+                ink.circle(hand[0], hand[1], 9, fill=WHITE, w=4)
+            else:
+                ink.line([sh, elbow, hand], INK, LIMB)
+            hands[key] = hand
+        if pose == "thumbs":
+            hx, hy = hands["l" if flip else "r"]
+            ink.line([(hx, hy), (hx, hy - 20)], INK, 8)
 
     def world(pt):
         c, sn = math.cos(math.radians(rot)), math.sin(math.radians(rot))
@@ -311,6 +323,12 @@ def _accessory(ink, kind, accent, flip):
         ink.circle(17 * fx, -8, 15, fill=None, outline=INK, w=4)
         ink.line([(30 * fx, -4), (40 * fx, 20), (34 * fx, 40)], GOLD, 3, smooth=True)
         ink.line([(-24, 8), (-12, 4), (0, 9), (12, 4), (24, 8)], INK, 7, smooth=True)
+    elif kind == "ceo":
+        ink.shape([(-52, -4), (-50, -30), (-34, -52), (-6, -62), (24, -60), (46, -46), (60, -34),
+                   (40, -36), (20, -40), (-10, -36), (-36, -24), (-44, -4)], fill=(206, 206, 212), w=5, smooth=True)
+        for cx in (-17, 17):
+            ink.rect(cx - 14, -18, cx + 14, 2, fill=None, outline=INK, w=4, r=3)
+        ink.line([(-3, -10), (3, -10)], INK, 4)
     elif kind == "bro":
         ink.arc(0, -16, HEAD - 2, HEAD - 6, 185, 355, GOLD, 22, wob=0.6)
         ink.ellipse(-44 * fx, -24, 20, 8, fill=GOLD, w=4)

@@ -1,0 +1,10 @@
+# Short: die Nvidia-Auto-Story, komplett mit eigener Erzählung (keine fremden Ton-/Bildrechte)
+[hook] Er hat Aktien für ein Auto verkauft, die heute Milliarden wert wären!
+[explain] Der Nvidia-Chef verkaufte Aktien, als die Firma nur 300 Millionen Dollar wert war.
+[car] Von dem Geld gab es eine Mercedes S-Klasse.
+[explain] Er nennt sie heute das teuerste Auto der Welt.
+[moon] Denn Nvidia ist inzwischen Billionen Dollar wert.
+[versus] Ein Auto gegen ein Vermögen in Aktien.
+[think] Und was lernen wir daraus?
+[compound] Gute Aktien zu früh verkaufen kostet dich den Zinseszins.
+[outro] Folge für mehr verrückte Finanz-Storys!

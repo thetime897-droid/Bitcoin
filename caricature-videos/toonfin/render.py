@@ -67,7 +67,7 @@ class Renderer:
         self.env = env if env is not None else np.zeros(int(plan["duration"] * self.fps) + 2)
         self.cues = []
         for sc in plan["scenes"]:
-            shot = Shot(dict(sc, dur=sc["end"] - sc["start"]), 0, 0, self.lay)
+            shot = Shot(dict(sc, dur=sc["end"] - sc["start"], hero=plan.get("hero", "hero")), 0, 0, self.lay)
             self.cues.append([(sc["start"] + t, kind, arg) for kind, t, arg in
                               ((c[0], c[1], c[2]) for c in SCENES[sc["template"]]["cues"](shot))])
         self.bg = {m: self._background(m) for m in ("funny", "serious")}
@@ -99,7 +99,7 @@ class Renderer:
         lt = t - sc["start"]
         dur = sc["end"] - sc["start"]
         talk = float(self.env[min(i, len(self.env) - 1)])
-        shot = Shot(dict(sc, dur=dur), lt, talk, L)
+        shot = Shot(dict(sc, dur=dur, hero=self.plan.get("hero", "hero")), lt, talk, L)
 
         # camera: slow push-in, punch-ins on emphasis words, transition, shake
         zoom = 1.0 + 0.05 * shot.p
