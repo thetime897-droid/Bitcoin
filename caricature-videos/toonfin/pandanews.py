@@ -922,12 +922,29 @@ class Renderer:
                 comp.paste(img, (ox, oy))
             img = comp
         if zooming:
-            # punch-in on the graphics only; headline, panda and captions stay exactly where they are
+            # punch-in on the graphics only; headline, panda and captions stay exactly where they are.
+            # The zoom grows the content around its own centre and is capped so the enlarged content
+            # always stays inside the free stage (never into the panda, the headline or the captions).
+            ss = self.ss
             Wp, Hp = img.size
-            cw, ch = Wp / z, Hp / z
-            cx = min(max(fx_ * self.ss, cw / 2), Wp - cw / 2)
-            cy = min(max(fy_ * self.ss, ch / 2), Hp - ch / 2)
-            img = img.resize((Wp, Hp), Image.BICUBIC, box=(cx - cw / 2, cy - ch / 2, cx + cw / 2, cy + ch / 2))
+            a = np.asarray(img.convert("L"))
+            ys, xs = np.nonzero(a < 248)
+            if len(xs):
+                bx0, bx1, by0, by1 = xs.min(), xs.max(), ys.min(), ys.max()
+                st = self.plan.get("stage", LAYOUT.get("stage", [455, 400, 1066, 1465]))
+                X0, Y0, X1, Y1 = (v * ss for v in st)
+                cx, cy = (bx0 + bx1) / 2, (by0 + by1) / 2
+                cx = min(max(cx, X0 + 1), X1 - 1)
+                cy = min(max(cy, Y0 + 1), Y1 - 1)
+                lim = [z]
+                if bx0 < cx: lim.append((cx - X0) / (cx - bx0))
+                if bx1 > cx: lim.append((X1 - cx) / (bx1 - cx))
+                if by0 < cy: lim.append((cy - Y0) / (cy - by0))
+                if by1 > cy: lim.append((Y1 - cy) / (by1 - cy))
+                ze = max(1.0, min(lim))
+                if ze > 1.002:
+                    l, t_ = cx - cx / ze, cy - cy / ze
+                    img = img.resize((Wp, Hp), Image.BICUBIC, box=(l, t_, l + Wp / ze, t_ + Hp / ze))
             img.alpha_composite(self.draw_panel(idx, lt, i, only_heads=True))
         self.draw_panda(img, t)
         self._captions(img, t, i)

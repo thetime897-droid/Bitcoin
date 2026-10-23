@@ -12,7 +12,8 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - **Stimme:** Erst Klang-Korrektur mit `tools/voice_match.py in.wav out.wav 8` (gleicht das Frequenzbild an eine
   Studio-Sprachkurve an – dumpfe/boxige Handy-/Laptop-Aufnahmen: Tiefmitten bis -12 dB, Präsenz/Luft bis +8 dB),
   dann leicht: `highpass=80, afftdn=nr=6, agate (range 0.25), deesser, Kompressor 1,7:1`.
-  **Nie mehrfach komprimieren/limiten.** Mastering linear, `master_lufs: -15.4` (Stimme nicht zu laut).
+  **Nie mehrfach komprimieren/limiten.** Mastering linear, `master_lufs: -16.8` (abgenommen: Stimme nicht zu laut). Nach dem Match-EQ leicht
+  wärmer: `lowshelf +1,2 dB @150 Hz`, `-1,2 dB @3,6 kHz`, De-Esser 0,6.
 - Effekte: jeder Sound wird auf seinen lautesten Moment eingepegelt (gleich laut wirkend), `SFX_TRIM` setzt
   Riser (0.6), Kasse, Schimmer tiefer.
 
@@ -67,9 +68,10 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
   Erkennungsfehler (Fachbegriffe, Zahlen) von Hand korrigieren.
 
 ## Zooms & Effekt-Lautstärke
-- `zooms: [{at, hold, scale, x, y}]` im Plan: Punch-in nur auf die Grafik (Headline, Panda, Untertitel bleiben
+- `zooms: [{at, hold, scale, x, y}]` im Plan: Punch-in nur auf die Grafik, automatisch so begrenzt, dass der
+  vergrößerte Inhalt in der freien Bühne bleibt (`stage` = [455, 400, 1066, 1465]: nie in Panda, Headline, Untertitel) (Headline, Panda, Untertitel bleiben
   ruhig), mit Whoosh rein und raus. Für wichtige Stellen, Skala 1,18–1,3.
-- `sfx_rel: 0.70` (aktuell abgenommen) = Effekte 30 % unter der Stimme; 0.75 = 25 % darunter (relativ zur Stimm-Lautheit, `gain` trimmt nur nach unten).
+- `sfx_rel: 0.665` (aktuell abgenommen) = Effekte ~33 % unter der Stimme; 0.75 = 25 % darunter (relativ zur Stimm-Lautheit, `gain` trimmt nur nach unten).
 
 ## Musik
 - `music_bed: {file, rel_db: -17, duck_db: -5}` im Plan: Musik 17 dB unter der Stimme, beim Sprechen weitere 5 dB
