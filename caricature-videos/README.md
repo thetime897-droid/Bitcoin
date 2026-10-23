@@ -24,7 +24,7 @@ MP4 9:16 (1080×1920) und/oder 16:9 (1920×1080)  +  .srt
 |---|---|
 | `demo/demo_short.mp4` | 9:16-Short, ca. 38 s: Inflation, FOMO, Crash, Sparplan, Zinseszins, Bank |
 | `demo/nvidia_original_audio_short.mp4` | 9:16-Short, 16 s: **Originalton + Original-Untertitel** aus dem Clip, darüber CEO-Karikatur, Musik und SFX |
-| `demo/sap_panda_news_short.mp4` | 9:16, 64 s: **Panda-News-Stil (aktuell)**, 60 fps: Originalton, farbiger Hook (Rot → Grün), 11 gefüllte Bilder schieben sich weich rein, Finanzgrafiken mit Zählern/Balken/Charts, Original-Panda-Posen + Reaktions-Bubbles, nur leiser Whoosh |
+| `demo/sap_panda_news_short.mp4` | 9:16, 64 s: **Panda-News-Stil (aktuell)**, 60 fps: Originalton, weißer Hintergrund, alles fliegt rein und raus, farbige Finanzgrafiken, Panda in HQ (Real-ESRGAN), Whoosh + Registrierkasse |
 | `demo/sap_panda_comic_short.mp4` | 9:16, 64 s: **Panda-Comic-Stil**. Dein SAP-Originalton, 12 Comic-Bilder, die nacheinander reingeschoben werden, Panda_investiert hält in jedem Bild etwas anderes, große Untertitel unten |
 | `demo/sap_original_audio_short.mp4` | 9:16-Short, 64 s: SAP-Quartalszahlen, Originalton + Original-Untertitel, 21 Szenen. Ohne eigene Musik, weil das Original schon Musik hat |
 | `demo/nvidia_short.mp4` | 9:16-Short, ca. 28 s: Die „Aktien für eine S-Klasse“-Story, mit CEO-Karikatur und freier Neural-Stimme |
@@ -61,22 +61,19 @@ python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --ou
 
 ### Panda-News-Stil (`toonfin/pandanews.py`) – aktuelle Vorlage
 
-- 60 fps, weißer Hintergrund. Nur der Einstieg (Hook) darf farbig sein: `bg`-Element mit Verlauf
-  und Farb-Wipe, z. B. Rot (KI-Abverkauf) → Grün (SAP steigt).
-- Jedes Bild kommt **schon gefüllt** rein (Headline, Karten, Panda stehen) und schiebt das alte Bild
-  weg, das alte sinkt dabei leicht nach hinten. Elemente mit `at: 0` gehören von Anfang an zum Bild,
-  ein späteres `at` lässt sie weich hereingleiten (Quintic-Easing, kein Hüpfen).
-- Bewegt wird nur, was etwas zeigt: Zähler laufen hoch, wenn die Zahl gesagt wird, Balken wachsen,
-  Charts zeichnen sich, Plaketten erscheinen, runde **Reaktions-Bubbles** (`react`) mit Brustbild-Panda.
-- Panda = Original-Artwork aus den Character-Sheets: 25+ Ganzkörper-Posen in `toonfin/panda/`
-  (u. a. daumen_hoch, zeigefinger, winken, mit_bitcoin, mit_geld, mit_tablet, laptop_halten,
-  telefon_am_ohr, idee, springen, stolz, arme_verschraenkt, chart_praesentieren …) und 20 Reaktionen
-  in `toonfin/panda/react/` (jubel, schockiert, heulen, lachen_traenen, verliebt, genervt, verwirrt,
-  daumen_runter, aufgeregt …). Pose pro Bild, Wechsel per weicher Überblendung (`swap`), kein Mund.
-  Neue Posen: `tools/segment.py` (Sheet → nummerierte Ausschnitte), `tools/export.py` (freistellen +
-  HD-Hochrechnen mit `tools/hd_panda.py`).
-- Sound: nur ein leiser Whoosh beim Bildwechsel. Keine Piep-/Tick-/Ping-/Bumm-Effekte; weitere
-  Sounds nur, wenn sie im Plan ausdrücklich unter `sfx` stehen.
+- 60 fps, **Hintergrund immer weiß**. Jedes Bild kommt gefüllt rein und schiebt das alte weg.
+- Elemente fliegen ein (`at`) und mit `until` wieder raus – raus geht es immer nach links.
+- Farbe steckt in den Animationen: Akzentstreifen auf Karten, Verlaufsbalken, bunte Funken, wenn
+  eine Zahl landet oder eine Prozent-Plakette erscheint.
+- Panda: nur saubere HQ-Posen in `toonfin/panda/` (19 Stück: zeigen, zeigestock, zeigen_tablet,
+  laptop, mikrofon, kaffee, tipp_geben, selbstbewusst, arme_verschraenkt, entspannt, winken,
+  begeistert, nachdenklich, ueberrascht, cool, wuetend, traurig, augenzwinkern, hoodie_daumen).
+  Hochgerechnet mit Real-ESRGAN (Anime-Modell) in reinem numpy: `tools/esrgan_np.py`,
+  `tools/hq_upscale.py`. Nur Figuren, die im Sheet mindestens ~180 px hoch sind, werden sauber;
+  für weitere Posen bitte Einzelbilder in hoher Auflösung liefern.
+- Keine runden Panda-Einblendungen, immer genau ein Panda. Posenwechsel per Überblendung (`swap`).
+- Sound: Whoosh beim Bildwechsel und wenn etwas raus- oder reinfliegt, Registrierkasse, wenn ein
+  Geldbetrag landet (KPI/Balken in €/Mrd.). Keine Piep-, Tick- oder Bumm-Effekte.
 - Untertitel: Montserrat Black, weiß mit schwarzer Kontur, aktuelles Wort gelb, unten ohne Kasten.
 
 ```bash
