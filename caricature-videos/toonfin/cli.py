@@ -39,6 +39,11 @@ def main(argv=None):
     if a.cmd == "render":
         plan = json.loads(Path(a.plan).read_text(encoding="utf-8"))
         out = Path(a.out) if a.out else Path(a.plan).with_suffix(".mp4")
+        if plan.get("style") == "comic":
+            from . import comic
+            comic.render(plan, out, a.ss, a.workers)
+            render.write_srt(plan, out.with_suffix(".srt"))
+            return
         render.render(plan, out, a.ss, a.workers, a.music_file)
         render.write_srt(plan, out.with_suffix(".srt"))
         return

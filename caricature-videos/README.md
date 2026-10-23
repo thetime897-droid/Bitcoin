@@ -24,6 +24,7 @@ MP4 9:16 (1080×1920) und/oder 16:9 (1920×1080)  +  .srt
 |---|---|
 | `demo/demo_short.mp4` | 9:16-Short, ca. 38 s: Inflation, FOMO, Crash, Sparplan, Zinseszins, Bank |
 | `demo/nvidia_original_audio_short.mp4` | 9:16-Short, 16 s: **Originalton + Original-Untertitel** aus dem Clip, darüber CEO-Karikatur, Musik und SFX |
+| `demo/sap_panda_comic_short.mp4` | 9:16, 64 s: **Panda-Comic-Stil**. Dein SAP-Originalton, 12 Comic-Bilder, die nacheinander reingeschoben werden, Panda_investiert hält in jedem Bild etwas anderes, große Untertitel unten |
 | `demo/sap_original_audio_short.mp4` | 9:16-Short, 64 s: SAP-Quartalszahlen, Originalton + Original-Untertitel, 21 Szenen. Ohne eigene Musik, weil das Original schon Musik hat |
 | `demo/nvidia_short.mp4` | 9:16-Short, ca. 28 s: Die „Aktien für eine S-Klasse“-Story, mit CEO-Karikatur und freier Neural-Stimme |
 | `demo/boerse_long.mp4` | 16:9-Longform, ca. 55 s: Bulle vs. Bär, Hype, Crash, Schulden, Steuern, Rakete, Geldregen |
@@ -55,6 +56,20 @@ eigene Musik und eigene Soundeffekte (Ducking unter der Stimme).
 
 ```bash
 python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --out out/clip
+```
+
+### Panda-Comic-Stil (`toonfin/comic.py`)
+
+Volle Comic-Bilder auf weißem Hintergrund, die alle 3–8 s von rechts reingeschoben werden.
+Panda_investiert (nach dem Character-Sheet: cremefarbenes Fell, runde Brille, schwarzer Anzug)
+spricht mit deinem Originalton und hält pro Bild etwas anderes (Mikro, ₿-Münze, Handy, Zeigestock,
+Schild, Eimer, Kalender, Fernglas …). Untertitel stehen groß unten ohne Kasten, das gesprochene Wort
+leuchtet grün. Ein Comic-Plan ist JSON mit `"style": "comic"` und einer Liste `panels`
+(`scene` = intro, trophy, board, tombstone, bars, cloudrain, sign, stack, gauge, hook, rocket,
+binoculars), siehe `examples/sap_panda_comic.plan.json`.
+
+```bash
+python -m toonfin render examples/sap_panda_comic.plan.json --out out/sap_comic.mp4
 ```
 
 ## Benutzung
