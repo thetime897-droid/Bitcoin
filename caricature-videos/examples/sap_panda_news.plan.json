@@ -1313,24 +1313,16 @@
      "tone": "good"
     },
     {
-     "type": "kpi",
-     "at": 0.25,
-     "title": "QUARTALSUMSATZ",
+     "type": "illus",
+     "kind": "trophy",
+     "at": 0.15,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
      "value": "10 Mrd. €",
-     "count_at": 0.9,
-     "count_end": 2.0,
-     "badge": "REKORD",
-     "badge_at": 2.2,
-     "y": 700
-    },
-    {
-     "type": "circle",
-     "at": 2.05,
-     "x": 615,
-     "y": 735,
-     "rx": 325,
-     "ry": 95,
-     "tone": "gold"
+     "label": "REKORD",
+     "count_at": 0.75,
+     "count_end": 1.85
     }
    ]
   },
@@ -1352,12 +1344,13 @@
      "tone": "dark"
     },
     {
-     "type": "iconcard",
-     "at": 0.3,
-     "icon": "search",
-     "label": "KURZ ERKLÄRT",
-     "y": 800,
-     "scale": 2.4
+     "type": "illus",
+     "kind": "magnifier",
+     "at": 0.2,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "mark": "?"
     }
    ]
   },
@@ -1385,12 +1378,17 @@
      "until": 1.75
     },
     {
-     "type": "stamp",
-     "at": 0.3,
-     "text": "TOTGESAGT",
-     "strike_at": 1.0,
+     "type": "illus",
+     "kind": "tombstone",
+     "at": 0.15,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "label": "SAP?",
+     "crack_at": 0.45,
+     "burst_at": 1.05,
      "until": 1.75,
-     "y": 760
+     "pop": "SOFTWARE"
     },
     {
      "type": "headline",
@@ -1489,27 +1487,15 @@
      "tone": "good"
     },
     {
-     "type": "bars",
+     "type": "illus",
+     "kind": "cloud",
      "at": 0.2,
-     "title": "CLOUD-UMSATZ Q3 (MRD. €)",
-     "items": [
-      [
-       "Q3 2025",
-       "5,4",
-       null
-      ],
-      [
-       "Q3 2026",
-       "6,7",
-       "good"
-      ]
-     ],
-     "bar_at": [
-      0.6,
-      1.3
-     ],
-     "badge": "+25 %",
-     "badge_at": 3.4
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "label": "CLOUD",
+     "value": "6,7 MRD. €  +25 %",
+     "fill_time": 3.8
     }
    ]
   },
@@ -1538,13 +1524,14 @@
      "until": 2.1
     },
     {
-     "type": "stamp",
-     "at": 0.3,
-     "text": "NUR INFO",
-     "tone": "dark",
+     "type": "illus",
+     "kind": "warning",
+     "at": 0.2,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
      "until": 2.1,
-     "y": 760,
-     "rot": -8
+     "text": "KEINE\nANLAGEBERATUNG"
     },
     {
      "type": "headline",
@@ -1563,8 +1550,11 @@
      "label": "CLOUD = WACHSTUM",
      "arrow": true,
      "y": 800,
-     "scale": 2.6,
-     "from": "right"
+     "scale": 3.2,
+     "from": "right",
+     "w": 600,
+     "h": 520,
+     "x": 680
     }
    ]
   },
@@ -1586,15 +1576,15 @@
      "tone": "good"
     },
     {
-     "type": "kpi",
-     "at": 0.25,
-     "title": "CLOUD-AUFTRAGSBESTAND",
-     "value": "24,1 Mrd. €",
-     "count_at": 1.3,
-     "count_end": 2.6,
-     "badge": "+26 %",
-     "badge_at": 4.0,
-     "y": 640
+     "type": "illus",
+     "kind": "stack",
+     "at": 0.2,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "value": "24,1 MRD. € +26 %",
+     "build": 2.3,
+     "until": 4.85
     },
     {
      "type": "hbars",
@@ -1615,29 +1605,6 @@
      "y": 1000,
      "x": 745,
      "w": 585
-    },
-    {
-     "type": "circle",
-     "at": 2.65,
-     "x": 610,
-     "y": 675,
-     "rx": 320,
-     "ry": 95,
-     "tone": "gold"
-    },
-    {
-     "type": "info",
-     "at": 2.9,
-     "until": 4.85,
-     "x": 745,
-     "y": 1000,
-     "w": 585,
-     "h": 230,
-     "icon": "search",
-     "lines": [
-      "Unterschriebene Verträge,",
-      "Umsatz der Zukunft"
-     ]
     }
    ]
   },
@@ -1675,7 +1642,8 @@
      "count_end": 2.2,
      "badge": "+18 %",
      "badge_at": 2.9,
-     "y": 640
+     "y": 640,
+     "until": 3.75
     },
     {
      "type": "headline",
@@ -1688,21 +1656,6 @@
      "from": "down"
     },
     {
-     "type": "range",
-     "at": 4.0,
-     "title": "PROGNOSE CLOUD & SOFTWARE",
-     "lo": 0.1,
-     "hi": 0.9,
-     "lo_label": "UNTEN",
-     "hi_label": "OBEN",
-     "marker": 0.82,
-     "marker_at": 4.8,
-     "marker_label": "HIER",
-     "y": 1010,
-     "x": 745,
-     "w": 585
-    },
-    {
      "type": "circle",
      "at": 2.25,
      "x": 605,
@@ -1711,6 +1664,16 @@
      "ry": 95,
      "tone": "gold",
      "until": 3.75
+    },
+    {
+     "type": "illus",
+     "kind": "target",
+     "at": 3.9,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "label": "OBERES ENDE",
+     "hit_at": 0.75
     }
    ]
   },
@@ -1757,7 +1720,17 @@
      "draw_end": 4.4,
      "note": "FLACHT AB",
      "note_at": 4.0,
-     "y": 700
+     "y": 700,
+     "until": 4.35
+    },
+    {
+     "type": "illus",
+     "kind": "hook",
+     "at": 0.7,
+     "x": 880,
+     "y": 430,
+     "s": 0.75,
+     "until": 4.35
     },
     {
      "type": "headline",
@@ -1770,16 +1743,15 @@
      "from": "down"
     },
     {
-     "type": "iconcard",
-     "at": 4.7,
-     "icon": "calendar-clock",
-     "label": "Q4 = BUCHUNGS-QUARTAL",
-     "y": 1085,
-     "x": 750,
-     "w": 560,
-     "h": 300,
-     "scale": 1.3,
-     "from": "down"
+     "type": "illus",
+     "kind": "calendar",
+     "at": 4.5,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "big": "Q4",
+     "month": "OKT – DEZ",
+     "circle_at": 0.6
     }
    ]
   },
@@ -1846,16 +1818,14 @@
      "from": "down"
     },
     {
-     "type": "iconcard",
-     "at": 4.6,
-     "icon": "calendar-clock",
-     "label": "ENTSCHEIDEND: Q4",
-     "y": 1085,
-     "x": 750,
-     "w": 560,
-     "h": 300,
-     "scale": 1.3,
-     "from": "down"
+     "type": "illus",
+     "kind": "rocket",
+     "at": 3.75,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "tag": "Q4?",
+     "label": "SAP"
     }
    ]
   },

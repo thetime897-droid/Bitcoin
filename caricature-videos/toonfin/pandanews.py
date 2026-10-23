@@ -669,13 +669,23 @@ def el_info(ink, t, e):
             T(ink, -w / 2 + 130, -h / 2 + 112 + i * 46, line, 32, DARK, "montb", "lm")
 
 
+def el_illus(ink, t, e):
+    """Big frame-filling illustration (see illus.py); local time starts at ``at``."""
+    from .illus import KINDS
+    c = fly(ink, e.get("x", 640), e.get("y", 800), t, e["at"], e.get("from", "right"), until=e.get("until"))
+    if not c:
+        return
+    with c, ink.at(0, 0, 0, e.get("s", 1.0)):
+        KINDS[e["kind"]](ink, t - max(0, e["at"]), e)
+
+
 ELEMENTS = {
     "headline": (el_headline, cues_headline), "live": (el_live, lambda e: []),
     "kpi": (el_kpi, cues_kpi), "bars": (el_bars, cues_bars), "hbars": (el_hbars, cues_hbars),
     "line": (el_line, cues_line), "minichart": (el_minichart, cues_minichart), "stamp": (el_stamp, cues_stamp),
     "tiles": (el_tiles, cues_tiles), "iconcard": (el_iconcard, cues_iconcard), "range": (el_range, cues_range),
     "candles": (el_candles, lambda e: []), "tape": (el_tape, lambda e: []),
-    "circle": (el_circle, lambda e: []), "info": (el_info, lambda e: []),
+    "circle": (el_circle, lambda e: []), "info": (el_info, lambda e: []), "illus": (el_illus, lambda e: []),
 }
 
 
@@ -876,7 +886,10 @@ class Renderer:
 
 # -- sound -------------------------------------------------------------------------------
 
-SOUNDS = {"whoosh": "whoosh", "pop": "pop", "cash": "cash", "riser": "riser"}
+SOUNDS = {"whoosh": "whoosh", "pop": "pop", "cash": "cash", "riser": "riser", "crack": "crack", "bell": "bell",
+          "shimmer": "drum_splash_soft"}
+# minimum gap between two hits of the same sound, so it never turns into sound-engineering
+MIN_GAP = {"whoosh": 0.9, "pop": 0.3, "cash": 1.2, "crack": 1.0, "bell": 1.0, "shimmer": 1.5, "riser": 3.0}
 
 
 def _custom(name):
@@ -935,6 +948,14 @@ def sample(name):
     if name == "cash":
         x = audio.load(HERE / "sfx" / "perc_till.flac")
         return x / (np.max(np.abs(x)) + 1e-9)
+    if name == "crack":
+        x = audio.load(HERE / "sfx" / "perc_snap2.flac")
+        return x / (np.max(np.abs(x)) + 1e-9)
+    if name == "bell":
+        x = audio.load(HERE / "sfx" / "perc_bell.flac")
+        x = x[:int(1.4 * audio.SR)]
+        x *= np.linspace(1, 0, len(x)) ** 1.5
+        return x / (np.max(np.abs(x)) + 1e-9)
     if name == "riser":
         x = audio.load(HERE / "sfx" / "drum_cymbal_open.flac")[::-1].copy()
         x = x[-int(1.6 * audio.SR):]
@@ -957,9 +978,10 @@ def cues(plan):
             out.append((st - 0.08, "whoosh", 0.8))
         for e in p.get("elements", []):
             at, ty = e.get("at", 0), e["type"]
-            if at > 0 and ty not in ("tape", "circle"):
+            big = ty in ("illus", "candles", "bars", "kpi", "line", "iconcard", "info", "hbars", "range", "tiles")
+            if at > 0 and big:
                 out.append((st + at - 0.05, "whoosh", 0.38))
-            if e.get("until") is not None:
+            if e.get("until") is not None and big:
                 out.append((st + e["until"] - 0.03, "whoosh", 0.38))
             money = bool(MONEY_RE.search(" ".join(str(e.get(k, "")) for k in ("value", "title", "lo_label"))))
             if ty == "kpi" and e.get("count", True):
@@ -978,6 +1000,19 @@ def cues(plan):
                 out.append((st + at + 0.12, "pop", 0.7))
             if ty == "circle":
                 out.append((st + at + 0.5, "pop", 0.45))
+            if ty == "illus":
+                k = e["kind"]
+                if k == "trophy":
+                    out.append((st + at + e.get("count_end", 2.0), "cash", 0.5))
+                if k == "tombstone":
+                    out.append((st + at + e.get("crack_at", 0.7), "crack", 0.55))
+                    out.append((st + at + e.get("burst_at", 1.5), "shimmer", 0.35))
+                if k == "calendar":
+                    out.append((st + at + e.get("circle_at", 0.5) + 0.3, "bell", 0.35))
+                if k == "target":
+                    out.append((st + at + e.get("hit_at", 0.6), "pop", 0.7))
+                if k == "stack":
+                    out.append((st + at + e.get("build", 2.4), "pop", 0.6))
             out += [(st + a, n, g) for a, n, g in e.get("sfx", [])]
         out += [(st + a, n, g) for a, n, g in p.get("sfx", [])]
     return sorted(out)
@@ -993,7 +1028,7 @@ def mix_audio(voice, duration, cue_list, env, fps, master=0.3):
     fx = np.zeros(n)
     last = {}
     for t, name, gain in cue_list:
-        if name == "tick" and t - last.get("tick", -1) < 0.05:
+        if t - last.get(name, -99) < MIN_GAP.get(name, 0.2):
             continue
         last[name] = t
         s = sample(SOUNDS.get(name, name))

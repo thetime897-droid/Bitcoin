@@ -88,6 +88,13 @@ python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --ou
   Geldbeträgen, ein Rückwärts-Becken als Riser im Einstieg.
   Eigene Sounds (z. B. von Pixabay) als `toonfin/sfx/custom/whoosh.mp3`, `pop.mp3`, `cash.mp3`
   ablegen – sie ersetzen die eingebauten automatisch.
+- **Große Illustrationen** (`illus`, `toonfin/illus.py`), damit kein Bild leer wirkt – angelehnt an
+  Comic-News-Shorts: `trophy` (Geldberg + Pokal, Zähler), `tombstone` (R.I.P., Riss, bricht auf),
+  `cloud` (Geld-Regen in Eimer), `stack` (wachsender Auftragsstapel), `hook` (Haken), `calendar`
+  (Quartal wird rot eingekreist), `target` (Dart trifft), `warning` (Warnschild), `magnifier` (Lupe),
+  `rocket` (Rakete auf der Startrampe).
+- Sound-Dosierung: Mindestabstände je Sound (`MIN_GAP`), Whoosh nur bei Seitenwechsel und großen
+  Einflügen; zusätzlich Riss (Grabstein), leiser Becken-Schimmer (Enthüllung), Glocke (Kalender).
 - Motion Graphics: Bewegungsunschärfe bei Seitenwechseln, Headlines erscheinen Wort für Wort,
   gezeichnete Markierungs-Kreise um Schlüsselzahlen (`circle`), Info-Karten mit Mehrwert
   (`info`: „Was heißt das?“).
