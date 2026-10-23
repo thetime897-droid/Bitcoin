@@ -24,6 +24,7 @@ MP4 9:16 (1080×1920) und/oder 16:9 (1920×1080)  +  .srt
 |---|---|
 | `demo/demo_short.mp4` | 9:16-Short, ca. 38 s: Inflation, FOMO, Crash, Sparplan, Zinseszins, Bank |
 | `demo/nvidia_original_audio_short.mp4` | 9:16-Short, 16 s: **Originalton + Original-Untertitel** aus dem Clip, darüber CEO-Karikatur, Musik und SFX |
+| `demo/sap_panda_news_FINAL.mp4` | **Finale, abgenommene Vorlage** (Regeln in `CLAUDE.md`) |
 | `demo/sap_panda_news_short.mp4` | 9:16, 64 s: **Panda-News-Stil (aktuell)**, 60 fps: Originalton, weißer Hintergrund, alles fliegt rein und raus, farbige Finanzgrafiken, Panda in HQ (Real-ESRGAN), Whoosh + Registrierkasse |
 | `demo/sap_panda_comic_short.mp4` | 9:16, 64 s: **Panda-Comic-Stil**. Dein SAP-Originalton, 12 Comic-Bilder, die nacheinander reingeschoben werden, Panda_investiert hält in jedem Bild etwas anderes, große Untertitel unten |
 | `demo/sap_original_audio_short.mp4` | 9:16-Short, 64 s: SAP-Quartalszahlen, Originalton + Original-Untertitel, 21 Szenen. Ohne eigene Musik, weil das Original schon Musik hat |
@@ -92,7 +93,8 @@ python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --ou
   Comic-News-Shorts: `trophy` (Geldberg + Pokal, Zähler), `tombstone` (R.I.P., Riss, bricht auf),
   `cloud` (Geld-Regen in Eimer), `stack` (wachsender Auftragsstapel), `hook` (Haken), `calendar`
   (Quartal wird rot eingekreist), `target` (Dart trifft), `warning` (Warnschild), `magnifier` (Lupe),
-  `rocket` (Rakete auf der Startrampe).
+  `rocket` (Rakete auf der Startrampe), `gauge` (Tacho-Zeiger), `car` (Auto fährt rein), `tank`
+  (Panzer), `newspaper` (Zeitung), `phone` (News-/Social-Post auf dem Handy).
 - Sound-Dosierung: Mindestabstände je Sound (`MIN_GAP`), Whoosh nur bei Seitenwechsel und großen
   Einflügen; zusätzlich Riss (Grabstein), leiser Becken-Schimmer (Enthüllung), Glocke (Kalender).
 - Motion Graphics: Bewegungsunschärfe bei Seitenwechseln, Headlines erscheinen Wort für Wort,

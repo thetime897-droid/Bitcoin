@@ -222,7 +222,7 @@ def el_bars(ink, t, e):
             k = smooth(seg(t, at, at + 0.9))
             bh = (base - top) * num(v) / vmax * k
             bx = -w / 2 + 60 + i * (bw + gap)
-            col = TONE.get(tone, GREYBAR) if tone else GREYBAR
+            col = TONE.get(tone, GREEN) if tone else TONE.get(e.get("tone", "good"), GREEN)
             if bh > 1:
                 ink.rect(bx, base - bh, bx + bw, base, fill=col, outline=None, wob=0, r=min(18, bh / 2))
                 ink.rect(bx, base - bh, bx + bw * 0.42, base, fill=mix(col, WHITE, 0.22), outline=None, wob=0,
@@ -676,7 +676,17 @@ def el_illus(ink, t, e):
     if not c:
         return
     with c, ink.at(0, 0, 0, e.get("s", 1.0)):
-        KINDS[e["kind"]](ink, t - max(0, e["at"]), e)
+        clip = e.get("clip_top", 400)
+        if clip is None:
+            KINDS[e["kind"]](ink, t - max(0, e["at"]), e)
+            return
+        # draw on its own layer and cut everything above the headline zone, so nothing runs into the text
+        layer = Image.new("RGBA", ink.img.size, (0, 0, 0, 0))
+        KINDS[e["kind"]](Ink(layer, ink.m, ink.boil, ink.ss), t - max(0, e["at"]), e)
+        cy = int(clip * ink.ss)
+        if cy > 0:
+            layer.paste((0, 0, 0, 0), (0, 0, layer.width, min(layer.height, cy)))
+        ink.img.alpha_composite(layer)
 
 
 ELEMENTS = {
@@ -1011,6 +1021,10 @@ def cues(plan):
                     out.append((st + at + e.get("circle_at", 0.5) + 0.3, "bell", 0.35))
                 if k == "target":
                     out.append((st + at + e.get("hit_at", 0.6), "pop", 0.7))
+                if k == "gauge":
+                    out.append((st + at + e.get("settle", 1.3), "pop", 0.65))
+                if k == "car":
+                    out.append((st + at + 0.05, "whoosh", 0.5))
                 if k == "stack":
                     out.append((st + at + e.get("build", 2.4), "pop", 0.6))
             out += [(st + a, n, g) for a, n, g in e.get("sfx", [])]

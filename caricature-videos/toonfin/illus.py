@@ -77,10 +77,13 @@ def trophy(ink, t, e):
             ink.shape([(-110, -215), (-80, -215), (-95, -60)], fill=mix(GOLD, WHITE, 0.55), outline=None, wob=0)
             ink.rect(-34, 25, 34, 95, fill=GOLD_DK, outline=DARK, w=LW, wob=0.2)
             ink.rect(-105, 95, 105, 150, fill=BROWN, outline=DARK, w=LW, wob=0.2, r=8)
-            T(ink, 0, -170, e.get("label", "REKORD"), 40, DARK)
+            T(ink, 0, -175, e.get("label", "REKORD"), 38, DARK)
             k = smooth(seg(t, e.get("count_at", 0.9), e.get("count_end", 2.0)))
             from .scenes import count_fmt
-            T(ink, 0, -105, count_fmt(e.get("value", ""), k), 58, DARK)
+            vt = count_fmt(e.get("value", ""), k)
+            full = e.get("value", "")
+            fs = min(58, 58 * 225 / max(1, ink.text_w(full, 58, "mont")))
+            T(ink, 0, -105, vt, fs, DARK)
             if t > e.get("count_end", 2.0):
                 for i in range(5):
                     kk = smooth(seg(t, e["count_end"] + i * 0.08, e["count_end"] + i * 0.08 + 0.4))
@@ -160,7 +163,8 @@ def cloud(ink, t, e):
                 bill(ink, -90 + i * 36, 40 - h, 0.4, i * 25)
         ink.arc(0, -110, 150, 130, 190, 350, DARK, 7, wob=0.2)
         if e.get("value"):
-            ink.rect(-150, 80, 150, 150, fill=WHITE, outline=DARK, w=6, wob=0, r=14)
+            w = ink.text_w(e["value"], 44, "mont") + 60
+            ink.rect(-w / 2, 80, w / 2, 150, fill=WHITE, outline=DARK, w=6, wob=0, r=14)
             T(ink, 0, 116, e["value"], 44, DARK)
 
 
@@ -200,7 +204,7 @@ def hook(ink, t, e):
         ink.arc(-70, 120, 70, 70, -10, 190, DARK, 30, wob=0.1)
         ink.arc(-70, 120, 70, 70, -10, 190, (170, 174, 182), 18, wob=0.1)
         ink.shape([(-140, 120), (-170, 70), (-125, 92)], fill=(170, 174, 182), outline=DARK, w=5, wob=0)
-        with ink.at(150, -40, 8):
+        with ink.at(-40, 290, -4):
             ink.rect(-110, -40, 110, 40, fill=WHITE, outline=DARK, w=6, wob=0.2, r=10)
             T(ink, 0, 2, e.get("label", "HAKEN"), 42, RED)
 
@@ -310,3 +314,136 @@ def rocket(ink, t, e):
 
 KINDS = {"trophy": trophy, "tombstone": tombstone, "cloud": cloud, "stack": stack, "hook": hook,
          "calendar": calendar, "target": target, "warning": warning, "magnifier": magnifier, "rocket": rocket}
+
+
+def gauge(ink, t, e):
+    """Speedometer: needle sweeps up into the green zone and settles with a small overshoot."""
+    segs = [(RED, 0.0, 0.2), ((255, 140, 40), 0.2, 0.4), (GOLD, 0.4, 0.6), ((150, 210, 90), 0.6, 0.8), (GREEN, 0.8, 1.0)]
+    R, r = 300, 190
+    for col, a, b in segs:
+        a0, a1 = 180 + 180 * a, 180 + 180 * b
+        pts = [(math.cos(math.radians(a0 + (a1 - a0) * i / 12)) * R, math.sin(math.radians(a0 + (a1 - a0) * i / 12)) * R)
+               for i in range(13)]
+        pts += [(math.cos(math.radians(a1 - (a1 - a0) * i / 12)) * r, math.sin(math.radians(a1 - (a1 - a0) * i / 12)) * r)
+                for i in range(13)]
+        ink.shape(pts, fill=col, outline=DARK, w=6, wob=0.1)
+    for i in range(11):
+        a = math.radians(180 + 18 * i)
+        ink.line([(math.cos(a) * (r - 14), math.sin(a) * (r - 14)), (math.cos(a) * (r - 40), math.sin(a) * (r - 40))],
+                 DARK, 6 if i % 5 == 0 else 3, wob=0)
+    T(ink, -r + 70, -16, e.get("lo", "UNTEN"), 26, (110, 114, 124))
+    T(ink, r - 70, -16, e.get("hi", "OBEN"), 26, (110, 114, 124))
+    settle = e.get("settle", 1.3)
+    v = e.get("level", 0.88)
+    k = seg(t, 0.15, settle)
+    val = v * smooth(k) + (0.06 * math.sin((t - settle) * 14) * math.exp(-(t - settle) * 5) if t > settle else 0)
+    a = math.radians(180 + 180 * val)
+    ink.shape([(math.cos(a) * (R - 30), math.sin(a) * (R - 30)), (math.cos(a + 1.57) * 18, math.sin(a + 1.57) * 18),
+               (math.cos(a - 1.57) * 18, math.sin(a - 1.57) * 18)], fill=DARK, outline=None, wob=0)
+    ink.circle(0, 0, 34, fill=DARK, outline=None, wob=0)
+    ink.circle(0, 0, 14, fill=GOLD, outline=None, wob=0)
+    if t > settle and e.get("label"):
+        kk = ease_out_back(seg(t, settle, settle + 0.4), 1.6)
+        with ink.at(0, 120, -2, max(0.05, kk)):
+            w = ink.text_w(e["label"], 50, "mont") + 70
+            ink.rect(-w / 2, -44, w / 2, 44, fill=GREEN, outline=DARK, w=6, wob=0.2, r=44)
+            T(ink, 0, 2, e["label"], 50, WHITE)
+        for i in range(6):
+            kk = smooth(seg(t, settle + i * 0.05, settle + i * 0.05 + 0.5))
+            aa = a + (i - 2.5) * 0.25
+            if kk < 1:
+                sparkle(ink, math.cos(aa) * (R + 20 + 60 * kk), math.sin(aa) * (R + 20 + 60 * kk), 18 * (1 - kk))
+
+
+def car(ink, t, e):
+    """Sports car racing in from the right with speed lines, then parking with a bounce."""
+    k = smooth(seg(t, 0.0, 0.8))
+    x = lerp(900, 0, k)
+    b = 10 * math.sin((t - 0.8) * 16) * math.exp(-(t - 0.8) * 5) if t > 0.8 else 0
+    if k < 1:
+        for i in range(4):
+            yy = -60 + i * 40
+            ink.line([(x + 330, yy), (x + 330 + 260 * (1 - k), yy)], (176, 180, 188), 6, wob=0)
+    ink.ellipse(x, 150, 320, 26, fill=(230, 231, 236), outline=None, wob=0)
+    col = tuple(e.get("color", (226, 58, 64)))
+    with ink.at(x, -abs(b)):
+        ink.shape([(-320, 110), (-310, 30), (-250, 10), (-150, -70), (60, -80), (170, -10), (300, 15), (325, 70),
+                   (320, 110)], fill=col, outline=DARK, w=LW, wob=0.2, smooth=True)
+        ink.shape([(-130, -10), (-80, -60), (40, -64), (40, -10)], fill=SKY, outline=DARK, w=6, wob=0)
+        ink.shape([(60, -10), (60, -62), (120, -10)], fill=SKY, outline=DARK, w=6, wob=0)
+        ink.line([(-300, 50), (300, 50)], mix(col, WHITE, 0.4), 6, wob=0)
+        ink.ellipse(305, 40, 16, 10, fill=GOLD, outline=DARK, w=3, wob=0)
+        for wx in (-190, 190):
+            ink.circle(wx, 110, 62, fill=DARK, outline=DARK, w=4, wob=0)
+            ink.circle(wx, 110, 34, fill=(200, 202, 210), outline=DARK, w=4, wob=0)
+            for j in range(3):
+                aa = math.radians(-x * 0.8 + j * 60)
+                ink.line([(wx - math.cos(aa) * 30, 110 - math.sin(aa) * 30), (wx + math.cos(aa) * 30, 110 + math.sin(aa) * 30)],
+                         DARK, 4, wob=0)
+    if e.get("tag") and t > 0.9:
+        kk = ease_out_back(seg(t, 0.9, 1.3), 1.6)
+        with ink.at(150, -200, 5, max(0.05, kk)):
+            w = ink.text_w(e["tag"], 46, "mont") + 50
+            ink.rect(-w / 2, -40, w / 2, 40, fill=GOLD, outline=DARK, w=6, wob=0.2, r=12)
+            T(ink, 0, 2, e["tag"], 46, DARK)
+
+
+def tank(ink, t, e):
+    """Tank rolling in, turret turning, small recoil puff."""
+    k = smooth(seg(t, 0.0, 1.0))
+    x = lerp(-900, 0, k)
+    turret = lerp(-20, 6, smooth(seg(t, 0.9, 1.5)))
+    green = (106, 128, 70)
+    with ink.at(x, 0):
+        ink.rect(-330, 60, 330, 170, fill=(70, 74, 60), outline=DARK, w=LW, wob=0.2, r=55)
+        for i in range(7):
+            wx = -270 + i * 90
+            ink.circle(wx, 115, 38, fill=(150, 154, 140), outline=DARK, w=5, wob=0)
+            ink.circle(wx, 115, 12, fill=DARK, outline=None, wob=0)
+        ink.shape([(-300, 60), (-260, -30), (270, -30), (310, 60)], fill=green, outline=DARK, w=LW, wob=0.2)
+        with ink.at(-20, -30, turret):
+            ink.rect(0, -60, 380, -30, fill=green, outline=DARK, w=6, wob=0.1)
+            ink.shape([(-170, 0), (-140, -90), (120, -90), (160, 0)], fill=green, outline=DARK, w=LW, wob=0.2)
+            ink.rect(-60, -120, 30, -90, fill=green, outline=DARK, w=6, wob=0.1)
+        if e.get("label"):
+            T(ink, 0, 20, e["label"], 40, (230, 232, 220))
+
+
+def newspaper(ink, t, e):
+    """Newspaper slides in with a slight spin; headline and photo block."""
+    k = smooth(seg(t, 0.0, 0.7))
+    with ink.at(0, 0, lerp(-25, -3, k), lerp(0.6, 1.0, k)):
+        ink.rect(-300, -360, 300, 360, fill=(250, 248, 240), outline=DARK, w=LW, wob=0.2, r=6)
+        T(ink, 0, -300, e.get("paper", "FINANZ-NEWS"), 46, DARK, "comic")
+        ink.line([(-260, -265), (260, -265)], DARK, 5, wob=0)
+        lines = e.get("headline", "BREAKING").split("\n")
+        for i, l in enumerate(lines):
+            T(ink, 0, -205 + i * 64, l, 58, DARK)
+        top = -205 + len(lines) * 64
+        ink.rect(-260, top, 30, top + 200, fill=SKY, outline=DARK, w=5, wob=0)
+        ink.line([(-240, top + 170), (-170, top + 120), (-110, top + 140), (0, top + 40)], GREEN, 10, wob=0)
+        for i in range(6):
+            ink.line([(60, top + 20 + i * 34), (260, top + 20 + i * 34)], GREY, 8, wob=0)
+        for i in range(3):
+            ink.line([(-260, top + 240 + i * 34), (260 - (i % 2) * 90, top + 240 + i * 34)], GREY, 8, wob=0)
+
+
+def phone_post(ink, t, e):
+    """Smartphone showing a social/news post; the post card pops in."""
+    ink.rect(-220, -380, 220, 380, fill=(30, 32, 38), outline=DARK, w=LW, wob=0.1, r=46)
+    ink.rect(-196, -350, 196, 350, fill=WHITE, outline=None, wob=0, r=30)
+    ink.rect(-50, -366, 50, -350, fill=(30, 32, 38), outline=None, wob=0, r=8)
+    k = ease_out_back(seg(t, 0.25, 0.7), 1.4)
+    if k > 0.02:
+        with ink.at(0, -60, 0, k):
+            ink.circle(-130, -170, 36, fill=BLUE, outline=DARK, w=4, wob=0)
+            ink.text(-80, -185, e.get("name", "News"), 34, "mont", fill=DARK, stroke=None, anchor="lm")
+            ink.text(-80, -148, e.get("handle", "@finanzen · jetzt"), 22, "mont", fill=(110, 114, 124), stroke=None,
+                     anchor="lm")
+            for i, l in enumerate(e.get("text", "").split("\n")):
+                T(ink, 0, -80 + i * 50, l, 36, DARK)
+            ink.rect(-160, 90, 160, 250, fill=SKY, outline=DARK, w=4, wob=0, r=12)
+            ink.line([(-140, 220), (-60, 170), (0, 190), (130, 110)], e.get("trend") == "down" and RED or GREEN, 9, wob=0)
+
+
+KINDS.update({"gauge": gauge, "car": car, "tank": tank, "newspaper": newspaper, "phone": phone_post})
