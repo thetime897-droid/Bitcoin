@@ -358,10 +358,30 @@ def cues_stamp(e):
 
 
 
-ICONS = {}
+ICON_COL = {"cloud": BLUE, "trending-up": GREEN, "trending-down": RED, "calendar-clock": (232, 120, 0),
+            "eye": DARK, "search": BLUE, "banknote": GREEN, "badge-euro": (232, 160, 0), "users": BLUE,
+            "package": (196, 128, 52), "shopping-cart": DARK, "landmark": DARK, "rocket": (232, 80, 60),
+            "chart-candlestick": GREEN, "chart-column-increasing": GREEN, "circle-alert": RED, "target": RED}
+
+
+@lru_cache(maxsize=128)
+def lucide(name, px, col):
+    """Render a Lucide icon (ISC licence, toonfin/icons) to an RGBA image of px x px."""
+    import cairosvg
+    svg = (HERE / "icons" / f"{name}.svg").read_text()
+    svg = svg.replace('stroke="currentColor"', 'stroke="#%02x%02x%02x"' % col).replace('stroke-width="2"', 'stroke-width="2.2"')
+    import io
+    png = cairosvg.svg2png(bytestring=svg.encode(), output_width=px, output_height=px)
+    return Image.open(io.BytesIO(png)).convert("RGBA")
 
 
 def icon(ink, name, s=1.0, col=DARK):
+    if (HERE / "icons" / f"{name}.svg").exists():
+        px = max(8, int(110 * s * ink.scale()))
+        im = lucide(name, px, tuple(ICON_COL.get(name, col)))
+        X, Y = ink.P(0, 0)
+        ink.img.alpha_composite(im, (int(X - px / 2), int(Y - px / 2)))
+        return
     with ink.at(0, 0, 0, s):
         if name == "euro":
             ink.circle(0, 0, 40, fill=GOLD, outline=DARK, w=6, wob=0)
@@ -472,11 +492,151 @@ def cues_range(e):
 
 
 
+def ohlc(seed, n, segments, start=100.0):
+    """Realistic daily candles: drift per segment, volatility clustering, gaps, wicks, volume."""
+    rng = np.random.default_rng(seed)
+    drift = []
+    for frac, d in segments:
+        drift += [d] * max(1, int(round(n * frac)))
+    drift = (drift + [segments[-1][1]] * n)[:n]
+    vol, c, out = 0.012, start, []
+    for i in range(n):
+        vol = 0.0035 + 0.86 * vol + 0.12 * abs(rng.normal(0, 0.012))
+        o = c * (1 + rng.normal(0, vol * 0.25))
+        r = drift[i] + rng.normal(0, vol)
+        c = o * math.exp(r)
+        h = max(o, c) * (1 + abs(rng.normal(0, vol * 0.55)))
+        l = min(o, c) * (1 - abs(rng.normal(0, vol * 0.55)))
+        v = math.exp(rng.normal(0, 0.35)) * (1 + 18 * abs(r))
+        out.append((o, h, l, c, v))
+    return out
+
+
+def de(x, dec=2):
+    return f"{x:,.{dec}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+@lru_cache(maxsize=16)
+def _series(seed, n, segs, start, end):
+    data = ohlc(seed, n, [tuple(sg) for sg in segs], start)
+    k = end / data[-1][3] if end else 1.0
+    return [(o * k, h * k, l * k, c * k, v) for o, h, l, c, v in data]
+
+
+def el_candles(ink, t, e):
+    """Trading chart card: candles drawn one by one, volume, grid + price axis, moving average,
+    live price line and tag, big last price with change pill."""
+    x, y = e.get("x", CX), e.get("y", 760)
+    w, h = e.get("w", 720), e.get("h", 620)
+    c = fly(ink, x, y, t, e["at"], e.get("from", "right"), until=e.get("until"))
+    if not c:
+        return
+    n = e.get("n", 46)
+    data = _series(e.get("seed", 7), n, tuple(tuple(sg) for sg in e.get("segments", [[1.0, 0.004]])),
+                   e.get("start", 100.0), e.get("end", 0))
+    ra, rb = e.get("reveal_at", max(0, e["at"]) + 0.2), e.get("reveal_end", max(0, e["at"]) + 2.4)
+    prog = n * (0.12 + 0.88 * ease_in_out(seg(t, ra, rb)))
+    full, frac = int(prog), prog - int(prog)
+    up_col, dn_col = GREEN, RED
+    with c:
+        card(ink, 0, 0, w, h, r=28)
+        x0, x1 = -w / 2 + 34, w / 2 - 120
+        top, vol_top, bot = -h / 2 + 150, h / 2 - 120, h / 2 - 40
+        lo = min(d[2] for d in data)
+        hi = max(d[1] for d in data)
+        pad = (hi - lo) * 0.08
+        lo, hi = lo - pad, hi + pad
+        Y = lambda p: lerp(vol_top - 14, top, (p - lo) / (hi - lo))
+        # grid + axis labels
+        for g in range(5):
+            pv = lerp(lo, hi, g / 4)
+            gy = Y(pv)
+            ink.line([(x0, gy), (x1, gy)], (238, 239, 243), 3, wob=0)
+            T(ink, x1 + 14, gy, de(pv), 24, TXT2, "montb", "lm")
+        slot = (x1 - x0) / n
+        bw = slot * 0.62
+        vmax = max(d[4] for d in data)
+        shown = []
+        for i in range(min(n, full + 1)):
+            o, hh, ll, cc, v = data[i]
+            if i == full:  # the live candle grows from open towards its close
+                if frac <= 0.02:
+                    break
+                cc = o + (cc - o) * smooth(frac)
+                hh = max(o, cc) + (hh - max(o, data[i][3])) * frac
+                ll = min(o, cc) - (min(o, data[i][3]) - ll) * frac
+            col = up_col if cc >= o else dn_col
+            cx = x0 + slot * (i + 0.5)
+            ink.rect(cx - bw / 2, vol_top + (bot - vol_top) * (1 - v / vmax * 0.9), cx + bw / 2, bot,
+                     fill=mix(col, WHITE, 0.72), outline=None, wob=0)
+            ink.line([(cx, Y(hh)), (cx, Y(ll))], col, max(2.5, slot * 0.12), wob=0, cap=False)
+            yb0, yb1 = sorted((Y(o), Y(cc)))
+            ink.rect(cx - bw / 2, yb0, cx + bw / 2, max(yb1, yb0 + 3), fill=col, outline=None, wob=0, r=2)
+            shown.append((cx, cc))
+        # 10-period moving average
+        if e.get("ma", True) and len(shown) > 10:
+            cl = [d[3] for d in data[:len(shown)]]
+            pts = [(shown[i][0], Y(sum(cl[i - 9:i + 1]) / 10)) for i in range(9, len(shown))]
+            ink.line(pts, (255, 170, 0), 4, wob=0)
+        if shown:
+            lx, lc = shown[-1]
+            first = data[0][3]
+            col = up_col if lc >= first else dn_col
+            ly = Y(lc)
+            for k in range(int((x1 - lx) / 22)):
+                xa = lx + 14 + k * 22
+                ink.line([(xa, ly), (xa + 10, ly)], col, 3, wob=0, cap=False)
+            ink.rect(x1 + 4, ly - 20, w / 2 - 10, ly + 20, fill=col, outline=None, wob=0, r=6)
+            T(ink, (x1 + w / 2) / 2 - 3, ly + 1, de(lc), 24, WHITE, "mont")
+            pul = 0.5 + 0.5 * math.sin(t * 6)
+            ink.circle(lx, ly, 10 + 8 * pul, fill=mix(col, WHITE, 0.6 + 0.3 * pul), outline=None, wob=0)
+            ink.circle(lx, ly, 8, fill=col, outline=WHITE, w=3, wob=0)
+            # header: name, venue, live price, change
+            T(ink, -w / 2 + 40, -h / 2 + 52, e.get("title", ""), 40, DARK, "mont", "lm")
+            T(ink, -w / 2 + 40, -h / 2 + 96, e.get("sub", "1D · Kerzen"), 24, TXT2, "montb", "lm")
+            T(ink, w / 2 - 40, -h / 2 + 54, de(lc) + e.get("unit", " €"), 44, DARK, "mont", "rm")
+            ch = (lc / first - 1) * 100
+            txt = ("+" if ch >= 0 else "") + de(ch) + " %"
+            pw = ink.text_w(txt, 28, "mont") + 30
+            ink.rect(w / 2 - 40 - pw, -h / 2 + 80, w / 2 - 40, -h / 2 + 116, fill=mix(col, WHITE, 0.85), outline=None,
+                     wob=0, r=18)
+            T(ink, w / 2 - 40 - pw / 2, -h / 2 + 99, txt, 28, col, "mont")
+        if e.get("glow_at") is not None:
+            sparks(ink, shown[-1][0] if shown else 0, Y(shown[-1][1]) if shown else 0, t, e["glow_at"], r=60, n=10)
+
+
+def el_tape(ink, t, e):
+    """Scrolling ticker tape across the top."""
+    if t < e.get("at", 0) or (e.get("until") is not None and t >= e["until"]):
+        return
+    y = e.get("y", 40)
+    ink.rect(-10, y - 30, 1090, y + 30, fill=(244, 245, 248), outline=None, wob=0)
+    ink.line([(-10, y + 30), (1090, y + 30)], LINE, 3, wob=0)
+    items = e["items"]
+    texts = []
+    for it in items:
+        name, val = (it.split("|") + [""])[:2]
+        texts.append((name, val))
+    gap = 60
+    widths = [ink.text_w(nm + " ", 28, "mont") + ink.text_w(v, 28, "mont") + gap for nm, v in texts]
+    total = sum(widths)
+    off = (t * e.get("speed", 110)) % total
+    xx = -off
+    while xx < 1090:
+        for (nm, v), wd in zip(texts, widths):
+            if xx + wd > -50 and xx < 1100:
+                T(ink, xx, y + 2, nm, 28, DARK, "mont", "lm")
+                col = GREEN if v.startswith("+") else RED if v.startswith("-") else TXT2
+                T(ink, xx + ink.text_w(nm + " ", 28, "mont"), y + 2, v, 28, col, "mont", "lm")
+            xx += wd
+
+
 ELEMENTS = {
     "headline": (el_headline, cues_headline), "live": (el_live, lambda e: []),
     "kpi": (el_kpi, cues_kpi), "bars": (el_bars, cues_bars), "hbars": (el_hbars, cues_hbars),
     "line": (el_line, cues_line), "minichart": (el_minichart, cues_minichart), "stamp": (el_stamp, cues_stamp),
     "tiles": (el_tiles, cues_tiles), "iconcard": (el_iconcard, cues_iconcard), "range": (el_range, cues_range),
+    "candles": (el_candles, lambda e: []), "tape": (el_tape, lambda e: []),
 }
 
 
@@ -486,7 +646,7 @@ ELEMENTS = {
 CUT_POSES = {"daumen_hoch_gross"}
 
 
-@lru_cache(maxsize=96)
+@lru_cache(maxsize=48)
 def panda_img(pose, h, alpha=255):
     path = HERE / "panda" / f"{pose}.png"
     im = Image.open(path).convert("RGBA")
@@ -505,6 +665,15 @@ def panda_img(pose, h, alpha=255):
 def paste_panda(img, pose, x, feet_y, h, alpha=255):
     sp = panda_img(pose, int(h), int(alpha))
     img.alpha_composite(sp, (int(x - sp.width / 2), int(feet_y - sp.height)))
+
+
+def comp_at(base, im, x, y):
+    """alpha_composite that accepts negative / overflowing offsets."""
+    x, y = int(x), int(y)
+    l, t = max(0, -x), max(0, -y)
+    r, b = min(im.width, base.width - x), min(im.height, base.height - y)
+    if r > l and b > t:
+        base.alpha_composite(im.crop((l, t, r, b)), (x + l, y + t))
 
 
 # -- renderer ------------------------------------------------------------------------
@@ -527,61 +696,93 @@ class Renderer:
         p = self.plan["panels"][idx]
         ss = self.ss
         img = Image.new("RGBA", (self.W * ss, self.H * ss), (255, 255, 255, 255))
-        ink = Ink(img, affine(0, 0, 0, ss), frame_i // 2 + idx * 17, ss)
+        base = affine(0, 0, 0, ss)
         els = p.get("elements", [])
-        for e in els:
-            if e["type"] != "headline":
-                ELEMENTS[e["type"]][0](ink, lt, e)
-        pd = p.get("panda")
-        if pd:
-            x, y, h = pd.get("x", 225) * ss, pd.get("y", 1440) * ss, pd.get("h", 580) * ss
-            poses = [(0.0, pd["pose"])] + [tuple(sw) for sw in pd.get("swap", [])]
-            cur = max((i for i, (at, _) in enumerate(poses) if lt >= at), default=0)
-            at, pose = poses[cur]
-            fade = 0.3
-            if cur > 0 and lt < at + fade:
-                # blend the two poses on their own layer so the panda never turns see-through
-                k = smooth((lt - at) / fade)
-                a_, b_ = panda_img(poses[cur - 1][1], int(h)), panda_img(pose, int(h))
-                w_ = max(a_.width, b_.width)
-                la = Image.new("RGBA", (w_, int(h)), (0, 0, 0, 0))
-                lb = la.copy()
-                la.alpha_composite(a_, ((w_ - a_.width) // 2, int(h) - a_.height))
-                lb.alpha_composite(b_, ((w_ - b_.width) // 2, int(h) - b_.height))
-                img.alpha_composite(Image.blend(la, lb, k), (int(x - w_ / 2), int(y - h)))
+        order = [e for e in els if e["type"] != "headline"] + [e for e in els if e["type"] == "headline"]
+        for e in order:
+            at, until = e.get("at", 0), e.get("until")
+            a_in = smooth(seg(lt, at, at + 0.32)) if at > 0 else 1.0
+            a_out = 1 - seg(lt, until, until + EXIT * 0.9) if until is not None else 1.0
+            alpha = a_in * a_out
+            if alpha <= 0:
+                continue
+            if alpha >= 0.999:
+                ELEMENTS[e["type"]][0](Ink(img, base, frame_i // 2 + idx * 17, ss), lt, e)
             else:
-                paste_panda(img, pose, x, y, h)
-        for e in els:
-            if e["type"] == "headline":
-                el_headline(ink, lt, e)
+                # fade on its own layer so it blends in softly while it flies
+                layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
+                ELEMENTS[e["type"]][0](Ink(layer, base, frame_i // 2 + idx * 17, ss), lt, e)
+                A = np.asarray(layer.getchannel("A")).astype(np.float32) * alpha
+                layer.putalpha(Image.fromarray(A.astype(np.uint8)))
+                img.alpha_composite(layer)
         return img
+
+    def pose_at(self, t):
+        """(pose, previous pose, seconds since the change) for the panda at global time t."""
+        seq = []
+        for p in self.plan["panels"]:
+            pd = p.get("panda") or {}
+            if "pose" in pd:
+                seq.append((p["start"], pd["pose"]))
+            for at, ps in pd.get("swap", []):
+                seq.append((p["start"] + at, ps))
+        seq.sort()
+        cur, prev, since = seq[0][1], seq[0][1], t - seq[0][0]
+        for st, ps in seq:
+            if st > t:
+                break
+            if ps != cur:
+                prev, cur, since = cur, ps, t - st
+        return cur, prev, since
+
+    def draw_panda(self, img, t):
+        """Panda stays on its spot across picture changes; a new pose comes in with a quick squash
+        and a small hop, in between it breathes very slightly."""
+        ss = self.ss
+        pos = self.plan.get("panda_pos", {})
+        x, y, h = pos.get("x", 225) * ss, pos.get("y", 1440) * ss, pos.get("h", 600) * ss
+        cur, prev, since = self.pose_at(t)
+        # pose change: a quick squash hides the swap (no see-through cross-fade), then a soft hop
+        hop, squash = 0.0, 0.0
+        if since < 0.6 and prev != cur:
+            squash = 0.08 * math.sin(math.pi * min(1.0, since / 0.22))
+            q = seg(since, 0.1, 0.6)
+            hop = math.sin(math.pi * q) * 24 * ss * (1 - 0.3 * q)
+        pose = prev if (prev != cur and since < 0.11) else cur
+        breath = 0.006 * math.sin(t * 2 * math.pi / 3.4)
+        hh = int(round(h * (1 + breath - squash) / 8)) * 8
+        sp = panda_img(pose, hh)
+        comp_at(img, sp, x - sp.width / 2, y - hh - hop)
 
     def frame(self, i):
         t = i / self.fps
         idx, p = self.panel_at(t)
         lt = t - p["start"]
         img = self.draw_panel(idx, lt, i)
-        dur = p.get("push_dur", 0.55)
+        dur = p.get("push_dur", 0.6)
         if idx > 0 and lt < dur:
-            # the new picture arrives complete and shoves the old one out; the old one sinks back a little
+            # the new picture glides in complete; the old one drifts back and softly fades
             prev = self.plan["panels"][idx - 1]
             pimg = self.draw_panel(idx - 1, prev["end"] - prev["start"], i)
-            e = 1 - (1 - lt / dur) ** 3 if lt / dur > 0.5 else 4 * (lt / dur) ** 3
+            u = lt / dur
+            e = 1 - (1 - u) ** 4
             mode = p.get("push", "right")
             Wp, Hp = img.size
             dx, dy = {"right": (1, 0), "left": (-1, 0), "up": (0, -1), "down": (0, 1)}[mode]
-            comp = Image.new("RGBA", img.size, (238, 239, 243, 255))
-            s = 1 - 0.08 * e
-            small = pimg.resize((int(Wp * s), int(Hp * s)), Image.BILINEAR)
-            dim = Image.new("RGBA", small.size, (20, 22, 28, int(70 * e)))
-            small.alpha_composite(dim)
-            ox_o = int(-dx * Wp * 0.35 * e + (Wp - small.width) / 2)
-            oy_o = int(-dy * Hp * 0.35 * e + (Hp - small.height) / 2)
-            comp.paste(small, (ox_o, oy_o))
+            comp = Image.new("RGBA", img.size, (255, 255, 255, 255))
+            s_ = 1 - 0.06 * e
+            small = pimg.resize((int(Wp * s_), int(Hp * s_)), Image.BILINEAR)
+            ox_o = int(-dx * Wp * 0.28 * e + (Wp - small.width) / 2)
+            oy_o = int(-dy * Hp * 0.28 * e + (Hp - small.height) / 2)
+            A = np.asarray(small.getchannel("A")).astype(np.float32) * (1 - 0.85 * e)
+            small.putalpha(Image.fromarray(A.astype(np.uint8)))
+            comp_at(comp, small, ox_o, oy_o)
             ox, oy = int(dx * Wp * (1 - e)), int(dy * Hp * (1 - e))
-            comp.paste(Image.new("RGB", img.size, (205, 207, 212)), (ox + dx * 10 * self.ss, oy + dy * 10 * self.ss))
+            shadow = Image.new("RGBA", (Wp, Hp), (20, 22, 28, int(28 * (1 - e))))
+            comp_at(comp, shadow, ox + dx * 14 * self.ss, oy + dy * 14 * self.ss)
             comp.paste(img, (ox, oy))
             img = comp
+        self.draw_panda(img, t)
         self._captions(img, t, i)
         img = img.convert("RGB")
         if self.ss != 1:
@@ -625,7 +826,8 @@ class Renderer:
 # -- sound -------------------------------------------------------------------------------
 
 SOUNDS = {
-    "swish": ["perc_swash", "perc_swoosh"], "whoosh": ["ambi_swoosh", "perc_swoosh"], "swoosh": ["perc_swoosh"],
+    "wind": ["wind0", "wind1", "wind2", "wind3"], "riser": ["riser"], "shimmer": ["drum_splash_soft"],
+    "swish": ["wind0", "wind1"], "whoosh": ["wind0", "wind1", "wind2", "wind3"], "swoosh": ["wind2"],
     "pop": ["elec_pop", "perc_snap"], "ping": ["elec_ping", "elec_blip"], "cash": ["perc_till"],
     "tick": ["elec_tick"], "impact": ["perc_impact1", "perc_impact2"], "boom": ["bd_boom"], "down": ["perc_impact2"],
     "chime": ["elec_chime"],
@@ -634,7 +836,30 @@ SOUNDS = {
 
 @lru_cache(maxsize=None)
 def sample(name):
+    if name.startswith("wind"):
+        return wind(int(name[4:] or 0))
+    if name == "riser":
+        x = audio.load(HERE / "sfx" / "drum_cymbal_open.flac")[::-1].copy()
+        x = x[-int(1.6 * audio.SR):]
+        x *= np.linspace(0, 1, len(x)) ** 2
+        return x / (np.max(np.abs(x)) + 1e-9)
     x = audio.load(HERE / "sfx" / f"{name}.flac")
+    return x / (np.max(np.abs(x)) + 1e-9)
+
+
+@lru_cache(maxsize=8)
+def wind(seed):
+    """A light gust of air: soft noise band sweeping up and down, slow attack and release."""
+    rng = np.random.default_rng(seed + 11)
+    d = 0.8 + 0.1 * (seed % 3)
+    lo, hi = 260 + 40 * (seed % 2), 1050 + 120 * (seed % 3)
+    x = audio._shaped_noise(d, lambda k: lo + (hi - lo) * math.sin(math.pi * k) ** 1.5,
+                            lambda k: 260 + 420 * math.sin(math.pi * k), rng)
+    n = len(x)
+    tt = np.linspace(0, 1, n)
+    env = np.sin(np.pi * np.clip(tt, 0, 1)) ** 2.2
+    x = x * env
+    x = np.convolve(x, np.ones(9) / 9, mode="same")
     return x / (np.max(np.abs(x)) + 1e-9)
 
 
@@ -642,33 +867,33 @@ MONEY_RE = re.compile(r"[€$]|mrd|mio|euro|dollar", re.I)
 
 
 def cues(plan):
-    """Whoosh when a picture or an element comes or goes, the cash register when money lands.
-    No beeps, ticks, pings or booms."""
+    """Light wind whoosh on every picture change and when something leaves; the cash register when
+    a money figure lands; a soft shimmer on highlight badges. No clicks, ticks, pops or thumps."""
     out = []
     for i, p in enumerate(plan["panels"]):
         st = p["start"]
         if i and p.get("whoosh", True):
-            out.append((st - 0.14, "whoosh", 0.55))
+            out.append((st - 0.22, "wind", 0.85))
         for e in p.get("elements", []):
             at = e.get("at", 0)
-            if at > 0:
-                out.append((st + at - 0.06, "swish", 0.3))
             if e.get("until") is not None:
-                out.append((st + e["until"] - 0.04, "whoosh", 0.4))
+                out.append((st + e["until"] - 0.12, "wind", 0.45))
             money = bool(MONEY_RE.search(" ".join(str(e.get(k, "")) for k in ("value", "title", "lo_label"))))
             if e["type"] == "kpi" and money and e.get("count", True):
-                out.append((st + e.get("count_end", at + 1.6) - 0.05, "cash", 0.55))
+                out.append((st + e.get("count_end", at + 1.6) - 0.05, "cash", 0.5))
             if e["type"] == "bars" and money:
                 ats = e.get("bar_at") or [at + 0.4 + 0.5 * j for j in range(len(e["items"]))]
-                out.append((st + ats[-1] + 0.55, "cash", 0.5))
+                out.append((st + ats[-1] + 0.55, "cash", 0.45))
             if e["type"] == "range" and e.get("cash"):
-                out.append((st + e.get("fill_at", at + 0.4) + 0.75, "cash", 0.5))
+                out.append((st + e.get("fill_at", at + 0.4) + 0.75, "cash", 0.45))
+            if e.get("badge") and e.get("badge_at") is not None and e.get("shimmer", True):
+                out.append((st + e["badge_at"], "shimmer", 0.22))
             out += [(st + a, n, g) for a, n, g in e.get("sfx", [])]
         out += [(st + a, n, g) for a, n, g in p.get("sfx", [])]
     return sorted(out)
 
 
-def mix_audio(voice, duration, cue_list, env, fps, master=0.28):
+def mix_audio(voice, duration, cue_list, env, fps, master=0.3):
     n = int(duration * audio.SR)
     out = np.zeros(n)
     v = audio.normalize(voice)[:n]

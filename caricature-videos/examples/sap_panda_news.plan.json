@@ -1196,11 +1196,20 @@
      ]
     ]
    },
-   "push": "right",
+   "push": "left",
    "elements": [
     {
-     "type": "live",
-     "at": 0
+     "type": "tape",
+     "at": 0,
+     "items": [
+      "SAP|+3,2 %",
+      "NVIDIA|-4,1 %",
+      "AMD|-5,3 %",
+      "PALANTIR|-6,8 %",
+      "MICROSOFT|-2,4 %",
+      "DAX|+0,4 %"
+     ],
+     "y": 34
     },
     {
      "type": "headline",
@@ -1213,21 +1222,32 @@
      "until": 3.3
     },
     {
-     "type": "minichart",
-     "at": 0.35,
-     "title": "KI-AKTIEN",
-     "up": false,
-     "y": 640,
-     "draw_at": 0.7,
-     "until": 3.3
-    },
-    {
-     "type": "stamp",
-     "at": 1.7,
-     "text": "AUSVERKAUF",
-     "y": 930,
-     "x": 700,
-     "until": 3.3
+     "type": "candles",
+     "at": 0,
+     "title": "KI-AKTIEN INDEX",
+     "sub": "Intraday · 15 Min",
+     "seed": 3,
+     "n": 44,
+     "segments": [
+      [
+       0.35,
+       0.002
+      ],
+      [
+       0.65,
+       -0.009
+      ]
+     ],
+     "start": 480,
+     "end": 402,
+     "reveal_at": 0.0,
+     "reveal_end": 3.0,
+     "until": 3.3,
+     "y": 655,
+     "w": 900,
+     "h": 470,
+     "unit": " Pkt",
+     "x": 540
     },
     {
      "type": "headline",
@@ -1240,14 +1260,39 @@
      "from": "down"
     },
     {
-     "type": "minichart",
-     "at": 3.6,
-     "title": "SAP",
-     "up": true,
-     "y": 700,
-     "draw_at": 3.9,
-     "from": "left"
+     "type": "candles",
+     "at": 3.4,
+     "title": "SAP SE",
+     "sub": "XETRA · 1 Tag",
+     "seed": 11,
+     "n": 44,
+     "segments": [
+      [
+       0.45,
+       -0.0015
+      ],
+      [
+       0.55,
+       0.006
+      ]
+     ],
+     "start": 228,
+     "end": 246.5,
+     "reveal_at": 3.5,
+     "reveal_end": 5.6,
+     "glow_at": 5.6,
+     "y": 655,
+     "w": 900,
+     "h": 470,
+     "x": 540
     }
+   ],
+   "sfx": [
+    [
+     1.85,
+     "riser",
+     0.5
+    ]
    ]
   },
   {
@@ -1256,7 +1301,7 @@
    "panda": {
     "pose": "begeistert"
    },
-   "push": "left",
+   "push": "right",
    "elements": [
     {
      "type": "headline",
@@ -1286,7 +1331,7 @@
    "panda": {
     "pose": "nachdenklich"
    },
-   "push": "up",
+   "push": "left",
    "elements": [
     {
      "type": "headline",
@@ -1300,7 +1345,7 @@
     {
      "type": "iconcard",
      "at": 0.3,
-     "icon": "question",
+     "icon": "search",
      "label": "KURZ ERKLÄRT",
      "y": 800,
      "scale": 2.4
@@ -1356,19 +1401,19 @@
      "x": 705,
      "items": [
       [
-       "euro",
+       "banknote",
        "FINANZEN"
       ],
       [
-       "box",
+       "package",
        "LAGER"
       ],
       [
-       "person",
+       "users",
        "PERSONAL"
       ],
       [
-       "cart",
+       "shopping-cart",
        "EINKAUF"
       ]
      ]
@@ -1381,7 +1426,7 @@
    "panda": {
     "pose": "zeigen"
    },
-   "push": "down",
+   "push": "left",
    "elements": [
     {
      "type": "headline",
@@ -1423,7 +1468,7 @@
    "panda": {
     "pose": "laptop"
    },
-   "push": "left",
+   "push": "right",
    "elements": [
     {
      "type": "headline",
@@ -1471,7 +1516,7 @@
      ]
     ]
    },
-   "push": "up",
+   "push": "left",
    "elements": [
     {
      "type": "headline",
@@ -1576,7 +1621,7 @@
      ]
     ]
    },
-   "push": "down",
+   "push": "left",
    "elements": [
     {
      "type": "headline",
@@ -1639,7 +1684,7 @@
      ]
     ]
    },
-   "push": "left",
+   "push": "right",
    "elements": [
     {
      "type": "headline",
@@ -1685,7 +1730,7 @@
     {
      "type": "iconcard",
      "at": 4.7,
-     "icon": "calendar",
+     "icon": "calendar-clock",
      "label": "Q4 = BUCHUNGS-QUARTAL",
      "y": 1085,
      "x": 750,
@@ -1708,7 +1753,7 @@
      ]
     ]
    },
-   "push": "up",
+   "push": "left",
    "elements": [
     {
      "type": "headline",
@@ -1721,24 +1766,32 @@
      "until": 3.6
     },
     {
-     "type": "line",
+     "type": "candles",
      "at": 0.25,
-     "title": "CLOUD-GESCHÄFT",
-     "points": [
-      0.1,
-      0.2,
-      0.28,
-      0.4,
-      0.5,
-      0.66,
-      0.8,
-      0.95
+     "title": "SAP SE",
+     "sub": "XETRA · 1 Tag",
+     "seed": 5,
+     "n": 40,
+     "segments": [
+      [
+       0.3,
+       0.001
+      ],
+      [
+       0.7,
+       0.008
+      ]
      ],
-     "draw_at": 0.6,
-     "draw_end": 2.2,
-     "note": "LÄUFT SEHR GUT",
-     "note_at": 2.0,
-     "y": 700
+     "start": 210,
+     "reveal_at": 0.5,
+     "reveal_end": 2.6,
+     "glow_at": 2.6,
+     "until": 3.6,
+     "y": 655,
+     "w": 900,
+     "h": 470,
+     "x": 540,
+     "end": 258.0
     },
     {
      "type": "headline",
@@ -1753,7 +1806,7 @@
     {
      "type": "iconcard",
      "at": 4.6,
-     "icon": "calendar",
+     "icon": "calendar-clock",
      "label": "ENTSCHEIDEND: Q4",
      "y": 1085,
      "x": 750,
@@ -1807,5 +1860,10 @@
     }
    ]
   }
- ]
+ ],
+ "panda_pos": {
+  "x": 215,
+  "y": 1440,
+  "h": 560
+ }
 }

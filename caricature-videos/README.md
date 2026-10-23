@@ -62,7 +62,16 @@ python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --ou
 ### Panda-News-Stil (`toonfin/pandanews.py`) – aktuelle Vorlage
 
 - 60 fps, **Hintergrund immer weiß**. Jedes Bild kommt gefüllt rein und schiebt das alte weg.
-- Elemente fliegen ein (`at`) und mit `until` wieder raus – raus geht es immer nach links.
+- Elemente fliegen ein (`at`, mit weichem Einblenden) und mit `until` wieder raus – raus immer nach links.
+- **Trading-Charts** (`candles`): Kerzen erscheinen nacheinander, die aktuelle Kerze wächst live,
+  Volumen, Raster mit Preisachse, gleitender Durchschnitt, gestrichelte Live-Preis-Linie mit
+  Preis-Tag, Kurs + Prozent-Pille oben rechts. Kursverläufe sind realistisch simuliert
+  (`seed`, `segments` = Trend je Abschnitt, `start`/`end` = Kursniveau) – echte Kursdaten-Quellen
+  (Stooq, Yahoo) sind in dieser Umgebung gesperrt; mit Zugang lässt sich eine CSV einspielen.
+- **Laufband** (`tape`) oben mit Kursen, Lucide-Icons (ISC-Lizenz, `toonfin/icons/`) in Kacheln
+  und Icon-Karten.
+- Panda steht **fest auf seiner Position** (`panda_pos`), über alle Bildwechsel hinweg. Neue Pose
+  = kurzer Squash + kleiner Hüpfer, dazwischen dezentes Atmen.
 - Farbe steckt in den Animationen: Akzentstreifen auf Karten, Verlaufsbalken, bunte Funken, wenn
   eine Zahl landet oder eine Prozent-Plakette erscheint.
 - Panda: nur saubere HQ-Posen in `toonfin/panda/` (19 Stück: zeigen, zeigestock, zeigen_tablet,
@@ -72,8 +81,9 @@ python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --ou
   `tools/hq_upscale.py`. Nur Figuren, die im Sheet mindestens ~180 px hoch sind, werden sauber;
   für weitere Posen bitte Einzelbilder in hoher Auflösung liefern.
 - Keine runden Panda-Einblendungen, immer genau ein Panda. Posenwechsel per Überblendung (`swap`).
-- Sound: Whoosh beim Bildwechsel und wenn etwas raus- oder reinfliegt, Registrierkasse, wenn ein
-  Geldbetrag landet (KPI/Balken in €/Mrd.). Keine Piep-, Tick- oder Bumm-Effekte.
+- Sound: leichter Wind-Whoosh (synthetisch, weich) beim Bildwechsel und wenn etwas rausfliegt,
+  Registrierkasse, wenn ein Geldbetrag landet, leiser Becken-Schimmer bei Plaketten, ein
+  Rückwärts-Becken als Riser im Einstieg. Kein Klicken, Ticken, Ploppen oder dumpfes Geräusch.
 - Untertitel: Montserrat Black, weiß mit schwarzer Kontur, aktuelles Wort gelb, unten ohne Kasten.
 
 ```bash
