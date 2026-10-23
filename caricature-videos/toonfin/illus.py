@@ -622,27 +622,67 @@ def _bank_house(ink, x, y, s, label, col=(226, 228, 234)):
 
 
 def taxoffice(ink, t, e):
-    """Coins fly from a wallet on the left into the tax office ('Finanzamt') on the right."""
-    _bank_house(ink, 170, 120, 1.25, e.get("label", "FINANZAMT"))
-    with ink.at(-200, 140, -8):
+    """Coins leave a shrinking wallet and fly into the tax office: the wallet's gain counts down, the
+    office's take counts up, the building bounces on every hit, a tax stamp lands at the end."""
+    n = e.get("coins", 7)
+    fly_at, step, dur = e.get("fly_at", 0.4), e.get("step", 0.32), 0.85
+    lands = [fly_at + i * step + dur for i in range(n)]
+    landed = sum(1 for lt in lands if t >= lt)
+    gone = sum(1 for i in range(n) if t >= fly_at + i * step)
+    last = max([lt for lt in lands if t >= lt], default=-9)
+    hit = math.exp(-(t - last) * 9) if t >= last else 0.0
+    # tax office, squashing a little on every hit
+    with ink.at(190, 175, 0, 1.0 + 0.03 * hit, 1.0 - 0.05 * hit):
+        _bank_house(ink, 0, -55, 1.25, e.get("label", "FINANZAMT"))
+    # wallet with bills that shrink as coins leave, shaking while it empties
+    sh = math.sin(t * 38) * 4 if fly_at <= t < lands[-1] - dur + 0.2 else 0.0
+    fill = 1 - gone / n
+    with ink.at(-210 + sh, 150, -8):
+        for j in range(3):
+            hgt = 60 * fill
+            if hgt > 2:
+                ink.rect(-80 + j * 40, -70 - hgt, -20 + j * 40, -60, fill=MONEY, outline=DARK, w=4, wob=0.1)
         ink.rect(-110, -70, 110, 70, fill=(52, 52, 62), outline=DARK, w=LW, wob=0.2, r=16)
         ink.rect(30, -30, 120, 30, fill=(80, 80, 92), outline=DARK, w=5, wob=0, r=10)
         ink.circle(70, 0, 10, fill=GOLD, outline=None, wob=0)
-    for i in range(7):
-        st = e.get("fly_at", 0.4) + i * 0.32
-        k = seg(t, st, st + 0.85)
+    for i in range(n):
+        st = fly_at + i * step
+        k = seg(t, st, st + dur)
         if 0 < k < 1:
-            x = lerp(-180, 170, k)
-            y = lerp(90, 40, k) - math.sin(k * math.pi) * 260
+            x = lerp(-180, 190, k)
+            y = lerp(90, 40, k) - math.sin(k * math.pi) * 270
             with ink.at(x, y, k * 360, 1.0):
                 ink.circle(0, 0, 34, fill=GOLD, outline=DARK, w=5, wob=0)
                 T(ink, 0, 2, "€", 34, GOLD_DK)
-    if e.get("tag") and t > e.get("tag_at", 1.8):
-        kk = ease_out_back(seg(t, e["tag_at"], e["tag_at"] + 0.4), 1.6)
-        with ink.at(170, -230, 5, max(0.05, kk)):
-            w = ink.text_w(e["tag"], 44, "mont") + 50
-            ink.rect(-w / 2, -38, w / 2, 38, fill=RED, outline=DARK, w=6, wob=0.2, r=12)
-            T(ink, 0, 2, e["tag"], 44, WHITE)
+    # little "-€" puffs rising from the office on each hit
+    for lt in lands:
+        d = t - lt
+        if 0 <= d < 0.6:
+            ink.text(190 + 70 * math.sin(lt * 7), -30 - 120 * d, "-€", 40 * (1 - d * 0.6), "mont",
+                     fill=mix(RED, WHITE, d / 0.6), stroke=None)
+    # counters
+    from .scenes import count_fmt
+    k = landed / n if n else 0
+    if t >= fly_at - 0.2:
+        ka = ease_out_back(seg(t, fly_at - 0.2, fly_at + 0.2), 1.6)
+        gain, take = e.get("gain", 500.0), e.get("take", 131.88)
+        with ink.at(-210, -150, -3, max(0.05, ka)):
+            ink.rect(-150, -55, 150, 55, fill=WHITE, outline=DARK, w=6, wob=0.1, r=14)
+            T(ink, 0, -26, e.get("gain_label", "DEIN GEWINN"), 22, (110, 114, 124))
+            T(ink, 0, 16, f"{gain - take * k:,.2f} €".replace(",", "X").replace(".", ",").replace("X", "."), 40,
+              GREEN if k < 1 else DARK)
+        with ink.at(190, -330, 3, max(0.05, ka)):
+            ink.rect(-150, -55, 150, 55, fill=WHITE, outline=RED, w=6, wob=0.1, r=14)
+            T(ink, 0, -26, e.get("take_label", "STEUER"), 22, RED)
+            T(ink, 0, 16, f"{take * k:,.2f} €".replace(",", "X").replace(".", ",").replace("X", "."), 40, RED)
+    # tax stamp on the building at the end
+    if e.get("tag") and t > e.get("tag_at", lands[-1]):
+        ta = e.get("tag_at", lands[-1])
+        kk = seg(t, ta, ta + 0.25)
+        with ink.at(190, 60, -12, lerp(1.8, 1.0, 1 - (1 - kk) ** 3)):
+            w = ink.text_w(e["tag"], 46, "mont") + 50
+            ink.rect(-w / 2, -40, w / 2, 40, fill=None, outline=RED, w=10, wob=0.5, r=10)
+            T(ink, 0, 3, e["tag"], 46, RED)
 
 
 def _phone_frame(ink, w=430, h=820):

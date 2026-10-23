@@ -9,7 +9,9 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
   eingebrannten Untertiteln ablesen (Frames croppen), offensichtliche Transkriptionsfehler korrigieren.
 - Keine eigene Musik, wenn das Original schon Musik hat.
 
-- **Stimme:** Erst Klang-Korrektur mit `tools/voice_match.py in.wav out.wav 8` (gleicht das Frequenzbild an eine
+- **Stimme (abgenommen):** Klang an das SAP-Video angleichen: `tools/voice_match.py in.wav out.wav 6 sap_ref.wav`
+  (Referenz = Ton aus dem SAP-Original, warm/dunkel), danach `highpass 75, afftdn nr 6, agate, deesser 0,4,
+  Kompressor 2,6:1`. Ohne Referenz: `tools/voice_match.py in.wav out.wav 8` (gleicht das Frequenzbild an eine
   Studio-Sprachkurve an – dumpfe/boxige Handy-/Laptop-Aufnahmen: Tiefmitten bis -12 dB, Präsenz/Luft bis +8 dB),
   dann leicht: `highpass=80, afftdn=nr=6, agate (range 0.25), deesser, Kompressor 1,7:1`.
   **Nie mehrfach komprimieren/limiten.** Mastering linear, `master_lufs: -16.8` (abgenommen: Stimme nicht zu laut). Nach dem Match-EQ leicht

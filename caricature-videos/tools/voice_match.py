@@ -2,7 +2,9 @@
 
 Measures the long-term spectrum of the voice, compares it with a typical close-mic studio
 speech curve and applies a smooth, limited correction (linear phase, numpy FFT).
-python3 voice_match.py in.wav out.wav [max_boost_db=9]
+python3 voice_match.py in.wav out.wav [max_boost_db=9] [reference.wav]
+With a reference file the target curve is that recording's long-term speech spectrum
+(e.g. an earlier video whose voice sound you liked) instead of the generic studio curve.
 """
 import subprocess
 import sys
@@ -51,8 +53,13 @@ def main():
     P = smooth_oct(f, P)
     ref = np.mean(P[(f >= 300) & (f <= 3000)])
     cur = P - ref
-    tf, tv = zip(*TARGET)
-    tgt = np.interp(np.log(np.maximum(f, 20)), np.log(tf), tv)
+    if len(sys.argv) > 4:
+        fr, Pr = ltas(load(sys.argv[4]))
+        Pr = smooth_oct(fr, Pr)
+        tgt = Pr - np.mean(Pr[(fr >= 300) & (fr <= 3000)])
+    else:
+        tf, tv = zip(*TARGET)
+        tgt = np.interp(np.log(np.maximum(f, 20)), np.log(tf), tv)
     corr = np.clip(tgt - cur, -12.0, max_boost)
     corr[f < 70] = np.minimum(corr[f < 70], 0)       # never boost rumble
     corr[f > 7000] = np.minimum(corr[f > 7000], 8)   # air, but don't dig up hiss
