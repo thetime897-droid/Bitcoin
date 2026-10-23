@@ -1152,9 +1152,27 @@ def mix_audio(voice, duration, cue_list, env, fps, master=0.3, sfx_rel=None):
         fx *= master * (1 - 0.35 * np.clip(duck, 0, 1))
     out += fx
     peak = np.max(np.abs(out)) + 1e-9
-    if peak > 0.97:
-        out = np.tanh(out / peak * 1.15) * 0.97
+    if peak > 0.95:
+        out = out * (0.95 / peak)  # linear trim instead of soft-clipping, keeps the voice clean
     return out
+
+
+def master_wav(wav, lufs, tp=-1.5):
+    """Two-pass *linear* loudness normalisation: one clean gain change, no compressor, no limiter
+    (stacked compression lifted room noise and squashed the voice). A gentle peak limiter only acts
+    if the gain would push peaks above the true-peak target."""
+    import json as _json
+    r = subprocess.run(["ffmpeg", "-v", "info", "-i", str(wav), "-af", f"loudnorm=I={lufs}:TP={tp}:LRA=11:print_format=json",
+                        "-f", "null", "-"], capture_output=True, text=True).stderr
+    m = _json.loads(r[r.rindex("{"):r.rindex("}") + 1])
+    gain = lufs - float(m["input_i"])
+    peak_after = float(m["input_tp"]) + gain
+    chain = f"volume={gain:.2f}dB"
+    if peak_after > tp:
+        chain += f",alimiter=limit={10 ** (tp / 20):.3f}:attack=5:release=60:level=disabled"
+    out = Path(wav).with_suffix(".master.wav")
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(wav), "-af", chain, "-ar", str(audio.SR), str(out)], check=True)
+    out.replace(wav)
 
 
 _R = None
@@ -1179,12 +1197,7 @@ def render(plan, out_path, ss=2, workers=None, log=print):
     wav = out_path.with_suffix(".mix.wav")
     audio.save(wav, mix_audio(voice, dur, cues(plan), env, fps, sfx_rel=plan.get("sfx_rel")))
     if plan.get("master_lufs"):
-        # final loudness like the creator's own uploads (TikTok/Shorts level), true peak kept below -1 dB
-        mastered = wav.with_suffix(".master.wav")
-        subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(wav), "-af",
-                        "acompressor=threshold=-22dB:ratio=2.5:attack=6:release=90:makeup=3,alimiter=limit=0.85:attack=3:release=40,"
-                        f"loudnorm=I={plan['master_lufs']}:TP=-1.0:LRA=8", "-ar", str(audio.SR), str(mastered)], check=True)
-        mastered.replace(wav)
+        master_wav(wav, plan["master_lufs"])
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{plan['width']}x{plan['height']}",
            "-r", str(fps), "-i", "-", "-i", str(wav), "-map", "0:v", "-map", "1:a", "-c:v", "libx264", "-preset", "medium",
            "-crf", "18", "-tune", "animation", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-shortest",

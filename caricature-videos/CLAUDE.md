@@ -9,9 +9,10 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
   eingebrannten Untertiteln ablesen (Frames croppen), offensichtliche Transkriptionsfehler korrigieren.
 - Keine eigene Musik, wenn das Original schon Musik hat.
 
-- **Screen-Recordings / schwacher Ton:** Stimme aufbereiten (Hochpass 80 Hz, `afftdn` leichtes Entrauschen,
-  Präsenz +2,5 dB @3,2 kHz, Luft +2 dB @9 kHz, sanfter Kompressor) und im Plan `master_lufs: -11.5` setzen –
-  so laut wie die eigenen Uploads (~ -11 LUFS, True Peak ≤ -1 dB).
+- **Stimme „Studio“-Kette (abgenommen):** `highpass=75, lowpass=15500, afftdn=nr=10:nf=-46, agate (Expander,
+  threshold 0.03, ratio 3, range 0.1), deesser, EQ -2 dB @320 Hz, +1,8 dB @4,5 kHz, Höhen +1,2 dB @10 kHz,
+  sanfter Kompressor 1,8:1`. **Nie mehrfach komprimieren/limiten** – das hebt Raumhall/Rauschen und klingt gepresst.
+  Mastering: `master_lufs: -14` (lineare 2-Pass-Lautheit, nur bei Bedarf leichter Peak-Limiter).
 
 ## Look
 - **Hintergrund immer weiß.** Farbe nur in Grafiken/Animationen (Akzentstreifen, Funken, Pillen).
@@ -66,4 +67,4 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 ## Zooms & Effekt-Lautstärke
 - `zooms: [{at, hold, scale, x, y}]` im Plan: Punch-in nur auf die Grafik (Headline, Panda, Untertitel bleiben
   ruhig), mit Whoosh rein und raus. Für wichtige Stellen, Skala 1,18–1,3.
-- `sfx_rel: 0.75` = Effekte 25 % unter der Stimme (relativ zur Stimm-Lautheit, `gain` trimmt nur nach unten).
+- `sfx_rel: 0.70` (aktuell abgenommen) = Effekte 30 % unter der Stimme; 0.75 = 25 % darunter (relativ zur Stimm-Lautheit, `gain` trimmt nur nach unten).
