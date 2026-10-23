@@ -23,7 +23,10 @@ FONTS = {
     "comic": "Bangers-Regular.ttf",
     "hand": "PatrickHand-Regular.ttf",
     "marker": "PermanentMarker-Regular.ttf",
+    "mont": "Montserrat.ttf",
+    "montb": "Montserrat.ttf",
 }
+VARIATIONS = {"mont": "Black", "montb": "Bold"}
 
 # Palette
 PAPER = (248, 243, 232)
@@ -47,7 +50,10 @@ BROWN = (130, 86, 52)
 
 @lru_cache(maxsize=512)
 def font(key, px):
-    return ImageFont.truetype(str(FONT_DIR / FONTS[key]), max(4, int(px)))
+    f = ImageFont.truetype(str(FONT_DIR / FONTS[key]), max(4, int(px)))
+    if key in VARIATIONS:
+        f.set_variation_by_name(VARIATIONS[key])
+    return f
 
 
 def mul(m, n):

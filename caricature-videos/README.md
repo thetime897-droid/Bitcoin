@@ -24,6 +24,7 @@ MP4 9:16 (1080×1920) und/oder 16:9 (1920×1080)  +  .srt
 |---|---|
 | `demo/demo_short.mp4` | 9:16-Short, ca. 38 s: Inflation, FOMO, Crash, Sparplan, Zinseszins, Bank |
 | `demo/nvidia_original_audio_short.mp4` | 9:16-Short, 16 s: **Originalton + Original-Untertitel** aus dem Clip, darüber CEO-Karikatur, Musik und SFX |
+| `demo/sap_panda_news_short.mp4` | 9:16, 64 s: **Panda-News-Stil (aktuell)**. Originalton, 12 Bilder fliegen nacheinander ein, saubere Finanzgrafiken (KPI-Karten mit Zählern, Balken, Linien-Charts, Spannen, Stempel), Panda_investiert als Original-Grafik (still, keine Mundbewegung), CC0-Sounds (Swoosh, Pop, Ping, Registrierkasse) |
 | `demo/sap_panda_comic_short.mp4` | 9:16, 64 s: **Panda-Comic-Stil**. Dein SAP-Originalton, 12 Comic-Bilder, die nacheinander reingeschoben werden, Panda_investiert hält in jedem Bild etwas anderes, große Untertitel unten |
 | `demo/sap_original_audio_short.mp4` | 9:16-Short, 64 s: SAP-Quartalszahlen, Originalton + Original-Untertitel, 21 Szenen. Ohne eigene Musik, weil das Original schon Musik hat |
 | `demo/nvidia_short.mp4` | 9:16-Short, ca. 28 s: Die „Aktien für eine S-Klasse“-Story, mit CEO-Karikatur und freier Neural-Stimme |
@@ -58,7 +59,26 @@ eigene Musik und eigene Soundeffekte (Ducking unter der Stimme).
 python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --out out/clip
 ```
 
-### Panda-Comic-Stil (`toonfin/comic.py`)
+### Panda-News-Stil (`toonfin/pandanews.py`) – aktuelle Vorlage
+
+- Weißer Hintergrund, nichts drumherum. Jedes Bild fliegt ein und schiebt das vorige raus
+  (`push`: right/left/up/down, Whoosh kurz davor).
+- Panda = die freigestellten HD-Posen aus dem Panda_investiert-Character-Sheet (`toonfin/panda/`,
+  übernommen von Branch `claude/animated-market-videos-panda-s4uvn4`). Eine Pose pro Bild,
+  optional Posenwechsel (`swap`), keine Mundbewegung.
+- Elemente fliegen einzeln ein: `headline` (Montserrat Black + farbige Pille), `kpi` (Zähler +
+  Badge, Kasse am Ziel), `bars`, `hbars`, `line`, `minichart`, `range`, `stamp`, `tiles`,
+  `iconcard`, `live`. Zeiten (`at`, `count_at`, `badge_at` …) auf die Wörter im Voice-Over legen.
+- Sounds: echte CC0-Aufnahmen in `toonfin/sfx/` (Quellen in `SOURCES.md`): swish/whoosh beim
+  Einflug, pop beim Landen, ping für Badges, tick-Folgen bei Zählern, Registrierkasse bei Geld.
+- Untertitel: Montserrat Black, Großbuchstaben, weiß mit schwarzer Kontur, aktuelles Wort gelb,
+  unten ohne Kasten.
+
+```bash
+python -m toonfin render examples/sap_panda_news.plan.json --out out/sap_news.mp4
+```
+
+### Panda-Comic-Stil (`toonfin/comic.py`, älter)
 
 Volle Comic-Bilder auf weißem Hintergrund, die alle 3–8 s von rechts reingeschoben werden.
 Panda_investiert (nach dem Character-Sheet: cremefarbenes Fell, runde Brille, schwarzer Anzug)
