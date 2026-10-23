@@ -24,7 +24,7 @@ MP4 9:16 (1080×1920) und/oder 16:9 (1920×1080)  +  .srt
 |---|---|
 | `demo/demo_short.mp4` | 9:16-Short, ca. 38 s: Inflation, FOMO, Crash, Sparplan, Zinseszins, Bank |
 | `demo/nvidia_original_audio_short.mp4` | 9:16-Short, 16 s: **Originalton + Original-Untertitel** aus dem Clip, darüber CEO-Karikatur, Musik und SFX |
-| `demo/sap_panda_news_short.mp4` | 9:16, 64 s: **Panda-News-Stil (aktuell)**. Originalton, 12 Bilder fliegen nacheinander ein, saubere Finanzgrafiken (KPI-Karten mit Zählern, Balken, Linien-Charts, Spannen, Stempel), Panda_investiert als Original-Grafik (still, keine Mundbewegung), CC0-Sounds (Swoosh, Pop, Ping, Registrierkasse) |
+| `demo/sap_panda_news_short.mp4` | 9:16, 64 s: **Panda-News-Stil (aktuell)**, 60 fps: Originalton, farbiger Hook (Rot → Grün), 11 gefüllte Bilder schieben sich weich rein, Finanzgrafiken mit Zählern/Balken/Charts, Original-Panda-Posen + Reaktions-Bubbles, nur leiser Whoosh |
 | `demo/sap_panda_comic_short.mp4` | 9:16, 64 s: **Panda-Comic-Stil**. Dein SAP-Originalton, 12 Comic-Bilder, die nacheinander reingeschoben werden, Panda_investiert hält in jedem Bild etwas anderes, große Untertitel unten |
 | `demo/sap_original_audio_short.mp4` | 9:16-Short, 64 s: SAP-Quartalszahlen, Originalton + Original-Untertitel, 21 Szenen. Ohne eigene Musik, weil das Original schon Musik hat |
 | `demo/nvidia_short.mp4` | 9:16-Short, ca. 28 s: Die „Aktien für eine S-Klasse“-Story, mit CEO-Karikatur und freier Neural-Stimme |
@@ -61,18 +61,23 @@ python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --ou
 
 ### Panda-News-Stil (`toonfin/pandanews.py`) – aktuelle Vorlage
 
-- Weißer Hintergrund, nichts drumherum. Jedes Bild fliegt ein und schiebt das vorige raus
-  (`push`: right/left/up/down, Whoosh kurz davor).
-- Panda = die freigestellten HD-Posen aus dem Panda_investiert-Character-Sheet (`toonfin/panda/`,
-  übernommen von Branch `claude/animated-market-videos-panda-s4uvn4`). Eine Pose pro Bild,
-  optional Posenwechsel (`swap`), keine Mundbewegung.
-- Elemente fliegen einzeln ein: `headline` (Montserrat Black + farbige Pille), `kpi` (Zähler +
-  Badge, Kasse am Ziel), `bars`, `hbars`, `line`, `minichart`, `range`, `stamp`, `tiles`,
-  `iconcard`, `live`. Zeiten (`at`, `count_at`, `badge_at` …) auf die Wörter im Voice-Over legen.
-- Sounds: echte CC0-Aufnahmen in `toonfin/sfx/` (Quellen in `SOURCES.md`): swish/whoosh beim
-  Einflug, pop beim Landen, ping für Badges, tick-Folgen bei Zählern, Registrierkasse bei Geld.
-- Untertitel: Montserrat Black, Großbuchstaben, weiß mit schwarzer Kontur, aktuelles Wort gelb,
-  unten ohne Kasten.
+- 60 fps, weißer Hintergrund. Nur der Einstieg (Hook) darf farbig sein: `bg`-Element mit Verlauf
+  und Farb-Wipe, z. B. Rot (KI-Abverkauf) → Grün (SAP steigt).
+- Jedes Bild kommt **schon gefüllt** rein (Headline, Karten, Panda stehen) und schiebt das alte Bild
+  weg, das alte sinkt dabei leicht nach hinten. Elemente mit `at: 0` gehören von Anfang an zum Bild,
+  ein späteres `at` lässt sie weich hereingleiten (Quintic-Easing, kein Hüpfen).
+- Bewegt wird nur, was etwas zeigt: Zähler laufen hoch, wenn die Zahl gesagt wird, Balken wachsen,
+  Charts zeichnen sich, Plaketten erscheinen, runde **Reaktions-Bubbles** (`react`) mit Brustbild-Panda.
+- Panda = Original-Artwork aus den Character-Sheets: 25+ Ganzkörper-Posen in `toonfin/panda/`
+  (u. a. daumen_hoch, zeigefinger, winken, mit_bitcoin, mit_geld, mit_tablet, laptop_halten,
+  telefon_am_ohr, idee, springen, stolz, arme_verschraenkt, chart_praesentieren …) und 20 Reaktionen
+  in `toonfin/panda/react/` (jubel, schockiert, heulen, lachen_traenen, verliebt, genervt, verwirrt,
+  daumen_runter, aufgeregt …). Pose pro Bild, Wechsel per weicher Überblendung (`swap`), kein Mund.
+  Neue Posen: `tools/segment.py` (Sheet → nummerierte Ausschnitte), `tools/export.py` (freistellen +
+  HD-Hochrechnen mit `tools/hd_panda.py`).
+- Sound: nur ein leiser Whoosh beim Bildwechsel. Keine Piep-/Tick-/Ping-/Bumm-Effekte; weitere
+  Sounds nur, wenn sie im Plan ausdrücklich unter `sfx` stehen.
+- Untertitel: Montserrat Black, weiß mit schwarzer Kontur, aktuelles Wort gelb, unten ohne Kasten.
 
 ```bash
 python -m toonfin render examples/sap_panda_news.plan.json --out out/sap_news.mp4

@@ -1,16 +1,17 @@
-"""Panda news style: clean finance graphics on white, every picture flies in.
+"""Panda news style: clean finance graphics, every picture flies in already filled.
 
-- Panda_investiert is the original artwork (``toonfin/panda/*.png``, the HD poses from
-  the character sheet), shown as a still image - one pose per picture, no lip flap.
-- Each picture (``panel``) flies in and pushes the previous one out (right, left, up, or
-  out of the depth), with a whoosh.
-- Inside a picture the elements fly in one by one: headline, KPI cards with counters,
-  bar charts, line charts, ranges, stamps - each with its own sound (swish, pop, ping,
-  cash register, impact).
+- Panda_investiert is the original artwork (``toonfin/panda/*.png`` full-body poses,
+  ``toonfin/panda/react/*.png`` chest-up reactions, cut from the character sheets), shown
+  still - one pose per picture, poses cross-fade when they change, no lip flap.
+- Each picture (``panel``) arrives complete and pushes the previous one out with depth.
+- Inside a picture only the reveals move: counters, growing bars, chart lines, badges,
+  reaction bubbles - all with smooth easing (rendered at 60 fps).
+- Sound: only a soft whoosh on picture changes (plus any explicit ``sfx`` in the plan).
 - Big subtitles at the bottom without a box, spoken word highlighted.
 
 A plan is JSON with ``style: "pandanews"`` and ``panels`` (start, end, panda, push,
-elements[]). Element types are the functions in ``ELEMENTS``.
+elements[]). Element types are the functions in ``ELEMENTS``. An element with ``at`` <= 0
+is part of the picture from the start; a later ``at`` makes it glide in.
 """
 import math
 import multiprocessing as mp
@@ -70,19 +71,25 @@ def fit_size(ink, text, size, max_w, key="mont"):
     return min(size, size * max_w / max(1.0, ink.text_w(text, size, key)))
 
 
-def fly(ink, x, y, t, at, frm="right", dur=0.45, dist=620):
-    """Transform for an element flying in at ``at`` (None while it is not there yet)."""
+def smooth(k):
+    """Quintic ease-out: fast start, long soft landing, no bounce."""
+    return 1 - (1 - clamp(k)) ** 5
+
+
+def fly(ink, x, y, t, at, frm="right", dur=0.6, dist=170):
+    """Transform for an element at (x, y). Present from the start when ``at`` <= 0,
+    otherwise it glides in from ``frm`` with a soft scale-up (None until then)."""
+    if at <= 0:
+        return ink.at(x, y)
     if t < at:
         return None
-    k = seg(t, at, at + dur)
+    k = smooth(seg(t, at, at + dur))
     if frm == "pop":
-        return ink.at(x, y, 0, max(0.01, ease_out_back(k, 2.0)))
+        return ink.at(x, y, 0, max(0.01, lerp(0.7, 1.0, ease_out_back(seg(t, at, at + dur), 1.15))))
     if frm == "zoom":
-        e = ease_out_back(k, 1.3)
-        return ink.at(x, y, -10 * (1 - e), max(0.01, lerp(0.15, 1.0, e)))
+        return ink.at(x, y, 0, max(0.01, lerp(0.85, 1.0, k)))
     dx, dy = {"right": (1, 0), "left": (-1, 0), "up": (0, -1), "down": (0, 1)}[frm]
-    e = ease_out_back(k, 1.25)
-    return ink.at(x + dx * dist * (1 - e), y + dy * dist * (1 - e), 6 * dx * (1 - ease_out(k)))
+    return ink.at(x + dx * dist * (1 - k), y + dy * dist * (1 - k), 0, lerp(0.94, 1.0, k))
 
 
 def num(v):
@@ -102,15 +109,15 @@ def el_headline(ink, t, e):
         return
     lines = e["text"]
     y = e.get("y", 210)
-    c = fly(ink, 540, y, t, e["at"], "up", 0.45, 380)
+    c = fly(ink, 540, y, t, e["at"], "down", 0.55, 60)
     if not c:
         return
     with c:
         top = lines[0]
         size = fit_size(ink, top, 96, 980)
-        T(ink, 0, 0, top, size, DARK)
+        T(ink, 0, 0, top, size, WHITE if e.get("light") else DARK)
         if len(lines) > 1:
-            k = ease_out_back(seg(t, e["at"] + 0.15, e["at"] + 0.55), 1.8)
+            k = 1.0 if e["at"] <= 0 else lerp(0.8, 1.0, ease_out_back(seg(t, e["at"] + 0.1, e["at"] + 0.55), 1.2))
             if k > 0.01:
                 with ink.at(0, 128, -2, k):
                     s2 = fit_size(ink, lines[1], 78, 900)
@@ -118,10 +125,8 @@ def el_headline(ink, t, e):
 
 
 def cues_headline(e):
-    c = [(e["at"] - 0.05, "swish", 0.6)]
-    if len(e["text"]) > 1:
-        c.append((e["at"] + 0.4, "pop", 0.8))
-    return c
+    return []
+
 
 
 def el_live(ink, t, e):
@@ -151,22 +156,14 @@ def el_kpi(ink, t, e):
         size = fit_size(ink, pre + txt, 120, w - 90)
         T(ink, -w / 2 + 44, 34, pre + txt, size, col, "mont", "lm")
         if e.get("badge") and t >= e.get("badge_at", 1e9):
-            kb = ease_out_back(seg(t, e["badge_at"], e["badge_at"] + 0.4), 2.2)
+            kb = lerp(0.6, 1.0, ease_out_back(seg(t, e["badge_at"], e["badge_at"] + 0.5), 1.3))
             with ink.at(w / 2 - 110, -h / 2 + 10, 6, max(0.01, kb)):
                 pill(ink, 0, 0, e["badge"], 44, col)
 
 
 def cues_kpi(e):
-    c = fly_sfx(e["at"])
-    if e.get("count", True):
-        a, b = e.get("count_at", e["at"] + 0.4), e.get("count_end", e["at"] + 1.6)
-        n = 9
-        for i in range(n):
-            c.append((a + (b - a) * (1 - (1 - i / n) ** 1.6), "tick", 0.5))
-        c.append((b, "cash", 0.9))
-    if e.get("badge"):
-        c += [(e["badge_at"], "pop", 0.8), (e["badge_at"] + 0.05, "ping", 0.6)]
-    return c
+    return []
+
 
 
 def el_bars(ink, t, e):
@@ -186,7 +183,7 @@ def el_bars(ink, t, e):
         gap = (w - 120 - bw * len(items)) / max(1, len(items) - 1) if len(items) > 1 else 0
         for i, (lbl, v, tone) in enumerate(items):
             at = e.get("bar_at", [e["at"] + 0.4 + 0.5 * j for j in range(len(items))])[i]
-            k = ease_out_back(seg(t, at, at + 0.7), 1.2)
+            k = smooth(seg(t, at, at + 0.9))
             bh = (base - top) * num(v) / vmax * k
             bx = -w / 2 + 60 + i * (bw + gap)
             col = TONE.get(tone, GREYBAR) if tone else GREYBAR
@@ -197,20 +194,14 @@ def el_bars(ink, t, e):
                 T(ink, bx + bw / 2, base - bh - 40, str(v), 44, DARK)
         ink.line([(-w / 2 + 40, base), (w / 2 - 40, base)], LINE, 4, wob=0)
         if e.get("badge") and t >= e.get("badge_at", 1e9):
-            kb = ease_out_back(seg(t, e["badge_at"], e["badge_at"] + 0.4), 2.2)
+            kb = lerp(0.6, 1.0, ease_out_back(seg(t, e["badge_at"], e["badge_at"] + 0.5), 1.3))
             with ink.at(w / 2 - 120, -h / 2 + 140, 8, max(0.01, kb)):
                 pill(ink, 0, 0, e["badge"], 54, TONE.get(e.get("tone", "good"), GREEN))
 
 
 def cues_bars(e):
-    c = fly_sfx(e["at"])
-    ats = e.get("bar_at", [e["at"] + 0.4 + 0.5 * j for j in range(len(e["items"]))])
-    for i, a in enumerate(ats):
-        c.append((a, "pop", 0.6))
-    c.append((ats[-1] + 0.6, "cash", 0.9))
-    if e.get("badge"):
-        c += [(e["badge_at"], "pop", 0.8), (e["badge_at"] + 0.05, "ping", 0.7)]
-    return c
+    return []
+
 
 
 def el_hbars(ink, t, e):
@@ -241,10 +232,8 @@ def el_hbars(ink, t, e):
 
 
 def cues_hbars(e):
-    c = fly_sfx(e["at"])
-    for i in range(len(e["items"])):
-        c.append((e["at"] + 0.4 + 0.45 * i, "pop", 0.6))
-    return c
+    return []
+
 
 
 def el_line(ink, t, e):
@@ -278,17 +267,14 @@ def el_line(ink, t, e):
             ink.circle(hx, hy, 15, fill=col, outline=WHITE, w=5, wob=0)
         note = e.get("note")
         if note and t >= e.get("note_at", 1e9):
-            kn = ease_out_back(seg(t, e["note_at"], e["note_at"] + 0.4), 2.0)
+            kn = lerp(0.6, 1.0, ease_out_back(seg(t, e["note_at"], e["note_at"] + 0.5), 1.3))
             with ink.at(e.get("note_x", w / 2 - 150), e.get("note_y", -h / 2 + 140), -4, max(0.01, kn)):
                 pill(ink, 0, 0, note, 40, col)
 
 
 def cues_line(e):
-    c = fly_sfx(e["at"])
-    c.append((e.get("draw_at", e["at"] + 0.4), "swoosh", 0.5))
-    if e.get("note"):
-        c += [(e["note_at"], "pop", 0.8), (e["note_at"] + 0.05, "ping", 0.6)]
-    return c
+    return []
+
 
 
 def el_minichart(ink, t, e):
@@ -305,26 +291,28 @@ def el_minichart(ink, t, e):
         pts = e.get("points") or ([0.2, 0.3, 0.25, 0.45, 0.4, 0.6, 0.55, 0.8, 0.95] if up else
                                    [0.9, 0.85, 0.88, 0.7, 0.72, 0.5, 0.42, 0.25, 0.1])
         x0, x1, y0, y1 = -w / 2 + 44, w / 2 - 170, h / 2 - 34, -h / 2 + 96
-        k = ease_in_out(seg(t, e["at"] + 0.3, e["at"] + 1.2))
+        da = e.get("draw_at", max(0, e["at"]) + 0.3)
+        k = ease_in_out(seg(t, da, da + 1.1))
         n = max(2, int(len(pts) * k) + 1)
         P = [(lerp(x0, x1, i / (len(pts) - 1)), lerp(y0, y1, v)) for i, v in enumerate(pts[:n])]
         ink.line(P, col, 9, wob=0)
         if k > 0.9:
-            ka = ease_out_back(seg(t, e["at"] + 1.1, e["at"] + 1.5), 2.0)
+            ka = smooth(seg(t, da + 0.9, da + 1.4))
             with ink.at(w / 2 - 90, 10, 0, max(0.01, ka)):
                 ink.shape([(-46, 26), (0, -36), (46, 26)] if up else [(-46, -26), (0, 36), (46, -26)], fill=col,
                           outline=None, wob=0)
 
 
 def cues_minichart(e):
-    return fly_sfx(e["at"]) + [(e["at"] + 1.1, "ping" if e.get("up", True) else "down", 0.7)]
+    return []
+
 
 
 def el_stamp(ink, t, e):
     if t < e["at"] or t >= e.get("until", 1e9):
         return
-    k = seg(t, e["at"], e["at"] + 0.22)
-    s = lerp(2.4, 1.0, ease_out(k))
+    k = seg(t, e["at"], e["at"] + 0.35)
+    s = 1.0 if e["at"] <= 0 else lerp(1.5, 1.0, smooth(k))
     col = TONE.get(e.get("tone", "bad"), RED)
     with ink.at(e.get("x", CX), e.get("y", 700), e.get("rot", -10), s):
         w = ink.text_w(e["text"], e.get("size", 70)) + 70
@@ -336,10 +324,8 @@ def el_stamp(ink, t, e):
 
 
 def cues_stamp(e):
-    c = [(e["at"] + 0.18, "impact", 0.8)]
-    if e.get("strike_at"):
-        c.append((e["strike_at"], "swish", 0.6))
-    return c
+    return []
+
 
 
 ICONS = {}
@@ -386,7 +372,7 @@ def el_tiles(ink, t, e):
         at = e["at"] + i * e.get("step", 0.3)
         tx = x + (i % cols - 0.5) * (tw + 30)
         ty = y + (i // cols - 0.5) * (th + 30)
-        c = fly(ink, tx, ty, t, at, ["left", "right", "left", "right"][i % 4], 0.4, 420)
+        c = fly(ink, tx, ty, t, at, ["left", "right", "left", "right"][i % 4], 0.55, 160)
         if c:
             with c:
                 card(ink, 0, 0, tw, th, r=26)
@@ -396,11 +382,8 @@ def el_tiles(ink, t, e):
 
 
 def cues_tiles(e):
-    c = []
-    for i in range(len(e["items"])):
-        at = e["at"] + i * e.get("step", 0.3)
-        c += [(at - 0.03, "swish", 0.45), (at + 0.35, "pop", 0.6)]
-    return c
+    return []
+
 
 
 def el_iconcard(ink, t, e):
@@ -417,13 +400,14 @@ def el_iconcard(ink, t, e):
         if e.get("label"):
             T(ink, 0, h / 2 - 70, e["label"], fit_size(ink, e["label"], 50, w - 60), e.get("color", DARK), "mont")
         if e.get("arrow"):
-            k = ease_out_back(seg(t, e["at"] + 0.5, e["at"] + 0.9), 2.0)
+            k = smooth(seg(t, max(0, e["at"]) + 0.5, max(0, e["at"]) + 1.0))
             with ink.at(w / 2 - 70, -h / 2 + 80, 0, max(0.01, k)):
                 ink.shape([(-34, 20), (0, -34), (34, 20)], fill=GREEN, outline=None, wob=0)
 
 
 def cues_iconcard(e):
-    return fly_sfx(e["at"], "ping")
+    return []
+
 
 
 def el_range(ink, t, e):
@@ -446,7 +430,7 @@ def el_range(ink, t, e):
         T(ink, lerp(x0, x1, lo), yy + 62, e.get("lo_label", ""), 36, DARK, "mont")
         T(ink, lerp(x0, x1, hi), yy + 62, e.get("hi_label", ""), 36, DARK, "mont")
         if "marker" in e and t >= e.get("marker_at", 0):
-            km = ease_out_back(seg(t, e["marker_at"], e["marker_at"] + 1.0), 1.4)
+            km = smooth(seg(t, e["marker_at"], e["marker_at"] + 1.2))
             mx = lerp(x0, x1, lerp(lo, e["marker"], km))
             ink.shape([(mx - 24, yy - 62), (mx + 24, yy - 62), (mx, yy - 26)], fill=DARK, outline=None, wob=0)
             if e.get("marker_label") and km > 0.9:
@@ -454,33 +438,99 @@ def el_range(ink, t, e):
 
 
 def cues_range(e):
-    c = fly_sfx(e["at"]) + [(e.get("fill_at", e["at"] + 0.4), "swoosh", 0.5)]
-    if "marker" in e:
-        c += [(e["marker_at"] + 0.9, "ping", 0.7)]
-    if e.get("cash"):
-        c.append((e.get("fill_at", e["at"] + 0.4) + 0.8, "cash", 0.9))
-    return c
+    return []
+
+
+
+def el_bg(ink, t, e):
+    """Full-bleed colour background (hook): vertical gradient, optional diagonal wipe to a second gradient."""
+    W, H = 1080, 1920
+
+    def grad(c1, c2):
+        steps = 24
+        for i in range(steps):
+            y0, y1 = H * i / steps, H * (i + 1) / steps + 2
+            ink.rect(-10, y0, W + 10, y1, fill=mix(c1, c2, i / (steps - 1)), outline=None, wob=0)
+
+    grad(tuple(e["c1"]), tuple(e["c2"]))
+    if "wipe_at" in e and t >= e["wipe_at"]:
+        k = smooth(seg(t, e["wipe_at"], e["wipe_at"] + e.get("wipe_dur", 0.55)))
+        # a slanted edge sweeping from left to right
+        x = lerp(-700, W + 700, k)
+        poly = [(-10, -10), (x + 350, -10), (x - 350, H + 10), (-10, H + 10)]
+        steps = 16
+        for i in range(steps):
+            y0, y1 = H * i / steps, H * (i + 1) / steps + 2
+            xs0 = lerp(x + 350, x - 350, y0 / H)
+            xs1 = lerp(x + 350, x - 350, y1 / H)
+            ink.shape([(-10, y0), (xs0, y0), (xs1, y1), (-10, y1)], fill=mix(tuple(e["c3"]), tuple(e["c4"]), i / (steps - 1)),
+                      outline=None, wob=0)
+
+
+def el_react(ink, t, e):
+    """Round reaction bubble with a chest-up panda (drawn later on the image, see Renderer)."""
+    return
 
 
 ELEMENTS = {
-    "headline": (el_headline, cues_headline), "live": (el_live, lambda e: fly_sfx(e["at"], "pop")),
+    "headline": (el_headline, cues_headline), "live": (el_live, lambda e: []),
     "kpi": (el_kpi, cues_kpi), "bars": (el_bars, cues_bars), "hbars": (el_hbars, cues_hbars),
     "line": (el_line, cues_line), "minichart": (el_minichart, cues_minichart), "stamp": (el_stamp, cues_stamp),
     "tiles": (el_tiles, cues_tiles), "iconcard": (el_iconcard, cues_iconcard), "range": (el_range, cues_range),
+    "bg": (el_bg, lambda e: []), "react": (el_react, lambda e: []),
 }
 
 
-# -- panda sprite ----------------------------------------------------------------------
+# -- panda sprites ---------------------------------------------------------------------
 
-@lru_cache(maxsize=64)
-def panda_img(pose, h):
-    im = Image.open(HERE / "panda" / f"{pose}.png").convert("RGBA")
-    return im.resize((max(1, int(im.width * h / im.height)), int(h)), Image.LANCZOS)
+# poses cut at the hips/knees fade out softly at the bottom instead of ending on a hard edge
+CUT_POSES = {"mit_bitcoin", "mit_geld", "mit_tablet", "smartphone", "stolz", "aktenkoffer", "lesen"}
 
 
-def paste_panda(img, pose, x, feet_y, h, scale=1.0):
-    sp = panda_img(pose, int(h * scale))
+@lru_cache(maxsize=96)
+def panda_img(pose, h, alpha=255):
+    path = HERE / "panda" / f"{pose}.png"
+    if not path.exists():
+        path = HERE / "panda" / "react" / f"{pose}.png"
+    im = Image.open(path).convert("RGBA")
+    im = im.resize((max(1, int(im.width * h / im.height)), int(h)), Image.LANCZOS)
+    if pose in CUT_POSES:
+        a = np.asarray(im.getchannel("A")).astype(np.float32)
+        n = int(im.height * 0.16)
+        a[-n:] *= np.linspace(1, 0, n)[:, None]
+        im.putalpha(Image.fromarray(a.astype(np.uint8)))
+    if alpha < 255:
+        a = np.asarray(im.getchannel("A")).astype(np.float32) * alpha / 255
+        im.putalpha(Image.fromarray(a.astype(np.uint8)))
+    return im
+
+
+def paste_panda(img, pose, x, feet_y, h, alpha=255):
+    sp = panda_img(pose, int(h), int(alpha))
     img.alpha_composite(sp, (int(x - sp.width / 2), int(feet_y - sp.height)))
+
+
+@lru_cache(maxsize=48)
+def bubble_img(pose, d, ring):
+    """Circle badge (diameter d px) with a chest-up panda, white fill and coloured ring."""
+    sp = Image.open(HERE / "panda" / "react" / f"{pose}.png").convert("RGBA")
+    inner = int(d * 0.9)
+    s = max(inner * 1.0 / sp.width, inner * 1.12 / sp.height)
+    sp = sp.resize((int(sp.width * s), int(sp.height * s)), Image.LANCZOS)
+    tile = Image.new("RGBA", (inner, inner), (255, 255, 255, 255))
+    tile.alpha_composite(sp, (int((inner - sp.width) / 2), int(inner * 0.06)))
+    yy, xx = np.mgrid[0:inner, 0:inner]
+    m = (((xx - inner / 2 + 0.5) ** 2 + (yy - inner / 2 + 0.5) ** 2) <= (inner / 2) ** 2).astype(np.uint8) * 255
+    tile.putalpha(Image.fromarray(m))
+    out = Image.new("RGBA", (d, d), (0, 0, 0, 0))
+    yy, xx = np.mgrid[0:d, 0:d]
+    r2 = (xx - d / 2 + 0.5) ** 2 + (yy - d / 2 + 0.5) ** 2
+    ringm = (r2 <= (d / 2) ** 2)
+    ringimg = np.zeros((d, d, 4), np.uint8)
+    ringimg[ringm] = list(ring) + [255]
+    out = Image.fromarray(ringimg, "RGBA")
+    out.alpha_composite(tile, (int((d - inner) / 2), int((d - inner) / 2)))
+    return out
 
 
 # -- renderer ------------------------------------------------------------------------
@@ -504,20 +554,41 @@ class Renderer:
         ss = self.ss
         img = Image.new("RGBA", (self.W * ss, self.H * ss), (255, 255, 255, 255))
         ink = Ink(img, affine(0, 0, 0, ss), frame_i // 2 + idx * 17, ss)
-        for e in p.get("elements", []):
-            if e["type"] != "headline":
+        els = p.get("elements", [])
+        for e in els:
+            if e["type"] == "bg":
+                el_bg(ink, lt, e)
+        for e in els:
+            if e["type"] not in ("headline", "bg", "react"):
                 ELEMENTS[e["type"]][0](ink, lt, e)
         pd = p.get("panda")
         if pd:
-            pose = pd["pose"]
-            for at, ps in pd.get("swap", []):
-                if lt >= at:
-                    pose = ps
-            k = ease_out_back(seg(lt, pd.get("at", 0.1), pd.get("at", 0.1) + 0.45), 1.6)
-            if k > 0.01:
-                paste_panda(img, pose, pd.get("x", 225) * ss, pd.get("y", 1440) * ss, pd.get("h", 580) * ss,
-                            max(0.05, k))
-        for e in p.get("elements", []):
+            x, y, h = pd.get("x", 225) * ss, pd.get("y", 1440) * ss, pd.get("h", 580) * ss
+            poses = [(0.0, pd["pose"])] + [tuple(sw) for sw in pd.get("swap", [])]
+            cur = max((i for i, (at, _) in enumerate(poses) if lt >= at), default=0)
+            at, pose = poses[cur]
+            fade = 0.3
+            if cur > 0 and lt < at + fade:
+                # blend the two poses on their own layer so the panda never turns see-through
+                k = smooth((lt - at) / fade)
+                a_, b_ = panda_img(poses[cur - 1][1], int(h)), panda_img(pose, int(h))
+                w_ = max(a_.width, b_.width)
+                la = Image.new("RGBA", (w_, int(h)), (0, 0, 0, 0))
+                lb = la.copy()
+                la.alpha_composite(a_, ((w_ - a_.width) // 2, int(h) - a_.height))
+                lb.alpha_composite(b_, ((w_ - b_.width) // 2, int(h) - b_.height))
+                img.alpha_composite(Image.blend(la, lb, k), (int(x - w_ / 2), int(y - h)))
+            else:
+                paste_panda(img, pose, x, y, h)
+        for e in els:
+            if e["type"] == "react" and e["at"] <= lt < e.get("until", 1e9):
+                k = ease_out_back(seg(lt, e["at"], e["at"] + 0.45), 1.3)
+                kout = 1 - smooth(seg(lt, e.get("until", 1e9) - 0.3, e.get("until", 1e9)))
+                d = int(e.get("d", 300) * ss * max(0.05, k * kout))
+                if d > 8:
+                    b = bubble_img(e["pose"], d, tuple(TONE.get(e.get("tone", "good"), GREEN)))
+                    img.alpha_composite(b, (int(e.get("x", 880) * ss - d / 2), int(e.get("y", 1080) * ss - d / 2)))
+        for e in els:
             if e["type"] == "headline":
                 el_headline(ink, lt, e)
         return img
@@ -527,33 +598,26 @@ class Renderer:
         idx, p = self.panel_at(t)
         lt = t - p["start"]
         img = self.draw_panel(idx, lt, i)
-        dur = p.get("push_dur", 0.42)
+        dur = p.get("push_dur", 0.55)
         if idx > 0 and lt < dur:
+            # the new picture arrives complete and shoves the old one out; the old one sinks back a little
             prev = self.plan["panels"][idx - 1]
             pimg = self.draw_panel(idx - 1, prev["end"] - prev["start"], i)
-            e = ease_in_out(lt / dur)
+            e = 1 - (1 - lt / dur) ** 3 if lt / dur > 0.5 else 4 * (lt / dur) ** 3
             mode = p.get("push", "right")
             Wp, Hp = img.size
-            comp = Image.new("RGBA", img.size, (255, 255, 255, 255))
-            if mode == "zoom":
-                comp.alpha_composite(pimg)
-                s = lerp(0.35, 1.0, ease_out_back(lt / dur, 1.2))
-                rot = -9 * (1 - e)
-                sm = img.resize((max(1, int(Wp * s)), max(1, int(Hp * s))), Image.BILINEAR).rotate(rot, expand=True)
-                comp.alpha_composite(sm, (int((Wp - sm.width) / 2), int((Hp - sm.height) / 2)))
-            else:
-                dx, dy = {"right": (1, 0), "left": (-1, 0), "up": (0, -1), "down": (0, 1)}[mode]
-                ox, oy = int(dx * Wp * (1 - e)), int(dy * Hp * (1 - e))
-                comp.paste(pimg, (ox - dx * Wp, oy - dy * Hp))
-                # soft shadow on the leading edge of the incoming picture
-                comp.paste(img, (ox, oy))
-                edge = Image.new("RGBA", (28 * self.ss if dx else Wp, Hp if dx else 28 * self.ss), (0, 0, 0, 40))
-                if dx > 0:
-                    comp.alpha_composite(edge, (max(0, ox - edge.width), 0))
-                elif dx < 0:
-                    comp.alpha_composite(edge, (min(Wp - edge.width, ox + Wp), 0))
-                elif dy < 0:
-                    comp.alpha_composite(edge, (0, min(Hp - edge.height, oy + Hp)))
+            dx, dy = {"right": (1, 0), "left": (-1, 0), "up": (0, -1), "down": (0, 1)}[mode]
+            comp = Image.new("RGBA", img.size, (238, 239, 243, 255))
+            s = 1 - 0.08 * e
+            small = pimg.resize((int(Wp * s), int(Hp * s)), Image.BILINEAR)
+            dim = Image.new("RGBA", small.size, (20, 22, 28, int(70 * e)))
+            small.alpha_composite(dim)
+            ox_o = int(-dx * Wp * 0.35 * e + (Wp - small.width) / 2)
+            oy_o = int(-dy * Hp * 0.35 * e + (Hp - small.height) / 2)
+            comp.paste(small, (ox_o, oy_o))
+            ox, oy = int(dx * Wp * (1 - e)), int(dy * Hp * (1 - e))
+            comp.paste(Image.new("RGB", img.size, (205, 207, 212)), (ox + dx * 10 * self.ss, oy + dy * 10 * self.ss))
+            comp.paste(img, (ox, oy))
             img = comp
         self._captions(img, t, i)
         img = img.convert("RGB")
@@ -580,7 +644,7 @@ class Renderer:
             lw += (space if line else 0) + wd
             line.append(j)
         lines.append(line)
-        k = 0.85 + 0.15 * ease_out_back(seg(t, s_, s_ + 0.12), 2.4)
+        k = 0.92 + 0.08 * smooth(seg(t, s_, s_ + 0.18))
         y0 = self.plan.get("cap_y", 1545) - (len(lines) - 1) * size * 0.6
         with ov.at(540, y0, 0, k):
             for li, ln in enumerate(lines):
@@ -589,7 +653,7 @@ class Renderer:
                 for j in ln:
                     w = words[j]
                     active = w["s"] <= t < max(w["e"], w["s"] + 0.08)
-                    sc = 1 + 0.12 * math.exp(-(t - w["s"]) * 12) if active else 1.0
+                    sc = 1 + 0.08 * math.exp(-(t - w["s"]) * 9) if active else 1.0
                     with ov.at(x + widths[j] / 2, li * size * 1.15, 0, sc):
                         ov.text(0, 0, texts[j], size, "mont", fill=YELLOW if active else WHITE, stroke=DARK, sw=0.17)
                     x += widths[j] + space
@@ -612,19 +676,18 @@ def sample(name):
 
 
 def cues(plan):
+    """A soft whoosh under every picture change; anything else only if the plan lists it."""
     out = []
     for i, p in enumerate(plan["panels"]):
-        if i:
-            out.append((p["start"] - 0.15, "whoosh", 0.9))
-        pd = p.get("panda")
-        if pd:
-            out.append((p["start"] + pd.get("at", 0.1) + 0.3, "pop", 0.5))
+        if i and p.get("whoosh", True):
+            out.append((p["start"] - 0.12, "whoosh", 0.45))
         for e in p.get("elements", []):
-            out += [(p["start"] + a, n, g) for a, n, g in ELEMENTS[e["type"]][1](e)]
+            out += [(p["start"] + a, n, g) for a, n, g in e.get("sfx", [])]
+        out += [(p["start"] + a, n, g) for a, n, g in p.get("sfx", [])]
     return sorted(out)
 
 
-def mix_audio(voice, duration, cue_list, env, fps, master=0.32):
+def mix_audio(voice, duration, cue_list, env, fps, master=0.28):
     n = int(duration * audio.SR)
     out = np.zeros(n)
     v = audio.normalize(voice)[:n]
