@@ -9,10 +9,12 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
   eingebrannten Untertiteln ablesen (Frames croppen), offensichtliche Transkriptionsfehler korrigieren.
 - Keine eigene Musik, wenn das Original schon Musik hat.
 
-- **Stimme „Studio“-Kette (abgenommen):** `highpass=75, lowpass=15500, afftdn=nr=10:nf=-46, agate (Expander,
-  threshold 0.03, ratio 3, range 0.1), deesser, EQ -2 dB @320 Hz, +1,8 dB @4,5 kHz, Höhen +1,2 dB @10 kHz,
-  sanfter Kompressor 1,8:1`. **Nie mehrfach komprimieren/limiten** – das hebt Raumhall/Rauschen und klingt gepresst.
-  Mastering: `master_lufs: -14` (lineare 2-Pass-Lautheit, nur bei Bedarf leichter Peak-Limiter).
+- **Stimme:** Erst Klang-Korrektur mit `tools/voice_match.py in.wav out.wav 8` (gleicht das Frequenzbild an eine
+  Studio-Sprachkurve an – dumpfe/boxige Handy-/Laptop-Aufnahmen: Tiefmitten bis -12 dB, Präsenz/Luft bis +8 dB),
+  dann leicht: `highpass=80, afftdn=nr=6, agate (range 0.25), deesser, Kompressor 1,7:1`.
+  **Nie mehrfach komprimieren/limiten.** Mastering linear, `master_lufs: -15.4` (Stimme nicht zu laut).
+- Effekte: jeder Sound wird auf seinen lautesten Moment eingepegelt (gleich laut wirkend), `SFX_TRIM` setzt
+  Riser (0.6), Kasse, Schimmer tiefer.
 
 ## Look
 - **Hintergrund immer weiß.** Farbe nur in Grafiken/Animationen (Akzentstreifen, Funken, Pillen).

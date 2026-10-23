@@ -975,6 +975,8 @@ class Renderer:
 SOUNDS = {"whoosh": "whoosh", "pop": "pop", "cash": "cash", "riser": "riser", "crack": "crack", "bell": "bell",
           "shimmer": "drum_splash_soft"}
 # minimum gap between two hits of the same sound, so it never turns into sound-engineering
+# per-sound trims so every effect feels equally loud next to the voice (riser and long cash register sit lower)
+SFX_TRIM = {"riser": 0.6, "cash": 0.88, "shimmer": 0.8, "crack": 0.9, "bell": 0.85, "whoosh": 1.0, "pop": 1.0}
 MIN_GAP = {"whoosh": 0.9, "pop": 0.3, "cash": 1.2, "crack": 1.0, "bell": 1.0, "shimmer": 1.5, "riser": 3.0}
 
 
@@ -1140,7 +1142,7 @@ def mix_audio(voice, duration, cue_list, env, fps, master=0.3, sfx_rel=None):
         s = sample(SOUNDS.get(name, name))
         if sfx_rel:
             # every effect at a fixed loudness relative to the voice (e.g. 0.75 = 25 % below), gain only trims
-            s = s / _active_rms(s, top=4) * sfx_rel * v_rms * min(1.0, gain / 0.6) / max(gain, 1e-3)
+            s = s / _active_rms(s, top=1) * sfx_rel * v_rms * SFX_TRIM.get(name, 1.0) * min(1.0, gain / 0.6) / max(gain, 1e-3)
         a = int(max(0, t) * audio.SR)
         if a >= n:
             continue
