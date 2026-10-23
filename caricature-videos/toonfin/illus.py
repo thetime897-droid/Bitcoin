@@ -609,3 +609,188 @@ def chained(ink, t, e):
 
 
 KINDS.update({"proscons": proscons, "choice": choice, "gift": gift, "vault": vault, "chained": chained})
+
+
+def _bank_house(ink, x, y, s, label, col=(226, 228, 234)):
+    with ink.at(x, y, 0, s):
+        ink.shape([(-130, -150), (0, -230), (130, -150)], fill=WHITE, outline=DARK, w=LW, wob=0.2)
+        ink.rect(-120, -150, 120, -125, fill=col, outline=DARK, w=6, wob=0.1)
+        for cx in (-85, -30, 30, 85):
+            ink.rect(cx - 14, -125, cx + 14, 20, fill=WHITE, outline=DARK, w=5, wob=0.1)
+        ink.rect(-135, 20, 135, 50, fill=col, outline=DARK, w=6, wob=0.1)
+        T(ink, 0, -170, label, 30 if len(label) < 9 else 22, DARK)
+
+
+def taxoffice(ink, t, e):
+    """Coins fly from a wallet on the left into the tax office ('Finanzamt') on the right."""
+    _bank_house(ink, 170, 120, 1.25, e.get("label", "FINANZAMT"))
+    with ink.at(-200, 140, -8):
+        ink.rect(-110, -70, 110, 70, fill=(52, 52, 62), outline=DARK, w=LW, wob=0.2, r=16)
+        ink.rect(30, -30, 120, 30, fill=(80, 80, 92), outline=DARK, w=5, wob=0, r=10)
+        ink.circle(70, 0, 10, fill=GOLD, outline=None, wob=0)
+    for i in range(7):
+        st = e.get("fly_at", 0.4) + i * 0.32
+        k = seg(t, st, st + 0.85)
+        if 0 < k < 1:
+            x = lerp(-180, 170, k)
+            y = lerp(90, 40, k) - math.sin(k * math.pi) * 260
+            with ink.at(x, y, k * 360, 1.0):
+                ink.circle(0, 0, 34, fill=GOLD, outline=DARK, w=5, wob=0)
+                T(ink, 0, 2, "€", 34, GOLD_DK)
+    if e.get("tag") and t > e.get("tag_at", 1.8):
+        kk = ease_out_back(seg(t, e["tag_at"], e["tag_at"] + 0.4), 1.6)
+        with ink.at(170, -230, 5, max(0.05, kk)):
+            w = ink.text_w(e["tag"], 44, "mont") + 50
+            ink.rect(-w / 2, -38, w / 2, 38, fill=RED, outline=DARK, w=6, wob=0.2, r=12)
+            T(ink, 0, 2, e["tag"], 44, WHITE)
+
+
+def _phone_frame(ink, w=430, h=820):
+    ink.rect(-w / 2 - 6, -h / 2 + 10, w / 2 + 6, h / 2 + 22, fill=(225, 226, 232), outline=None, wob=0, r=60)
+    ink.rect(-w / 2, -h / 2, w / 2, h / 2, fill=(18, 18, 22), outline=DARK, w=LW, wob=0.1, r=58)
+    ink.rect(-w / 2 + 16, -h / 2 + 16, w / 2 - 16, h / 2 - 16, fill=(10, 10, 12), outline=None, wob=0, r=44)
+    ink.rect(-50, -h / 2 + 26, 50, -h / 2 + 46, fill=(30, 30, 36), outline=None, wob=0, r=10)
+
+
+def _row(ink, y, text, hi=False, sub=None, w=360):
+    ink.rect(-w / 2, y - 38, w / 2, y + 38, fill=(40, 40, 46) if hi else (24, 24, 28), outline=None, wob=0, r=16)
+    ink.text(-w / 2 + 24, y - (8 if sub else 0), text, 28, "mont", fill=WHITE, stroke=None, anchor="lm")
+    if sub:
+        ink.text(-w / 2 + 24, y + 22, sub, 20, "montb", fill=(150, 150, 160), stroke=None, anchor="lm")
+    ink.line([(w / 2 - 34, y - 10), (w / 2 - 22, y), (w / 2 - 34, y + 10)], (150, 150, 160), 4, wob=0)
+
+
+def app_steps(ink, t, e):
+    """Dark broker-app mock-up: screens change step by step, a finger tap ripple marks each click.
+    steps: list of [time, screen]; screens: profile, taxes, fsa, amount, done."""
+    _phone_frame(ink)
+    steps = e.get("steps", [[0.4, "profile"]])
+    cur = steps[0][1]
+    since = t - steps[0][0]
+    for at, sc in steps:
+        if t >= at:
+            cur, since = sc, t - at
+    slide = 1 - smooth(seg(since, 0.0, 0.35))
+    app = e.get("app", "Broker-App")
+    with ink.at(160 * slide, 0):
+        ink.text(-170, -330, app, 24, "montb", fill=(150, 150, 160), stroke=None, anchor="lm")
+        if cur == "home":
+            ink.text(-170, -270, "Portfolio", 44, "mont", fill=WHITE, stroke=None, anchor="lm")
+            ink.text(-170, -210, e.get("portfolio", "12.480,00 €"), 34, "mont", fill=WHITE, stroke=None, anchor="lm")
+            ink.line([(-170, -60), (-100, -110), (-30, -80), (60, -160), (170, -190)], GREEN, 6, wob=0)
+            ink.circle(150, -330, 26, fill=(40, 40, 46), outline=None, wob=0)
+            ink.circle(150, -337, 9, fill=(170, 170, 180), outline=None, wob=0)
+            ink.arc(150, -318, 14, 9, 200, 340, (170, 170, 180), 5, wob=0)
+        elif cur == "profile":
+            ink.text(-170, -270, "Profil", 44, "mont", fill=WHITE, stroke=None, anchor="lm")
+            for i, (tx, hi) in enumerate((("Persönliche Daten", 0), ("Steuern", 1), ("Sicherheit", 0), ("Hilfe", 0))):
+                _row(ink, -160 + i * 95, tx, hi)
+        elif cur == "taxes":
+            ink.text(-170, -270, "Steuern", 44, "mont", fill=WHITE, stroke=None, anchor="lm")
+            for i, (tx, hi) in enumerate((("Freistellungsauftrag", 1), ("Steuer-ID", 0), ("Steuerberichte", 0))):
+                _row(ink, -160 + i * 95, tx, hi, "nicht eingerichtet" if hi else None)
+        elif cur in ("fsa", "amount", "done"):
+            ink.text(-170, -270, "Freistellungs-", 40, "mont", fill=WHITE, stroke=None, anchor="lm")
+            ink.text(-170, -225, "auftrag", 40, "mont", fill=WHITE, stroke=None, anchor="lm")
+            amt = e.get("amount", "1.000 €")
+            if cur == "fsa":
+                shown = "0 €"
+            elif cur == "amount":
+                from .scenes import count_fmt
+                shown = count_fmt(amt, smooth(seg(since, 0.2, 1.0)))
+            else:
+                shown = amt
+            ink.rect(-180, -150, 180, -30, fill=(30, 30, 36), outline=GREEN if cur != "fsa" else (70, 70, 80),
+                     w=4, wob=0, r=18)
+            ink.text(0, -90, shown, 64, "mont", fill=WHITE, stroke=None)
+            ink.text(-180, 10, "max. 1.000 € pro Person", 22, "montb", fill=(150, 150, 160), stroke=None, anchor="lm")
+            ink.rect(-180, 250, 180, 330, fill=WHITE if cur != "done" else GREEN, outline=None, wob=0, r=40)
+            ink.text(0, 290, "Bestätigen" if cur != "done" else "Gespeichert", 30, "mont",
+                     fill=DARK if cur != "done" else WHITE, stroke=None)
+            if cur == "done":
+                kk = ease_out_back(seg(since, 0.05, 0.45), 1.8)
+                with ink.at(0, 130, 0, max(0.05, kk)):
+                    ink.circle(0, 0, 70, fill=GREEN, outline=None, wob=0)
+                    ink.line([(-32, 0), (-8, 26), (36, -26)], WHITE, 16, wob=0)
+    tap = {"home": (150, -330), "profile": (0, -65), "taxes": (0, -160), "fsa": (0, -90), "amount": (0, 290)}
+    for at, sc in steps:
+        d = t - (at - 0.18)
+        if 0 <= d < 0.5 and sc in ("profile", "taxes", "fsa", "amount", "done"):
+            prev = steps[max(0, steps.index([at, sc]) - 1)][1] if [at, sc] in steps else sc
+            px, py = tap.get(prev, (0, 0))
+            r = 20 + 70 * smooth(d / 0.5)
+            ink.circle(px, py, r, fill=None, outline=mix(GOLD, WHITE, d / 0.5), w=8 * (1 - d / 0.5) + 1, wob=0)
+            ink.circle(px, py, 18, fill=GOLD, outline=None, wob=0)
+    for i, (at, sc) in enumerate(steps):
+        lab = e.get("labels", {}).get(sc)
+        if lab and t >= at:
+            k = smooth(seg(t, at, at + 0.35))
+            yy = -330 + i * 120
+            with ink.at(e.get("label_x", 330) + 60 * (1 - k), yy):
+                ink.circle(-70, 0, 30, fill=GREEN if t >= at else GREY, outline=DARK, w=5, wob=0)
+                T(ink, -70, 2, str(i + 1) if sc != "done" else "✓", 30, WHITE)
+
+
+def report(ink, t, e):
+    """Two banks send their exemption amounts to the federal tax office, which adds them up."""
+    for i, (lbl, amt) in enumerate(e.get("banks", [["BANK A", "600 €"], ["BANK B", "400 €"]])):
+        y = -170 + i * 300
+        _bank_house(ink, -220, y + 110, 0.75, lbl)
+        st = e.get("send_at", 0.6) + i * 0.5
+        k = smooth(seg(t, st, st + 0.8))
+        if st <= t < st + 0.85:
+            x = lerp(-120, 150, k)
+            yy = lerp(y + 40, 20, k) - math.sin(k * math.pi) * 80
+            with ink.at(x, yy, -6 + 12 * k, 0.9):
+                ink.rect(-60, -40, 60, 40, fill=WHITE, outline=DARK, w=5, wob=0.1, r=6)
+                T(ink, 0, 2, amt, 28, DARK)
+    _bank_house(ink, 230, 140, 1.15, "BZSt")
+    tot = e.get("total_at", 2.2)
+    if t >= tot:
+        kk = ease_out_back(seg(t, tot, tot + 0.4), 1.6)
+        with ink.at(230, -190, -3, max(0.05, kk)):
+            w = ink.text_w(e.get("total", "= 1.000 €"), 46, "mont") + 50
+            ink.rect(-w / 2, -40, w / 2, 40, fill=GOLD, outline=DARK, w=6, wob=0.2, r=12)
+            T(ink, 0, 2, e.get("total", "= 1.000 €"), 46, DARK)
+
+
+def checklist(ink, t, e):
+    """Clipboard with items ticked off one after another."""
+    ink.rect(-260, -320, 260, 330, fill=(170, 120, 70), outline=DARK, w=LW, wob=0.2, r=20)
+    ink.rect(-225, -280, 225, 300, fill=WHITE, outline=DARK, w=6, wob=0.1, r=8)
+    ink.rect(-80, -345, 80, -285, fill=GREY, outline=DARK, w=6, wob=0, r=12)
+    T(ink, 0, -225, e.get("title", "TO-DO"), 42, DARK)
+    for i, (at, txt) in enumerate(e.get("items", [])):
+        y = -120 + i * 120
+        ink.rect(-190, y - 30, -130, y + 30, fill=WHITE, outline=DARK, w=5, wob=0, r=8)
+        ink.text(-105, y, txt, 34, "mont", fill=DARK, stroke=None, anchor="lm")
+        if t >= at:
+            k = smooth(seg(t, at, at + 0.3))
+            pts = [(-180, y), (-162, y + 20), (-120, y - 30)]
+            n = 1 + int(2 * k) if k < 1 else 2
+            ink.line(pts[:n + 1], GREEN, 12, wob=0)
+
+
+def switch(ink, t, e):
+    """Big toggle that flips on, label lights up, coins pop around."""
+    on_at = e.get("on_at", 0.8)
+    k = smooth(seg(t, on_at, on_at + 0.3))
+    col = mix((196, 198, 206), GREEN, k)
+    ink.rect(-230, -110, 230, 110, fill=col, outline=DARK, w=LW, wob=0.1, r=110)
+    with ink.at(lerp(-120, 120, k), 0):
+        ink.circle(0, 0, 92, fill=WHITE, outline=DARK, w=LW, wob=0)
+    T(ink, 0, -250, e.get("label", "ZINSEN"), 70, DARK)
+    T(ink, 0, 200, "AN" if k > 0.5 else "AUS", 60, GREEN if k > 0.5 else (150, 152, 160))
+    if t > on_at + 0.2:
+        for i in range(6):
+            st = on_at + 0.2 + i * 0.12
+            kk = seg(t, st, st + 0.9)
+            if 0 < kk < 1:
+                a = math.radians(-150 + i * 24)
+                r = 160 + 160 * smooth(kk)
+                with ink.at(math.cos(a) * r, math.sin(a) * r * 0.7 - 40, kk * 200, 1 - 0.3 * kk):
+                    ink.circle(0, 0, 30, fill=GOLD, outline=DARK, w=5, wob=0)
+                    T(ink, 0, 2, "€", 30, GOLD_DK)
+
+
+KINDS.update({"taxoffice": taxoffice, "app_steps": app_steps, "report": report, "checklist": checklist, "switch": switch})

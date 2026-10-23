@@ -804,13 +804,14 @@ class Renderer:
                 return i, p
         return len(ps) - 1, ps[-1]
 
-    def draw_panel(self, idx, lt, frame_i):
+    def draw_panel(self, idx, lt, frame_i, heads=True, only_heads=False):
         p = self.plan["panels"][idx]
         ss = self.ss
-        img = Image.new("RGBA", (self.W * ss, self.H * ss), (255, 255, 255, 255))
+        img = Image.new("RGBA", (self.W * ss, self.H * ss), (255, 255, 255, 0 if only_heads else 255))
         base = affine(0, 0, 0, ss)
         els = p.get("elements", [])
-        order = [e for e in els if e["type"] != "headline"] + [e for e in els if e["type"] == "headline"]
+        order = ([] if only_heads else [e for e in els if e["type"] != "headline"]) + \
+            ([e for e in els if e["type"] == "headline"] if heads else [])
         for e in order:
             at, until = e.get("at", 0), e.get("until")
             a_in = smooth(seg(lt, at, at + 0.32)) if at > 0 else 1.0
@@ -828,6 +829,18 @@ class Renderer:
                 layer.putalpha(Image.fromarray(A.astype(np.uint8)))
                 img.alpha_composite(layer)
         return img
+
+    def zoom_at(self, t):
+        """Zoom factor and focus for global time t from plan['zooms']: [{at, hold, scale, x, y}]."""
+        for zm in self.plan.get("zooms", []):
+            a, h = zm["at"], zm.get("hold", 1.2)
+            if a <= t < a + 0.35 + h + 0.35:
+                k_in = smooth(seg(t, a, a + 0.35))
+                k_out = seg(t, a + 0.35 + h, a + 0.7 + h)
+                k_out = k_out * k_out * (3 - 2 * k_out)
+                z = 1 + (zm.get("scale", 1.25) - 1) * k_in * (1 - k_out)
+                return z, zm.get("x", LAYOUT["W"] / 2), zm.get("y", 800)
+        return 1.0, 0, 0
 
     def pose_at(self, t):
         """(pose, previous pose, seconds since the change) for the panda at global time t."""
@@ -870,8 +883,10 @@ class Renderer:
         t = i / self.fps
         idx, p = self.panel_at(t)
         lt = t - p["start"]
-        img = self.draw_panel(idx, lt, i)
         dur = p.get("push_dur", 0.6)
+        z, fx_, fy_ = self.zoom_at(t)
+        zooming = z > 1.0005 and not (idx > 0 and lt < dur)
+        img = self.draw_panel(idx, lt, i, heads=not zooming)
         if idx > 0 and lt < dur:
             # the new picture glides in complete; the old one drifts back and softly fades
             prev = self.plan["panels"][idx - 1]
@@ -906,6 +921,14 @@ class Renderer:
             else:
                 comp.paste(img, (ox, oy))
             img = comp
+        if zooming:
+            # punch-in on the graphics only; headline, panda and captions stay exactly where they are
+            Wp, Hp = img.size
+            cw, ch = Wp / z, Hp / z
+            cx = min(max(fx_ * self.ss, cw / 2), Wp - cw / 2)
+            cy = min(max(fy_ * self.ss, ch / 2), Hp - ch / 2)
+            img = img.resize((Wp, Hp), Image.BICUBIC, box=(cx - cw / 2, cy - ch / 2, cx + cw / 2, cy + ch / 2))
+            img.alpha_composite(self.draw_panel(idx, lt, i, only_heads=True))
         self.draw_panda(img, t)
         self._captions(img, t, i)
         img = img.convert("RGB")
@@ -1082,10 +1105,25 @@ def cues(plan):
                     out.append((st + at + e.get("build", 2.4), "pop", 0.6))
             out += [(st + a, n, g) for a, n, g in e.get("sfx", [])]
         out += [(st + a, n, g) for a, n, g in p.get("sfx", [])]
+    for zm in plan.get("zooms", []):
+        out.append((zm["at"] - 0.05, "whoosh", 0.6))
+        out.append((zm["at"] + 0.35 + zm.get("hold", 1.2) - 0.05, "whoosh", 0.45))
     return sorted(out)
 
 
-def mix_audio(voice, duration, cue_list, env, fps, master=0.3):
+def _active_rms(x, win=0.05, top=None):
+    """RMS over the loud part of a signal (frames within 20 dB of its peak frame)."""
+    f = max(1, int(win * audio.SR))
+    m = len(x) // f
+    if m == 0:
+        return float(np.sqrt(np.mean(x * x)) + 1e-9)
+    r = np.sqrt(np.mean(x[:m * f].reshape(m, f) ** 2, axis=1))
+    if top:
+        return float(np.mean(np.sort(r)[-top:]) + 1e-9)
+    return float(np.sqrt(np.mean(r[r > r.max() * 0.1] ** 2)) + 1e-9)
+
+
+def mix_audio(voice, duration, cue_list, env, fps, master=0.3, sfx_rel=None):
     n = int(duration * audio.SR)
     out = np.zeros(n)
     v = audio.normalize(voice)[:n]
@@ -1093,18 +1131,25 @@ def mix_audio(voice, duration, cue_list, env, fps, master=0.3):
     duck = np.interp(np.arange(n) / audio.SR * fps, np.arange(len(env)), env) if len(env) else np.zeros(n)
     rng = random.Random(4)
     fx = np.zeros(n)
+    v_rms = _active_rms(v)
     last = {}
     for t, name, gain in cue_list:
         if t - last.get(name, -99) < MIN_GAP.get(name, 0.2):
             continue
         last[name] = t
         s = sample(SOUNDS.get(name, name))
+        if sfx_rel:
+            # every effect at a fixed loudness relative to the voice (e.g. 0.75 = 25 % below), gain only trims
+            s = s / _active_rms(s, top=4) * sfx_rel * v_rms * min(1.0, gain / 0.6) / max(gain, 1e-3)
         a = int(max(0, t) * audio.SR)
         if a >= n:
             continue
         e = min(n, a + len(s))
         fx[a:e] += gain * rng.uniform(0.85, 1.05) * s[:e - a]
-    fx *= master * (1 - 0.35 * np.clip(duck, 0, 1))
+    if sfx_rel:
+        fx *= 1.0
+    else:
+        fx *= master * (1 - 0.35 * np.clip(duck, 0, 1))
     out += fx
     peak = np.max(np.abs(out)) + 1e-9
     if peak > 0.97:
@@ -1132,7 +1177,7 @@ def render(plan, out_path, ss=2, workers=None, log=print):
     voice = audio.load(plan["audio"])
     env = audio.envelope(voice, fps, n)
     wav = out_path.with_suffix(".mix.wav")
-    audio.save(wav, mix_audio(voice, dur, cues(plan), env, fps))
+    audio.save(wav, mix_audio(voice, dur, cues(plan), env, fps, sfx_rel=plan.get("sfx_rel")))
     if plan.get("master_lufs"):
         # final loudness like the creator's own uploads (TikTok/Shorts level), true peak kept below -1 dB
         mastered = wav.with_suffix(".master.wav")

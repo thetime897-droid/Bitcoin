@@ -1,0 +1,1818 @@
+{
+ "style": "pandanews",
+ "width": 1080,
+ "height": 1920,
+ "fps": 60,
+ "audio": "voice.wav",
+ "duration": 61.03,
+ "words": [
+  {
+   "w": "Mache",
+   "s": 0.0,
+   "e": 0.26,
+   "tag": ""
+  },
+  {
+   "w": "nicht",
+   "s": 0.26,
+   "e": 0.5,
+   "tag": ""
+  },
+  {
+   "w": "diesen",
+   "s": 0.5,
+   "e": 0.84,
+   "tag": ""
+  },
+  {
+   "w": "Fehler",
+   "s": 0.84,
+   "e": 1.12,
+   "tag": "neg"
+  },
+  {
+   "w": "bei",
+   "s": 1.12,
+   "e": 1.34,
+   "tag": ""
+  },
+  {
+   "w": "Trade",
+   "s": 1.34,
+   "e": 1.6,
+   "tag": ""
+  },
+  {
+   "w": "Republic.",
+   "s": 1.6,
+   "e": 2.04,
+   "tag": ""
+  },
+  {
+   "w": "Er",
+   "s": 2.22,
+   "e": 2.32,
+   "tag": ""
+  },
+  {
+   "w": "sorgt",
+   "s": 2.32,
+   "e": 2.52,
+   "tag": ""
+  },
+  {
+   "w": "dafür,",
+   "s": 2.52,
+   "e": 2.88,
+   "tag": ""
+  },
+  {
+   "w": "dass",
+   "s": 3.02,
+   "e": 3.1,
+   "tag": ""
+  },
+  {
+   "w": "dein",
+   "s": 3.1,
+   "e": 3.26,
+   "tag": ""
+  },
+  {
+   "w": "Geld",
+   "s": 3.26,
+   "e": 3.52,
+   "tag": ""
+  },
+  {
+   "w": "zu",
+   "s": 3.52,
+   "e": 3.8,
+   "tag": ""
+  },
+  {
+   "w": "früh",
+   "s": 3.8,
+   "e": 4.1,
+   "tag": ""
+  },
+  {
+   "w": "beim",
+   "s": 4.1,
+   "e": 4.3,
+   "tag": ""
+  },
+  {
+   "w": "Finanzamt",
+   "s": 4.3,
+   "e": 4.92,
+   "tag": "neg"
+  },
+  {
+   "w": "landet",
+   "s": 4.92,
+   "e": 5.32,
+   "tag": ""
+  },
+  {
+   "w": "und",
+   "s": 5.32,
+   "e": 5.48,
+   "tag": ""
+  },
+  {
+   "w": "die",
+   "s": 5.48,
+   "e": 5.62,
+   "tag": ""
+  },
+  {
+   "w": "Einstellung",
+   "s": 5.62,
+   "e": 6.06,
+   "tag": ""
+  },
+  {
+   "w": "dagegen",
+   "s": 6.06,
+   "e": 6.42,
+   "tag": ""
+  },
+  {
+   "w": "dauert",
+   "s": 6.42,
+   "e": 6.88,
+   "tag": ""
+  },
+  {
+   "w": "nur",
+   "s": 6.88,
+   "e": 7.08,
+   "tag": ""
+  },
+  {
+   "w": "kurz.",
+   "s": 7.08,
+   "e": 7.36,
+   "tag": ""
+  },
+  {
+   "w": "Dazu",
+   "s": 7.54,
+   "e": 7.84,
+   "tag": ""
+  },
+  {
+   "w": "gleich",
+   "s": 7.84,
+   "e": 8.16,
+   "tag": ""
+  },
+  {
+   "w": "noch",
+   "s": 8.16,
+   "e": 8.32,
+   "tag": ""
+  },
+  {
+   "w": "einen",
+   "s": 8.32,
+   "e": 8.58,
+   "tag": ""
+  },
+  {
+   "w": "fiesen",
+   "s": 8.58,
+   "e": 8.92,
+   "tag": ""
+  },
+  {
+   "w": "Haken.",
+   "s": 8.92,
+   "e": 9.3,
+   "tag": "neg"
+  },
+  {
+   "w": "Der",
+   "s": 9.46,
+   "e": 9.46,
+   "tag": ""
+  },
+  {
+   "w": "Fehler,",
+   "s": 9.46,
+   "e": 9.8,
+   "tag": "neg"
+  },
+  {
+   "w": "du",
+   "s": 10.0,
+   "e": 10.08,
+   "tag": ""
+  },
+  {
+   "w": "richtest",
+   "s": 10.08,
+   "e": 10.42,
+   "tag": ""
+  },
+  {
+   "w": "keinen",
+   "s": 10.42,
+   "e": 10.7,
+   "tag": ""
+  },
+  {
+   "w": "Freistellungsauftrag",
+   "s": 10.7,
+   "e": 12.08,
+   "tag": "pos"
+  },
+  {
+   "w": "ein.",
+   "s": 12.08,
+   "e": 12.32,
+   "tag": ""
+  },
+  {
+   "w": "Jeder",
+   "s": 12.48,
+   "e": 12.66,
+   "tag": ""
+  },
+  {
+   "w": "hat",
+   "s": 12.66,
+   "e": 12.94,
+   "tag": ""
+  },
+  {
+   "w": "1.000",
+   "s": 12.94,
+   "e": 13.66,
+   "tag": "num"
+  },
+  {
+   "w": "Euro",
+   "s": 13.66,
+   "e": 13.92,
+   "tag": ""
+  },
+  {
+   "w": "Sparer-Pauschbetrag",
+   "s": 13.92,
+   "e": 15.12,
+   "tag": ""
+  },
+  {
+   "w": "pro",
+   "s": 15.12,
+   "e": 15.38,
+   "tag": ""
+  },
+  {
+   "w": "Jahr,",
+   "s": 15.38,
+   "e": 15.58,
+   "tag": ""
+  },
+  {
+   "w": "so",
+   "s": 15.64,
+   "e": 15.72,
+   "tag": ""
+  },
+  {
+   "w": "viel",
+   "s": 15.72,
+   "e": 15.9,
+   "tag": ""
+  },
+  {
+   "w": "Kapitalertrag",
+   "s": 15.9,
+   "e": 16.84,
+   "tag": ""
+  },
+  {
+   "w": "bleibt",
+   "s": 16.84,
+   "e": 17.14,
+   "tag": ""
+  },
+  {
+   "w": "steuerfrei.",
+   "s": 17.14,
+   "e": 17.84,
+   "tag": "pos"
+  },
+  {
+   "w": "Ohne",
+   "s": 17.92,
+   "e": 18.18,
+   "tag": ""
+  },
+  {
+   "w": "Auftrag",
+   "s": 18.18,
+   "e": 18.94,
+   "tag": ""
+  },
+  {
+   "w": "zieht",
+   "s": 18.94,
+   "e": 19.28,
+   "tag": "neg"
+  },
+  {
+   "w": "die",
+   "s": 19.28,
+   "e": 19.38,
+   "tag": ""
+  },
+  {
+   "w": "Bank",
+   "s": 19.38,
+   "e": 19.6,
+   "tag": ""
+  },
+  {
+   "w": "trotzdem",
+   "s": 19.6,
+   "e": 20.06,
+   "tag": ""
+  },
+  {
+   "w": "25 %",
+   "s": 20.06,
+   "e": 21.36,
+   "tag": "num"
+  },
+  {
+   "w": "plus",
+   "s": 21.36,
+   "e": 21.7,
+   "tag": ""
+  },
+  {
+   "w": "Soli",
+   "s": 21.7,
+   "e": 22.2,
+   "tag": "neg"
+  },
+  {
+   "w": "ab,",
+   "s": 22.2,
+   "e": 22.4,
+   "tag": ""
+  },
+  {
+   "w": "ab",
+   "s": 22.54,
+   "e": 22.68,
+   "tag": ""
+  },
+  {
+   "w": "dem",
+   "s": 22.68,
+   "e": 22.84,
+   "tag": ""
+  },
+  {
+   "w": "ersten",
+   "s": 22.84,
+   "e": 23.24,
+   "tag": ""
+  },
+  {
+   "w": "Euro,",
+   "s": 23.24,
+   "e": 23.7,
+   "tag": ""
+  },
+  {
+   "w": "den",
+   "s": 23.8,
+   "e": 24.0,
+   "tag": ""
+  },
+  {
+   "w": "du",
+   "s": 24.0,
+   "e": 24.16,
+   "tag": ""
+  },
+  {
+   "w": "erwirtschaftest.",
+   "s": 24.16,
+   "e": 24.9,
+   "tag": ""
+  },
+  {
+   "w": "Und",
+   "s": 24.92,
+   "e": 25.02,
+   "tag": ""
+  },
+  {
+   "w": "so",
+   "s": 25.02,
+   "e": 25.2,
+   "tag": ""
+  },
+  {
+   "w": "geht's",
+   "s": 25.2,
+   "e": 25.52,
+   "tag": ""
+  },
+  {
+   "w": "in",
+   "s": 25.52,
+   "e": 25.62,
+   "tag": ""
+  },
+  {
+   "w": "der",
+   "s": 25.62,
+   "e": 25.74,
+   "tag": ""
+  },
+  {
+   "w": "App.",
+   "s": 25.74,
+   "e": 25.92,
+   "tag": ""
+  },
+  {
+   "w": "Profil",
+   "s": 25.92,
+   "e": 26.54,
+   "tag": ""
+  },
+  {
+   "w": "öffnen,",
+   "s": 26.54,
+   "e": 26.92,
+   "tag": ""
+  },
+  {
+   "w": "zu",
+   "s": 27.18,
+   "e": 27.28,
+   "tag": ""
+  },
+  {
+   "w": "Steuern",
+   "s": 27.28,
+   "e": 27.82,
+   "tag": ""
+  },
+  {
+   "w": "gehen,",
+   "s": 27.82,
+   "e": 28.02,
+   "tag": ""
+  },
+  {
+   "w": "auf",
+   "s": 28.26,
+   "e": 28.38,
+   "tag": ""
+  },
+  {
+   "w": "den",
+   "s": 28.38,
+   "e": 28.54,
+   "tag": ""
+  },
+  {
+   "w": "Freistellungsauftrag",
+   "s": 28.54,
+   "e": 29.68,
+   "tag": "pos"
+  },
+  {
+   "w": "klicken,",
+   "s": 29.68,
+   "e": 30.06,
+   "tag": ""
+  },
+  {
+   "w": "den",
+   "s": 30.24,
+   "e": 30.3,
+   "tag": ""
+  },
+  {
+   "w": "Betrag",
+   "s": 30.3,
+   "e": 30.8,
+   "tag": ""
+  },
+  {
+   "w": "eingeben,",
+   "s": 30.8,
+   "e": 31.5,
+   "tag": ""
+  },
+  {
+   "w": "bestätigen",
+   "s": 31.86,
+   "e": 32.32,
+   "tag": ""
+  },
+  {
+   "w": "und",
+   "s": 32.32,
+   "e": 32.6,
+   "tag": ""
+  },
+  {
+   "w": "fertig.",
+   "s": 32.6,
+   "e": 32.94,
+   "tag": "pos"
+  },
+  {
+   "w": "Und",
+   "s": 33.16,
+   "e": 33.2,
+   "tag": ""
+  },
+  {
+   "w": "du",
+   "s": 33.2,
+   "e": 33.36,
+   "tag": ""
+  },
+  {
+   "w": "kannst",
+   "s": 33.36,
+   "e": 33.62,
+   "tag": ""
+  },
+  {
+   "w": "ihn",
+   "s": 33.62,
+   "e": 33.84,
+   "tag": ""
+  },
+  {
+   "w": "jederzeit",
+   "s": 33.84,
+   "e": 34.7,
+   "tag": ""
+  },
+  {
+   "w": "ändern.",
+   "s": 34.7,
+   "e": 35.28,
+   "tag": ""
+  },
+  {
+   "w": "Mehr",
+   "s": 35.44,
+   "e": 35.52,
+   "tag": ""
+  },
+  {
+   "w": "als",
+   "s": 35.52,
+   "e": 35.7,
+   "tag": ""
+  },
+  {
+   "w": "1.000",
+   "s": 35.7,
+   "e": 36.26,
+   "tag": "num"
+  },
+  {
+   "w": "Euro",
+   "s": 36.26,
+   "e": 36.56,
+   "tag": ""
+  },
+  {
+   "w": "insgesamt",
+   "s": 36.56,
+   "e": 37.34,
+   "tag": ""
+  },
+  {
+   "w": "geht",
+   "s": 37.34,
+   "e": 37.64,
+   "tag": ""
+  },
+  {
+   "w": "nicht.",
+   "s": 37.64,
+   "e": 37.96,
+   "tag": ""
+  },
+  {
+   "w": "Die",
+   "s": 38.14,
+   "e": 38.22,
+   "tag": ""
+  },
+  {
+   "w": "Banken",
+   "s": 38.22,
+   "e": 38.6,
+   "tag": ""
+  },
+  {
+   "w": "melden",
+   "s": 38.6,
+   "e": 38.84,
+   "tag": ""
+  },
+  {
+   "w": "die",
+   "s": 38.84,
+   "e": 38.98,
+   "tag": ""
+  },
+  {
+   "w": "Beträge",
+   "s": 38.98,
+   "e": 39.42,
+   "tag": ""
+  },
+  {
+   "w": "an",
+   "s": 39.42,
+   "e": 39.62,
+   "tag": ""
+  },
+  {
+   "w": "das",
+   "s": 39.62,
+   "e": 39.76,
+   "tag": ""
+  },
+  {
+   "w": "Bundeszentralamt",
+   "s": 39.76,
+   "e": 40.92,
+   "tag": ""
+  },
+  {
+   "w": "für",
+   "s": 40.92,
+   "e": 41.12,
+   "tag": ""
+  },
+  {
+   "w": "Steuern.",
+   "s": 41.12,
+   "e": 41.4,
+   "tag": ""
+  },
+  {
+   "w": "Aus",
+   "s": 41.58,
+   "e": 41.68,
+   "tag": ""
+  },
+  {
+   "w": "Sicht",
+   "s": 41.68,
+   "e": 41.9,
+   "tag": ""
+  },
+  {
+   "w": "deiner",
+   "s": 41.9,
+   "e": 42.26,
+   "tag": ""
+  },
+  {
+   "w": "Bank",
+   "s": 42.26,
+   "e": 42.54,
+   "tag": ""
+  },
+  {
+   "w": "ist",
+   "s": 42.54,
+   "e": 42.7,
+   "tag": ""
+  },
+  {
+   "w": "das",
+   "s": 42.7,
+   "e": 42.84,
+   "tag": ""
+  },
+  {
+   "w": "nur",
+   "s": 42.84,
+   "e": 43.08,
+   "tag": ""
+  },
+  {
+   "w": "ihr",
+   "s": 43.08,
+   "e": 43.3,
+   "tag": ""
+  },
+  {
+   "w": "Teil,",
+   "s": 43.3,
+   "e": 43.58,
+   "tag": ""
+  },
+  {
+   "w": "aus",
+   "s": 43.58,
+   "e": 43.78,
+   "tag": ""
+  },
+  {
+   "w": "Sicht",
+   "s": 43.78,
+   "e": 43.94,
+   "tag": ""
+  },
+  {
+   "w": "des",
+   "s": 43.94,
+   "e": 44.12,
+   "tag": ""
+  },
+  {
+   "w": "Fiskus",
+   "s": 44.12,
+   "e": 44.62,
+   "tag": ""
+  },
+  {
+   "w": "alle",
+   "s": 44.62,
+   "e": 44.92,
+   "tag": ""
+  },
+  {
+   "w": "zusammen.",
+   "s": 44.92,
+   "e": 45.34,
+   "tag": ""
+  },
+  {
+   "w": "Heißt",
+   "s": 45.46,
+   "e": 45.68,
+   "tag": ""
+  },
+  {
+   "w": "für",
+   "s": 45.68,
+   "e": 45.86,
+   "tag": ""
+  },
+  {
+   "w": "dich,",
+   "s": 45.86,
+   "e": 46.02,
+   "tag": ""
+  },
+  {
+   "w": "heute",
+   "s": 46.28,
+   "e": 46.46,
+   "tag": ""
+  },
+  {
+   "w": "einrichten,",
+   "s": 46.46,
+   "e": 47.1,
+   "tag": "pos"
+  },
+  {
+   "w": "Summe",
+   "s": 47.38,
+   "e": 47.6,
+   "tag": ""
+  },
+  {
+   "w": "prüfen",
+   "s": 47.6,
+   "e": 47.98,
+   "tag": ""
+  },
+  {
+   "w": "und",
+   "s": 47.98,
+   "e": 48.2,
+   "tag": ""
+  },
+  {
+   "w": "bei",
+   "s": 48.2,
+   "e": 48.38,
+   "tag": ""
+  },
+  {
+   "w": "Bedarf",
+   "s": 48.38,
+   "e": 48.76,
+   "tag": ""
+  },
+  {
+   "w": "anpassen",
+   "s": 48.76,
+   "e": 49.38,
+   "tag": ""
+  },
+  {
+   "w": "und",
+   "s": 49.38,
+   "e": 49.68,
+   "tag": ""
+  },
+  {
+   "w": "ohne",
+   "s": 49.68,
+   "e": 50.0,
+   "tag": ""
+  },
+  {
+   "w": "Auftrag",
+   "s": 50.0,
+   "e": 50.58,
+   "tag": ""
+  },
+  {
+   "w": "holst",
+   "s": 50.58,
+   "e": 50.94,
+   "tag": ""
+  },
+  {
+   "w": "du",
+   "s": 50.94,
+   "e": 51.1,
+   "tag": ""
+  },
+  {
+   "w": "zu",
+   "s": 51.1,
+   "e": 51.28,
+   "tag": ""
+  },
+  {
+   "w": "viel",
+   "s": 51.28,
+   "e": 51.52,
+   "tag": ""
+  },
+  {
+   "w": "gezahlte",
+   "s": 51.52,
+   "e": 52.08,
+   "tag": ""
+  },
+  {
+   "w": "Steuer",
+   "s": 52.08,
+   "e": 52.34,
+   "tag": ""
+  },
+  {
+   "w": "nur",
+   "s": 52.34,
+   "e": 52.7,
+   "tag": ""
+  },
+  {
+   "w": "über",
+   "s": 52.7,
+   "e": 52.98,
+   "tag": ""
+  },
+  {
+   "w": "die",
+   "s": 52.98,
+   "e": 53.12,
+   "tag": ""
+  },
+  {
+   "w": "Steuererklärung",
+   "s": 53.12,
+   "e": 53.96,
+   "tag": ""
+  },
+  {
+   "w": "zurück.",
+   "s": 53.96,
+   "e": 54.24,
+   "tag": ""
+  },
+  {
+   "w": "Und",
+   "s": 54.24,
+   "e": 54.38,
+   "tag": ""
+  },
+  {
+   "w": "das",
+   "s": 54.38,
+   "e": 54.58,
+   "tag": ""
+  },
+  {
+   "w": "ist",
+   "s": 54.58,
+   "e": 54.76,
+   "tag": ""
+  },
+  {
+   "w": "Papierkram,",
+   "s": 54.76,
+   "e": 55.48,
+   "tag": "neg"
+  },
+  {
+   "w": "den",
+   "s": 55.54,
+   "e": 55.62,
+   "tag": ""
+  },
+  {
+   "w": "wir",
+   "s": 55.62,
+   "e": 55.74,
+   "tag": ""
+  },
+  {
+   "w": "nicht",
+   "s": 55.74,
+   "e": 55.92,
+   "tag": ""
+  },
+  {
+   "w": "wollen.",
+   "s": 55.92,
+   "e": 56.28,
+   "tag": ""
+  },
+  {
+   "w": "Und",
+   "s": 56.4,
+   "e": 56.42,
+   "tag": ""
+  },
+  {
+   "w": "wenn",
+   "s": 56.42,
+   "e": 56.56,
+   "tag": ""
+  },
+  {
+   "w": "wir",
+   "s": 56.56,
+   "e": 56.68,
+   "tag": ""
+  },
+  {
+   "w": "gerade",
+   "s": 56.68,
+   "e": 56.92,
+   "tag": ""
+  },
+  {
+   "w": "dabei",
+   "s": 56.92,
+   "e": 57.2,
+   "tag": ""
+  },
+  {
+   "w": "sind,",
+   "s": 57.2,
+   "e": 57.52,
+   "tag": ""
+  },
+  {
+   "w": "eure",
+   "s": 57.62,
+   "e": 57.74,
+   "tag": ""
+  },
+  {
+   "w": "Zinsen",
+   "s": 57.74,
+   "e": 58.2,
+   "tag": "pos"
+  },
+  {
+   "w": "in",
+   "s": 58.2,
+   "e": 58.28,
+   "tag": ""
+  },
+  {
+   "w": "der",
+   "s": 58.28,
+   "e": 58.36,
+   "tag": ""
+  },
+  {
+   "w": "App",
+   "s": 58.36,
+   "e": 58.56,
+   "tag": ""
+  },
+  {
+   "w": "solltet",
+   "s": 58.56,
+   "e": 58.88,
+   "tag": ""
+  },
+  {
+   "w": "ihr",
+   "s": 58.88,
+   "e": 58.96,
+   "tag": ""
+  },
+  {
+   "w": "natürlich",
+   "s": 58.96,
+   "e": 59.3,
+   "tag": ""
+  },
+  {
+   "w": "auch",
+   "s": 59.3,
+   "e": 59.6,
+   "tag": ""
+  },
+  {
+   "w": "mal",
+   "s": 59.6,
+   "e": 59.78,
+   "tag": ""
+  },
+  {
+   "w": "aktivieren.",
+   "s": 59.78,
+   "e": 60.4,
+   "tag": "pos"
+  }
+ ],
+ "panels": [
+  {
+   "start": 0.0,
+   "end": 7.5,
+   "panda": {
+    "pose": "ueberrascht",
+    "swap": [
+     [
+      2.3,
+      "wuetend"
+     ],
+     [
+      5.55,
+      "tipp_geben"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "tape",
+     "at": 0,
+     "items": [
+      "SPARER-PAUSCHBETRAG|1.000 €",
+      "VERHEIRATET|2.000 €",
+      "ABGELTUNGSTEUER|25 %",
+      "SOLI|+5,5 % d. St.",
+      "FREISTELLUNGSAUFTRAG|JETZT PRÜFEN"
+     ],
+     "y": 34
+    },
+    {
+     "type": "breaking",
+     "at": 0,
+     "until": 1.15,
+     "y": 780,
+     "title": "MACH NICHT DIESEN FEHLER",
+     "sub": "+++ TRADE REPUBLIC +++"
+    },
+    {
+     "type": "headline",
+     "at": 1.2,
+     "text": [
+      "TRADE REPUBLIC",
+      "DIESER FEHLER KOSTET DICH"
+     ],
+     "tone": "bad",
+     "until": 5.4
+    },
+    {
+     "type": "illus",
+     "kind": "taxoffice",
+     "at": 1.25,
+     "x": 670,
+     "y": 830,
+     "s": 1.05,
+     "fly_at": 0.9,
+     "tag": "ZU FRÜH!",
+     "tag_at": 3.6,
+     "until": 5.4
+    },
+    {
+     "type": "headline",
+     "at": 5.55,
+     "text": [
+      "DIE LÖSUNG",
+      "DAUERT NUR KURZ"
+     ],
+     "tone": "good",
+     "from": "down"
+    },
+    {
+     "type": "iconcard",
+     "at": 5.6,
+     "icon": "calendar-clock",
+     "label": "SCHNELL ERLEDIGT",
+     "y": 820,
+     "x": 690,
+     "w": 600,
+     "h": 520,
+     "scale": 3.2,
+     "from": "right"
+    }
+   ],
+   "sfx": [
+    [
+     0.0,
+     "whoosh",
+     0.8
+    ],
+    [
+     0.4,
+     "pop",
+     0.7
+    ]
+   ]
+  },
+  {
+   "start": 7.5,
+   "end": 9.46,
+   "panda": {
+    "pose": "nachdenklich"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "DAZU GLEICH:",
+      "EIN FIESER HAKEN"
+     ],
+     "tone": "bad"
+    },
+    {
+     "type": "illus",
+     "kind": "hook",
+     "at": 0.05,
+     "x": 690,
+     "y": 640,
+     "s": 1.0,
+     "label": "HAKEN"
+    }
+   ],
+   "sfx": [
+    [
+     0.3,
+     "riser",
+     0.8
+    ]
+   ]
+  },
+  {
+   "start": 9.46,
+   "end": 12.48,
+   "panda": {
+    "pose": "wuetend"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "DER FEHLER:",
+      "KEIN FREISTELLUNGSAUFTRAG"
+     ],
+     "tone": "bad"
+    },
+    {
+     "type": "illus",
+     "kind": "app_steps",
+     "at": 0.1,
+     "x": 670,
+     "y": 840,
+     "s": 0.95,
+     "app": "Trade Republic",
+     "steps": [
+      [
+       0.0,
+       "taxes"
+      ]
+     ]
+    },
+    {
+     "type": "stamp",
+     "at": 1.3,
+     "text": "NICHT EINGERICHTET",
+     "y": 1150,
+     "x": 690,
+     "size": 58,
+     "rot": -8
+    }
+   ]
+  },
+  {
+   "start": 12.48,
+   "end": 17.92,
+   "panda": {
+    "pose": "begeistert"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "SPARER-PAUSCHBETRAG",
+      "1.000 € STEUERFREI"
+     ],
+     "tone": "good"
+    },
+    {
+     "type": "kpi",
+     "at": 0.15,
+     "title": "STEUERFREI PRO JAHR",
+     "value": "1.000 €",
+     "count_at": 0.5,
+     "count_end": 1.5,
+     "badge": "PRO PERSON",
+     "badge_at": 2.7,
+     "y": 640
+    },
+    {
+     "type": "info",
+     "at": 3.2,
+     "x": 745,
+     "y": 1000,
+     "w": 585,
+     "h": 230,
+     "icon": "users",
+     "title": "GUT ZU WISSEN",
+     "lines": [
+      "Verheiratet: 2.000 €",
+      "gemeinsam pro Jahr"
+     ]
+    }
+   ]
+  },
+  {
+   "start": 17.92,
+   "end": 24.92,
+   "panda": {
+    "pose": "arme_verschraenkt",
+    "swap": [
+     [
+      2.1,
+      "wuetend"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "OHNE AUFTRAG:",
+      "26,4 % STEUER"
+     ],
+     "tone": "bad"
+    },
+    {
+     "type": "kpi",
+     "at": 0.15,
+     "title": "ABGELTUNGSTEUER + SOLI",
+     "value": "26,38 %",
+     "tone": "bad",
+     "count_at": 2.1,
+     "count_end": 3.3,
+     "y": 640
+    },
+    {
+     "type": "info",
+     "at": 3.6,
+     "x": 745,
+     "y": 1000,
+     "w": 585,
+     "h": 230,
+     "icon": "circle-alert",
+     "title": "BEISPIEL",
+     "lines": [
+      "500 € Gewinn →",
+      "131,88 € weg"
+     ]
+    },
+    {
+     "type": "stamp",
+     "at": 4.6,
+     "text": "AB DEM 1. EURO",
+     "y": 1250,
+     "x": 720,
+     "size": 62,
+     "rot": -6
+    }
+   ]
+  },
+  {
+   "start": 24.92,
+   "end": 33.16,
+   "panda": {
+    "pose": "zeigen_tablet",
+    "swap": [
+     [
+      6.94,
+      "begeistert"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "SO GEHT'S",
+      "IN DER APP"
+     ],
+     "tone": "dark",
+     "until": 0.95
+    },
+    {
+     "type": "headline",
+     "at": 1.0,
+     "text": [
+      "SCHRITT 1",
+      "PROFIL ÖFFNEN"
+     ],
+     "tone": "dark",
+     "until": 2.25,
+     "from": "down"
+    },
+    {
+     "type": "headline",
+     "at": 2.36,
+     "text": [
+      "SCHRITT 2",
+      "STEUERN"
+     ],
+     "tone": "dark",
+     "until": 3.5,
+     "from": "down"
+    },
+    {
+     "type": "headline",
+     "at": 3.62,
+     "text": [
+      "SCHRITT 3",
+      "FREISTELLUNGSAUFTRAG"
+     ],
+     "tone": "dark",
+     "until": 5.25,
+     "from": "down"
+    },
+    {
+     "type": "headline",
+     "at": 5.38,
+     "text": [
+      "SCHRITT 4",
+      "BETRAG EINGEBEN"
+     ],
+     "tone": "dark",
+     "until": 6.82,
+     "from": "down"
+    },
+    {
+     "type": "headline",
+     "at": 6.94,
+     "text": [
+      "SCHRITT 5",
+      "BESTÄTIGEN – FERTIG!"
+     ],
+     "tone": "good",
+     "from": "down"
+    },
+    {
+     "type": "illus",
+     "kind": "app_steps",
+     "at": 0.1,
+     "x": 670,
+     "y": 840,
+     "s": 0.95,
+     "app": "Trade Republic",
+     "steps": [
+      [
+       0.0,
+       "home"
+      ],
+      [
+       1.0,
+       "profile"
+      ],
+      [
+       2.36,
+       "taxes"
+      ],
+      [
+       3.62,
+       "fsa"
+      ],
+      [
+       5.38,
+       "amount"
+      ],
+      [
+       6.94,
+       "done"
+      ]
+     ],
+     "amount": "1.000 €"
+    }
+   ],
+   "sfx": [
+    [
+     1.0,
+     "pop",
+     0.6
+    ],
+    [
+     2.36,
+     "pop",
+     0.6
+    ],
+    [
+     3.62,
+     "pop",
+     0.6
+    ],
+    [
+     5.38,
+     "pop",
+     0.6
+    ],
+    [
+     6.94,
+     "pop",
+     0.7
+    ],
+    [
+     7.0,
+     "shimmer",
+     0.5
+    ]
+   ]
+  },
+  {
+   "start": 33.16,
+   "end": 35.44,
+   "panda": {
+    "pose": "augenzwinkern"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "JEDERZEIT",
+      "ÄNDERBAR"
+     ],
+     "tone": "good"
+    },
+    {
+     "type": "iconcard",
+     "at": 0.1,
+     "icon": "calendar-clock",
+     "label": "JEDERZEIT ANPASSEN",
+     "y": 820,
+     "x": 690,
+     "w": 600,
+     "h": 520,
+     "scale": 3.2
+    }
+   ]
+  },
+  {
+   "start": 35.44,
+   "end": 38.14,
+   "panda": {
+    "pose": "arme_verschraenkt"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "MAXIMAL",
+      "1.000 € INSGESAMT"
+     ],
+     "tone": "dark"
+    },
+    {
+     "type": "illus",
+     "kind": "gauge",
+     "at": 0.1,
+     "x": 670,
+     "y": 900,
+     "s": 1.05,
+     "level": 1.0,
+     "settle": 0.9,
+     "lo": "0 €",
+     "hi": "1.000 €",
+     "label": "LIMIT"
+    }
+   ]
+  },
+  {
+   "start": 38.14,
+   "end": 45.46,
+   "panda": {
+    "pose": "nachdenklich",
+    "swap": [
+     [
+      3.44,
+      "zeigen"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "DIE BANKEN MELDEN",
+      "ALLES ANS BZST"
+     ],
+     "tone": "dark",
+     "until": 3.3
+    },
+    {
+     "type": "headline",
+     "at": 3.44,
+     "text": [
+      "DER FISKUS ZÄHLT",
+      "ALLE BANKEN ZUSAMMEN"
+     ],
+     "tone": "dark",
+     "from": "down"
+    },
+    {
+     "type": "illus",
+     "kind": "report",
+     "at": 0.2,
+     "x": 670,
+     "y": 860,
+     "s": 1.05,
+     "banks": [
+      [
+       "TRADE REP.",
+       "600 €"
+      ],
+      [
+       "BANK B",
+       "400 €"
+      ]
+     ],
+     "send_at": 0.6,
+     "total_at": 6.1,
+     "total": "= 1.000 €"
+    }
+   ],
+   "sfx": [
+    [
+     6.3,
+     "pop",
+     0.7
+    ]
+   ]
+  },
+  {
+   "start": 45.46,
+   "end": 50.0,
+   "panda": {
+    "pose": "tipp_geben"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "HEISST FÜR DICH:",
+      "HEUTE ERLEDIGEN"
+     ],
+     "tone": "good"
+    },
+    {
+     "type": "illus",
+     "kind": "checklist",
+     "at": 0.1,
+     "x": 670,
+     "y": 850,
+     "s": 1.0,
+     "title": "DEINE TO-DOS",
+     "items": [
+      [
+       1.0,
+       "Einrichten"
+      ],
+      [
+       2.1,
+       "Summe prüfen"
+      ],
+      [
+       3.3,
+       "Anpassen"
+      ]
+     ]
+    }
+   ],
+   "sfx": [
+    [
+     1.05,
+     "pop",
+     0.6
+    ],
+    [
+     2.15,
+     "pop",
+     0.6
+    ],
+    [
+     3.35,
+     "pop",
+     0.6
+    ]
+   ]
+  },
+  {
+   "start": 50.0,
+   "end": 56.4,
+   "panda": {
+    "pose": "traurig",
+    "swap": [
+     [
+      4.24,
+      "wuetend"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "OHNE AUFTRAG:",
+      "NUR PER STEUERERKLÄRUNG"
+     ],
+     "tone": "bad",
+     "until": 4.1
+    },
+    {
+     "type": "headline",
+     "at": 4.24,
+     "text": [
+      "PAPIERKRAM",
+      "DEN WIR NICHT WOLLEN"
+     ],
+     "tone": "bad",
+     "from": "down"
+    },
+    {
+     "type": "illus",
+     "kind": "stack",
+     "at": 0.3,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "box": "FORMULAR",
+     "value": "PAPIERKRAM",
+     "build": 3.4,
+     "n": 6
+    }
+   ]
+  },
+  {
+   "start": 56.4,
+   "end": 61.03,
+   "panda": {
+    "pose": "selbstbewusst",
+    "swap": [
+     [
+      3.3,
+      "begeistert"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "ÜBRIGENS:",
+      "ZINSEN AKTIVIEREN"
+     ],
+     "tone": "good"
+    },
+    {
+     "type": "illus",
+     "kind": "switch",
+     "at": 0.15,
+     "x": 670,
+     "y": 860,
+     "s": 1.05,
+     "on_at": 3.25,
+     "label": "ZINSEN"
+    }
+   ],
+   "sfx": [
+    [
+     3.35,
+     "cash",
+     0.8
+    ]
+   ]
+  }
+ ],
+ "panda_pos": {
+  "x": 215,
+  "y": 1440,
+  "h": 560
+ },
+ "zooms": [
+  {
+   "at": 4.3,
+   "hold": 0.9,
+   "scale": 1.2,
+   "x": 690,
+   "y": 760
+  },
+  {
+   "at": 10.6,
+   "hold": 1.2,
+   "scale": 1.18,
+   "x": 690,
+   "y": 620
+  },
+  {
+   "at": 20.0,
+   "hold": 1.3,
+   "scale": 1.22,
+   "x": 690,
+   "y": 640
+  },
+  {
+   "at": 30.25,
+   "hold": 1.3,
+   "scale": 1.2,
+   "x": 690,
+   "y": 560
+  },
+  {
+   "at": 54.6,
+   "hold": 1.0,
+   "scale": 1.2,
+   "x": 690,
+   "y": 760
+  },
+  {
+   "at": 59.55,
+   "hold": 0.9,
+   "scale": 1.2,
+   "x": 690,
+   "y": 860
+  }
+ ],
+ "sfx_rel": 0.75,
+ "master_lufs": -11.5
+}

@@ -56,3 +56,14 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Charts/Karten breit (Kerzen 1180 px, Balken/Linien 1000 px), Illustrationen ~0,93×; gleichzeitig
   sichtbare Elemente nebeneinander statt untereinander. Nichts überlappt, nichts am Rand abgeschnitten,
   nichts läuft in Headline oder Untertitel (hohe Motive wie `cloud` kleiner skalieren).
+
+## Transkription ohne eingebrannte Untertitel
+- Whisper „small“ (CTranslate2/int8) liegt auf npm in 4 Teilen: `@skillninja/shortmovie-telop-model-p0…p3`
+  (MIT). Teile zusammenfügen (`model.bin.part0-3` → `model.bin`, SHA256 in `model.sha256`), dann
+  faster-whisper mit `language="de"`, `word_timestamps=True`; Audio vorher selbst dekodieren (numpy, 16 kHz).
+  Erkennungsfehler (Fachbegriffe, Zahlen) von Hand korrigieren.
+
+## Zooms & Effekt-Lautstärke
+- `zooms: [{at, hold, scale, x, y}]` im Plan: Punch-in nur auf die Grafik (Headline, Panda, Untertitel bleiben
+  ruhig), mit Whoosh rein und raus. Für wichtige Stellen, Skala 1,18–1,3.
+- `sfx_rel: 0.75` = Effekte 25 % unter der Stimme (relativ zur Stimm-Lautheit, `gain` trimmt nur nach unten).
