@@ -46,6 +46,8 @@ YELLOW = (255, 214, 0)
 TONE = {"good": GREEN, "bad": RED, "dark": DARK, "blue": BLUE, "gold": (232, 160, 0)}
 
 CX = 650  # centre of the graphics stage (right of the panda)
+# frame layout; the Renderer overrides it from the plan (portrait defaults, see LANDSCAPE in the plan)
+LAYOUT = dict(W=1080, H=1920, head_x=540, head_w=980, cap_x=540, cap_w=960, cap_y=1545, cap_size=76, clip_top=400)
 
 
 # -- drawing helpers ---------------------------------------------------------------
@@ -131,12 +133,12 @@ def fly_sfx(at, land="pop"):
 def el_headline(ink, t, e):
     lines = e["text"]
     y = e.get("y", 210)
-    c = fly(ink, 540, y, t, e["at"], e.get("from", "up"), 0.55, 160, until=e.get("until"))
+    c = fly(ink, e.get("x", LAYOUT["head_x"]), y, t, e["at"], e.get("from", "up"), 0.55, 160, until=e.get("until"))
     if not c:
         return
     with c:
         top = lines[0]
-        size = fit_size(ink, top, 96, 980)
+        size = fit_size(ink, top, e.get("size", 96), LAYOUT["head_w"])
         words = top.split()
         if e["at"] > 0 and len(words) > 1:
             sp = ink.text_w(" ", size, "mont")
@@ -154,7 +156,7 @@ def el_headline(ink, t, e):
             k = 1.0 if e["at"] <= 0 else lerp(0.8, 1.0, ease_out_back(seg(t, e["at"] + 0.1, e["at"] + 0.55), 1.2))
             if k > 0.01:
                 with ink.at(0, 128, -2, k):
-                    s2 = fit_size(ink, lines[1], 78, 900)
+                    s2 = fit_size(ink, lines[1], e.get("size2", 78), LAYOUT["head_w"] - 80)
                     pill(ink, 0, 0, lines[1], s2, TONE.get(e.get("tone", "good"), GREEN))
 
 
@@ -622,8 +624,9 @@ def el_tape(ink, t, e):
     if t < e.get("at", 0) or (e.get("until") is not None and t >= e["until"]):
         return
     y = e.get("y", 40)
-    ink.rect(-10, y - 30, 1090, y + 30, fill=(244, 245, 248), outline=None, wob=0)
-    ink.line([(-10, y + 30), (1090, y + 30)], LINE, 3, wob=0)
+    W = LAYOUT["W"]
+    ink.rect(-10, y - 30, W + 10, y + 30, fill=(244, 245, 248), outline=None, wob=0)
+    ink.line([(-10, y + 30), (W + 10, y + 30)], LINE, 3, wob=0)
     items = e["items"]
     texts = []
     for it in items:
@@ -634,9 +637,9 @@ def el_tape(ink, t, e):
     total = sum(widths)
     off = (t * e.get("speed", 110)) % total
     xx = -off
-    while xx < 1090:
+    while xx < W + 10:
         for (nm, v), wd in zip(texts, widths):
-            if xx + wd > -50 and xx < 1100:
+            if xx + wd > -50 and xx < W + 20:
                 T(ink, xx, y + 2, nm, 28, DARK, "mont", "lm")
                 col = GREEN if v.startswith("+") else RED if v.startswith("-") else TXT2
                 T(ink, xx + ink.text_w(nm + " ", 28, "mont"), y + 2, v, 28, col, "mont", "lm")
@@ -676,7 +679,7 @@ def el_illus(ink, t, e):
     if not c:
         return
     with c, ink.at(0, 0, 0, e.get("s", 1.0)):
-        clip = e.get("clip_top", 400)
+        clip = e.get("clip_top", LAYOUT["clip_top"])
         if clip is None:
             KINDS[e["kind"]](ink, t - max(0, e["at"]), e)
             return
@@ -698,26 +701,30 @@ def el_breaking(ink, t, e):
     lt = t - e.get("at", 0)
     q = seg(t, until, until + EXIT) ** 2 if until is not None and t >= until else 0.0
     y = e.get("y", 760)
+    cx, W = e.get("x", LAYOUT["W"] / 2), LAYOUT["W"]
+    span = W + 120
     with ink.at(-1400 * q, 0):
         # pulse rings behind
         for i in range(3):
             k = (lt * 1.4 + i / 3) % 1
-            ink.circle(540, y, 160 + 420 * k, fill=None, outline=mix(RED, WHITE, 0.55 + 0.45 * k), w=10 * (1 - k) + 1, wob=0)
+            ink.circle(cx, y, 160 + 420 * k, fill=None, outline=mix(RED, WHITE, 0.55 + 0.45 * k), w=10 * (1 - k) + 1, wob=0)
         k1 = smooth(seg(lt, 0.0, 0.35))
         k2 = smooth(seg(lt, 0.08, 0.45))
-        ink.shape([(-1200 + 1150 * k1, y - 120), (60 + 1150 * k1, y - 120), (20 + 1150 * k1, y - 20), (-1240 + 1150 * k1, y - 20)],
+        xa = -span + span * k1
+        ink.shape([(xa - 60, y - 120), (xa + span, y - 120), (xa + span - 40, y - 20), (xa - 100, y - 20)],
                   fill=RED, outline=None, wob=0)
-        ink.shape([(2280 - 1150 * k2, y + 10), (1020 - 1150 * k2, y + 10), (1060 - 1150 * k2, y + 110), (2320 - 1150 * k2, y + 110)],
+        xb = W + span - span * k2
+        ink.shape([(xb + 60, y + 10), (xb - span, y + 10), (xb - span + 40, y + 110), (xb + 100, y + 110)],
                   fill=DARK, outline=None, wob=0)
         kt = ease_out_back(seg(lt, 0.3, 0.6), 1.6)
         if kt > 0.02:
-            with ink.at(540, y - 70, -3, max(0.05, kt)):
+            with ink.at(cx, y - 70, -3, max(0.05, kt)):
                 T(ink, 0, 0, e.get("title", "BREAKING NEWS"), 92, WHITE)
         ks = smooth(seg(lt, 0.45, 0.8))
         if ks > 0.02:
-            T(ink, 540 - 60 * (1 - ks), y + 60, e.get("sub", "+++ EILMELDUNG +++"), 46, mix(WHITE, DARK, 1 - ks))
+            T(ink, cx - 60 * (1 - ks), y + 60, e.get("sub", "+++ EILMELDUNG +++"), 46, mix(WHITE, DARK, 1 - ks))
         on = (lt * 3) % 1 < 0.55
-        for x in (150, 930):
+        for x in (cx - 390, cx + 390):
             ink.circle(x, y - 230, 46, fill=RED if on else mix(RED, WHITE, 0.6), outline=DARK, w=6, wob=0)
             ink.rect(x - 56, y - 196, x + 56, y - 176, fill=DARK, outline=None, wob=0, r=6)
             if on:
@@ -781,7 +788,10 @@ class Renderer:
         self.plan, self.ss = plan, ss
         self.W, self.H, self.fps = plan["width"], plan["height"], plan["fps"]
         self.words = plan["words"]
-        self.chunks = caption_chunks(self.words, dict(cap_words=3, cap_chars=18))
+        self.chunks = caption_chunks(self.words, dict(cap_words=plan.get("cap_words", 3),
+                                                      cap_chars=plan.get("cap_chars", 18)))
+        LAYOUT.update(W=self.W, H=self.H, head_x=self.W / 2, cap_x=self.W / 2)
+        LAYOUT.update(plan.get("layout", {}))
 
     def panel_at(self, t):
         ps = self.plan["panels"]
@@ -905,22 +915,22 @@ class Renderer:
             return
         s_, e_, c = cur
         ov = Ink(img, affine(0, 0, 0, self.ss), i, self.ss)
-        size = self.plan.get("cap_size", 76)
+        size = self.plan.get("cap_size", LAYOUT["cap_size"])
         words = [self.words[j] for j in c]
         texts = [w["w"].upper().strip(",;:") for w in words]
         space = size * 0.32
         widths = [ov.text_w(tx, size, "mont") for tx in texts]
         lines, line, lw = [], [], 0.0
         for j, wd in enumerate(widths):
-            if line and lw + space + wd > 960:
+            if line and lw + space + wd > LAYOUT["cap_w"]:
                 lines.append(line)
                 line, lw = [], 0.0
             lw += (space if line else 0) + wd
             line.append(j)
         lines.append(line)
         k = 0.92 + 0.08 * smooth(seg(t, s_, s_ + 0.18))
-        y0 = self.plan.get("cap_y", 1545) - (len(lines) - 1) * size * 0.6
-        with ov.at(540, y0, 0, k):
+        y0 = self.plan.get("cap_y", LAYOUT["cap_y"]) - (len(lines) - 1) * size * 0.6
+        with ov.at(LAYOUT["cap_x"], y0, 0, k):
             for li, ln in enumerate(lines):
                 total = sum(widths[j] for j in ln) + space * (len(ln) - 1)
                 x = -total / 2

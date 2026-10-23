@@ -43,3 +43,12 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Erste Sekunden sofort packend: `breaking`-Motion-Graphic (rote/schwarze Bänder, Titel, Warnlichter),
   dann fliegt der Chart rein und zeichnet sich live; Laufband oben, Riser zur Enthüllung.
 - Gestapelte Illustrationen (z. B. `stack`) so niedrig halten, dass sie nie in die Headline wachsen.
+
+## Longform 16:9 (1920×1080)
+- Aus dem fertigen Short-Plan erzeugen: `python3 tools/to_longform.py short.plan.json long.plan.json`,
+  dann rendern. Referenz: `demo/sap_panda_news_LONGFORM.mp4`.
+- Panda groß links (`panda_pos` x=330, y=1050, h=700), Inhaltsbereich rechts (Mitte x≈1270,
+  y≈340–950), Headline mittig über dem Inhalt (y≈138), Untertitel einzeilig bei y≈1018.
+- Charts/Karten breit (Kerzen 1180 px, Balken/Linien 1000 px), Illustrationen ~0,93×; gleichzeitig
+  sichtbare Elemente nebeneinander statt untereinander. Nichts überlappt, nichts am Rand abgeschnitten,
+  nichts läuft in Headline oder Untertitel (hohe Motive wie `cloud` kleiner skalieren).
