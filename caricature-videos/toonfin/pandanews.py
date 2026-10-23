@@ -1125,11 +1125,30 @@ def _active_rms(x, win=0.05, top=None):
     return float(np.sqrt(np.mean(r[r > r.max() * 0.1] ** 2)) + 1e-9)
 
 
-def mix_audio(voice, duration, cue_list, env, fps, master=0.3, sfx_rel=None):
+def music_bed(path, duration, voice, env, fps, rel_db=-17.0, duck_db=-5.0, fade_in=0.6, fade_out=2.0):
+    """Background music under the voice: level set relative to the voice, ducked further while speaking,
+    soft fades. Loops if the track is shorter than the video."""
+    m = audio.load(path)
+    n = int(duration * audio.SR)
+    if len(m) < n:
+        m = np.concatenate([m] * int(np.ceil(n / max(1, len(m)))))
+    m = m[:n]
+    m = m / (_active_rms(m) + 1e-9) * _active_rms(voice) * 10 ** (rel_db / 20)
+    d = np.interp(np.arange(n) / audio.SR * fps, np.arange(len(env)), env) if len(env) else np.zeros(n)
+    d = np.convolve(np.clip(d * 2.5, 0, 1), np.ones(int(0.25 * audio.SR)) / int(0.25 * audio.SR), mode="same")
+    m *= 10 ** (duck_db * d / 20)
+    t = np.arange(n) / audio.SR
+    m *= np.clip(t / fade_in, 0, 1) * np.clip((duration - t) / fade_out, 0, 1)
+    return m
+
+
+def mix_audio(voice, duration, cue_list, env, fps, master=0.3, sfx_rel=None, music=None):
     n = int(duration * audio.SR)
     out = np.zeros(n)
     v = audio.normalize(voice)[:n]
     out[:len(v)] += v
+    if music:
+        out += music_bed(music["file"], duration, v, env, fps, music.get("rel_db", -17.0), music.get("duck_db", -5.0))
     duck = np.interp(np.arange(n) / audio.SR * fps, np.arange(len(env)), env) if len(env) else np.zeros(n)
     rng = random.Random(4)
     fx = np.zeros(n)
@@ -1197,7 +1216,7 @@ def render(plan, out_path, ss=2, workers=None, log=print):
     voice = audio.load(plan["audio"])
     env = audio.envelope(voice, fps, n)
     wav = out_path.with_suffix(".mix.wav")
-    audio.save(wav, mix_audio(voice, dur, cues(plan), env, fps, sfx_rel=plan.get("sfx_rel")))
+    audio.save(wav, mix_audio(voice, dur, cues(plan), env, fps, sfx_rel=plan.get("sfx_rel"), music=plan.get("music_bed")))
     if plan.get("master_lufs"):
         master_wav(wav, plan["master_lufs"])
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{plan['width']}x{plan['height']}",
