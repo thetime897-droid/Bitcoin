@@ -1322,6 +1322,15 @@
      "badge": "REKORD",
      "badge_at": 2.2,
      "y": 700
+    },
+    {
+     "type": "circle",
+     "at": 2.05,
+     "x": 615,
+     "y": 735,
+     "rx": 325,
+     "ry": 95,
+     "tone": "gold"
     }
    ]
   },
@@ -1606,6 +1615,29 @@
      "y": 1000,
      "x": 745,
      "w": 585
+    },
+    {
+     "type": "circle",
+     "at": 2.65,
+     "x": 610,
+     "y": 675,
+     "rx": 320,
+     "ry": 95,
+     "tone": "gold"
+    },
+    {
+     "type": "info",
+     "at": 2.9,
+     "until": 4.85,
+     "x": 745,
+     "y": 1000,
+     "w": 585,
+     "h": 230,
+     "icon": "search",
+     "lines": [
+      "Unterschriebene Verträge,",
+      "Umsatz der Zukunft"
+     ]
     }
    ]
   },
@@ -1669,6 +1701,16 @@
      "y": 1010,
      "x": 745,
      "w": 585
+    },
+    {
+     "type": "circle",
+     "at": 2.25,
+     "x": 605,
+     "y": 675,
+     "rx": 315,
+     "ry": 95,
+     "tone": "gold",
+     "until": 3.75
     }
    ]
   },
@@ -1845,6 +1887,21 @@
      "fill_at": 1.7,
      "cash": true,
      "y": 740
+    },
+    {
+     "type": "info",
+     "at": 2.6,
+     "until": 4.3,
+     "x": 745,
+     "y": 1085,
+     "w": 585,
+     "h": 230,
+     "icon": "target",
+     "title": "PROGNOSE",
+     "lines": [
+      "Ziel des Managements,",
+      "kein Versprechen"
+     ]
     },
     {
      "type": "iconcard",

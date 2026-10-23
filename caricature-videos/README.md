@@ -81,9 +81,16 @@ python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --ou
   `tools/hq_upscale.py`. Nur Figuren, die im Sheet mindestens ~180 px hoch sind, werden sauber;
   für weitere Posen bitte Einzelbilder in hoher Auflösung liefern.
 - Keine runden Panda-Einblendungen, immer genau ein Panda. Posenwechsel per Überblendung (`swap`).
-- Sound: leichter Wind-Whoosh (synthetisch, weich) beim Bildwechsel und wenn etwas rausfliegt,
-  Registrierkasse, wenn ein Geldbetrag landet, leiser Becken-Schimmer bei Plaketten, ein
-  Rückwärts-Becken als Riser im Einstieg. Kein Klicken, Ticken, Ploppen oder dumpfes Geräusch.
+- Sound (`toonfin/pandanews.py`, Vorschau: `demo/sfx_vorschau_whoosh_pop_kasse.mp3`):
+  ein einheitlicher **Whoosh** (echte CC0-Luftaufnahme „perc_swash“ + derselbe Take tiefer für
+  Volumen) bei Seitenwechsel und jedem Ein-/Ausflug, ein **Pop** (echter CC0-Trommel-Fingerschlag
+  + kurze Blasen-Resonanz) wenn Zahlen/Plaketten/Stempel erscheinen, **Registrierkasse** bei
+  Geldbeträgen, ein Rückwärts-Becken als Riser im Einstieg.
+  Eigene Sounds (z. B. von Pixabay) als `toonfin/sfx/custom/whoosh.mp3`, `pop.mp3`, `cash.mp3`
+  ablegen – sie ersetzen die eingebauten automatisch.
+- Motion Graphics: Bewegungsunschärfe bei Seitenwechseln, Headlines erscheinen Wort für Wort,
+  gezeichnete Markierungs-Kreise um Schlüsselzahlen (`circle`), Info-Karten mit Mehrwert
+  (`info`: „Was heißt das?“).
 - Untertitel: Montserrat Black, weiß mit schwarzer Kontur, aktuelles Wort gelb, unten ohne Kasten.
 
 ```bash

@@ -137,7 +137,19 @@ def el_headline(ink, t, e):
     with c:
         top = lines[0]
         size = fit_size(ink, top, 96, 980)
-        T(ink, 0, 0, top, size, WHITE if e.get("light") else DARK)
+        words = top.split()
+        if e["at"] > 0 and len(words) > 1:
+            sp = ink.text_w(" ", size, "mont")
+            ws = [ink.text_w(w_, size, "mont") for w_ in words]
+            xx = -(sum(ws) + sp * (len(ws) - 1)) / 2
+            for j, (w_, ww) in enumerate(zip(words, ws)):
+                kj = smooth(seg(t, e["at"] + 0.07 * j, e["at"] + 0.07 * j + 0.4))
+                if kj > 0.01:
+                    with ink.at(xx + ww / 2, 40 * (1 - kj), 0, lerp(0.85, 1.0, kj)):
+                        T(ink, 0, 0, w_, size, DARK)
+                xx += ww + sp
+        else:
+            T(ink, 0, 0, top, size, WHITE if e.get("light") else DARK)
         if len(lines) > 1:
             k = 1.0 if e["at"] <= 0 else lerp(0.8, 1.0, ease_out_back(seg(t, e["at"] + 0.1, e["at"] + 0.55), 1.2))
             if k > 0.01:
@@ -631,12 +643,39 @@ def el_tape(ink, t, e):
             xx += wd
 
 
+def el_circle(ink, t, e):
+    """Hand-drawn marker circle drawn around something (e.g. a key number)."""
+    if t < e["at"] or (e.get("until") is not None and t >= e["until"]):
+        return
+    k = smooth(seg(t, e["at"], e["at"] + e.get("dur", 0.55)))
+    a1 = 15 + 380 * k
+    ink.arc(e["x"], e["y"], e["rx"], e["ry"], 15, a1, TONE.get(e.get("tone", "gold"), GOLD), e.get("w", 12),
+            wob=0.6, rot=e.get("rot", -4))
+
+
+def el_info(ink, t, e):
+    """Small explainer card: icon + 'Was heißt das?' + one or two lines of plain explanation."""
+    x, y = e.get("x", CX + 40), e.get("y", 1080)
+    w, h = e.get("w", 640), e.get("h", 230)
+    c = fly(ink, x, y, t, e["at"], e.get("from", "right"), until=e.get("until"))
+    if not c:
+        return
+    with c:
+        card(ink, 0, 0, w, h, r=26, accent=BLUE)
+        with ink.at(-w / 2 + 70, -10):
+            icon(ink, e.get("icon", "search"), 0.7)
+        T(ink, -w / 2 + 130, -h / 2 + 62, e.get("title", "WAS HEISST DAS?"), 30, BLUE, "mont", "lm")
+        for i, line in enumerate(e.get("lines", [])):
+            T(ink, -w / 2 + 130, -h / 2 + 112 + i * 46, line, 32, DARK, "montb", "lm")
+
+
 ELEMENTS = {
     "headline": (el_headline, cues_headline), "live": (el_live, lambda e: []),
     "kpi": (el_kpi, cues_kpi), "bars": (el_bars, cues_bars), "hbars": (el_hbars, cues_hbars),
     "line": (el_line, cues_line), "minichart": (el_minichart, cues_minichart), "stamp": (el_stamp, cues_stamp),
     "tiles": (el_tiles, cues_tiles), "iconcard": (el_iconcard, cues_iconcard), "range": (el_range, cues_range),
     "candles": (el_candles, lambda e: []), "tape": (el_tape, lambda e: []),
+    "circle": (el_circle, lambda e: []), "info": (el_info, lambda e: []),
 }
 
 
@@ -780,7 +819,19 @@ class Renderer:
             ox, oy = int(dx * Wp * (1 - e)), int(dy * Hp * (1 - e))
             shadow = Image.new("RGBA", (Wp, Hp), (20, 22, 28, int(28 * (1 - e))))
             comp_at(comp, shadow, ox + dx * 14 * self.ss, oy + dy * 14 * self.ss)
-            comp.paste(img, (ox, oy))
+            # motion blur: average a few copies along the direction of travel, strongest mid-move
+            speed = 4 * (1 - u) ** 3 / dur * Wp / self.fps
+            taps = 4 if speed > 6 * self.ss else 1
+            if taps > 1:
+                acc = np.zeros((Hp, Wp, 4), np.float32)
+                for k_ in range(taps):
+                    sh = int(-dx * speed * k_ / taps * 0.8)
+                    lay = comp.copy()
+                    lay.paste(img, (ox + sh, oy))
+                    acc += np.asarray(lay, np.float32)
+                comp = Image.fromarray((acc / taps).astype(np.uint8), "RGBA")
+            else:
+                comp.paste(img, (ox, oy))
             img = comp
         self.draw_panda(img, t)
         self._captions(img, t, i)
@@ -825,19 +876,65 @@ class Renderer:
 
 # -- sound -------------------------------------------------------------------------------
 
-SOUNDS = {
-    "wind": ["wind0", "wind1", "wind2", "wind3"], "riser": ["riser"], "shimmer": ["drum_splash_soft"],
-    "swish": ["wind0", "wind1"], "whoosh": ["wind0", "wind1", "wind2", "wind3"], "swoosh": ["wind2"],
-    "pop": ["elec_pop", "perc_snap"], "ping": ["elec_ping", "elec_blip"], "cash": ["perc_till"],
-    "tick": ["elec_tick"], "impact": ["perc_impact1", "perc_impact2"], "boom": ["bd_boom"], "down": ["perc_impact2"],
-    "chime": ["elec_chime"],
-}
+SOUNDS = {"whoosh": "whoosh", "pop": "pop", "cash": "cash", "riser": "riser"}
+
+
+def _custom(name):
+    for ext in ("wav", "mp3", "flac", "ogg"):
+        f = HERE / "sfx" / "custom" / f"{name}.{ext}"
+        if f.exists():
+            x = audio.load(f)
+            return x / (np.max(np.abs(x)) + 1e-9)
+    return None
+
+
+def _lowpass(x, cutoff):
+    X = np.fft.rfft(x)
+    f = np.fft.rfftfreq(len(x), 1 / audio.SR)
+    X *= 1 / (1 + (f / cutoff) ** 4)
+    return np.fft.irfft(X, len(x))
+
+
+def _resample(x, ratio):
+    """Play back at ``ratio`` speed (pitch shifts with it)."""
+    idx = np.arange(0, len(x) - 1, ratio)
+    return np.interp(idx, np.arange(len(x)), x)
 
 
 @lru_cache(maxsize=None)
 def sample(name):
-    if name.startswith("wind"):
-        return wind(int(name[4:] or 0))
+    c = _custom(name)
+    if c is not None:
+        return c
+    if name == "whoosh":
+        # real CC0 air recording (qubodup, freesound 60009 via Sonic Pi), plus the same take a fifth
+        # lower underneath for body, gentle top roll-off so it sounds airy, not hissy
+        x = audio.load(HERE / "sfx" / "perc_swash.flac")
+        x = x / (np.max(np.abs(x)) + 1e-9)
+        body = _resample(x, 0.66)
+        out = np.zeros(len(body) + 200)
+        out[:len(body)] += 0.55 * body
+        out[120:120 + len(x)] += x
+        out = _lowpass(out, 7500)
+        n = len(out)
+        out *= np.minimum(1, np.arange(n) / (0.02 * audio.SR)) * np.minimum(1, (n - np.arange(n)) / (0.08 * audio.SR))
+        return out / (np.max(np.abs(out)) + 1e-9)
+    if name == "pop":
+        # real finger-on-drumhead hit (CC0) with a short rising bubble resonance: a round, clean pop
+        x = audio.load(HERE / "sfx" / "tabla_ke1.flac")
+        x = _resample(x / (np.max(np.abs(x)) + 1e-9), 1.25)
+        n = int(0.075 * audio.SR)
+        t = np.arange(n) / audio.SR
+        f = 380 + 900 * (t / t[-1]) ** 0.6
+        blip = np.sin(2 * np.pi * np.cumsum(f) / audio.SR) * np.exp(-t * 55)
+        out = np.zeros(max(n, len(x)))
+        out[:len(x)] += 0.7 * x
+        out[:n] += 0.8 * blip
+        out = _lowpass(out, 9000)
+        return out / (np.max(np.abs(out)) + 1e-9)
+    if name == "cash":
+        x = audio.load(HERE / "sfx" / "perc_till.flac")
+        return x / (np.max(np.abs(x)) + 1e-9)
     if name == "riser":
         x = audio.load(HERE / "sfx" / "drum_cymbal_open.flac")[::-1].copy()
         x = x[-int(1.6 * audio.SR):]
@@ -847,47 +944,40 @@ def sample(name):
     return x / (np.max(np.abs(x)) + 1e-9)
 
 
-@lru_cache(maxsize=8)
-def wind(seed):
-    """A light gust of air: soft noise band sweeping up and down, slow attack and release."""
-    rng = np.random.default_rng(seed + 11)
-    d = 0.8 + 0.1 * (seed % 3)
-    lo, hi = 260 + 40 * (seed % 2), 1050 + 120 * (seed % 3)
-    x = audio._shaped_noise(d, lambda k: lo + (hi - lo) * math.sin(math.pi * k) ** 1.5,
-                            lambda k: 260 + 420 * math.sin(math.pi * k), rng)
-    n = len(x)
-    tt = np.linspace(0, 1, n)
-    env = np.sin(np.pi * np.clip(tt, 0, 1)) ** 2.2
-    x = x * env
-    x = np.convolve(x, np.ones(9) / 9, mode="same")
-    return x / (np.max(np.abs(x)) + 1e-9)
-
-
 MONEY_RE = re.compile(r"[€$]|mrd|mio|euro|dollar", re.I)
 
 
 def cues(plan):
-    """Light wind whoosh on every picture change and when something leaves; the cash register when
-    a money figure lands; a soft shimmer on highlight badges. No clicks, ticks, pops or thumps."""
+    """One consistent whoosh for page changes and fly-ins/outs, a clean pop when a figure or badge
+    appears, the cash register when a money amount lands. Nothing else."""
     out = []
     for i, p in enumerate(plan["panels"]):
         st = p["start"]
         if i and p.get("whoosh", True):
-            out.append((st - 0.22, "wind", 0.85))
+            out.append((st - 0.08, "whoosh", 0.8))
         for e in p.get("elements", []):
-            at = e.get("at", 0)
+            at, ty = e.get("at", 0), e["type"]
+            if at > 0 and ty not in ("tape", "circle"):
+                out.append((st + at - 0.05, "whoosh", 0.38))
             if e.get("until") is not None:
-                out.append((st + e["until"] - 0.12, "wind", 0.45))
+                out.append((st + e["until"] - 0.03, "whoosh", 0.38))
             money = bool(MONEY_RE.search(" ".join(str(e.get(k, "")) for k in ("value", "title", "lo_label"))))
-            if e["type"] == "kpi" and money and e.get("count", True):
-                out.append((st + e.get("count_end", at + 1.6) - 0.05, "cash", 0.5))
-            if e["type"] == "bars" and money:
+            if ty == "kpi" and e.get("count", True):
+                out.append((st + e.get("count_end", at + 1.6) - 0.03, "cash" if money else "pop", 0.5 if money else 0.6))
+            if ty == "bars":
                 ats = e.get("bar_at") or [at + 0.4 + 0.5 * j for j in range(len(e["items"]))]
-                out.append((st + ats[-1] + 0.55, "cash", 0.45))
-            if e["type"] == "range" and e.get("cash"):
+                out.append((st + ats[-1] + 0.55, "cash" if money else "pop", 0.45 if money else 0.55))
+            if ty == "range" and e.get("cash"):
                 out.append((st + e.get("fill_at", at + 0.4) + 0.75, "cash", 0.45))
-            if e.get("badge") and e.get("badge_at") is not None and e.get("shimmer", True):
-                out.append((st + e["badge_at"], "shimmer", 0.22))
+            for key in ("badge_at", "note_at"):
+                if e.get(key) is not None:
+                    out.append((st + e[key] + 0.02, "pop", 0.65))
+            if ty == "range" and "marker" in e:
+                out.append((st + e["marker_at"] + 1.0, "pop", 0.6))
+            if ty == "stamp":
+                out.append((st + at + 0.12, "pop", 0.7))
+            if ty == "circle":
+                out.append((st + at + 0.5, "pop", 0.45))
             out += [(st + a, n, g) for a, n, g in e.get("sfx", [])]
         out += [(st + a, n, g) for a, n, g in p.get("sfx", [])]
     return sorted(out)
@@ -906,7 +996,7 @@ def mix_audio(voice, duration, cue_list, env, fps, master=0.3):
         if name == "tick" and t - last.get("tick", -1) < 0.05:
             continue
         last[name] = t
-        s = sample(rng.choice(SOUNDS[name]))
+        s = sample(SOUNDS.get(name, name))
         a = int(max(0, t) * audio.SR)
         if a >= n:
             continue
