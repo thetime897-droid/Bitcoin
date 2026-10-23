@@ -1,0 +1,1869 @@
+{
+ "style": "pandanews",
+ "width": 1080,
+ "height": 1920,
+ "fps": 60,
+ "audio": "voice.wav",
+ "duration": 63.66,
+ "words": [
+  {
+   "w": "Ist",
+   "s": 0.0,
+   "e": 0.226,
+   "tag": ""
+  },
+  {
+   "w": "das",
+   "s": 0.226,
+   "e": 0.452,
+   "tag": ""
+  },
+  {
+   "w": "Altersvorsorgedepot",
+   "s": 0.452,
+   "e": 1.4,
+   "tag": ""
+  },
+  {
+   "w": "ein",
+   "s": 1.4,
+   "e": 1.673,
+   "tag": ""
+  },
+  {
+   "w": "Scam",
+   "s": 1.673,
+   "e": 2.0,
+   "tag": "neg"
+  },
+  {
+   "w": "oder",
+   "s": 2.0,
+   "e": 2.225,
+   "tag": ""
+  },
+  {
+   "w": "sollten",
+   "s": 2.225,
+   "e": 2.562,
+   "tag": ""
+  },
+  {
+   "w": "wir",
+   "s": 2.562,
+   "e": 2.75,
+   "tag": ""
+  },
+  {
+   "w": "es",
+   "s": 2.75,
+   "e": 2.9,
+   "tag": ""
+  },
+  {
+   "w": "überhaupt",
+   "s": 2.9,
+   "e": 3.315,
+   "tag": ""
+  },
+  {
+   "w": "benutzen",
+   "s": 3.315,
+   "e": 3.692,
+   "tag": ""
+  },
+  {
+   "w": "für",
+   "s": 3.692,
+   "e": 3.881,
+   "tag": ""
+  },
+  {
+   "w": "unseren",
+   "s": 3.881,
+   "e": 4.221,
+   "tag": ""
+  },
+  {
+   "w": "Vermögensaufbau?",
+   "s": 4.221,
+   "e": 4.9,
+   "tag": ""
+  },
+  {
+   "w": "Das",
+   "s": 4.9,
+   "e": 5.091,
+   "tag": ""
+  },
+  {
+   "w": "klären",
+   "s": 5.091,
+   "e": 5.397,
+   "tag": ""
+  },
+  {
+   "w": "wir",
+   "s": 5.397,
+   "e": 5.588,
+   "tag": ""
+  },
+  {
+   "w": "heute",
+   "s": 5.588,
+   "e": 5.856,
+   "tag": ""
+  },
+  {
+   "w": "gerade.",
+   "s": 5.856,
+   "e": 6.2,
+   "tag": ""
+  },
+  {
+   "w": "Habt",
+   "s": 6.2,
+   "e": 6.388,
+   "tag": ""
+  },
+  {
+   "w": "ihr",
+   "s": 6.388,
+   "e": 6.544,
+   "tag": ""
+  },
+  {
+   "w": "ja",
+   "s": 6.544,
+   "e": 6.669,
+   "tag": ""
+  },
+  {
+   "w": "schon",
+   "s": 6.669,
+   "e": 6.888,
+   "tag": ""
+  },
+  {
+   "w": "gesehen,",
+   "s": 6.888,
+   "e": 7.2,
+   "tag": ""
+  },
+  {
+   "w": "ich",
+   "s": 7.2,
+   "e": 7.468,
+   "tag": ""
+  },
+  {
+   "w": "würde",
+   "s": 7.468,
+   "e": 7.843,
+   "tag": ""
+  },
+  {
+   "w": "insgesamt",
+   "s": 7.843,
+   "e": 8.432,
+   "tag": ""
+  },
+  {
+   "w": "610",
+   "s": 8.432,
+   "e": 8.7,
+   "tag": "num"
+  },
+  {
+   "w": "Euro",
+   "s": 8.7,
+   "e": 8.925,
+   "tag": ""
+  },
+  {
+   "w": "staatliche",
+   "s": 8.925,
+   "e": 9.375,
+   "tag": ""
+  },
+  {
+   "w": "Förderung",
+   "s": 9.375,
+   "e": 9.787,
+   "tag": "pos"
+  },
+  {
+   "w": "bekommen.",
+   "s": 9.787,
+   "e": 10.2,
+   "tag": ""
+  },
+  {
+   "w": "Es",
+   "s": 10.2,
+   "e": 10.291,
+   "tag": ""
+  },
+  {
+   "w": "gibt",
+   "s": 10.291,
+   "e": 10.427,
+   "tag": ""
+  },
+  {
+   "w": "vor",
+   "s": 10.427,
+   "e": 10.541,
+   "tag": ""
+  },
+  {
+   "w": "allen",
+   "s": 10.541,
+   "e": 10.7,
+   "tag": ""
+  },
+  {
+   "w": "Dingen",
+   "s": 10.7,
+   "e": 11.06,
+   "tag": ""
+  },
+  {
+   "w": "auf",
+   "s": 11.06,
+   "e": 11.285,
+   "tag": ""
+  },
+  {
+   "w": "Trade",
+   "s": 11.285,
+   "e": 11.6,
+   "tag": ""
+  },
+  {
+   "w": "Republic",
+   "s": 11.6,
+   "e": 12.007,
+   "tag": ""
+  },
+  {
+   "w": "jetzt",
+   "s": 12.007,
+   "e": 12.293,
+   "tag": ""
+  },
+  {
+   "w": "genau",
+   "s": 12.293,
+   "e": 12.578,
+   "tag": ""
+  },
+  {
+   "w": "2",
+   "s": 12.578,
+   "e": 12.7,
+   "tag": "num"
+  },
+  {
+   "w": "Vorteile",
+   "s": 12.7,
+   "e": 13.212,
+   "tag": "pos"
+  },
+  {
+   "w": "und",
+   "s": 13.212,
+   "e": 13.467,
+   "tag": ""
+  },
+  {
+   "w": "3",
+   "s": 13.467,
+   "e": 13.621,
+   "tag": "num"
+  },
+  {
+   "w": "gravierende",
+   "s": 13.621,
+   "e": 14.286,
+   "tag": ""
+  },
+  {
+   "w": "Nachteile.",
+   "s": 14.286,
+   "e": 14.9,
+   "tag": "neg"
+  },
+  {
+   "w": "Das",
+   "s": 14.9,
+   "e": 15.004,
+   "tag": ""
+  },
+  {
+   "w": "Ganze",
+   "s": 15.004,
+   "e": 15.15,
+   "tag": ""
+  },
+  {
+   "w": "ist",
+   "s": 15.15,
+   "e": 15.254,
+   "tag": ""
+  },
+  {
+   "w": "keine",
+   "s": 15.254,
+   "e": 15.4,
+   "tag": ""
+  },
+  {
+   "w": "Anlageberatung,",
+   "s": 15.4,
+   "e": 16.146,
+   "tag": ""
+  },
+  {
+   "w": "gib",
+   "s": 16.146,
+   "e": 16.366,
+   "tag": ""
+  },
+  {
+   "w": "mir",
+   "s": 16.366,
+   "e": 16.585,
+   "tag": ""
+  },
+  {
+   "w": "'ne",
+   "s": 16.585,
+   "e": 16.805,
+   "tag": ""
+  },
+  {
+   "w": "Minute.",
+   "s": 16.805,
+   "e": 17.2,
+   "tag": ""
+  },
+  {
+   "w": "Ihr",
+   "s": 17.2,
+   "e": 17.346,
+   "tag": ""
+  },
+  {
+   "w": "könnt",
+   "s": 17.346,
+   "e": 17.55,
+   "tag": ""
+  },
+  {
+   "w": "in",
+   "s": 17.55,
+   "e": 17.667,
+   "tag": ""
+  },
+  {
+   "w": "diesem",
+   "s": 17.667,
+   "e": 17.9,
+   "tag": ""
+  },
+  {
+   "w": "AVD",
+   "s": 17.9,
+   "e": 18.165,
+   "tag": ""
+  },
+  {
+   "w": "dann",
+   "s": 18.165,
+   "e": 18.482,
+   "tag": ""
+  },
+  {
+   "w": "2",
+   "s": 18.482,
+   "e": 18.641,
+   "tag": "num"
+  },
+  {
+   "w": "Varianten",
+   "s": 18.641,
+   "e": 19.224,
+   "tag": ""
+  },
+  {
+   "w": "wählen,",
+   "s": 19.224,
+   "e": 19.7,
+   "tag": ""
+  },
+  {
+   "w": "einmal",
+   "s": 19.7,
+   "e": 20.002,
+   "tag": ""
+  },
+  {
+   "w": "selbstbestimmt",
+   "s": 20.002,
+   "e": 20.606,
+   "tag": "pos"
+  },
+  {
+   "w": "und",
+   "s": 20.606,
+   "e": 20.794,
+   "tag": ""
+  },
+  {
+   "w": "einmal",
+   "s": 20.794,
+   "e": 21.096,
+   "tag": ""
+  },
+  {
+   "w": "vorausgewählt.",
+   "s": 21.096,
+   "e": 21.7,
+   "tag": ""
+  },
+  {
+   "w": "Hier",
+   "s": 21.7,
+   "e": 21.83,
+   "tag": ""
+  },
+  {
+   "w": "würde",
+   "s": 21.83,
+   "e": 21.983,
+   "tag": ""
+  },
+  {
+   "w": "ich",
+   "s": 21.983,
+   "e": 22.091,
+   "tag": ""
+  },
+  {
+   "w": "auf",
+   "s": 22.091,
+   "e": 22.2,
+   "tag": ""
+  },
+  {
+   "w": "jeden",
+   "s": 22.2,
+   "e": 22.439,
+   "tag": ""
+  },
+  {
+   "w": "Fall",
+   "s": 22.439,
+   "e": 22.643,
+   "tag": ""
+  },
+  {
+   "w": "das",
+   "s": 22.643,
+   "e": 22.814,
+   "tag": ""
+  },
+  {
+   "w": "Selbstbestimmte",
+   "s": 22.814,
+   "e": 23.393,
+   "tag": "pos"
+  },
+  {
+   "w": "wählen.",
+   "s": 23.393,
+   "e": 23.7,
+   "tag": ""
+  },
+  {
+   "w": "Dann",
+   "s": 23.7,
+   "e": 23.772,
+   "tag": ""
+  },
+  {
+   "w": "würde",
+   "s": 23.772,
+   "e": 23.856,
+   "tag": ""
+  },
+  {
+   "w": "ich",
+   "s": 23.856,
+   "e": 23.916,
+   "tag": ""
+  },
+  {
+   "w": "einen",
+   "s": 23.916,
+   "e": 24.0,
+   "tag": ""
+  },
+  {
+   "w": "ganz",
+   "s": 24.0,
+   "e": 24.292,
+   "tag": ""
+  },
+  {
+   "w": "simplen",
+   "s": 24.292,
+   "e": 24.731,
+   "tag": ""
+  },
+  {
+   "w": "All-World-ETF",
+   "s": 24.731,
+   "e": 25.462,
+   "tag": ""
+  },
+  {
+   "w": "nehmen.",
+   "s": 25.462,
+   "e": 25.9,
+   "tag": ""
+  },
+  {
+   "w": "Pluspunkt",
+   "s": 25.9,
+   "e": 26.345,
+   "tag": ""
+  },
+  {
+   "w": "für",
+   "s": 26.345,
+   "e": 26.548,
+   "tag": ""
+  },
+  {
+   "w": "Trade",
+   "s": 26.548,
+   "e": 26.831,
+   "tag": ""
+  },
+  {
+   "w": "Republic",
+   "s": 26.831,
+   "e": 27.236,
+   "tag": ""
+  },
+  {
+   "w": "Nutzer:",
+   "s": 27.236,
+   "e": 27.6,
+   "tag": ""
+  },
+  {
+   "w": "Hier",
+   "s": 27.6,
+   "e": 27.764,
+   "tag": ""
+  },
+  {
+   "w": "wird",
+   "s": 27.764,
+   "e": 27.927,
+   "tag": ""
+  },
+  {
+   "w": "dir",
+   "s": 27.927,
+   "e": 28.064,
+   "tag": ""
+  },
+  {
+   "w": "die",
+   "s": 28.064,
+   "e": 28.2,
+   "tag": ""
+  },
+  {
+   "w": "TER",
+   "s": 28.2,
+   "e": 28.406,
+   "tag": ""
+  },
+  {
+   "w": "geschenkt.",
+   "s": 28.406,
+   "e": 28.9,
+   "tag": "pos"
+  },
+  {
+   "w": "Und",
+   "s": 28.9,
+   "e": 29.117,
+   "tag": ""
+  },
+  {
+   "w": "jetzt",
+   "s": 29.117,
+   "e": 29.42,
+   "tag": ""
+  },
+  {
+   "w": "wird's",
+   "s": 29.42,
+   "e": 29.767,
+   "tag": ""
+  },
+  {
+   "w": "wichtig.",
+   "s": 29.767,
+   "e": 30.2,
+   "tag": ""
+  },
+  {
+   "w": "Ich",
+   "s": 30.2,
+   "e": 30.304,
+   "tag": ""
+  },
+  {
+   "w": "würde",
+   "s": 30.304,
+   "e": 30.45,
+   "tag": ""
+  },
+  {
+   "w": "hier",
+   "s": 30.45,
+   "e": 30.575,
+   "tag": ""
+  },
+  {
+   "w": "auch",
+   "s": 30.575,
+   "e": 30.7,
+   "tag": ""
+  },
+  {
+   "w": "maximal",
+   "s": 30.7,
+   "e": 31.384,
+   "tag": ""
+  },
+  {
+   "w": "150",
+   "s": 31.384,
+   "e": 31.764,
+   "tag": "num"
+  },
+  {
+   "w": "Euro",
+   "s": 31.764,
+   "e": 32.22,
+   "tag": ""
+  },
+  {
+   "w": "pro",
+   "s": 32.22,
+   "e": 32.6,
+   "tag": ""
+  },
+  {
+   "w": "Monat",
+   "s": 32.6,
+   "e": 33.033,
+   "tag": ""
+  },
+  {
+   "w": "investieren,",
+   "s": 33.033,
+   "e": 33.9,
+   "tag": ""
+  },
+  {
+   "w": "um",
+   "s": 33.9,
+   "e": 34.053,
+   "tag": ""
+  },
+  {
+   "w": "die",
+   "s": 34.053,
+   "e": 34.244,
+   "tag": ""
+  },
+  {
+   "w": "maximale",
+   "s": 34.244,
+   "e": 34.626,
+   "tag": ""
+  },
+  {
+   "w": "Bezuschussung",
+   "s": 34.626,
+   "e": 35.2,
+   "tag": "pos"
+  },
+  {
+   "w": "vom",
+   "s": 35.2,
+   "e": 35.5,
+   "tag": ""
+  },
+  {
+   "w": "Staat",
+   "s": 35.5,
+   "e": 35.92,
+   "tag": ""
+  },
+  {
+   "w": "zu",
+   "s": 35.92,
+   "e": 36.16,
+   "tag": ""
+  },
+  {
+   "w": "nutzen.",
+   "s": 36.16,
+   "e": 36.7,
+   "tag": ""
+  },
+  {
+   "w": "Nicht",
+   "s": 36.7,
+   "e": 36.933,
+   "tag": "neg"
+  },
+  {
+   "w": "einen",
+   "s": 36.933,
+   "e": 37.167,
+   "tag": ""
+  },
+  {
+   "w": "einzigen",
+   "s": 37.167,
+   "e": 37.5,
+   "tag": ""
+  },
+  {
+   "w": "Cent",
+   "s": 37.5,
+   "e": 37.7,
+   "tag": ""
+  },
+  {
+   "w": "mehr",
+   "s": 37.7,
+   "e": 37.968,
+   "tag": ""
+  },
+  {
+   "w": "würde",
+   "s": 37.968,
+   "e": 38.282,
+   "tag": ""
+  },
+  {
+   "w": "ich",
+   "s": 38.282,
+   "e": 38.505,
+   "tag": ""
+  },
+  {
+   "w": "hier",
+   "s": 38.505,
+   "e": 38.774,
+   "tag": ""
+  },
+  {
+   "w": "investieren.",
+   "s": 38.774,
+   "e": 39.4,
+   "tag": ""
+  },
+  {
+   "w": "Der",
+   "s": 39.4,
+   "e": 39.521,
+   "tag": ""
+  },
+  {
+   "w": "Knackpunkt",
+   "s": 39.521,
+   "e": 39.812,
+   "tag": "neg"
+  },
+  {
+   "w": "hierbei",
+   "s": 39.812,
+   "e": 40.03,
+   "tag": ""
+  },
+  {
+   "w": "liegt",
+   "s": 40.03,
+   "e": 40.2,
+   "tag": ""
+  },
+  {
+   "w": "nämlich",
+   "s": 40.2,
+   "e": 40.729,
+   "tag": ""
+  },
+  {
+   "w": "darin,",
+   "s": 40.729,
+   "e": 41.2,
+   "tag": ""
+  },
+  {
+   "w": "dass",
+   "s": 41.2,
+   "e": 41.35,
+   "tag": ""
+  },
+  {
+   "w": "du",
+   "s": 41.35,
+   "e": 41.45,
+   "tag": ""
+  },
+  {
+   "w": "bis",
+   "s": 41.45,
+   "e": 41.575,
+   "tag": ""
+  },
+  {
+   "w": "zum",
+   "s": 41.575,
+   "e": 41.7,
+   "tag": ""
+  },
+  {
+   "w": "Renteneintrittsalter",
+   "s": 41.7,
+   "e": 42.742,
+   "tag": ""
+  },
+  {
+   "w": "nicht",
+   "s": 42.742,
+   "e": 43.074,
+   "tag": "neg"
+  },
+  {
+   "w": "an",
+   "s": 43.074,
+   "e": 43.263,
+   "tag": ""
+  },
+  {
+   "w": "das",
+   "s": 43.263,
+   "e": 43.5,
+   "tag": ""
+  },
+  {
+   "w": "Geld",
+   "s": 43.5,
+   "e": 43.86,
+   "tag": ""
+  },
+  {
+   "w": "herankommst.",
+   "s": 43.86,
+   "e": 44.7,
+   "tag": ""
+  },
+  {
+   "w": "Das",
+   "s": 44.7,
+   "e": 44.919,
+   "tag": ""
+  },
+  {
+   "w": "bedeutet,",
+   "s": 44.919,
+   "e": 45.4,
+   "tag": ""
+  },
+  {
+   "w": "hier",
+   "s": 45.4,
+   "e": 45.507,
+   "tag": ""
+  },
+  {
+   "w": "wirst",
+   "s": 45.507,
+   "e": 45.632,
+   "tag": ""
+  },
+  {
+   "w": "du",
+   "s": 45.632,
+   "e": 45.704,
+   "tag": ""
+  },
+  {
+   "w": "natürlich",
+   "s": 45.704,
+   "e": 45.9,
+   "tag": ""
+  },
+  {
+   "w": "auch",
+   "s": 45.9,
+   "e": 46.085,
+   "tag": ""
+  },
+  {
+   "w": "wieder",
+   "s": 46.085,
+   "e": 46.331,
+   "tag": ""
+  },
+  {
+   "w": "in",
+   "s": 46.331,
+   "e": 46.454,
+   "tag": ""
+  },
+  {
+   "w": "deiner",
+   "s": 46.454,
+   "e": 46.7,
+   "tag": ""
+  },
+  {
+   "w": "Freiheit",
+   "s": 46.7,
+   "e": 47.469,
+   "tag": ""
+  },
+  {
+   "w": "eingeschränkt.",
+   "s": 47.469,
+   "e": 48.7,
+   "tag": "neg"
+  },
+  {
+   "w": "Und",
+   "s": 48.7,
+   "e": 48.804,
+   "tag": ""
+  },
+  {
+   "w": "das",
+   "s": 48.804,
+   "e": 48.908,
+   "tag": ""
+  },
+  {
+   "w": "gefällt",
+   "s": 48.908,
+   "e": 49.096,
+   "tag": ""
+  },
+  {
+   "w": "mir",
+   "s": 49.096,
+   "e": 49.2,
+   "tag": ""
+  },
+  {
+   "w": "persönlich",
+   "s": 49.2,
+   "e": 49.68,
+   "tag": ""
+  },
+  {
+   "w": "gar",
+   "s": 49.68,
+   "e": 49.88,
+   "tag": ""
+  },
+  {
+   "w": "nicht.",
+   "s": 49.88,
+   "e": 50.2,
+   "tag": "neg"
+  },
+  {
+   "w": "Trotzdem",
+   "s": 50.2,
+   "e": 50.307,
+   "tag": ""
+  },
+  {
+   "w": "möchte",
+   "s": 50.307,
+   "e": 50.393,
+   "tag": ""
+  },
+  {
+   "w": "ich",
+   "s": 50.393,
+   "e": 50.446,
+   "tag": ""
+  },
+  {
+   "w": "die",
+   "s": 50.446,
+   "e": 50.5,
+   "tag": ""
+  },
+  {
+   "w": "Bezuschussung",
+   "s": 50.5,
+   "e": 51.27,
+   "tag": "pos"
+  },
+  {
+   "w": "irgendwo",
+   "s": 51.27,
+   "e": 51.784,
+   "tag": ""
+  },
+  {
+   "w": "mitnehmen.",
+   "s": 51.784,
+   "e": 52.4,
+   "tag": ""
+  },
+  {
+   "w": "Meiner",
+   "s": 52.4,
+   "e": 52.533,
+   "tag": ""
+  },
+  {
+   "w": "Meinung",
+   "s": 52.533,
+   "e": 52.683,
+   "tag": ""
+  },
+  {
+   "w": "nach",
+   "s": 52.683,
+   "e": 52.783,
+   "tag": ""
+  },
+  {
+   "w": "macht",
+   "s": 52.783,
+   "e": 52.9,
+   "tag": ""
+  },
+  {
+   "w": "der",
+   "s": 52.9,
+   "e": 53.079,
+   "tag": ""
+  },
+  {
+   "w": "Staat",
+   "s": 53.079,
+   "e": 53.329,
+   "tag": ""
+  },
+  {
+   "w": "uns",
+   "s": 53.329,
+   "e": 53.507,
+   "tag": ""
+  },
+  {
+   "w": "hier",
+   "s": 53.507,
+   "e": 53.721,
+   "tag": ""
+  },
+  {
+   "w": "den",
+   "s": 53.721,
+   "e": 53.9,
+   "tag": ""
+  },
+  {
+   "w": "Vermögensaufbau",
+   "s": 53.9,
+   "e": 55.469,
+   "tag": ""
+  },
+  {
+   "w": "maximal",
+   "s": 55.469,
+   "e": 56.3,
+   "tag": ""
+  },
+  {
+   "w": "kompliziert.",
+   "s": 56.3,
+   "e": 56.716,
+   "tag": "neg"
+  },
+  {
+   "w": "Hier",
+   "s": 56.716,
+   "e": 56.895,
+   "tag": ""
+  },
+  {
+   "w": "wie",
+   "s": 56.895,
+   "e": 57.043,
+   "tag": ""
+  },
+  {
+   "w": "eigentlich",
+   "s": 57.043,
+   "e": 57.4,
+   "tag": ""
+  },
+  {
+   "w": "immer,",
+   "s": 57.4,
+   "e": 57.785,
+   "tag": ""
+  },
+  {
+   "w": "und",
+   "s": 57.785,
+   "e": 58.026,
+   "tag": ""
+  },
+  {
+   "w": "ich",
+   "s": 58.026,
+   "e": 58.267,
+   "tag": ""
+  },
+  {
+   "w": "möchte,",
+   "s": 58.267,
+   "e": 58.7,
+   "tag": ""
+  },
+  {
+   "w": "dass",
+   "s": 58.7,
+   "e": 58.762,
+   "tag": ""
+  },
+  {
+   "w": "ihr",
+   "s": 58.762,
+   "e": 58.814,
+   "tag": ""
+  },
+  {
+   "w": "euch",
+   "s": 58.814,
+   "e": 58.876,
+   "tag": ""
+  },
+  {
+   "w": "vielleicht",
+   "s": 58.876,
+   "e": 59.0,
+   "tag": ""
+  },
+  {
+   "w": "bei",
+   "s": 59.0,
+   "e": 59.172,
+   "tag": ""
+  },
+  {
+   "w": "Finanzfluss",
+   "s": 59.172,
+   "e": 59.621,
+   "tag": ""
+  },
+  {
+   "w": "noch",
+   "s": 59.621,
+   "e": 59.828,
+   "tag": ""
+  },
+  {
+   "w": "mal",
+   "s": 59.828,
+   "e": 60.0,
+   "tag": ""
+  },
+  {
+   "w": "schlau",
+   "s": 60.0,
+   "e": 60.35,
+   "tag": "pos"
+  },
+  {
+   "w": "macht.",
+   "s": 60.35,
+   "e": 60.7,
+   "tag": ""
+  },
+  {
+   "w": "Die",
+   "s": 60.7,
+   "e": 60.888,
+   "tag": ""
+  },
+  {
+   "w": "haben",
+   "s": 60.888,
+   "e": 61.15,
+   "tag": ""
+  },
+  {
+   "w": "Top-Videos",
+   "s": 61.15,
+   "e": 61.6,
+   "tag": "pos"
+  },
+  {
+   "w": "dazu",
+   "s": 61.6,
+   "e": 61.886,
+   "tag": ""
+  },
+  {
+   "w": "und",
+   "s": 61.886,
+   "e": 62.124,
+   "tag": ""
+  },
+  {
+   "w": "'ne",
+   "s": 62.124,
+   "e": 62.362,
+   "tag": ""
+  },
+  {
+   "w": "genaue",
+   "s": 62.362,
+   "e": 62.743,
+   "tag": ""
+  },
+  {
+   "w": "Aufschlüsselung.",
+   "s": 62.743,
+   "e": 63.6,
+   "tag": ""
+  }
+ ],
+ "panels": [
+  {
+   "start": 0.0,
+   "end": 4.9,
+   "panda": {
+    "pose": "nachdenklich",
+    "swap": [
+     [
+      1.4,
+      "ueberrascht"
+     ],
+     [
+      2.95,
+      "nachdenklich"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "tape",
+     "at": 0,
+     "items": [
+      "ALL-WORLD-ETF|+0,6 %",
+      "MSCI WORLD|+0,4 %",
+      "DAX|+0,3 %",
+      "S&P 500|+0,5 %",
+      "AVD|NEU 2027",
+      "ZULAGE|bis 540 €"
+     ],
+     "y": 34
+    },
+    {
+     "type": "breaking",
+     "at": 0,
+     "until": 1.3,
+     "y": 780,
+     "title": "ALTERSVORSORGEDEPOT",
+     "sub": "+++ SCAM ODER CHANCE? +++",
+     "sfx": [
+      [
+       0.0,
+       "whoosh",
+       0.7
+      ],
+      [
+       0.35,
+       "pop",
+       0.7
+      ]
+     ]
+    },
+    {
+     "type": "headline",
+     "at": 1.35,
+     "text": [
+      "ALTERSVORSORGEDEPOT",
+      "EIN SCAM?"
+     ],
+     "tone": "bad",
+     "until": 2.85
+    },
+    {
+     "type": "stamp",
+     "at": 1.5,
+     "text": "SCAM?",
+     "until": 2.85,
+     "y": 820,
+     "x": 670,
+     "size": 150
+    },
+    {
+     "type": "headline",
+     "at": 2.95,
+     "text": [
+      "ODER GUT FÜR DEINEN",
+      "VERMÖGENSAUFBAU?"
+     ],
+     "tone": "good",
+     "from": "down"
+    },
+    {
+     "type": "illus",
+     "kind": "magnifier",
+     "at": 3.0,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "mark": "?"
+    }
+   ],
+   "sfx": [
+    [
+     2.6,
+     "riser",
+     0.4
+    ]
+   ]
+  },
+  {
+   "start": 4.9,
+   "end": 10.2,
+   "panda": {
+    "pose": "begeistert",
+    "swap": [
+     [
+      2.3,
+      "zeigen_tablet"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "BIS ZU 610 €",
+      "FÖRDERUNG PRO JAHR"
+     ],
+     "tone": "good"
+    },
+    {
+     "type": "kpi",
+     "at": 0.2,
+     "title": "STAATLICHE FÖRDERUNG / JAHR",
+     "value": "610 €",
+     "count_at": 2.4,
+     "count_end": 3.8,
+     "badge": "PRO JAHR",
+     "badge_at": 4.0,
+     "y": 640
+    },
+    {
+     "type": "hbars",
+     "at": 1.2,
+     "title": "SO SETZT SICH DAS ZUSAMMEN",
+     "items": [
+      [
+       "ZULAGE",
+       "540 €",
+       "good"
+      ],
+      [
+       "STEUER",
+       "70 €",
+       "good"
+      ]
+     ],
+     "y": 1000,
+     "x": 745,
+     "w": 585
+    }
+   ]
+  },
+  {
+   "start": 10.2,
+   "end": 14.9,
+   "panda": {
+    "pose": "tipp_geben"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "AVD BEI TRADE REPUBLIC",
+      "2 VORTEILE · 3 NACHTEILE"
+     ],
+     "tone": "dark"
+    },
+    {
+     "type": "illus",
+     "kind": "proscons",
+     "at": 0.2,
+     "x": 670,
+     "y": 840,
+     "s": 1.15,
+     "items_at": 1.3,
+     "step": 0.38
+    }
+   ]
+  },
+  {
+   "start": 14.9,
+   "end": 17.2,
+   "panda": {
+    "pose": "augenzwinkern"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "KEINE",
+      "ANLAGEBERATUNG"
+     ],
+     "tone": "dark"
+    },
+    {
+     "type": "illus",
+     "kind": "warning",
+     "at": 0.2,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "text": "NUR MEINE\nMEINUNG"
+    }
+   ]
+  },
+  {
+   "start": 17.2,
+   "end": 23.7,
+   "panda": {
+    "pose": "zeigen",
+    "swap": [
+     [
+      4.55,
+      "tipp_geben"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "2 VARIANTEN",
+      "ZUR AUSWAHL"
+     ],
+     "tone": "dark",
+     "until": 4.4
+    },
+    {
+     "type": "headline",
+     "at": 4.55,
+     "text": [
+      "MEINE WAHL:",
+      "SELBSTBESTIMMT"
+     ],
+     "tone": "good",
+     "from": "down"
+    },
+    {
+     "type": "illus",
+     "kind": "choice",
+     "at": 0.2,
+     "x": 670,
+     "y": 840,
+     "s": 1.15,
+     "pick": 0,
+     "pick_at": 5.0,
+     "sa": "du wählst ETFs",
+     "sb": "Anbieter wählt"
+    }
+   ]
+  },
+  {
+   "start": 23.7,
+   "end": 25.9,
+   "panda": {
+    "pose": "laptop"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "GANZ SIMPEL:",
+      "ALL-WORLD-ETF"
+     ],
+     "tone": "good"
+    },
+    {
+     "type": "candles",
+     "at": 0.1,
+     "title": "ALL-WORLD-ETF",
+     "sub": "Beispiel · 1 Woche",
+     "seed": 17,
+     "n": 44,
+     "segments": [
+      [
+       1.0,
+       0.004
+      ]
+     ],
+     "start": 100,
+     "end": 146,
+     "reveal_at": 0.3,
+     "reveal_end": 2.0,
+     "glow_at": 2.0,
+     "x": 540,
+     "w": 900,
+     "y": 655,
+     "h": 470,
+     "unit": " €"
+    }
+   ]
+  },
+  {
+   "start": 25.9,
+   "end": 28.9,
+   "panda": {
+    "pose": "begeistert"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "PLUSPUNKT",
+      "TER GESCHENKT"
+     ],
+     "tone": "good"
+    },
+    {
+     "type": "illus",
+     "kind": "gift",
+     "at": 0.2,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "open_at": 2.35,
+     "tag": "TER GESCHENKT"
+    }
+   ]
+  },
+  {
+   "start": 28.9,
+   "end": 36.7,
+   "panda": {
+    "pose": "zeigen_tablet",
+    "swap": [
+     [
+      1.35,
+      "zeigen"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "UND JETZT",
+      "WIRD'S WICHTIG"
+     ],
+     "tone": "dark",
+     "until": 1.2
+    },
+    {
+     "type": "headline",
+     "at": 1.35,
+     "text": [
+      "MAXIMAL 150 €",
+      "PRO MONAT"
+     ],
+     "tone": "good",
+     "from": "down"
+    },
+    {
+     "type": "kpi",
+     "at": 1.4,
+     "title": "SPARRATE PRO MONAT",
+     "value": "150 €",
+     "count_at": 1.9,
+     "count_end": 3.3,
+     "badge": "+45 € ZULAGE",
+     "badge_at": 5.4,
+     "y": 640
+    },
+    {
+     "type": "hbars",
+     "at": 4.4,
+     "title": "PRO MONAT IM DEPOT",
+     "items": [
+      [
+       "DU",
+       "150 €",
+       "good"
+      ],
+      [
+       "STAAT",
+       "45 €",
+       "gold"
+      ]
+     ],
+     "y": 1000,
+     "x": 745,
+     "w": 585
+    }
+   ]
+  },
+  {
+   "start": 36.7,
+   "end": 39.4,
+   "panda": {
+    "pose": "arme_verschraenkt"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "KEINEN CENT",
+      "MEHR"
+     ],
+     "tone": "bad"
+    },
+    {
+     "type": "illus",
+     "kind": "gauge",
+     "at": 0.15,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "level": 0.97,
+     "settle": 1.0,
+     "lo": "0 €",
+     "hi": "150 €",
+     "label": "LIMIT"
+    }
+   ]
+  },
+  {
+   "start": 39.4,
+   "end": 44.7,
+   "panda": {
+    "pose": "nachdenklich"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "DER KNACKPUNKT:",
+      "GELD BIS ZUR RENTE GESPERRT"
+     ],
+     "tone": "bad"
+    },
+    {
+     "type": "illus",
+     "kind": "vault",
+     "at": 0.2,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "shut_at": 2.2,
+     "lock_at": 2.9,
+     "lock": "67"
+    }
+   ]
+  },
+  {
+   "start": 44.7,
+   "end": 50.2,
+   "panda": {
+    "pose": "traurig",
+    "swap": [
+     [
+      4.5,
+      "wuetend"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "FREIHEIT",
+      "EINGESCHRÄNKT"
+     ],
+     "tone": "bad"
+    },
+    {
+     "type": "illus",
+     "kind": "chained",
+     "at": 0.2,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "chain_at": 1.8
+    }
+   ]
+  },
+  {
+   "start": 50.2,
+   "end": 57.4,
+   "panda": {
+    "pose": "selbstbewusst",
+    "swap": [
+     [
+      2.25,
+      "arme_verschraenkt"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "TROTZDEM:",
+      "ZULAGE MITNEHMEN"
+     ],
+     "tone": "good",
+     "until": 2.1
+    },
+    {
+     "type": "kpi",
+     "at": 0.2,
+     "title": "PROGNOSE VERMÖGEN MIT 67*",
+     "value": "477.324 €",
+     "count_at": 0.6,
+     "count_end": 1.9,
+     "y": 640,
+     "until": 2.1
+    },
+    {
+     "type": "info",
+     "at": 0.6,
+     "until": 2.1,
+     "x": 745,
+     "y": 1000,
+     "w": 585,
+     "h": 230,
+     "icon": "target",
+     "title": "BEISPIEL",
+     "lines": [
+      "150 € / Monat + Zulage,",
+      "Prognose der App"
+     ]
+    },
+    {
+     "type": "headline",
+     "at": 2.25,
+     "text": [
+      "DER STAAT MACHT ES",
+      "KOMPLIZIERT"
+     ],
+     "tone": "dark",
+     "from": "down"
+    },
+    {
+     "type": "illus",
+     "kind": "stack",
+     "at": 2.3,
+     "x": 670,
+     "y": 820,
+     "s": 1.05,
+     "box": "FORMULAR",
+     "value": "KOMPLIZIERT",
+     "build": 2.0,
+     "n": 6
+    }
+   ]
+  },
+  {
+   "start": 57.4,
+   "end": 63.66,
+   "panda": {
+    "pose": "winken"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "MEHR INFOS",
+      "BEI FINANZFLUSS"
+     ],
+     "tone": "good"
+    },
+    {
+     "type": "illus",
+     "kind": "phone",
+     "at": 0.2,
+     "x": 670,
+     "y": 820,
+     "s": 0.95,
+     "name": "Finanzfluss",
+     "handle": "Video-Tipp",
+     "text": "Altersvorsorge-\ndepot erklärt"
+    }
+   ]
+  }
+ ],
+ "panda_pos": {
+  "x": 215,
+  "y": 1440,
+  "h": 560
+ },
+ "master_lufs": -11.5
+}

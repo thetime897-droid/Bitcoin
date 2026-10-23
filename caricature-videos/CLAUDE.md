@@ -9,6 +9,10 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
   eingebrannten Untertiteln ablesen (Frames croppen), offensichtliche Transkriptionsfehler korrigieren.
 - Keine eigene Musik, wenn das Original schon Musik hat.
 
+- **Screen-Recordings / schwacher Ton:** Stimme aufbereiten (Hochpass 80 Hz, `afftdn` leichtes Entrauschen,
+  Präsenz +2,5 dB @3,2 kHz, Luft +2 dB @9 kHz, sanfter Kompressor) und im Plan `master_lufs: -11.5` setzen –
+  so laut wie die eigenen Uploads (~ -11 LUFS, True Peak ≤ -1 dB).
+
 ## Look
 - **Hintergrund immer weiß.** Farbe nur in Grafiken/Animationen (Akzentstreifen, Funken, Pillen).
 - Jede Seite kommt gefüllt rein und schiebt die alte weg (seitlich, abwechselnd links/rechts,

@@ -24,6 +24,7 @@ MP4 9:16 (1080×1920) und/oder 16:9 (1920×1080)  +  .srt
 |---|---|
 | `demo/demo_short.mp4` | 9:16-Short, ca. 38 s: Inflation, FOMO, Crash, Sparplan, Zinseszins, Bank |
 | `demo/nvidia_original_audio_short.mp4` | 9:16-Short, 16 s: **Originalton + Original-Untertitel** aus dem Clip, darüber CEO-Karikatur, Musik und SFX |
+| `demo/avd_panda_news_short.mp4` | 9:16: Altersvorsorgedepot (aus Screen-Recording, Ton aufbereitet + gemastert) |
 | `demo/sap_panda_news_LONGFORM.mp4` | Dieselbe Vorlage als 16:9-Longform (`tools/to_longform.py`) |
 | `demo/sap_panda_news_FINAL.mp4` | **Finale, abgenommene Vorlage** (Regeln in `CLAUDE.md`) |
 | `demo/sap_panda_news_short.mp4` | 9:16, 64 s: **Panda-News-Stil (aktuell)**, 60 fps: Originalton, weißer Hintergrund, alles fliegt rein und raus, farbige Finanzgrafiken, Panda in HQ (Real-ESRGAN), Whoosh + Registrierkasse |

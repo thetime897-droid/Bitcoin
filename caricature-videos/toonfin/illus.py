@@ -447,3 +447,165 @@ def phone_post(ink, t, e):
 
 
 KINDS.update({"gauge": gauge, "car": car, "tank": tank, "newspaper": newspaper, "phone": phone_post})
+
+
+def _check(ink, x, y, s, col):
+    ink.circle(x, y, 30 * s, fill=col, outline=DARK, w=5, wob=0)
+    ink.line([(x - 13 * s, y), (x - 3 * s, y + 11 * s), (x + 15 * s, y - 11 * s)], WHITE, 8 * s, wob=0)
+
+
+def _cross(ink, x, y, s, col):
+    ink.circle(x, y, 30 * s, fill=col, outline=DARK, w=5, wob=0)
+    ink.line([(x - 11 * s, y - 11 * s), (x + 11 * s, y + 11 * s)], WHITE, 8 * s, wob=0)
+    ink.line([(x + 11 * s, y - 11 * s), (x - 11 * s, y + 11 * s)], WHITE, 8 * s, wob=0)
+
+
+def proscons(ink, t, e):
+    """Two columns: green pros with check marks, red cons with crosses; rows pop in one by one."""
+    pros, cons = e.get("pros", ["", ""]), e.get("cons", ["", "", ""])
+    step = e.get("step", 0.35)
+    for col, (title, items, c, mark) in enumerate(((e.get("pt", "VORTEILE"), pros, GREEN, _check),
+                                                   (e.get("ct", "NACHTEILE"), cons, RED, _cross))):
+        x = -165 + col * 330
+        k = smooth(seg(t, col * 0.15, col * 0.15 + 0.4))
+        with ink.at(x, 40 * (1 - k)):
+            ink.rect(-150, -300, 150, 300, fill=WHITE, outline=DARK, w=LW, wob=0.2, r=22)
+            ink.rect(-150, -300, 150, -210, fill=c, outline=DARK, w=LW, wob=0.2, r=22)
+            T(ink, 0, -255, f"{len(items)} {title}", 38, WHITE)
+            for i, it in enumerate(items):
+                at = e.get("items_at", 0.5) + (i + col * len(pros)) * step
+                ki = ease_out_back(seg(t, at, at + 0.35), 1.8)
+                if ki > 0.02:
+                    yy = -150 + i * 120
+                    with ink.at(-95, yy, 0, max(0.05, ki)):
+                        mark(ink, 0, 0, 1.0, c)
+                    if it:
+                        T(ink, 30, yy, it, 26, DARK)
+                    else:
+                        ink.rect(-50, yy - 10, 120, yy + 10, fill=(232, 233, 238), outline=None, wob=0, r=10)
+
+
+def choice(ink, t, e):
+    """Two option cards side by side; at ``pick_at`` one gets a big check mark, the other greys out."""
+    pick = e.get("pick_at", 99)
+    k_pick = smooth(seg(t, pick, pick + 0.45))
+    for i, (lbl, icon_) in enumerate(((e.get("a", "SELBST-\nBESTIMMT"), "a"), (e.get("b", "VORAUS-\nGEWÄHLT"), "b"))):
+        x = -170 + i * 340
+        k = ease_out_back(seg(t, 0.1 + i * 0.25, 0.5 + i * 0.25), 1.4)
+        chosen = i == e.get("pick", 0)
+        s = 1.0 + (0.06 * k_pick if chosen else -0.08 * k_pick)
+        fill = WHITE if (chosen or k_pick < 0.01) else mix(WHITE, (225, 226, 230), k_pick)
+        with ink.at(x, 0, (-3 if i == 0 else 3) * (1 - k_pick), max(0.05, k * s)):
+            ink.rect(-150, -240, 150, 240, fill=fill, outline=GREEN if (chosen and k_pick > 0.5) else DARK,
+                     w=LW + 4 * k_pick * chosen, wob=0.2, r=26)
+            if icon_ == "a":
+                ink.circle(0, -105, 60, fill=mix(BLUE, WHITE, 0.75), outline=DARK, w=6, wob=0)
+                ink.line([(-30, -85), (-30, -135)], DARK, 8, wob=0)
+                ink.line([(0, -85), (0, -150)], DARK, 8, wob=0)
+                ink.line([(30, -85), (30, -120)], DARK, 8, wob=0)
+                ink.circle(30, -125, 9, fill=GREEN, outline=None, wob=0)
+            else:
+                ink.circle(0, -105, 60, fill=mix(GOLD, WHITE, 0.7), outline=DARK, w=6, wob=0)
+                ink.rect(-28, -130, 28, -80, fill=WHITE, outline=DARK, w=5, wob=0, r=6)
+                ink.line([(-15, -115), (15, -115)], GREY, 5, wob=0)
+                ink.line([(-15, -100), (10, -100)], GREY, 5, wob=0)
+            for j, l in enumerate(lbl.split("\n")):
+                T(ink, 0, 30 + j * 48, l, 40, DARK)
+            T(ink, 0, 170, e.get("sa" if icon_ == "a" else "sb", ""), 24, (110, 114, 124))
+    if t >= pick:
+        x = -170 + 340 * e.get("pick", 0)
+        kk = ease_out_back(seg(t, pick, pick + 0.4), 2.0)
+        with ink.at(x + 110, -220, 0, max(0.05, kk)):
+            ink.circle(0, 0, 58, fill=GREEN, outline=DARK, w=6, wob=0)
+            ink.line([(-26, 0), (-6, 22), (28, -22)], WHITE, 14, wob=0)
+
+
+def gift(ink, t, e):
+    """Present box: lid pops off, a tag with the gift flies up, sparkles."""
+    open_at = e.get("open_at", 0.6)
+    k = smooth(seg(t, open_at, open_at + 0.4))
+    shake = math.sin(t * 30) * 4 if t < open_at else 0
+    with ink.at(shake, 120):
+        ink.rect(-190, -120, 190, 200, fill=RED, outline=DARK, w=LW, wob=0.2, r=10)
+        ink.rect(-30, -120, 30, 200, fill=GOLD, outline=DARK, w=5, wob=0)
+        with ink.at(-120 * k, -120 - 160 * k, -35 * k):
+            ink.rect(-215, -60, 215, 0, fill=RED, outline=DARK, w=LW, wob=0.2, r=8)
+            ink.rect(-34, -60, 34, 0, fill=GOLD, outline=DARK, w=5, wob=0)
+            ink.ellipse(-55, -85, 55, 30, fill=GOLD, outline=DARK, w=5, wob=0, rot=-20)
+            ink.ellipse(55, -85, 55, 30, fill=GOLD, outline=DARK, w=5, wob=0, rot=20)
+    if t > open_at:
+        kt = ease_out_back(seg(t, open_at + 0.15, open_at + 0.6), 1.5)
+        with ink.at(60, lerp(60, -250, smooth(seg(t, open_at + 0.15, open_at + 0.6))), 6, max(0.05, kt)):
+            w = ink.text_w(e.get("tag", "GESCHENKT"), 52, "mont") + 70
+            ink.rect(-w / 2, -50, w / 2, 50, fill=WHITE, outline=DARK, w=LW, wob=0.2, r=14)
+            ink.circle(-w / 2 + 26, 0, 9, fill=(240, 240, 240), outline=DARK, w=3, wob=0)
+            T(ink, 12, 2, e.get("tag", "GESCHENKT"), 52, GREEN)
+        for i in range(7):
+            kk = smooth(seg(t, open_at + i * 0.05, open_at + i * 0.05 + 0.6))
+            a = math.radians(-170 + i * 27)
+            if kk < 1:
+                sparkle(ink, math.cos(a) * (120 + 200 * kk), 20 + math.sin(a) * (120 + 200 * kk), 24 * (1 - kk))
+
+
+def vault(ink, t, e):
+    """Safe full of money; the door swings shut and a padlock with the age drops on."""
+    shut = e.get("shut_at", 0.6)
+    k = smooth(seg(t, shut, shut + 0.5))
+    ink.rect(-250, -270, 250, 270, fill=(120, 126, 138), outline=DARK, w=LW, wob=0.2, r=26)
+    ink.rect(-205, -225, 205, 225, fill=(60, 64, 74), outline=DARK, w=6, wob=0.1, r=14)
+    for r_ in range(3):
+        for c_ in range(3):
+            bill(ink, -120 + c_ * 120, -130 + r_ * 120, 0.75, (r_ * 3 + c_) % 2 * 8 - 4)
+    door_w = 410 * (1 - k * 0) if k <= 0 else 410
+    if k > 0:
+        # door closing from the left hinge: drawn as a narrowing-then-full panel
+        w = 410 * k
+        ink.rect(-205, -225, -205 + w, 225, fill=(150, 156, 168), outline=DARK, w=6, wob=0.1, r=14)
+        if k > 0.9:
+            ink.circle(0, 0, 80, fill=(170, 176, 188), outline=DARK, w=7, wob=0)
+            for a in range(6):
+                aa = math.radians(a * 60 + t * 20)
+                ink.line([(math.cos(aa) * 20, math.sin(aa) * 20), (math.cos(aa) * 70, math.sin(aa) * 70)], DARK, 7, wob=0)
+            ink.circle(0, 0, 22, fill=DARK, outline=None, wob=0)
+    lk = e.get("lock_at", shut + 0.6)
+    if t >= lk:
+        d = ease_out_back(seg(t, lk, lk + 0.45), 1.6)
+        with ink.at(170, lerp(-600, 150, smooth(seg(t, lk, lk + 0.45))), 0, max(0.05, d)):
+            ink.arc(0, -70, 55, 60, 180, 360, DARK, 26, wob=0)
+            ink.arc(0, -70, 55, 60, 180, 360, (190, 194, 202), 14, wob=0)
+            ink.rect(-85, -70, 85, 80, fill=GOLD, outline=DARK, w=LW, wob=0.2, r=14)
+            T(ink, 0, 5, e.get("lock", "67"), 64, DARK)
+    door_w = door_w
+
+
+def chained(ink, t, e):
+    """Money bag tied down with a heavy chain and padlock; the bag strains, sweat drops."""
+    strain = math.sin(t * 6) * 6
+    with ink.at(0, 40):
+        with ink.at(strain * 0.6, 0, strain * 0.4):
+            ink.shape([(-60, -170), (-170, -60), (-190, 70), (-120, 190), (120, 190), (190, 70), (170, -60), (60, -170)],
+                      fill=BOX, outline=DARK, w=LW, wob=0.2, smooth=True)
+            ink.shape([(-60, -170), (-85, -235), (0, -205), (85, -235), (60, -170)], fill=BOX, outline=DARK, w=6,
+                      wob=0.2, smooth=True)
+            T(ink, 0, -40, "€", 130, MONEY_DK)
+        k = smooth(seg(t, e.get("chain_at", 0.3), e.get("chain_at", 0.3) + 0.6))
+        for side in (-1, 1):
+            n = int(9 * k)
+            for i in range(n):
+                x = side * (230 - i * 26)
+                y = 50 + (i % 2) * 4
+                ink.ellipse(x, y + 20, 22, 13, fill=None, outline=(120, 124, 134), w=9, wob=0,
+                            rot=0 if i % 2 else 90)
+        ink.line([(-260, 260), (260, 260)], DARK, 10, wob=0)
+        for side in (-1, 1):
+            ink.rect(side * 260 - 22, 180, side * 260 + 22, 270, fill=GREY, outline=DARK, w=5, wob=0, r=6)
+        if k >= 1:
+            kk = ease_out_back(seg(t, e.get("chain_at", 0.3) + 0.6, e.get("chain_at", 0.3) + 1.0), 1.6)
+            with ink.at(0, 120, 0, max(0.05, kk)):
+                ink.arc(0, -50, 40, 45, 180, 360, DARK, 20, wob=0)
+                ink.arc(0, -50, 40, 45, 180, 360, (190, 194, 202), 10, wob=0)
+                ink.rect(-60, -50, 60, 55, fill=GOLD, outline=DARK, w=6, wob=0.2, r=12)
+                ink.circle(0, 0, 10, fill=DARK, outline=None, wob=0)
+
+
+KINDS.update({"proscons": proscons, "choice": choice, "gift": gift, "vault": vault, "chained": chained})

@@ -270,7 +270,10 @@ def el_hbars(ink, t, e):
                 ink.rect(x0, yy - 22, x0 + bw, yy + 22, fill=TONE.get(tone, GREYBAR) if tone else GREYBAR,
                          outline=None, wob=0, r=22)
             if k > 0.5:
-                T(ink, x0 + bw - 12, yy + 2, str(v), 30, WHITE, "mont", "rm")
+                if bw > ink.text_w(str(v), 30, "mont") + 30:
+                    T(ink, x0 + bw - 12, yy + 2, str(v), 30, WHITE, "mont", "rm")
+                else:  # short bar: value sits right next to it
+                    T(ink, x0 + bw + 12, yy + 2, str(v), 30, DARK, "mont", "lm")
 
 
 def cues_hbars(e):
@@ -719,7 +722,8 @@ def el_breaking(ink, t, e):
         kt = ease_out_back(seg(lt, 0.3, 0.6), 1.6)
         if kt > 0.02:
             with ink.at(cx, y - 70, -3, max(0.05, kt)):
-                T(ink, 0, 0, e.get("title", "BREAKING NEWS"), 92, WHITE)
+                ttl = e.get("title", "BREAKING NEWS")
+                T(ink, 0, 0, ttl, fit_size(ink, ttl, 92, LAYOUT["W"] - 140), WHITE)
         ks = smooth(seg(lt, 0.45, 0.8))
         if ks > 0.02:
             T(ink, cx - 60 * (1 - ks), y + 60, e.get("sub", "+++ EILMELDUNG +++"), 46, mix(WHITE, DARK, 1 - ks))
@@ -1129,6 +1133,13 @@ def render(plan, out_path, ss=2, workers=None, log=print):
     env = audio.envelope(voice, fps, n)
     wav = out_path.with_suffix(".mix.wav")
     audio.save(wav, mix_audio(voice, dur, cues(plan), env, fps))
+    if plan.get("master_lufs"):
+        # final loudness like the creator's own uploads (TikTok/Shorts level), true peak kept below -1 dB
+        mastered = wav.with_suffix(".master.wav")
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(wav), "-af",
+                        "acompressor=threshold=-22dB:ratio=2.5:attack=6:release=90:makeup=3,alimiter=limit=0.85:attack=3:release=40,"
+                        f"loudnorm=I={plan['master_lufs']}:TP=-1.0:LRA=8", "-ar", str(audio.SR), str(mastered)], check=True)
+        mastered.replace(wav)
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{plan['width']}x{plan['height']}",
            "-r", str(fps), "-i", "-", "-i", str(wav), "-map", "0:v", "-map", "1:a", "-c:v", "libx264", "-preset", "medium",
            "-crf", "18", "-tune", "animation", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-shortest",
