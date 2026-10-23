@@ -689,6 +689,44 @@ def el_illus(ink, t, e):
         ink.img.alpha_composite(layer)
 
 
+def el_breaking(ink, t, e):
+    """'BREAKING NEWS' motion graphic: two red bands sweep in from both sides, the title punches in,
+    alert lights pulse, then everything flies out to the left at ``until``."""
+    until = e.get("until")
+    if t < e.get("at", 0) or (until is not None and t >= until + EXIT):
+        return
+    lt = t - e.get("at", 0)
+    q = seg(t, until, until + EXIT) ** 2 if until is not None and t >= until else 0.0
+    y = e.get("y", 760)
+    with ink.at(-1400 * q, 0):
+        # pulse rings behind
+        for i in range(3):
+            k = (lt * 1.4 + i / 3) % 1
+            ink.circle(540, y, 160 + 420 * k, fill=None, outline=mix(RED, WHITE, 0.55 + 0.45 * k), w=10 * (1 - k) + 1, wob=0)
+        k1 = smooth(seg(lt, 0.0, 0.35))
+        k2 = smooth(seg(lt, 0.08, 0.45))
+        ink.shape([(-1200 + 1150 * k1, y - 120), (60 + 1150 * k1, y - 120), (20 + 1150 * k1, y - 20), (-1240 + 1150 * k1, y - 20)],
+                  fill=RED, outline=None, wob=0)
+        ink.shape([(2280 - 1150 * k2, y + 10), (1020 - 1150 * k2, y + 10), (1060 - 1150 * k2, y + 110), (2320 - 1150 * k2, y + 110)],
+                  fill=DARK, outline=None, wob=0)
+        kt = ease_out_back(seg(lt, 0.3, 0.6), 1.6)
+        if kt > 0.02:
+            with ink.at(540, y - 70, -3, max(0.05, kt)):
+                T(ink, 0, 0, e.get("title", "BREAKING NEWS"), 92, WHITE)
+        ks = smooth(seg(lt, 0.45, 0.8))
+        if ks > 0.02:
+            T(ink, 540 - 60 * (1 - ks), y + 60, e.get("sub", "+++ EILMELDUNG +++"), 46, mix(WHITE, DARK, 1 - ks))
+        on = (lt * 3) % 1 < 0.55
+        for x in (150, 930):
+            ink.circle(x, y - 230, 46, fill=RED if on else mix(RED, WHITE, 0.6), outline=DARK, w=6, wob=0)
+            ink.rect(x - 56, y - 196, x + 56, y - 176, fill=DARK, outline=None, wob=0, r=6)
+            if on:
+                for a in range(6):
+                    aa = math.radians(-160 + a * 28)
+                    ink.line([(x + math.cos(aa) * 62, y - 230 + math.sin(aa) * 62),
+                              (x + math.cos(aa) * 92, y - 230 + math.sin(aa) * 92)], RED, 7, wob=0)
+
+
 ELEMENTS = {
     "headline": (el_headline, cues_headline), "live": (el_live, lambda e: []),
     "kpi": (el_kpi, cues_kpi), "bars": (el_bars, cues_bars), "hbars": (el_hbars, cues_hbars),
@@ -696,6 +734,7 @@ ELEMENTS = {
     "tiles": (el_tiles, cues_tiles), "iconcard": (el_iconcard, cues_iconcard), "range": (el_range, cues_range),
     "candles": (el_candles, lambda e: []), "tape": (el_tape, lambda e: []),
     "circle": (el_circle, lambda e: []), "info": (el_info, lambda e: []), "illus": (el_illus, lambda e: []),
+    "breaking": (el_breaking, lambda e: []),
 }
 
 

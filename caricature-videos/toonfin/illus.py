@@ -170,14 +170,14 @@ def cloud(ink, t, e):
 
 def stack(ink, t, e):
     """Stack of signed contracts growing one by one, value tag on top."""
-    n = e.get("n", 9)
+    n = e.get("n", 6)
     shown = clamp(t / e.get("build", 2.4)) * n
     for i in range(int(shown) + 1):
         if i >= n:
             break
         k = smooth(clamp(shown - i))
         sway = math.sin(t * 2.2 + i * 0.5) * i * 1.2
-        y = 300 - i * 70 - 200 * (1 - k)
+        y = 330 - i * 70 - 200 * (1 - k)
         with ink.at(sway, y, sway * 0.3 + (i % 2) * 2 - 1):
             ink.rect(-180, -66, 180, 0, fill=BOX if i % 3 else mix(BOX, WHITE, 0.25), outline=DARK, w=6, wob=0.2)
             ink.line([(-180, -33), (180, -33)], BROWN, 4, wob=0)
@@ -185,7 +185,7 @@ def stack(ink, t, e):
             T(ink, 0, -33, e.get("box", "AUFTRAG"), 20, BROWN)
     if t > e.get("build", 2.4):
         k = ease_out_back(seg(t, e["build"], e["build"] + 0.45), 1.6)
-        top = 300 - n * 70 - 70
+        top = 330 - n * 70 - 75
         with ink.at(0, top, -3, max(0.05, k)):
             w = ink.text_w(e.get("value", ""), 54, "mont") + 70
             ink.rect(-w / 2, -48, w / 2, 48, fill=GOLD, outline=DARK, w=LW, wob=0.2, r=16)

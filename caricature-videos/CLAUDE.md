@@ -40,4 +40,6 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Eigene Sounds (z. B. Pixabay) in `toonfin/sfx/custom/` ersetzen die eingebauten.
 
 ## Einstieg
-- Erste Sekunden sofort packend: Laufband, live gezeichneter Chart, Riser, Rein-/Rausfliegen.
+- Erste Sekunden sofort packend: `breaking`-Motion-Graphic (rote/schwarze Bänder, Titel, Warnlichter),
+  dann fliegt der Chart rein und zeichnet sich live; Laufband oben, Riser zur Enthüllung.
+- Gestapelte Illustrationen (z. B. `stack`) so niedrig halten, dass sie nie in die Headline wachsen.

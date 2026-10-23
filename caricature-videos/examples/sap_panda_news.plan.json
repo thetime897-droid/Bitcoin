@@ -1212,18 +1212,36 @@
      "y": 34
     },
     {
-     "type": "headline",
+     "type": "breaking",
      "at": 0,
+     "until": 0.9,
+     "y": 780,
+     "sfx": [
+      [
+       0.0,
+       "whoosh",
+       0.7
+      ],
+      [
+       0.35,
+       "pop",
+       0.7
+      ]
+     ]
+    },
+    {
+     "type": "headline",
+     "at": 0.95,
      "text": [
-      "BREAKING NEWS",
-      "KI-AKTIEN IM AUSVERKAUF"
+      "KI-AKTIEN",
+      "IM AUSVERKAUF"
      ],
      "tone": "bad",
      "until": 3.3
     },
     {
      "type": "candles",
-     "at": 0,
+     "at": 1.0,
      "title": "KI-AKTIEN INDEX",
      "sub": "Intraday · 15 Min",
      "seed": 3,
@@ -1240,8 +1258,8 @@
      ],
      "start": 480,
      "end": 402,
-     "reveal_at": 0.0,
-     "reveal_end": 3.0,
+     "reveal_at": 1.25,
+     "reveal_end": 3.1,
      "until": 3.3,
      "y": 655,
      "w": 900,
@@ -1584,7 +1602,8 @@
      "s": 1.05,
      "value": "24,1 MRD. € +26 %",
      "build": 2.3,
-     "until": 4.85
+     "until": 4.85,
+     "n": 6
     },
     {
      "type": "hbars",
