@@ -1843,10 +1843,5 @@
   }
  ],
  "sfx_rel": 0.665,
- "master_lufs": -16.8,
- "music_bed": {
-  "file": "music.m4a",
-  "rel_db": -17.0,
-  "duck_db": -5.0
- }
+ "master_lufs": -16.8
 }

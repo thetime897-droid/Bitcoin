@@ -80,7 +80,7 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - `sfx_rel: 0.665` (aktuell abgenommen) = Effekte ~33 % unter der Stimme; 0.75 = 25 % darunter (relativ zur Stimm-Lautheit, `gain` trimmt nur nach unten).
 
 ## Musik
-- `music_bed: {file, rel_db: -17, duck_db: -5}` im Plan: Musik 17 dB unter der Stimme, beim Sprechen weitere 5 dB
+- Musik nur auf ausdrücklichen Wunsch (Freistellungsauftrag: Nutzer fand die leise Musik unangenehm → entfernt). `music_bed: {file, rel_db: -17, duck_db: -5}` im Plan: Musik 17 dB unter der Stimme, beim Sprechen weitere 5 dB
   abgesenkt, 0,6 s Fade-in, 2 s Fade-out (kürzere Tracks werden geloopt). Musikdateien nicht ins Repo legen.
 
 ## Einblendungen (Overlays) für Facecam-Videos
