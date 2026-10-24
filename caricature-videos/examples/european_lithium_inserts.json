@@ -396,14 +396,14 @@
      "fill_end": 2.6,
      "sub": "Optionsinhaber: 100 %",
      "sub_at": 3.0,
-     "y": 720
+     "y": 750
     },
     {
      "type": "pill",
      "text": "Der Deal ist durch",
      "color": "gruen",
      "at": 2.8,
-     "y": 1220
+     "y": 1250
     }
    ]
   },
@@ -526,14 +526,14 @@
        "rocket"
       ]
      ],
-     "y": 730
+     "y": 760
     },
     {
      "type": "pill",
      "text": "Montag entscheidet das Gericht",
      "color": "gelb",
      "at": 2.8,
-     "y": 1235
+     "y": 1265
     }
    ]
   },
