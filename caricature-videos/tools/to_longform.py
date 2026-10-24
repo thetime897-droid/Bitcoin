@@ -8,7 +8,8 @@ CX, CY = 1270, 615
 CARD = {"candles": dict(w=1180, h=580, y=650), "kpi": dict(w=900, h=330, y=600), "bars": dict(w=1000, h=580, y=650),
         "line": dict(w=1000, h=560, y=650), "hbars": dict(w=1000, h=360, y=640), "range": dict(w=1000, h=340, y=640),
         "info": dict(w=820, h=230, y=650), "iconcard": dict(w=640, h=540, y=650), "tiles": dict(y=650),
-        "minichart": dict(w=900, h=260, y=600), "stamp": dict(y=600)}
+        "minichart": dict(w=900, h=260, y=600), "stamp": dict(y=600), "card": dict(w=900, y=640),
+        "flow": dict(w=1180, h=440, y=650, orient="h"), "counter": dict(w=900, y=640), "ring": dict(y=640)}
 CONTENT = set(CARD) | {"illus"}
 for pn in d["panels"]:
     els = pn["elements"]
@@ -24,6 +25,8 @@ for pn in d["panels"]:
             e.update(x=CX, **CARD[t])
             if t == "kpi":
                 kpis[id(e)] = (o, e)
+        elif t == "pill":
+            e.update(x=CX, y=round(340 + (e.get("y", 1110) - 420) * 0.73))
         elif t == "illus":
             if e["kind"] == "hook":
                 e.update(x=1720, y=520, s=0.55)

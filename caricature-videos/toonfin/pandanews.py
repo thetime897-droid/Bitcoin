@@ -362,7 +362,7 @@ def el_stamp(ink, t, e):
     q = seg(t, until, until + EXIT) ** 2 if until is not None and t >= until else 0.0
     col = TONE.get(e.get("tone", "bad"), RED)
     with ink.at(e.get("x", CX) - 1200 * q, e.get("y", 700), e.get("rot", -10) - 20 * q, s):
-        w = ink.text_w(e["text"], e.get("size", 70)) + 70
+        w = ink.text_w(e["text"], e.get("size", 70), "mont") + 70
         ink.rect(-w / 2, -60, w / 2, 60, fill=None, outline=col, w=12, wob=0.6, r=14)
         T(ink, 0, 4, e["text"], e.get("size", 70), col)
         if e.get("strike_at") and t >= e["strike_at"]:
@@ -787,8 +787,19 @@ def comp_at(base, im, x, y):
 
 # -- renderer ------------------------------------------------------------------------
 
+INSERT_TYPES = ("card", "pill", "counter", "ring", "priceline", "swap", "timeline", "flow", "title")
+
+
+def _register_inserts():
+    """The sticker-style elements of inserts.py (colour cards, calculation chains, ...) work in plans too."""
+    from . import inserts
+    for k in INSERT_TYPES:
+        ELEMENTS.setdefault(k, (inserts.ELEMENTS[k], lambda e: []))
+
+
 class Renderer:
     def __init__(self, plan, ss=2):
+        _register_inserts()
         self.plan, self.ss = plan, ss
         self.W, self.H, self.fps = plan["width"], plan["height"], plan["fps"]
         self.words = plan["words"]
@@ -1122,6 +1133,10 @@ def cues(plan):
                     out.append((st + at + 0.05, "whoosh", 0.5))
                 if k == "stack":
                     out.append((st + at + e.get("build", 2.4), "pop", 0.6))
+            if ty in INSERT_TYPES:
+                from . import inserts
+                e2 = dict(e, sfx=[])
+                out += [(st + a, n, g) for a, n, g in inserts.cues({"elements": [e2]})]
             out += [(st + a, n, g) for a, n, g in e.get("sfx", [])]
         out += [(st + a, n, g) for a, n, g in p.get("sfx", [])]
     for zm in plan.get("zooms", []):

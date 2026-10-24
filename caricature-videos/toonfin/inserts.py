@@ -378,7 +378,85 @@ def el_banner(ink, t, e):
         T(ink, 0, 92, e.get("note", "Keine Anlageberatung"), 24, WHITE, "montb")
 
 
-ELEMENTS = {"card": el_card, "pill": el_pill, "counter": el_counter, "ring": el_ring, "priceline": el_priceline,
+def el_flow(ink, t, e):
+    """Calculation chain: boxes pop in one after the other, operation chips sit on the arrows between them
+    (vertical, or ``orient: "h"`` for a row in long-form). The last box is filled and lands with sparks."""
+    from .pandanews import TONE
+    x, y = e.get("x", 540), e.get("y", CY)
+    horiz = e.get("orient") == "h"
+    w, h = e.get("w", 600), e.get("h", 680 if not horiz else 420)
+    c = fly(ink, x, y, t, e["at"], e.get("from", "right"), until=e.get("until"))
+    if not c:
+        return
+    steps, ops, notes = e["steps"], e.get("ops", []), e.get("notes", [])
+    n = len(steps)
+    with c:
+        sticker(ink, w, h, WHITE)
+        if e.get("title"):
+            T(ink, -w / 2 + 44, -h / 2 + 58, e["title"], fit_size(ink, e["title"], 36, w - 90, "montb"), TXT2, "montb", "lm")
+        if horiz:
+            bw, bh = (w - 80 - 130 * (n - 1)) / n, 150
+            pos = [(-w / 2 + 40 + bw / 2 + i * (bw + 130), 30) for i in range(n)]
+        else:
+            bw, bh = w - 120, e.get("box_h", 128)
+            top, bot = -h / 2 + 150, h / 2 - 90
+            pos = [(0, lerp(top, bot, i / max(1, n - 1))) for i in range(n)]
+        # arrows + operation chips
+        for i in range(n - 1):
+            (ax, ay), (bx, by) = pos[i], pos[i + 1]
+            op = ops[i] if i < len(ops) else {}
+            on = t >= op.get("at", steps[i + 1]["at"])
+            col = TONE.get(op.get("tone", "dark"), DARK) if on else (214, 216, 222)
+            if horiz:
+                p0, p1 = (ax + bw / 2 + 14, ay), (bx - bw / 2 - 22, by)
+                ink.line([p0, p1], col, 8, wob=0)
+                ink.shape([(p1[0] + 16, p1[1]), (p1[0] - 6, p1[1] - 16), (p1[0] - 6, p1[1] + 16)], fill=col, outline=None, wob=0)
+                cx_, cy_ = (p0[0] + p1[0]) / 2, ay - bh / 2 - 34
+            else:
+                p0, p1 = (ax, ay + bh / 2 + 10), (bx, by - bh / 2 - 20)
+                ink.line([p0, p1], col, 8, wob=0)
+                ink.shape([(p1[0], p1[1] + 16), (p1[0] - 16, p1[1] - 6), (p1[0] + 16, p1[1] - 6)], fill=col, outline=None, wob=0)
+                cx_, cy_ = None, (p0[1] + p1[1]) / 2
+            if op.get("text") and on:
+                k = lerp(0.5, 1.0, ease_out_back(seg(t, op["at"], op["at"] + 0.4), 1.8))
+                size = op.get("size", 30)
+                cw = ink.text_w(op["text"], size, "mont") + size * 1.1
+                if cx_ is None:
+                    cx_ = min(34 + cw / 2, w / 2 - cw / 2 - 18)
+                with ink.at(cx_, cy_, -3, max(0.05, k)):
+                    pill(ink, 0, 0, op["text"], size, TONE.get(op.get("tone", "dark"), DARK))
+        for i, st in enumerate(steps):
+            if t < st["at"]:
+                (sx, sy) = pos[i]
+                ink.rect(sx - bw / 2, sy - bh / 2, sx + bw / 2, sy + bh / 2, fill=None, outline=(226, 228, 234), w=4,
+                         wob=0, r=22)
+                continue
+            last = i == n - 1 or st.get("big")
+            k = ease_out_back(seg(t, st["at"], st["at"] + 0.4), 1.6)
+            sx, sy = pos[i]
+            with ink.at(sx, sy + 24 * (1 - smooth(seg(t, st["at"], st["at"] + 0.4))), 0, max(0.05, lerp(0.6, 1.0, k))):
+                col = TONE.get(st.get("tone", "good" if last else "dark"), GREEN)
+                hh = bh * (1.18 if last and not horiz else 1.0)
+                ink.rect(-bw / 2 + 6, -hh / 2 + 9, bw / 2 + 6, hh / 2 + 9, fill=DARK, outline=None, wob=0, r=22)
+                ink.rect(-bw / 2, -hh / 2, bw / 2, hh / 2, fill=col if last else WHITE, outline=DARK, w=5, wob=0, r=22)
+                lines = st["text"].split("\n")
+                size = st.get("size", 70 if last else 58)
+                for j, ln in enumerate(lines):
+                    sz = fit_size(ink, ln, size if j == 0 else size * 0.55, bw - 40)
+                    yy = (j - (len(lines) - 1) / 2) * size * 0.78
+                    T(ink, 0, yy + 3, ln, sz, WHITE if last else DARK, "mont" if j == 0 else "montb")
+            if last:
+                sparks(ink, sx, sy, t, st["at"] + 0.2, r=bw * 0.45, n=16)
+        for nt in notes:
+            if t < nt["at"]:
+                continue
+            sx, sy = pos[nt.get("step", 0)]
+            k = lerp(0.5, 1.0, ease_out_back(seg(t, nt["at"], nt["at"] + 0.45), 1.8))
+            with ink.at(sx + nt.get("dx", bw / 2 - 60), sy + nt.get("dy", -bh / 2 - 6), 6, max(0.05, k)):
+                pill(ink, 0, 0, nt["text"], nt.get("size", 30), TONE.get(nt.get("tone", "good"), GREEN))
+
+
+ELEMENTS = {"flow": el_flow, "card": el_card, "pill": el_pill, "counter": el_counter, "ring": el_ring, "priceline": el_priceline,
             "swap": el_swap, "timeline": el_timeline, "illus": el_illus, "title": el_title, "banner": el_banner}
 
 
@@ -447,9 +525,10 @@ def cues(spec):
     out = []
     for e in spec["elements"]:
         ty, at = e["type"], e["at"]
-        if ty in ("card", "counter", "ring", "priceline", "swap", "timeline", "illus", "title"):
+        if ty in ("card", "counter", "ring", "priceline", "swap", "timeline", "illus", "title", "flow"):
             out.append((at - 0.05, "whoosh", 0.5))
-            out.append((e["until"] - 0.03, "whoosh", 0.4))
+            if e.get("until") is not None:
+                out.append((e["until"] - 0.03, "whoosh", 0.4))
         if ty == "banner":
             out.append((at - 0.05, "whoosh", 0.45))
         if ty == "pill":
@@ -470,6 +549,13 @@ def cues(spec):
             out.append((e.get("draw_end", at + 2.0), "pop", 0.55))
         if ty == "swap":
             out.append((e.get("swap_end", at + 2.6), "cash", 0.5))
+        if ty == "flow":
+            for j, st in enumerate(e["steps"]):
+                last = j == len(e["steps"]) - 1
+                money = "€" in st["text"]
+                out.append((st["at"] + 0.03, "cash" if last and money else "pop", 0.5 if last else 0.45))
+            out += [(op["at"] + 0.02, "pop", 0.4) for op in e.get("ops", []) if op.get("text")]
+            out += [(nt["at"] + 0.02, "pop", 0.45) for nt in e.get("notes", [])]
         if ty == "timeline":
             da, step = e.get("draw_at", at + 0.4), e.get("step", 0.55)
             out += [(da + j * step + 0.02, "pop", 0.45) for j in range(len(e["stops"]))]

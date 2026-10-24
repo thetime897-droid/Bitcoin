@@ -1,0 +1,1639 @@
+{
+ "style": "pandanews",
+ "width": 1920,
+ "height": 1080,
+ "fps": 60,
+ "audio": "voice.wav",
+ "duration": 62.6,
+ "panda_pos": {
+  "x": 330,
+  "y": 1050,
+  "h": 700
+ },
+ "sfx_rel": 0.665,
+ "master_lufs": -16.8,
+ "zooms": [
+  {
+   "at": 8.0,
+   "hold": 0.9,
+   "scale": 1.25,
+   "x": 757,
+   "y": 720
+  },
+  {
+   "at": 28.75,
+   "hold": 0.8,
+   "scale": 1.22,
+   "x": 757,
+   "y": 830
+  },
+  {
+   "at": 35.9,
+   "hold": 0.9,
+   "scale": 1.22,
+   "x": 757,
+   "y": 830
+  },
+  {
+   "at": 41.0,
+   "hold": 0.8,
+   "scale": 1.2,
+   "x": 757,
+   "y": 700
+  }
+ ],
+ "panels": [
+  {
+   "start": 0.0,
+   "end": 6.72,
+   "panda": {
+    "pose": "ueberrascht",
+    "swap": [
+     [
+      2.78,
+      "wuetend"
+     ],
+     [
+      4.4,
+      "nachdenklich"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "tape",
+     "at": 0,
+     "y": 34,
+     "items": [
+      "FÖRDERUNG|bis 1.800 €/Jahr",
+      "ETF-SPARPLAN|Steuer nur auf Gewinne",
+      "AVD|Einkommensteuer bei Auszahlung",
+      "BEISPIEL|100 € · 20 % Steuer",
+      "ERGEBNIS|640 € = 640 €"
+     ]
+    },
+    {
+     "type": "breaking",
+     "at": 0,
+     "until": 1.15,
+     "y": 600,
+     "title": "SCHLECHTER DEAL?",
+     "sub": "+++ ALTERSVORSORGE-DEPOT +++",
+     "x": 1270
+    },
+    {
+     "type": "headline",
+     "at": 1.2,
+     "text": [
+      "ALTERSVORSORGE-DEPOT",
+      "EIN SCHLECHTER DEAL?"
+     ],
+     "tone": "bad",
+     "until": 4.25,
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "taxoffice",
+     "at": 1.25,
+     "x": 1270,
+     "y": 640,
+     "s": 0.93,
+     "fly_at": 1.6,
+     "step": 0.3,
+     "coins": 6,
+     "gain": 100.0,
+     "take": 20.0,
+     "gain_label": "DEIN DEPOT",
+     "take_label": "STEUER",
+     "tag": "ALLES VERSTEUERT?",
+     "tag_at": 3.0,
+     "until": 4.25
+    },
+    {
+     "type": "headline",
+     "at": 4.4,
+     "text": [
+      "DOCH DIE RECHNUNG",
+      "ZEIGT ETWAS ANDERES"
+     ],
+     "tone": "good",
+     "from": "down",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "magnifier",
+     "at": 4.45,
+     "x": 1270,
+     "y": 640,
+     "s": 0.93,
+     "mark": "?"
+    }
+   ],
+   "sfx": [
+    [
+     3.2,
+     "riser",
+     0.8
+    ]
+   ]
+  },
+  {
+   "start": 6.72,
+   "end": 14.34,
+   "panda": {
+    "pose": "begeistert",
+    "swap": [
+     [
+      3.62,
+      "arme_verschraenkt"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "EINZAHLUNG",
+      "WIRD GEFÖRDERT"
+     ],
+     "tone": "good",
+     "until": 3.5,
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 0.1,
+     "x": 1270,
+     "w": 900,
+     "y": 640,
+     "color": "gruen",
+     "label": "PRO JAHR GEFÖRDERT",
+     "title": "EINZAHLUNGEN BIS",
+     "value": "{} €",
+     "count_from": "0",
+     "count_to": "1.800",
+     "count_at": 0.9,
+     "count_end": 1.9,
+     "sub": "Förderung vom Staat",
+     "icon": "piggy-bank",
+     "until": 3.5
+    },
+    {
+     "type": "headline",
+     "at": 3.62,
+     "text": [
+      "BEI AUSZAHLUNG",
+      "EINKOMMENSTEUER"
+     ],
+     "tone": "bad",
+     "from": "down",
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 3.66,
+     "x": 1270,
+     "w": 900,
+     "y": 640,
+     "color": "rot",
+     "label": "BEI DER AUSZAHLUNG",
+     "title": "EINKOMMENSTEUER AUF",
+     "value": "ALLES",
+     "sub": "das gesamte Guthaben",
+     "icon": "landmark",
+     "badge": "100 %",
+     "badge_color": "weiss",
+     "badge_at": 6.2
+    }
+   ]
+  },
+  {
+   "start": 14.34,
+   "end": 16.2,
+   "panda": {
+    "pose": "wuetend"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "WIRD ALLES",
+      "VERSTEUERT"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "pill",
+     "at": 0.05,
+     "text": "EINZAHLUNG",
+     "color": "blau",
+     "x": 1270,
+     "y": 471,
+     "size": 58
+    },
+    {
+     "type": "pill",
+     "at": 0.7,
+     "text": "ZULAGEN",
+     "color": "gruen",
+     "x": 1270,
+     "y": 603,
+     "size": 58
+    },
+    {
+     "type": "pill",
+     "at": 1.25,
+     "text": "ERTRÄGE",
+     "color": "gelb",
+     "x": 1270,
+     "y": 734,
+     "size": 58
+    }
+   ]
+  },
+  {
+   "start": 16.2,
+   "end": 19.26,
+   "panda": {
+    "pose": "zeigen"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "NORMALER ETF-SPARPLAN",
+      "STEUER NUR AUF GEWINNE"
+     ],
+     "tone": "good",
+     "y": 138
+    },
+    {
+     "type": "bars",
+     "at": 0.1,
+     "x": 1030,
+     "y": 650,
+     "w": 760,
+     "h": 580,
+     "title": "WAS WIRD BESTEUERT?",
+     "tone": "dark",
+     "items": [
+      [
+       "EINZAHLUNG",
+       "0 €",
+       null
+      ],
+      [
+       "GEWINN",
+       "100 %",
+       "bad"
+      ]
+     ],
+     "bar_at": [
+      0.5,
+      1.2
+     ]
+    },
+    {
+     "type": "pill",
+     "at": 2.0,
+     "text": "NUR AUF GEWINNE",
+     "color": "rot",
+     "x": 1625,
+     "y": 640,
+     "size": 42
+    }
+   ]
+  },
+  {
+   "start": 19.26,
+   "end": 22.86,
+   "panda": {
+    "pose": "tipp_geben"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "RECHNEN WIR",
+      "VEREINFACHT"
+     ],
+     "tone": "dark",
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 0.1,
+     "x": 1010,
+     "w": 760,
+     "y": 640,
+     "color": "gelb",
+     "label": "BEISPIEL",
+     "title": "WIR STARTEN MIT",
+     "value": "{} €",
+     "count_from": "0",
+     "count_to": "100",
+     "count_at": 0.9,
+     "count_end": 1.5,
+     "sub": "und einem Steuersatz von",
+     "icon": "banknote"
+    },
+    {
+     "type": "pill",
+     "at": 2.2,
+     "text": "20 % STEUER",
+     "color": "rot",
+     "x": 1640,
+     "y": 640,
+     "size": 60
+    }
+   ]
+  },
+  {
+   "start": 22.86,
+   "end": 29.98,
+   "panda": {
+    "pose": "zeigen_tablet",
+    "swap": [
+     [
+      5.8,
+      "begeistert"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "WEG 1",
+      "ETF-SPARPLAN"
+     ],
+     "tone": "blue",
+     "y": 138
+    },
+    {
+     "type": "flow",
+     "at": 0.05,
+     "x": 1270,
+     "y": 650,
+     "w": 1180,
+     "h": 440,
+     "title": "ETF-SPARPLAN",
+     "steps": [
+      {
+       "at": 0.15,
+       "text": "100 €\nBrutto-Einzahlung"
+      },
+      {
+       "at": 2.58,
+       "text": "80 €\ninvestiert"
+      },
+      {
+       "at": 5.8,
+       "text": "640 €"
+      }
+     ],
+     "ops": [
+      {
+       "at": 1.34,
+       "text": "−20 % Steuer",
+       "tone": "bad"
+      },
+      {
+       "at": 4.56,
+       "text": "× 8 Wachstum",
+       "tone": "good"
+      }
+     ],
+     "orient": "h"
+    }
+   ]
+  },
+  {
+   "start": 29.98,
+   "end": 40.6,
+   "panda": {
+    "pose": "zeigestock",
+    "swap": [
+     [
+      4.1,
+      "begeistert"
+     ],
+     [
+      9.62,
+      "cool"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "WEG 2",
+      "ALTERSVORSORGE-DEPOT"
+     ],
+     "tone": "good",
+     "y": 138
+    },
+    {
+     "type": "flow",
+     "at": 0.05,
+     "x": 1270,
+     "y": 650,
+     "w": 1180,
+     "h": 440,
+     "title": "ALTERSVORSORGE-DEPOT",
+     "steps": [
+      {
+       "at": 2.34,
+       "text": "100 €\nkomplett ins Depot"
+      },
+      {
+       "at": 5.8,
+       "text": "800 €\nnach × 8"
+      },
+      {
+       "at": 9.62,
+       "text": "640 €"
+      }
+     ],
+     "ops": [
+      {
+       "at": 5.4,
+       "text": "× 8 Wachstum",
+       "tone": "good"
+      },
+      {
+       "at": 7.14,
+       "text": "−20 % Steuer",
+       "tone": "bad"
+      }
+     ],
+     "notes": [
+      {
+       "at": 4.1,
+       "text": "Steuer kommt zurück",
+       "tone": "good",
+       "step": 0,
+       "dx": 0,
+       "dy": 118,
+       "size": 26
+      }
+     ],
+     "orient": "h"
+    }
+   ]
+  },
+  {
+   "start": 40.6,
+   "end": 47.04,
+   "panda": {
+    "pose": "nachdenklich",
+    "swap": [
+     [
+      4.42,
+      "arme_verschraenkt"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "ERGEBNIS",
+      "GENAU DASSELBE"
+     ],
+     "tone": "good",
+     "until": 0.66,
+     "y": 138
+    },
+    {
+     "type": "headline",
+     "at": 0.74,
+     "text": [
+      "MATHEMATISCH",
+      "VOR ODER NACH: EGAL"
+     ],
+     "tone": "dark",
+     "from": "down",
+     "y": 138
+    },
+    {
+     "type": "bars",
+     "at": 0.05,
+     "x": 1000,
+     "y": 600,
+     "w": 600,
+     "h": 500,
+     "title": "AM ENDE ÜBRIG",
+     "tone": "good",
+     "items": [
+      [
+       "ETF",
+       "640 €",
+       null
+      ],
+      [
+       "AVD",
+       "640 €",
+       null
+      ]
+     ],
+     "bar_at": [
+      0.15,
+      0.35
+     ]
+    },
+    {
+     "type": "pill",
+     "at": 0.6,
+     "text": "= GLEICH!",
+     "color": "gelb",
+     "x": 1000,
+     "y": 905,
+     "size": 44
+    },
+    {
+     "type": "info",
+     "at": 1.1,
+     "x": 1590,
+     "y": 620,
+     "w": 560,
+     "h": 230,
+     "icon": "search",
+     "title": "REIHENFOLGE EGAL",
+     "lines": [
+      "100 × 0,8 × 8 = 640",
+      "100 × 8 × 0,8 = 640"
+     ],
+     "until": 4.3
+    },
+    {
+     "type": "stamp",
+     "at": 4.45,
+     "text": "KEIN STUNDUNGSEFFEKT",
+     "x": 1590,
+     "y": 620,
+     "size": 40,
+     "rot": -6
+    }
+   ]
+  },
+  {
+   "start": 47.04,
+   "end": 53.16,
+   "panda": {
+    "pose": "selbstbewusst",
+    "swap": [
+     [
+      1.4,
+      "zeigen"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "DER ECHTE VORTEIL",
+      "STECKT WOANDERS"
+     ],
+     "tone": "good",
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 1.4,
+     "x": 985,
+     "w": 560,
+     "y": 640,
+     "color": "rot",
+     "label": "NORMALES DEPOT",
+     "title": "KAPITALERTRAGSTEUER",
+     "value": "FÄLLT AN",
+     "icon": "trending-down"
+    },
+    {
+     "type": "card",
+     "at": 4.4,
+     "x": 1570,
+     "w": 560,
+     "y": 640,
+     "color": "gruen",
+     "label": "IM AVD",
+     "title": "KAPITALERTRAGSTEUER",
+     "value": "KEINE",
+     "icon": "shield-check",
+     "from": "right"
+    }
+   ]
+  },
+  {
+   "start": 53.16,
+   "end": 55.46,
+   "panda": {
+    "pose": "entspannt"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "IN DER RENTE",
+      "OFT NIEDRIGERER STEUERSATZ"
+     ],
+     "tone": "good",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "gauge",
+     "at": 0.05,
+     "x": 1270,
+     "y": 640,
+     "s": 0.93,
+     "level": 0.28,
+     "settle": 1.1,
+     "lo": "NIEDRIG",
+     "hi": "HOCH",
+     "label": "STEUERSATZ"
+    }
+   ]
+  },
+  {
+   "start": 55.46,
+   "end": 59.96,
+   "panda": {
+    "pose": "arme_verschraenkt",
+    "swap": [
+     [
+      3.32,
+      "ueberrascht"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "ABER: AUSZAHLUNG",
+      "ZÄHLT ALS EINKOMMEN"
+     ],
+     "tone": "bad",
+     "until": 3.2,
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "warning",
+     "at": 0.1,
+     "x": 1270,
+     "y": 560,
+     "s": 0.78,
+     "text": "ZÄHLT ALS\nEINKOMMEN",
+     "until": 3.15
+    },
+    {
+     "type": "headline",
+     "at": 3.32,
+     "text": [
+      "DEIN GRENZSTEUERSATZ",
+      "STEIGT"
+     ],
+     "tone": "bad",
+     "from": "down",
+     "y": 138
+    },
+    {
+     "type": "line",
+     "at": 3.36,
+     "x": 1270,
+     "y": 650,
+     "w": 1000,
+     "h": 560,
+     "title": "DEIN GRENZSTEUERSATZ",
+     "tone": "bad",
+     "points": [
+      0.1,
+      0.16,
+      0.27,
+      0.42,
+      0.62,
+      0.9
+     ],
+     "draw_at": 3.6,
+     "draw_end": 4.3,
+     "note": "STEIGT",
+     "note_at": 4.25
+    }
+   ]
+  },
+  {
+   "start": 59.96,
+   "end": 62.6,
+   "panda": {
+    "pose": "augenzwinkern"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "UND DU?",
+      "TEAM ETF ODER TEAM AVD?"
+     ],
+     "tone": "blue",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "choice",
+     "at": 0.05,
+     "x": 1270,
+     "y": 640,
+     "s": 0.93,
+     "a": "TEAM\nETF",
+     "b": "TEAM\nAVD",
+     "sa": "Sparplan",
+     "sb": "Altersvorsorge-Depot"
+    }
+   ]
+  }
+ ],
+ "words": [
+  {
+   "w": "Das",
+   "s": 0.0,
+   "e": 0.2
+  },
+  {
+   "w": "Altersvorsorge-Depot",
+   "s": 0.2,
+   "e": 1.28
+  },
+  {
+   "w": "klingt",
+   "s": 1.28,
+   "e": 1.52
+  },
+  {
+   "w": "nach",
+   "s": 1.52,
+   "e": 1.72
+  },
+  {
+   "w": "einem",
+   "s": 1.72,
+   "e": 1.92
+  },
+  {
+   "w": "schlechten",
+   "s": 1.92,
+   "e": 2.32
+  },
+  {
+   "w": "Deal.",
+   "s": 2.32,
+   "e": 2.62
+  },
+  {
+   "w": "Denn",
+   "s": 2.78,
+   "e": 2.86
+  },
+  {
+   "w": "am",
+   "s": 2.86,
+   "e": 2.98
+  },
+  {
+   "w": "Ende",
+   "s": 2.98,
+   "e": 3.24
+  },
+  {
+   "w": "wird",
+   "s": 3.24,
+   "e": 3.48
+  },
+  {
+   "w": "alles",
+   "s": 3.48,
+   "e": 3.7
+  },
+  {
+   "w": "versteuert,",
+   "s": 3.7,
+   "e": 4.34
+  },
+  {
+   "w": "doch",
+   "s": 4.4,
+   "e": 4.52
+  },
+  {
+   "w": "eine",
+   "s": 4.52,
+   "e": 4.8
+  },
+  {
+   "w": "Rechnung",
+   "s": 4.8,
+   "e": 5.22
+  },
+  {
+   "w": "zeigt,",
+   "s": 5.22,
+   "e": 5.56
+  },
+  {
+   "w": "warum",
+   "s": 5.64,
+   "e": 5.8
+  },
+  {
+   "w": "das",
+   "s": 5.8,
+   "e": 6.04
+  },
+  {
+   "w": "nicht",
+   "s": 6.04,
+   "e": 6.34
+  },
+  {
+   "w": "stimmt.",
+   "s": 6.34,
+   "e": 6.68
+  },
+  {
+   "w": "Auf",
+   "s": 6.78,
+   "e": 6.9
+  },
+  {
+   "w": "Einzahlungen",
+   "s": 6.9,
+   "e": 7.54
+  },
+  {
+   "w": "bis",
+   "s": 7.54,
+   "e": 7.7
+  },
+  {
+   "w": "1.800",
+   "s": 7.7,
+   "e": 8.26
+  },
+  {
+   "w": "Euro",
+   "s": 8.26,
+   "e": 8.76
+  },
+  {
+   "w": "im",
+   "s": 8.76,
+   "e": 8.96
+  },
+  {
+   "w": "Jahr",
+   "s": 8.96,
+   "e": 9.14
+  },
+  {
+   "w": "bekommst",
+   "s": 9.14,
+   "e": 9.6
+  },
+  {
+   "w": "du",
+   "s": 9.6,
+   "e": 9.7
+  },
+  {
+   "w": "Förderung,",
+   "s": 9.7,
+   "e": 10.28
+  },
+  {
+   "w": "bei",
+   "s": 10.38,
+   "e": 10.46
+  },
+  {
+   "w": "der",
+   "s": 10.46,
+   "e": 10.62
+  },
+  {
+   "w": "Auszahlung",
+   "s": 10.62,
+   "e": 11.32
+  },
+  {
+   "w": "zahlst",
+   "s": 11.32,
+   "e": 11.7
+  },
+  {
+   "w": "du",
+   "s": 11.7,
+   "e": 11.82
+  },
+  {
+   "w": "Einkommensteuer",
+   "s": 11.82,
+   "e": 12.78
+  },
+  {
+   "w": "aufs",
+   "s": 12.78,
+   "e": 13.32
+  },
+  {
+   "w": "gesamte",
+   "s": 13.32,
+   "e": 13.72
+  },
+  {
+   "w": "Guthaben.",
+   "s": 13.72,
+   "e": 14.28
+  },
+  {
+   "w": "Einzahlung,",
+   "s": 14.38,
+   "e": 14.9
+  },
+  {
+   "w": "Zulagen",
+   "s": 15.06,
+   "e": 15.44
+  },
+  {
+   "w": "und",
+   "s": 15.44,
+   "e": 15.62
+  },
+  {
+   "w": "Erträge.",
+   "s": 15.62,
+   "e": 16.14
+  },
+  {
+   "w": "Beim",
+   "s": 16.24,
+   "e": 16.34
+  },
+  {
+   "w": "normalen",
+   "s": 16.34,
+   "e": 16.8
+  },
+  {
+   "w": "ETF-Sparplan",
+   "s": 16.8,
+   "e": 17.64
+  },
+  {
+   "w": "trifft",
+   "s": 17.64,
+   "e": 17.92
+  },
+  {
+   "w": "die",
+   "s": 17.92,
+   "e": 18.04
+  },
+  {
+   "w": "Steuer",
+   "s": 18.04,
+   "e": 18.24
+  },
+  {
+   "w": "nur",
+   "s": 18.24,
+   "e": 18.6
+  },
+  {
+   "w": "die",
+   "s": 18.6,
+   "e": 18.8
+  },
+  {
+   "w": "Gewinne.",
+   "s": 18.8,
+   "e": 19.26
+  },
+  {
+   "w": "Rechnen",
+   "s": 19.3,
+   "e": 19.66
+  },
+  {
+   "w": "wir",
+   "s": 19.66,
+   "e": 19.76
+  },
+  {
+   "w": "vereinfacht",
+   "s": 19.76,
+   "e": 20.28
+  },
+  {
+   "w": "mit",
+   "s": 20.28,
+   "e": 20.44
+  },
+  {
+   "w": "100",
+   "s": 20.44,
+   "e": 20.78
+  },
+  {
+   "w": "Euro",
+   "s": 20.78,
+   "e": 21.28
+  },
+  {
+   "w": "und",
+   "s": 21.28,
+   "e": 21.5
+  },
+  {
+   "w": "20 %",
+   "s": 21.5,
+   "e": 22.34
+  },
+  {
+   "w": "Steuer.",
+   "s": 22.34,
+   "e": 22.7
+  },
+  {
+   "w": "ETF-Sparplan",
+   "s": 22.9,
+   "e": 23.86
+  },
+  {
+   "w": "erst",
+   "s": 23.86,
+   "e": 24.2
+  },
+  {
+   "w": "20 %",
+   "s": 24.2,
+   "e": 25.0
+  },
+  {
+   "w": "weg,",
+   "s": 25.0,
+   "e": 25.26
+  },
+  {
+   "w": "80",
+   "s": 25.44,
+   "e": 25.7
+  },
+  {
+   "w": "Euro",
+   "s": 25.7,
+   "e": 26.06
+  },
+  {
+   "w": "werden",
+   "s": 26.06,
+   "e": 26.3
+  },
+  {
+   "w": "investiert,",
+   "s": 26.3,
+   "e": 27.0
+  },
+  {
+   "w": "das",
+   "s": 27.12,
+   "e": 27.22
+  },
+  {
+   "w": "Geld",
+   "s": 27.22,
+   "e": 27.42
+  },
+  {
+   "w": "wächst",
+   "s": 27.42,
+   "e": 27.74
+  },
+  {
+   "w": "auf",
+   "s": 27.74,
+   "e": 27.94
+  },
+  {
+   "w": "das",
+   "s": 27.94,
+   "e": 28.1
+  },
+  {
+   "w": "Achtfache:",
+   "s": 28.1,
+   "e": 28.66
+  },
+  {
+   "w": "640",
+   "s": 28.66,
+   "e": 29.54
+  },
+  {
+   "w": "Euro.",
+   "s": 29.54,
+   "e": 29.96
+  },
+  {
+   "w": "Beim",
+   "s": 30.04,
+   "e": 30.14
+  },
+  {
+   "w": "Altersvorsorge-Depot",
+   "s": 30.14,
+   "e": 31.24
+  },
+  {
+   "w": "läuft",
+   "s": 31.24,
+   "e": 31.44
+  },
+  {
+   "w": "es",
+   "s": 31.44,
+   "e": 31.62
+  },
+  {
+   "w": "so,",
+   "s": 31.62,
+   "e": 31.82
+  },
+  {
+   "w": "die",
+   "s": 31.94,
+   "e": 32.0
+  },
+  {
+   "w": "vorhin",
+   "s": 32.0,
+   "e": 32.32
+  },
+  {
+   "w": "100",
+   "s": 32.32,
+   "e": 32.68
+  },
+  {
+   "w": "Euro",
+   "s": 32.68,
+   "e": 33.0
+  },
+  {
+   "w": "wandern",
+   "s": 33.0,
+   "e": 33.32
+  },
+  {
+   "w": "ins",
+   "s": 33.32,
+   "e": 33.56
+  },
+  {
+   "w": "Depot,",
+   "s": 33.56,
+   "e": 33.9
+  },
+  {
+   "w": "die",
+   "s": 34.02,
+   "e": 34.08
+  },
+  {
+   "w": "Steuer",
+   "s": 34.08,
+   "e": 34.36
+  },
+  {
+   "w": "kommt",
+   "s": 34.36,
+   "e": 34.7
+  },
+  {
+   "w": "zurück,",
+   "s": 34.7,
+   "e": 35.08
+  },
+  {
+   "w": "daraus",
+   "s": 35.26,
+   "e": 35.54
+  },
+  {
+   "w": "werden",
+   "s": 35.54,
+   "e": 35.78
+  },
+  {
+   "w": "800",
+   "s": 35.78,
+   "e": 36.36
+  },
+  {
+   "w": "Euro",
+   "s": 36.36,
+   "e": 36.76
+  },
+  {
+   "w": "dann",
+   "s": 36.76,
+   "e": 37.12
+  },
+  {
+   "w": "20 %",
+   "s": 37.12,
+   "e": 37.96
+  },
+  {
+   "w": "Steuer",
+   "s": 37.96,
+   "e": 38.42
+  },
+  {
+   "w": "übrig",
+   "s": 38.42,
+   "e": 38.96
+  },
+  {
+   "w": "bleiben,",
+   "s": 38.96,
+   "e": 39.4
+  },
+  {
+   "w": "640,",
+   "s": 39.6,
+   "e": 40.28
+  },
+  {
+   "w": "genau",
+   "s": 40.64,
+   "e": 40.82
+  },
+  {
+   "w": "dasselbe.",
+   "s": 40.82,
+   "e": 41.26
+  },
+  {
+   "w": "Denn",
+   "s": 41.34,
+   "e": 41.46
+  },
+  {
+   "w": "mathematisch",
+   "s": 41.46,
+   "e": 42.16
+  },
+  {
+   "w": "ist",
+   "s": 42.16,
+   "e": 42.28
+  },
+  {
+   "w": "es",
+   "s": 42.28,
+   "e": 42.42
+  },
+  {
+   "w": "egal,",
+   "s": 42.42,
+   "e": 42.72
+  },
+  {
+   "w": "ob",
+   "s": 42.78,
+   "e": 42.9
+  },
+  {
+   "w": "die",
+   "s": 42.9,
+   "e": 43.04
+  },
+  {
+   "w": "Steuer",
+   "s": 43.04,
+   "e": 43.26
+  },
+  {
+   "w": "vor",
+   "s": 43.26,
+   "e": 43.6
+  },
+  {
+   "w": "oder",
+   "s": 43.6,
+   "e": 43.8
+  },
+  {
+   "w": "nach",
+   "s": 43.8,
+   "e": 44.14
+  },
+  {
+   "w": "der",
+   "s": 44.14,
+   "e": 44.26
+  },
+  {
+   "w": "Rendite",
+   "s": 44.26,
+   "e": 44.58
+  },
+  {
+   "w": "kommt,",
+   "s": 44.58,
+   "e": 44.88
+  },
+  {
+   "w": "ein",
+   "s": 45.02,
+   "e": 45.1
+  },
+  {
+   "w": "Steuerstundungseffekt",
+   "s": 45.1,
+   "e": 46.28
+  },
+  {
+   "w": "entsteht",
+   "s": 46.28,
+   "e": 46.74
+  },
+  {
+   "w": "nicht.",
+   "s": 46.74,
+   "e": 46.96
+  },
+  {
+   "w": "Der",
+   "s": 47.08,
+   "e": 47.12
+  },
+  {
+   "w": "Vorteil",
+   "s": 47.12,
+   "e": 47.56
+  },
+  {
+   "w": "steckt",
+   "s": 47.56,
+   "e": 47.8
+  },
+  {
+   "w": "woanders,",
+   "s": 47.8,
+   "e": 48.28
+  },
+  {
+   "w": "im",
+   "s": 48.44,
+   "e": 48.48
+  },
+  {
+   "w": "normalen",
+   "s": 48.48,
+   "e": 48.94
+  },
+  {
+   "w": "Depot",
+   "s": 48.94,
+   "e": 49.22
+  },
+  {
+   "w": "kommt",
+   "s": 49.22,
+   "e": 49.46
+  },
+  {
+   "w": "auf",
+   "s": 49.46,
+   "e": 49.64
+  },
+  {
+   "w": "die",
+   "s": 49.64,
+   "e": 49.78
+  },
+  {
+   "w": "Gewinne",
+   "s": 49.78,
+   "e": 50.1
+  },
+  {
+   "w": "noch",
+   "s": 50.1,
+   "e": 50.28
+  },
+  {
+   "w": "Kapitalertragsteuer,",
+   "s": 50.28,
+   "e": 51.42
+  },
+  {
+   "w": "im",
+   "s": 51.42,
+   "e": 51.62
+  },
+  {
+   "w": "Altersvorsorge-Depot",
+   "s": 51.62,
+   "e": 52.84
+  },
+  {
+   "w": "nicht",
+   "s": 52.84,
+   "e": 53.08
+  },
+  {
+   "w": "und",
+   "s": 53.08,
+   "e": 53.2
+  },
+  {
+   "w": "in",
+   "s": 53.2,
+   "e": 53.32
+  },
+  {
+   "w": "der",
+   "s": 53.32,
+   "e": 53.46
+  },
+  {
+   "w": "Rente",
+   "s": 53.46,
+   "e": 53.7
+  },
+  {
+   "w": "ist",
+   "s": 53.7,
+   "e": 53.9
+  },
+  {
+   "w": "dein",
+   "s": 53.9,
+   "e": 54.1
+  },
+  {
+   "w": "Steuersatz",
+   "s": 54.1,
+   "e": 54.72
+  },
+  {
+   "w": "oft",
+   "s": 54.72,
+   "e": 55.02
+  },
+  {
+   "w": "niedriger.",
+   "s": 55.02,
+   "e": 55.5
+  },
+  {
+   "w": "Aber",
+   "s": 55.5,
+   "e": 55.82
+  },
+  {
+   "w": "die",
+   "s": 55.82,
+   "e": 56.08
+  },
+  {
+   "w": "Auszahlungen",
+   "s": 56.08,
+   "e": 56.78
+  },
+  {
+   "w": "werden",
+   "s": 56.78,
+   "e": 57.0
+  },
+  {
+   "w": "auf",
+   "s": 57.0,
+   "e": 57.18
+  },
+  {
+   "w": "dein",
+   "s": 57.18,
+   "e": 57.38
+  },
+  {
+   "w": "Einkommen",
+   "s": 57.38,
+   "e": 57.98
+  },
+  {
+   "w": "angerechnet.",
+   "s": 57.98,
+   "e": 58.72
+  },
+  {
+   "w": "Dein",
+   "s": 58.78,
+   "e": 58.92
+  },
+  {
+   "w": "Grenzsteuersatz",
+   "s": 58.92,
+   "e": 59.62
+  },
+  {
+   "w": "steigt.",
+   "s": 59.62,
+   "e": 59.98
+  },
+  {
+   "w": "Bist",
+   "s": 60.02,
+   "e": 60.14
+  },
+  {
+   "w": "du",
+   "s": 60.14,
+   "e": 60.3
+  },
+  {
+   "w": "eher",
+   "s": 60.3,
+   "e": 60.46
+  },
+  {
+   "w": "Team",
+   "s": 60.46,
+   "e": 60.68
+  },
+  {
+   "w": "ETF",
+   "s": 60.68,
+   "e": 61.02
+  },
+  {
+   "w": "oder",
+   "s": 61.02,
+   "e": 61.34
+  },
+  {
+   "w": "Team",
+   "s": 61.34,
+   "e": 61.58
+  },
+  {
+   "w": "AVD?",
+   "s": 61.58,
+   "e": 62.1
+  }
+ ],
+ "cap_words": 4,
+ "cap_chars": 22,
+ "layout": {
+  "head_x": 1270,
+  "head_w": 1150,
+  "cap_x": 1270,
+  "cap_w": 1240,
+  "cap_y": 1018,
+  "cap_size": 60,
+  "clip_top": 335
+ }
+}
