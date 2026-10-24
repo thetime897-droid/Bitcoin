@@ -3,7 +3,7 @@
  "width": 1080,
  "height": 1920,
  "fps": 60,
- "audio": "voice.wav",
+ "audio": "voice_bright.wav",
  "duration": 62.6,
  "panda_pos": {
   "x": 215,
