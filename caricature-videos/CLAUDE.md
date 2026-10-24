@@ -78,3 +78,11 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 ## Musik
 - `music_bed: {file, rel_db: -17, duck_db: -5}` im Plan: Musik 17 dB unter der Stimme, beim Sprechen weitere 5 dB
   abgesenkt, 0,6 s Fade-in, 2 s Fade-out (kürzere Tracks werden geloopt). Musikdateien nicht ins Repo legen.
+
+## Einblendungen (Overlays) für Facecam-Videos
+- `toonfin/inserts.py` + Spec-JSON (Beispiel `examples/european_lithium_inserts.json`). Grafiken im oberen
+  Bereich (y ≈ 300–1250), damit TikTok-Buttons, Beschreibung und das Gesicht frei bleiben; feste Bauchbinde
+  oben bei y≈205.
+- Export immer als `_key.mp4` mit **Magenta-Key** (nicht grün: der Key würde die grünen Grafiken ausstanzen)
+  plus `_alpha.webm` mit echter Transparenz. Harte Sticker-Schatten statt weicher, damit der Key sauber bleibt.
+- Mit Panda: Karte rechts (x=715, w=610), Panda links (x=185, h=520), keine Überlappung.

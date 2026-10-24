@@ -271,6 +271,11 @@ class Ink:
                         stroke_width=swp, stroke_fill=stroke)
             return
         x0, y0, x1, y1 = f.getbbox(s, stroke_width=swp)
+        if anchor[0] in "lr":
+            # rotated text is drawn centred: move the centre along the rotated baseline
+            off = (x1 - x0) / 2 * (1 if anchor[0] == "l" else -1)
+            X += off * math.cos(math.radians(r))
+            Y += off * math.sin(math.radians(r))
         pad = swp + int(px * (shadow + 0.1))
         tw, th = int(x1 - x0) + 2 * pad, int(y1 - y0) + 2 * pad
         tmp = Image.new("RGBA", (tw, th), (0, 0, 0, 0))

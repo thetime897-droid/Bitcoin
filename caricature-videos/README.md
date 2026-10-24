@@ -109,6 +109,27 @@ python -m toonfin make --media clip.mp4 --srt clip.srt --lang en --hero ceo --ou
 python -m toonfin render examples/sap_panda_news.plan.json --out out/sap_news.mp4
 ```
 
+### Einblendungen zum Drüberlegen (`toonfin/inserts.py`)
+
+Kurze animierte Karten, Motion-Graphic-Clips und Panda-Karikaturen, die über das eigene
+Facecam-Video gelegt werden (kein ganzes Video). Spec: `examples/european_lithium_inserts.json`.
+
+```bash
+python -m toonfin.inserts examples/european_lithium_inserts.json --out out/inserts [--only C3_Abstimmung]
+python3 tools/inserts_reel.py out/inserts out/vorschau.mp4 70 F1_Banner@0+hold U01_Deal_durch@0 ...
+```
+
+Pro Einblendung entstehen zwei Dateien (1080×1920, 60 fps, mit Whoosh/Pop/Kasse):
+- `<id>_key.mp4`: Magenta-Hintergrund (#FF00FF) für CapCut → *Chroma Key* → Farbe Magenta.
+  Magenta statt Greenscreen, weil ein grüner Key die grünen Grafiken mit ausstanzen würde.
+- `<id>_alpha.webm`: echte Transparenz (VP9). `--alpha mov` schreibt stattdessen eine große
+  PNG-.mov für Premiere oder Final Cut.
+
+Elemente: `card` (Farbkarte gelb/blau/gruen/rot/weiss mit Zähler, Icon, Plakette), `pill`,
+`counter` (Depotwert läuft), `ring` (Abstimmungs-Ring), `priceline` (Kursverlauf mit
+Einstiegslinie), `swap` (Aktien-Umtausch), `timeline` (Fahrplan), `illus` (alle Illustrationen,
+neu: `gavel`, `battery`), `title`, `banner` (feste Bauchbinde). `panda` setzt eine HQ-Pose daneben.
+
 ### Panda-Comic-Stil (`toonfin/comic.py`, älter)
 
 Volle Comic-Bilder auf weißem Hintergrund, die alle 3–8 s von rechts reingeschoben werden.

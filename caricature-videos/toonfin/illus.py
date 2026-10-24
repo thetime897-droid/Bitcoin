@@ -834,3 +834,72 @@ def switch(ink, t, e):
 
 
 KINDS.update({"taxoffice": taxoffice, "app_steps": app_steps, "report": report, "checklist": checklist, "switch": switch})
+
+
+def gavel(ink, t, e):
+    """Judge's gavel: raised, slams down on the block at ``slam_at``, shock lines and a date tag."""
+    slam = e.get("slam_at", 0.7)
+    wood, wood_dk = (176, 112, 62), (120, 72, 36)
+    ink.ellipse(-60, 236, 230, 26, fill=(232, 233, 237), outline=None, wob=0)
+    ink.rect(-250, 160, 130, 230, fill=wood, outline=DARK, w=LW, wob=0.2, r=14)
+    ink.ellipse(-60, 160, 190, 26, fill=mix(wood, WHITE, 0.25), outline=DARK, w=LW, wob=0.2)
+    if t < slam - 0.35:
+        a = 38 + 4 * math.sin(t * 5)
+    elif t < slam:
+        k = seg(t, slam - 0.35, slam)
+        a = lerp(42, 0, k * k)
+    else:
+        a = 7 * math.exp(-(t - slam) * 9) * abs(math.sin((t - slam) * 22))
+    with ink.at(260, 70, a):
+        ink.line([(-320, 0), (0, 0)], DARK, 34, wob=0)
+        ink.line([(-320, 0), (-4, 0)], wood, 22, wob=0)
+        ink.circle(0, 0, 22, fill=wood_dk, outline=DARK, w=6, wob=0)
+        ink.rect(-385, -78, -255, 78, fill=wood, outline=DARK, w=LW, wob=0.2, r=16)
+        for y in (-48, 48):
+            ink.rect(-389, y - 10, -251, y + 10, fill=GOLD, outline=DARK, w=5, wob=0, r=4)
+    if t >= slam:
+        k = seg(t, slam, slam + 0.45)
+        for i in range(7):
+            ang = math.radians(-180 + i * 30)
+            r0, r1 = 120 + 90 * k, 170 + 150 * k
+            w = 10 * (1 - k)
+            if w > 0.8:
+                ink.line([(-60 + math.cos(ang) * r0, 150 + math.sin(ang) * r0 * 0.7),
+                          (-60 + math.cos(ang) * r1, 150 + math.sin(ang) * r1 * 0.7)], GOLD, w, wob=0)
+    if e.get("tag") and t > slam + 0.1:
+        kk = ease_out_back(seg(t, slam + 0.1, slam + 0.5), 1.8)
+        with ink.at(e.get("tag_x", 150), -230, -6, max(0.05, kk)):
+            w = ink.text_w(e["tag"], 60, "mont") + 70
+            ink.rect(-w / 2, -46, w / 2, 46, fill=e.get("tag_col", RED), outline=DARK, w=6, wob=0, r=46)
+            T(ink, 0, 3, e["tag"], 60, WHITE)
+
+
+def battery(ink, t, e):
+    """Lithium battery draining from full to ``level``, colour shifts green -> red, arrow and tag."""
+    d0, d1 = e.get("drain_at", 0.3), e.get("drain_end", 1.6)
+    k = smooth(seg(t, d0, d1))
+    lvl = lerp(1.0, e.get("level", 0.28), k)
+    col = mix(GREEN, RED, k) if k < 0.5 else mix(mix(GREEN, RED, 0.5), RED, (k - 0.5) * 2)
+    x0, y0, x1, y1 = -150, -230, 150, 300
+    ink.rect(-60, y0 - 52, 60, y0 + 4, fill=GREY, outline=DARK, w=LW, wob=0, r=12)
+    ink.rect(x0, y0, x1, y1, fill=WHITE, outline=DARK, w=LW + 4, wob=0.2, r=40)
+    inner = (y1 - 26) - (y0 + 26)
+    top = (y1 - 26) - inner * lvl
+    if lvl > 0.02:
+        ink.rect(x0 + 26, top, x1 - 26, y1 - 26, fill=col, outline=None, wob=0, r=22)
+        ink.rect(x0 + 26, top, x0 + 80, y1 - 26, fill=mix(col, WHITE, 0.3), outline=None, wob=0, r=20)
+    T(ink, 0, 50, e.get("label", "Li"), 120, DARK if lvl < 0.55 else WHITE)
+    if k > 0.05:
+        ka = smooth(seg(t, d0 + 0.2, d1))
+        with ink.at(270, -60 + 160 * ka):
+            ink.shape([(-34, -120), (34, -120), (34, 20), (80, 20), (0, 120), (-80, 20), (-34, 20)],
+                      fill=RED, outline=DARK, w=6, wob=0)
+    if e.get("tag") and t > d1:
+        kk = ease_out_back(seg(t, d1, d1 + 0.45), 1.8)
+        with ink.at(e.get("tag_x", 250), 230, -5, max(0.05, kk)):
+            w = ink.text_w(e["tag"], 64, "mont") + 70
+            ink.rect(-w / 2, -48, w / 2, 48, fill=RED, outline=DARK, w=6, wob=0, r=48)
+            T(ink, 0, 3, e["tag"], 64, WHITE)
+
+
+KINDS.update({"gavel": gavel, "battery": battery})
