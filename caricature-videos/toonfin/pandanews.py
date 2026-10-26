@@ -723,7 +723,7 @@ def el_breaking(ink, t, e):
         if kt > 0.02:
             with ink.at(cx, y - 70, -3, max(0.05, kt)):
                 ttl = e.get("title", "BREAKING NEWS")
-                T(ink, 0, 0, ttl, fit_size(ink, ttl, 92, LAYOUT["W"] - 140), WHITE)
+                T(ink, 0, 0, ttl, fit_size(ink, ttl, 92, min(LAYOUT["W"] - 140, 2 * (LAYOUT["W"] - cx) - 100)), WHITE)
         ks = smooth(seg(lt, 0.45, 0.8))
         if ks > 0.02:
             T(ink, cx - 60 * (1 - ks), y + 60, e.get("sub", "+++ EILMELDUNG +++"), 46, mix(WHITE, DARK, 1 - ks))

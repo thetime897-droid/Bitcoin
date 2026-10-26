@@ -1,0 +1,1540 @@
+{
+ "style": "pandanews",
+ "width": 1920,
+ "height": 1080,
+ "fps": 60,
+ "audio": "voice.wav",
+ "duration": 65.9,
+ "panda_pos": {
+  "x": 330,
+  "y": 1050,
+  "h": 700
+ },
+ "layout": {
+  "head_x": 1270,
+  "head_w": 1150,
+  "cap_x": 1270,
+  "cap_w": 1240,
+  "cap_y": 1018,
+  "cap_size": 60,
+  "clip_top": 335
+ },
+ "sfx_rel": 0.665,
+ "master_lufs": -16.8,
+ "cap_words": 4,
+ "cap_chars": 22,
+ "zooms": [
+  {
+   "at": 18.0,
+   "hold": 0.8,
+   "scale": 1.2,
+   "x": 545,
+   "y": 720
+  },
+  {
+   "at": 26.3,
+   "hold": 0.9,
+   "scale": 1.18,
+   "x": 545,
+   "y": 735
+  },
+  {
+   "at": 38.3,
+   "hold": 0.9,
+   "scale": 1.2,
+   "x": 545,
+   "y": 720
+  },
+  {
+   "at": 56.1,
+   "hold": 0.9,
+   "scale": 1.18,
+   "x": 545,
+   "y": 720
+  }
+ ],
+ "panels": [
+  {
+   "start": 0.0,
+   "end": 6.0,
+   "panda": {
+    "pose": "ueberrascht",
+    "swap": [
+     [
+      4.66,
+      "wuetend"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "tape",
+     "at": 0,
+     "y": 34,
+     "items": [
+      "EUROPEAN LITHIUM|0,2200 €",
+      "SEIT EINSTIEG|-13,2 %",
+      "JA-STIMMEN|99,96 %",
+      "UMTAUSCH|0,045",
+      "LITHIUM CHINA|-11,8 %",
+      "DEPOT|4.339 €"
+     ]
+    },
+    {
+     "type": "breaking",
+     "at": 0,
+     "until": 1.15,
+     "y": 600,
+     "title": "CLAUDE WÄHLT MEINE AKTIE",
+     "sub": "+++ 5.000 € EXPERIMENT +++",
+     "x": 1270
+    },
+    {
+     "type": "headline",
+     "at": 1.2,
+     "text": [
+      "5.000 € AN CLAUDE",
+      "DIE BESTE AKTIE?"
+     ],
+     "tone": "gold",
+     "until": 4.55,
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 1.25,
+     "x": 1270,
+     "w": 900,
+     "y": 640,
+     "color": "gelb",
+     "label": "DAS EXPERIMENT",
+     "title": "ICH GAB CLAUDE",
+     "value": "{} €",
+     "count_from": "0",
+     "count_to": "5.000",
+     "count_at": 1.5,
+     "count_end": 2.6,
+     "sub": "für die Aktie mit dem meisten Rendite-Potenzial",
+     "icon": "target",
+     "until": 4.5
+    },
+    {
+     "type": "headline",
+     "at": 4.66,
+     "text": [
+      "UND DANN",
+      "PASSIERTE DAS"
+     ],
+     "tone": "bad",
+     "from": "down",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "warning",
+     "at": 4.7,
+     "x": 1270,
+     "y": 640,
+     "s": 0.93,
+     "text": "DEAL DURCH –\nTROTZDEM MINUS"
+    }
+   ],
+   "sfx": [
+    [
+     3.2,
+     "riser",
+     0.8
+    ]
+   ]
+  },
+  {
+   "start": 6.0,
+   "end": 14.42,
+   "panda": {
+    "pose": "zeigen",
+    "swap": [
+     [
+      4.28,
+      "begeistert"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "KURZ ZUR ERINNERUNG",
+      "EUROPEAN LITHIUM"
+     ],
+     "tone": "blue",
+     "until": 4.15,
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 0.1,
+     "x": 1270,
+     "w": 900,
+     "y": 640,
+     "color": "blau",
+     "label": "DIE AKTIE",
+     "title": "EUROPEAN LITHIUM",
+     "value": "LITHIUM-MINE",
+     "sub": "Wolfsberg · Österreich",
+     "icon": "pickaxe",
+     "until": 4.1
+    },
+    {
+     "type": "headline",
+     "at": 4.28,
+     "text": [
+      "ÜBERNAHME DURCH",
+      "CRITICAL METALS"
+     ],
+     "tone": "good",
+     "from": "down",
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 4.3,
+     "x": 1270,
+     "w": 900,
+     "y": 640,
+     "color": "gruen",
+     "label": "ÜBERNAHME",
+     "title": "CRITICAL METALS ZAHLT",
+     "value": "{} MIO. $",
+     "count_from": "0",
+     "count_to": "835",
+     "count_at": 5.8,
+     "count_end": 6.9,
+     "sub": "für European Lithium",
+     "icon": "building-2"
+    }
+   ]
+  },
+  {
+   "start": 14.42,
+   "end": 22.24,
+   "panda": {
+    "pose": "zeigen",
+    "swap": [
+     [
+      5.5,
+      "tipp_geben"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "MEIN EINSTIEG",
+      "AM 26. SEPTEMBER"
+     ],
+     "tone": "good",
+     "y": 138
+    },
+    {
+     "type": "stamp",
+     "at": 0.1,
+     "text": "KEINE ANLAGEBERATUNG",
+     "x": 1270,
+     "y": 600,
+     "size": 44,
+     "rot": -5,
+     "tone": "dark",
+     "until": 2.5
+    },
+    {
+     "type": "card",
+     "at": 2.6,
+     "x": 1270,
+     "w": 900,
+     "y": 600,
+     "color": "gruen",
+     "label": "MEIN EINSTIEG",
+     "title": "26.09.2026",
+     "value": "{} €",
+     "count_from": "0",
+     "count_to": "0,2535",
+     "count_at": 3.0,
+     "count_end": 4.0,
+     "sub": "5.000 € · 19.724 Aktien",
+     "icon": "banknote"
+    },
+    {
+     "type": "pill",
+     "at": 5.5,
+     "text": "WETTE: DER DEAL GEHT DURCH",
+     "color": "gelb",
+     "x": 1270,
+     "y": 925,
+     "size": 40
+    }
+   ]
+  },
+  {
+   "start": 22.24,
+   "end": 29.02,
+   "panda": {
+    "pose": "zeigestock",
+    "swap": [
+     [
+      3.4,
+      "begeistert"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "ABSTIMMUNG",
+      "DER DEAL IST DURCH"
+     ],
+     "tone": "good",
+     "y": 138
+    },
+    {
+     "type": "ring",
+     "at": 0.1,
+     "x": 1270,
+     "y": 645,
+     "w": 720,
+     "h": 680,
+     "value": 99.96,
+     "fill_at": 1.6,
+     "fill_end": 4.0,
+     "title": "AKTIONÄRE · DONNERSTAG",
+     "sub": "WETTE GEWONNEN!",
+     "sub_at": 5.95,
+     "sfx": [
+      [
+       5.97,
+       "pop",
+       0.6
+      ]
+     ],
+     "s": 0.86
+    }
+   ]
+  },
+  {
+   "start": 29.02,
+   "end": 35.46,
+   "panda": {
+    "pose": "ueberrascht",
+    "swap": [
+     [
+      3.7,
+      "traurig"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "ABER DER KURS",
+      "MINUS 13 %"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "priceline",
+     "at": 0.1,
+     "x": 1270,
+     "y": 640,
+     "w": 1100,
+     "h": 600,
+     "title": "EUROPEAN LITHIUM",
+     "lo": 0.2,
+     "hi": 0.26,
+     "entry": 0.2535,
+     "entry_label": "Einstieg 0,2535 €",
+     "points": [
+      [
+       "26.09.",
+       0.2535,
+       0
+      ],
+      [
+       "09.10.",
+       0.234,
+       13
+      ],
+      [
+       "",
+       0.216,
+       17
+      ],
+      [
+       "15.10.",
+       0.21,
+       19
+      ],
+      [
+       "",
+       0.23,
+       24
+      ],
+      [
+       "23.10.",
+       0.22,
+       27
+      ]
+     ],
+     "draw_at": 0.6,
+     "draw_end": 2.4,
+     "end_label": "0,2200 €",
+     "badge": "−13,2 %",
+     "badge_at": 3.7
+    }
+   ]
+  },
+  {
+   "start": 35.46,
+   "end": 40.8,
+   "panda": {
+    "pose": "traurig"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "MEIN DEPOT",
+      "661 € WEG"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "counter",
+     "at": 0.1,
+     "x": 1270,
+     "y": 600,
+     "w": 900,
+     "h": 470,
+     "from": "5.000",
+     "to": "4.339",
+     "count_at": 1.1,
+     "count_end": 2.8,
+     "badge": "−661 €",
+     "sub": "Einstieg 26.09.2026"
+    },
+    {
+     "type": "pill",
+     "at": 3.5,
+     "text": "661 € WEG",
+     "color": "rot",
+     "x": 1270,
+     "y": 925,
+     "size": 44
+    }
+   ]
+  },
+  {
+   "start": 40.8,
+   "end": 47.4,
+   "panda": {
+    "pose": "nachdenklich",
+    "swap": [
+     [
+      1.2,
+      "wuetend"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "LITHIUM IN CHINA",
+      "PREISE STÜRZEN AB"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "battery",
+     "at": 1.2,
+     "x": 1270,
+     "y": 600,
+     "s": 0.75,
+     "drain_at": 0.3,
+     "drain_end": 2.3,
+     "level": 0.25,
+     "tag": "−11,8 %",
+     "tag_x": 250
+    },
+    {
+     "type": "pill",
+     "at": 4.85,
+     "text": "MEHR ANGEBOT ERWARTET",
+     "color": "gelb",
+     "x": 1270,
+     "y": 925,
+     "size": 40
+    }
+   ]
+  },
+  {
+   "start": 47.4,
+   "end": 57.98,
+   "panda": {
+    "pose": "zeigestock",
+    "swap": [
+     [
+      8.6,
+      "begeistert"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "DER UMTAUSCH",
+      "0,045 PRO AKTIE"
+     ],
+     "tone": "blue",
+     "until": 4.85,
+     "y": 138
+    },
+    {
+     "type": "swap",
+     "at": 0.1,
+     "x": 1270,
+     "y": 600,
+     "s": 1.0,
+     "left": "EUROPEAN LITHIUM",
+     "left_venue": "ASX",
+     "left_n": "19.724",
+     "right": "CRITICAL METALS",
+     "right_venue": "NASDAQ",
+     "right_n": "888",
+     "ratio": "× 0,045 pro Aktie",
+     "swap_at": 5.0,
+     "swap_end": 8.6
+    },
+    {
+     "type": "headline",
+     "at": 4.95,
+     "text": [
+      "19.724 AKTIEN",
+      "WERDEN ≈ 888"
+     ],
+     "tone": "good",
+     "from": "down",
+     "y": 138
+    }
+   ]
+  },
+  {
+   "start": 57.98,
+   "end": 63.3,
+   "panda": {
+    "pose": "tipp_geben",
+    "swap": [
+     [
+      4.34,
+      "zeigen"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "KLEINAKTIONÄRE",
+      "KÖNNEN BAR NEHMEN"
+     ],
+     "tone": "gold",
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 0.1,
+     "x": 1270,
+     "w": 900,
+     "y": 600,
+     "color": "rot",
+     "label": "KLEINAKTIONÄRE",
+     "title": "BIS 50.000 AKTIEN",
+     "value": "BARGELD",
+     "sub": "statt Aktien möglich",
+     "icon": "hand-coins"
+    },
+    {
+     "type": "pill",
+     "at": 4.34,
+     "text": "BETRIFFT AUCH MICH",
+     "color": "gelb",
+     "x": 1270,
+     "y": 925,
+     "size": 40
+    }
+   ]
+  },
+  {
+   "start": 63.3,
+   "end": 65.9,
+   "panda": {
+    "pose": "augenzwinkern"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "UND IHR?",
+      "AKTIEN ODER BARGELD?"
+     ],
+     "tone": "blue",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "choice",
+     "at": 0.05,
+     "x": 1270,
+     "y": 640,
+     "s": 0.93,
+     "a": "AKTIEN\nNEHMEN",
+     "b": "BARGELD\n& RAUS",
+     "sa": "Critical Metals",
+     "sb": "Barauszahlung"
+    }
+   ]
+  }
+ ],
+ "words": [
+  {
+   "w": "Ich",
+   "s": 0.0,
+   "e": 0.14
+  },
+  {
+   "w": "habe",
+   "s": 0.14,
+   "e": 0.26
+  },
+  {
+   "w": "Claude",
+   "s": 0.26,
+   "e": 0.66
+  },
+  {
+   "w": "5.000",
+   "s": 0.66,
+   "e": 1.06
+  },
+  {
+   "w": "Euro",
+   "s": 1.06,
+   "e": 1.38
+  },
+  {
+   "w": "gegeben",
+   "s": 1.38,
+   "e": 1.7
+  },
+  {
+   "w": "um",
+   "s": 1.7,
+   "e": 1.92
+  },
+  {
+   "w": "mir",
+   "s": 1.92,
+   "e": 2.06
+  },
+  {
+   "w": "eine",
+   "s": 2.06,
+   "e": 2.18
+  },
+  {
+   "w": "Aktie",
+   "s": 2.18,
+   "e": 2.52
+  },
+  {
+   "w": "rauszusuchen",
+   "s": 2.52,
+   "e": 3.02
+  },
+  {
+   "w": "mit",
+   "s": 3.02,
+   "e": 3.2
+  },
+  {
+   "w": "dem",
+   "s": 3.2,
+   "e": 3.38
+  },
+  {
+   "w": "meisten",
+   "s": 3.38,
+   "e": 3.64
+  },
+  {
+   "w": "Rendite-Potenzial",
+   "s": 3.64,
+   "e": 4.66
+  },
+  {
+   "w": "und",
+   "s": 4.66,
+   "e": 4.78
+  },
+  {
+   "w": "genau",
+   "s": 4.78,
+   "e": 5.02
+  },
+  {
+   "w": "das",
+   "s": 5.02,
+   "e": 5.34
+  },
+  {
+   "w": "hier",
+   "s": 5.34,
+   "e": 5.48
+  },
+  {
+   "w": "ist",
+   "s": 5.48,
+   "e": 5.62
+  },
+  {
+   "w": "passiert.",
+   "s": 5.62,
+   "e": 6.0
+  },
+  {
+   "w": "Kurz",
+   "s": 6.04,
+   "e": 6.18
+  },
+  {
+   "w": "zur",
+   "s": 6.18,
+   "e": 6.36
+  },
+  {
+   "w": "Erinnerung,",
+   "s": 6.36,
+   "e": 6.84
+  },
+  {
+   "w": "die",
+   "s": 6.92,
+   "e": 7.0
+  },
+  {
+   "w": "Aktie",
+   "s": 7.0,
+   "e": 7.38
+  },
+  {
+   "w": "ist",
+   "s": 7.38,
+   "e": 7.52
+  },
+  {
+   "w": "European",
+   "s": 7.52,
+   "e": 7.96
+  },
+  {
+   "w": "Lithium,",
+   "s": 7.96,
+   "e": 8.52
+  },
+  {
+   "w": "eine",
+   "s": 8.64,
+   "e": 8.74
+  },
+  {
+   "w": "Lithiummine",
+   "s": 8.74,
+   "e": 9.34
+  },
+  {
+   "w": "in",
+   "s": 9.34,
+   "e": 9.52
+  },
+  {
+   "w": "Österreich",
+   "s": 9.52,
+   "e": 9.92
+  },
+  {
+   "w": "und",
+   "s": 9.92,
+   "e": 10.28
+  },
+  {
+   "w": "diese",
+   "s": 10.28,
+   "e": 10.56
+  },
+  {
+   "w": "wird",
+   "s": 10.56,
+   "e": 10.76
+  },
+  {
+   "w": "von",
+   "s": 10.76,
+   "e": 10.92
+  },
+  {
+   "w": "Critical",
+   "s": 10.92,
+   "e": 11.24
+  },
+  {
+   "w": "Metals",
+   "s": 11.24,
+   "e": 11.76
+  },
+  {
+   "w": "übernommen",
+   "s": 11.76,
+   "e": 12.32
+  },
+  {
+   "w": "über",
+   "s": 12.32,
+   "e": 12.68
+  },
+  {
+   "w": "835",
+   "s": 12.68,
+   "e": 13.88
+  },
+  {
+   "w": "Millionen.",
+   "s": 13.88,
+   "e": 14.44
+  },
+  {
+   "w": "Das",
+   "s": 14.44,
+   "e": 14.56
+  },
+  {
+   "w": "Ganze",
+   "s": 14.56,
+   "e": 14.74
+  },
+  {
+   "w": "ist",
+   "s": 14.74,
+   "e": 14.92
+  },
+  {
+   "w": "natürlich",
+   "s": 14.92,
+   "e": 15.16
+  },
+  {
+   "w": "keine",
+   "s": 15.16,
+   "e": 15.36
+  },
+  {
+   "w": "Anlageberatung,",
+   "s": 15.36,
+   "e": 16.36
+  },
+  {
+   "w": "aber",
+   "s": 16.42,
+   "e": 16.58
+  },
+  {
+   "w": "ich",
+   "s": 16.58,
+   "e": 16.74
+  },
+  {
+   "w": "bin",
+   "s": 16.74,
+   "e": 16.88
+  },
+  {
+   "w": "rein",
+   "s": 16.88,
+   "e": 17.14
+  },
+  {
+   "w": "am",
+   "s": 17.14,
+   "e": 17.3
+  },
+  {
+   "w": "26.",
+   "s": 17.3,
+   "e": 17.62
+  },
+  {
+   "w": "September",
+   "s": 18.14,
+   "e": 18.38
+  },
+  {
+   "w": "mit",
+   "s": 18.38,
+   "e": 18.74
+  },
+  {
+   "w": "rund",
+   "s": 18.74,
+   "e": 18.9
+  },
+  {
+   "w": "5.000",
+   "s": 18.9,
+   "e": 19.38
+  },
+  {
+   "w": "Euro",
+   "s": 19.38,
+   "e": 19.96
+  },
+  {
+   "w": "und",
+   "s": 19.96,
+   "e": 20.2
+  },
+  {
+   "w": "die",
+   "s": 20.2,
+   "e": 20.38
+  },
+  {
+   "w": "Wette,",
+   "s": 20.38,
+   "e": 20.66
+  },
+  {
+   "w": "dass",
+   "s": 20.84,
+   "e": 20.86
+  },
+  {
+   "w": "dieser",
+   "s": 20.86,
+   "e": 21.22
+  },
+  {
+   "w": "Deal",
+   "s": 21.22,
+   "e": 21.54
+  },
+  {
+   "w": "durchgeht.",
+   "s": 21.54,
+   "e": 22.14
+  },
+  {
+   "w": "Und",
+   "s": 22.26,
+   "e": 22.32
+  },
+  {
+   "w": "genau",
+   "s": 22.32,
+   "e": 22.58
+  },
+  {
+   "w": "das",
+   "s": 22.58,
+   "e": 22.86
+  },
+  {
+   "w": "ist",
+   "s": 22.86,
+   "e": 23.14
+  },
+  {
+   "w": "passiert.",
+   "s": 23.14,
+   "e": 23.58
+  },
+  {
+   "w": "Am",
+   "s": 23.72,
+   "e": 23.8
+  },
+  {
+   "w": "Donnerstag",
+   "s": 23.8,
+   "e": 24.24
+  },
+  {
+   "w": "haben",
+   "s": 24.24,
+   "e": 24.44
+  },
+  {
+   "w": "die",
+   "s": 24.44,
+   "e": 24.58
+  },
+  {
+   "w": "Aktionäre",
+   "s": 24.58,
+   "e": 25.06
+  },
+  {
+   "w": "abgestimmt",
+   "s": 25.06,
+   "e": 25.68
+  },
+  {
+   "w": "99,96",
+   "s": 25.68,
+   "e": 27.16
+  },
+  {
+   "w": "Prozent",
+   "s": 27.16,
+   "e": 27.78
+  },
+  {
+   "w": "dafür",
+   "s": 27.78,
+   "e": 28.2
+  },
+  {
+   "w": "Wette",
+   "s": 28.2,
+   "e": 28.64
+  },
+  {
+   "w": "gewonnen.",
+   "s": 28.64,
+   "e": 29.04
+  },
+  {
+   "w": "Aber",
+   "s": 29.04,
+   "e": 29.22
+  },
+  {
+   "w": "jetzt",
+   "s": 29.22,
+   "e": 29.52
+  },
+  {
+   "w": "schaut",
+   "s": 29.52,
+   "e": 29.76
+  },
+  {
+   "w": "euch",
+   "s": 29.76,
+   "e": 29.92
+  },
+  {
+   "w": "den",
+   "s": 29.92,
+   "e": 30.06
+  },
+  {
+   "w": "Kurs",
+   "s": 30.06,
+   "e": 30.4
+  },
+  {
+   "w": "an,",
+   "s": 30.4,
+   "e": 30.6
+  },
+  {
+   "w": "Freitag",
+   "s": 30.72,
+   "e": 31.06
+  },
+  {
+   "w": "Schluss",
+   "s": 31.06,
+   "e": 31.36
+  },
+  {
+   "w": "22",
+   "s": 31.36,
+   "e": 32.06
+  },
+  {
+   "w": "Cent,",
+   "s": 32.06,
+   "e": 32.54
+  },
+  {
+   "w": "minus",
+   "s": 32.76,
+   "e": 33.0
+  },
+  {
+   "w": "13",
+   "s": 33.0,
+   "e": 33.64
+  },
+  {
+   "w": "Prozent",
+   "s": 33.64,
+   "e": 34.26
+  },
+  {
+   "w": "seit",
+   "s": 34.26,
+   "e": 34.58
+  },
+  {
+   "w": "meinem",
+   "s": 34.58,
+   "e": 34.96
+  },
+  {
+   "w": "Einstieg.",
+   "s": 34.96,
+   "e": 35.4
+  },
+  {
+   "w": "Aus",
+   "s": 35.48,
+   "e": 35.56
+  },
+  {
+   "w": "5.000",
+   "s": 35.56,
+   "e": 36.0
+  },
+  {
+   "w": "Euro",
+   "s": 36.0,
+   "e": 36.36
+  },
+  {
+   "w": "sind",
+   "s": 36.36,
+   "e": 36.6
+  },
+  {
+   "w": "4.339",
+   "s": 36.6,
+   "e": 38.28
+  },
+  {
+   "w": "geworden,",
+   "s": 38.28,
+   "e": 38.72
+  },
+  {
+   "w": "661",
+   "s": 38.94,
+   "e": 40.12
+  },
+  {
+   "w": "Euro",
+   "s": 40.12,
+   "e": 40.36
+  },
+  {
+   "w": "weg.",
+   "s": 40.36,
+   "e": 40.74
+  },
+  {
+   "w": "Aber",
+   "s": 40.82,
+   "e": 40.96
+  },
+  {
+   "w": "da",
+   "s": 40.96,
+   "e": 41.14
+  },
+  {
+   "w": "ist",
+   "s": 41.14,
+   "e": 41.26
+  },
+  {
+   "w": "noch",
+   "s": 41.26,
+   "e": 41.44
+  },
+  {
+   "w": "ein",
+   "s": 41.44,
+   "e": 41.66
+  },
+  {
+   "w": "Punkt,",
+   "s": 41.66,
+   "e": 41.9
+  },
+  {
+   "w": "in",
+   "s": 42.0,
+   "e": 42.06
+  },
+  {
+   "w": "China",
+   "s": 42.06,
+   "e": 42.26
+  },
+  {
+   "w": "sind",
+   "s": 42.26,
+   "e": 42.48
+  },
+  {
+   "w": "die",
+   "s": 42.48,
+   "e": 42.64
+  },
+  {
+   "w": "Lithiumpreise",
+   "s": 42.64,
+   "e": 43.32
+  },
+  {
+   "w": "abgestürzt,",
+   "s": 43.32,
+   "e": 44.04
+  },
+  {
+   "w": "minus",
+   "s": 44.12,
+   "e": 44.26
+  },
+  {
+   "w": "11,8",
+   "s": 44.26,
+   "e": 45.06
+  },
+  {
+   "w": "Prozent,",
+   "s": 45.06,
+   "e": 45.42
+  },
+  {
+   "w": "weil",
+   "s": 45.56,
+   "e": 45.66
+  },
+  {
+   "w": "wieder",
+   "s": 45.66,
+   "e": 45.9
+  },
+  {
+   "w": "mehr",
+   "s": 45.9,
+   "e": 46.1
+  },
+  {
+   "w": "Angebot",
+   "s": 46.1,
+   "e": 46.62
+  },
+  {
+   "w": "erwartet",
+   "s": 46.62,
+   "e": 47.06
+  },
+  {
+   "w": "wird.",
+   "s": 47.06,
+   "e": 47.36
+  },
+  {
+   "w": "Jetzt",
+   "s": 47.42,
+   "e": 47.6
+  },
+  {
+   "w": "wird",
+   "s": 47.6,
+   "e": 47.74
+  },
+  {
+   "w": "es",
+   "s": 47.74,
+   "e": 47.94
+  },
+  {
+   "w": "aber",
+   "s": 47.94,
+   "e": 47.94
+  },
+  {
+   "w": "nochmal",
+   "s": 47.94,
+   "e": 48.12
+  },
+  {
+   "w": "spannend,",
+   "s": 48.12,
+   "e": 48.46
+  },
+  {
+   "w": "pro",
+   "s": 48.74,
+   "e": 48.92
+  },
+  {
+   "w": "Aktie",
+   "s": 48.92,
+   "e": 49.28
+  },
+  {
+   "w": "gibt",
+   "s": 49.28,
+   "e": 49.48
+  },
+  {
+   "w": "es",
+   "s": 49.48,
+   "e": 49.66
+  },
+  {
+   "w": "0,045",
+   "s": 49.66,
+   "e": 50.78
+  },
+  {
+   "w": "Critical",
+   "s": 50.78,
+   "e": 51.08
+  },
+  {
+   "w": "Metals-Aktien.",
+   "s": 51.08,
+   "e": 52.16
+  },
+  {
+   "w": "Aus",
+   "s": 52.32,
+   "e": 52.42
+  },
+  {
+   "w": "meinen",
+   "s": 52.42,
+   "e": 52.7
+  },
+  {
+   "w": "19.724",
+   "s": 52.7,
+   "e": 54.44
+  },
+  {
+   "w": "Aktien",
+   "s": 54.44,
+   "e": 55.36
+  },
+  {
+   "w": "werden",
+   "s": 55.36,
+   "e": 55.56
+  },
+  {
+   "w": "also",
+   "s": 55.56,
+   "e": 55.82
+  },
+  {
+   "w": "rund",
+   "s": 55.82,
+   "e": 56.0
+  },
+  {
+   "w": "888",
+   "s": 56.0,
+   "e": 56.94
+  },
+  {
+   "w": "Aktien",
+   "s": 56.94,
+   "e": 57.46
+  },
+  {
+   "w": "an",
+   "s": 57.46,
+   "e": 57.58
+  },
+  {
+   "w": "der",
+   "s": 57.58,
+   "e": 57.68
+  },
+  {
+   "w": "Nasdaq.",
+   "s": 57.68,
+   "e": 58.02
+  },
+  {
+   "w": "Kleinaktionäre",
+   "s": 58.02,
+   "e": 58.9
+  },
+  {
+   "w": "bis",
+   "s": 58.9,
+   "e": 59.04
+  },
+  {
+   "w": "50.000",
+   "s": 59.04,
+   "e": 59.72
+  },
+  {
+   "w": "Aktien",
+   "s": 59.72,
+   "e": 60.12
+  },
+  {
+   "w": "können",
+   "s": 60.12,
+   "e": 60.34
+  },
+  {
+   "w": "statt",
+   "s": 60.34,
+   "e": 60.6
+  },
+  {
+   "w": "der",
+   "s": 60.6,
+   "e": 60.78
+  },
+  {
+   "w": "Aktien",
+   "s": 60.78,
+   "e": 61.18
+  },
+  {
+   "w": "auch",
+   "s": 61.18,
+   "e": 61.32
+  },
+  {
+   "w": "Bargeld",
+   "s": 61.32,
+   "e": 61.74
+  },
+  {
+   "w": "bekommen.",
+   "s": 61.74,
+   "e": 62.14
+  },
+  {
+   "w": "Das",
+   "s": 62.32,
+   "e": 62.4
+  },
+  {
+   "w": "betrifft",
+   "s": 62.4,
+   "e": 62.88
+  },
+  {
+   "w": "auch",
+   "s": 62.88,
+   "e": 62.96
+  },
+  {
+   "w": "mich",
+   "s": 62.96,
+   "e": 63.18
+  },
+  {
+   "w": "und",
+   "s": 63.18,
+   "e": 63.34
+  },
+  {
+   "w": "was",
+   "s": 63.34,
+   "e": 63.54
+  },
+  {
+   "w": "würdet",
+   "s": 63.54,
+   "e": 63.78
+  },
+  {
+   "w": "ihr",
+   "s": 63.78,
+   "e": 63.92
+  },
+  {
+   "w": "tun?",
+   "s": 63.92,
+   "e": 64.14
+  },
+  {
+   "w": "Aktien",
+   "s": 64.24,
+   "e": 64.62
+  },
+  {
+   "w": "nehmen",
+   "s": 64.62,
+   "e": 64.76
+  },
+  {
+   "w": "oder",
+   "s": 64.76,
+   "e": 64.92
+  },
+  {
+   "w": "Bargeld",
+   "s": 64.92,
+   "e": 65.34
+  },
+  {
+   "w": "und",
+   "s": 65.34,
+   "e": 65.44
+  },
+  {
+   "w": "raus?",
+   "s": 65.44,
+   "e": 65.66
+  }
+ ]
+}

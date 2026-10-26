@@ -2,6 +2,7 @@ import json, copy, sys
 src = json.load(open(sys.argv[1]))
 d = copy.deepcopy(src)
 d.update(width=1920, height=1080, cap_words=4, cap_chars=22)
+d.pop("stage", None)
 d["layout"] = dict(head_x=1270, head_w=1150, cap_x=1270, cap_w=1240, cap_y=1018, cap_size=60, clip_top=335)
 d["panda_pos"] = dict(x=330, y=1050, h=700)
 CX, CY = 1270, 615
@@ -9,7 +10,8 @@ CARD = {"candles": dict(w=1180, h=580, y=650), "kpi": dict(w=900, h=330, y=600),
         "line": dict(w=1000, h=560, y=650), "hbars": dict(w=1000, h=360, y=640), "range": dict(w=1000, h=340, y=640),
         "info": dict(w=820, h=230, y=650), "iconcard": dict(w=640, h=540, y=650), "tiles": dict(y=650),
         "minichart": dict(w=900, h=260, y=600), "stamp": dict(y=600), "card": dict(w=900, y=640),
-        "flow": dict(w=1180, h=440, y=650, orient="h"), "counter": dict(w=900, y=640), "ring": dict(y=640)}
+        "flow": dict(w=1180, h=440, y=650, orient="h"), "counter": dict(w=900, y=640), "ring": dict(y=645, h=680, s=0.86),
+        "priceline": dict(w=1100, h=600, y=640), "swap": dict(y=600, s=1.0)}
 CONTENT = set(CARD) | {"illus"}
 for pn in d["panels"]:
     els = pn["elements"]

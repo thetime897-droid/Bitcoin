@@ -42,6 +42,12 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Keine echten Firmenlogos.
 - Kerzen-Charts sind simuliert, solange keine echten Kursdaten verfügbar sind – im Chat so benennen.
 
+## Short-Layout (neu, Nutzerwunsch: rechte TikTok-Spalte freihalten)
+- Rechts (x > ~935) liegen bei TikTok Like/Kommentar/Teilen → dort nichts Wichtiges. Inhalte mittig: Mitte x=545,
+  Breite ≤ 750 (165–925), y 400–1130. Panda tiefer unten links (`panda_pos` x=175, y=1665, h=540).
+  Untertitel darüber mittig-rechts: `layout` cap_x=625, cap_w=600, cap_y=1232, cap_size=66, `cap_chars: 15`;
+  `stage` = [150, 395, 935, 1135]. Pillen höchstens bis y=1040. Vorlage: `examples/nu_brasilien_short.plan.json`.
+
 ## Panda
 - Nur die sauberen HQ-Posen aus `toonfin/panda/` (Real-ESRGAN, `tools/esrgan_np.py`). Keine runden
   Panda-Einblendungen, immer genau ein Panda, fest auf seiner Position (`panda_pos`), keine

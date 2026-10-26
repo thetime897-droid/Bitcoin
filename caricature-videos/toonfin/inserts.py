@@ -168,7 +168,7 @@ def el_ring(ink, t, e):
     c = fly(ink, x, y, t, e["at"], frm="pop", until=e.get("until"))
     if not c:
         return
-    with c:
+    with c, ink.at(0, 0, 0, e.get("s", 1.0)):
         sticker(ink, w, h, WHITE)
         T(ink, 0, -h / 2 + 70, e.get("title", "ABSTIMMUNG 22.10."), 40, TXT2, "montb")
         cy, R = 20, 230
@@ -257,7 +257,7 @@ def el_swap(ink, t, e):
         return
     sa, se = e.get("swap_at", e["at"] + 0.6), e.get("swap_end", e["at"] + 2.6)
     k = ease_in_out(seg(t, sa, se))
-    with c:
+    with c, ink.at(0, 0, 0, e.get("s", 1.0)):
         for side, (name, venue, a, b, col) in enumerate(((e["left"], e["left_venue"], e["left_n"], "0", BLUE),
                                                         (e["right"], e["right_venue"], "0", e["right_n"], GREEN))):
             cx = -235 + side * 470

@@ -1,0 +1,1734 @@
+{
+ "style": "pandanews",
+ "width": 1920,
+ "height": 1080,
+ "fps": 60,
+ "audio": "voice.wav",
+ "duration": 62.4,
+ "panda_pos": {
+  "x": 330,
+  "y": 1050,
+  "h": 700
+ },
+ "layout": {
+  "head_x": 1270,
+  "head_w": 1150,
+  "cap_x": 1270,
+  "cap_w": 1240,
+  "cap_y": 1018,
+  "cap_size": 60,
+  "clip_top": 335
+ },
+ "sfx_rel": 0.665,
+ "master_lufs": -16.8,
+ "cap_words": 4,
+ "cap_chars": 22,
+ "zooms": [
+  {
+   "at": 4.45,
+   "hold": 0.9,
+   "scale": 1.22,
+   "x": 545,
+   "y": 740
+  },
+  {
+   "at": 16.2,
+   "hold": 0.6,
+   "scale": 1.18,
+   "x": 545,
+   "y": 750
+  },
+  {
+   "at": 27.7,
+   "hold": 0.9,
+   "scale": 1.22,
+   "x": 545,
+   "y": 720
+  }
+ ],
+ "panels": [
+  {
+   "start": 0.0,
+   "end": 6.05,
+   "panda": {
+    "pose": "ueberrascht",
+    "swap": [
+     [
+      3.5,
+      "wuetend"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "tape",
+     "at": 0,
+     "y": 34,
+     "items": [
+      "BRASILIEN-ETF|-18 %",
+      "NUBANK|-23 %",
+      "PETROBRAS|-17 %",
+      "ITAÚ|-13 %",
+      "MERCADOLIBRE|-9 %",
+      "REAL|-9 %"
+     ]
+    },
+    {
+     "type": "breaking",
+     "at": 0,
+     "until": 1.15,
+     "y": 600,
+     "title": "BÖRSEN-BEBEN IN BRASILIEN",
+     "sub": "+++ BREAKING NEWS +++",
+     "x": 1270
+    },
+    {
+     "type": "headline",
+     "at": 1.2,
+     "text": [
+      "BRASILIEN WÄHLT",
+      "BÖRSE STÜRZT AB"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 1.25,
+     "x": 1270,
+     "w": 900,
+     "y": 640,
+     "color": "rot",
+     "label": "BRASILIEN-ETF",
+     "title": "ÜBER NACHT",
+     "value": "−{} %",
+     "count_from": "0",
+     "count_to": "18",
+     "count_at": 1.6,
+     "count_end": 4.5,
+     "sub": "ein ETF alleine",
+     "icon": "trending-down",
+     "badge": "ABSTURZ",
+     "badge_color": "gelb",
+     "badge_at": 4.7
+    }
+   ],
+   "sfx": [
+    [
+     2.3,
+     "riser",
+     0.8
+    ]
+   ]
+  },
+  {
+   "start": 6.05,
+   "end": 8.55,
+   "panda": {
+    "pose": "arme_verschraenkt"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "AUCH STARKE AKTIEN",
+      "ENORM GETROFFEN"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "minichart",
+     "at": 0.05,
+     "x": 1270,
+     "y": 470,
+     "w": 900,
+     "h": 240,
+     "title": "BRASILIEN-AKTIEN",
+     "up": false
+    },
+    {
+     "type": "pill",
+     "at": 0.45,
+     "text": "NUBANK",
+     "color": "rot",
+     "x": 1060,
+     "y": 700,
+     "size": 40
+    },
+    {
+     "type": "pill",
+     "at": 0.7,
+     "text": "PETROBRAS",
+     "color": "rot",
+     "x": 1480,
+     "y": 700,
+     "size": 40
+    },
+    {
+     "type": "pill",
+     "at": 0.95,
+     "text": "ITAÚ",
+     "color": "rot",
+     "x": 1060,
+     "y": 820,
+     "size": 40
+    },
+    {
+     "type": "pill",
+     "at": 1.2,
+     "text": "MERCADOLIBRE",
+     "color": "rot",
+     "x": 1480,
+     "y": 820,
+     "size": 40
+    }
+   ]
+  },
+  {
+   "start": 8.55,
+   "end": 11.36,
+   "panda": {
+    "pose": "nachdenklich"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "IM KLEINGEDRUCKTEN",
+      "EIN HAKEN"
+     ],
+     "tone": "gold",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "hook",
+     "at": 0.05,
+     "x": 1270,
+     "y": 600,
+     "s": 0.8,
+     "label": "HAKEN"
+    }
+   ],
+   "sfx": [
+    [
+     0.5,
+     "riser",
+     0.6
+    ]
+   ]
+  },
+  {
+   "start": 11.36,
+   "end": 17.1,
+   "panda": {
+    "pose": "ueberrascht",
+    "swap": [
+     [
+      5.0,
+      "zeigen"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "STICHWAHL AM SONNTAG",
+      "LULA GEWINNT KNAPP"
+     ],
+     "tone": "blue",
+     "y": 138
+    },
+    {
+     "type": "bars",
+     "at": 0.1,
+     "x": 1270,
+     "y": 650,
+     "w": 1000,
+     "h": 580,
+     "title": "ERGEBNIS STICHWAHL",
+     "tone": "blue",
+     "items": [
+      [
+       "LULA",
+       "51,8 %",
+       null
+      ],
+      [
+       "GEGNER",
+       "48,2 %",
+       null
+      ]
+     ],
+     "bar_at": [
+      2.6,
+      4.0
+     ],
+     "badge": "KNAPP!",
+     "badge_at": 5.0
+    }
+   ]
+  },
+  {
+   "start": 17.1,
+   "end": 20.1,
+   "panda": {
+    "pose": "nachdenklich"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "NACH RUNDE 1",
+      "MARKT WETTETE DAGEGEN"
+     ],
+     "tone": "dark",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "choice",
+     "at": 0.05,
+     "x": 1270,
+     "y": 640,
+     "s": 0.93,
+     "a": "LULA",
+     "b": "GEGNER",
+     "pick": 1,
+     "pick_at": 1.5,
+     "sa": "",
+     "sb": "Wette des Marktes"
+    }
+   ]
+  },
+  {
+   "start": 20.1,
+   "end": 25.08,
+   "panda": {
+    "pose": "traurig"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "DER ZUGEWINN",
+      "IST WEITGEHEND WEG"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "line",
+     "at": 0.05,
+     "x": 1270,
+     "y": 650,
+     "w": 1000,
+     "h": 560,
+     "title": "REAL · TERMINKURS",
+     "tone": "bad",
+     "points": [
+      0.25,
+      0.4,
+      0.62,
+      0.85,
+      0.8,
+      0.5,
+      0.3
+     ],
+     "draw_at": 0.4,
+     "draw_end": 3.6,
+     "note": "−9 %",
+     "note_at": 4.2
+    }
+   ]
+  },
+  {
+   "start": 25.08,
+   "end": 29.55,
+   "panda": {
+    "pose": "traurig",
+    "swap": [
+     [
+      1.0,
+      "wuetend"
+     ]
+    ]
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "NUBANK",
+      "MINUS 23 %"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 0.1,
+     "x": 1080,
+     "w": 760,
+     "y": 640,
+     "color": "rot",
+     "label": "NU HOLDINGS · NUBANK",
+     "title": "AUCH BEI TRADE REPUBLIC",
+     "value": "−{} %",
+     "count_from": "0",
+     "count_to": "23",
+     "count_at": 1.9,
+     "count_end": 2.7,
+     "sub": "über Nacht",
+     "icon": "landmark"
+    },
+    {
+     "type": "pill",
+     "at": 1.0,
+     "text": "ICH BIN AUCH FAN",
+     "color": "gelb",
+     "x": 1675,
+     "y": 640,
+     "size": 40
+    }
+   ]
+  },
+  {
+   "start": 29.55,
+   "end": 34.06,
+   "panda": {
+    "pose": "wuetend"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "PETROBRAS",
+      "MINUS 17 %"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 0.1,
+     "x": 1270,
+     "w": 900,
+     "y": 640,
+     "color": "rot",
+     "label": "PETROBRAS · ÖLKONZERN",
+     "title": "AKTIE IN DOLLAR",
+     "value": "{} $",
+     "count_from": "26",
+     "count_to": "22",
+     "count_at": 1.6,
+     "count_end": 3.4,
+     "sub": "von 26 $ auf knapp 22 $",
+     "icon": "trending-down",
+     "badge": "−17 %",
+     "badge_color": "weiss",
+     "badge_at": 1.0
+    }
+   ]
+  },
+  {
+   "start": 34.06,
+   "end": 39.48,
+   "panda": {
+    "pose": "arme_verschraenkt"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "AUCH ITAÚ & MERCADOLIBRE",
+      "ALLES IM MINUS"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "hbars",
+     "at": 0.05,
+     "x": 1270,
+     "y": 590,
+     "w": 860,
+     "h": 500,
+     "title": "VERLUSTE ÜBER NACHT",
+     "items": [
+      [
+       "NUBANK",
+       "−23 %",
+       "bad"
+      ],
+      [
+       "ETF",
+       "−18 %",
+       "bad"
+      ],
+      [
+       "PETRO",
+       "−17 %",
+       "bad"
+      ],
+      [
+       "ITAÚ",
+       "−13 %",
+       "bad"
+      ],
+      [
+       "MELI",
+       "−9 %",
+       "bad"
+      ]
+     ]
+    },
+    {
+     "type": "pill",
+     "at": 3.3,
+     "text": "ÜBER NACHT & VORBÖRSLICH",
+     "color": "gelb",
+     "x": 1270,
+     "y": 908,
+     "size": 40
+    }
+   ]
+  },
+  {
+   "start": 39.48,
+   "end": 44.8,
+   "panda": {
+    "pose": "zeigestock"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "DER HAKEN",
+      "DÜNNER HANDEL"
+     ],
+     "tone": "gold",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "checklist",
+     "at": 0.05,
+     "x": 1270,
+     "y": 640,
+     "s": 0.8,
+     "title": "DER HAKEN",
+     "items": [
+      [
+       1.6,
+       "Dünner Handel"
+      ],
+      [
+       2.9,
+       "Bolsonaro-Wetten"
+      ],
+      [
+       4.4,
+       "werden aufgelöst"
+      ]
+     ]
+    }
+   ],
+   "sfx": [
+    [
+     1.65,
+     "pop",
+     0.6
+    ],
+    [
+     2.95,
+     "pop",
+     0.6
+    ],
+    [
+     4.45,
+     "pop",
+     0.6
+    ]
+   ]
+  },
+  {
+   "start": 44.8,
+   "end": 47.02,
+   "panda": {
+    "pose": "zeigen"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "DER ECHTE TEST",
+      "WENN SÃO PAULO ÖFFNET"
+     ],
+     "tone": "blue",
+     "y": 138
+    },
+    {
+     "type": "card",
+     "at": 0.05,
+     "x": 1270,
+     "w": 900,
+     "y": 640,
+     "color": "blau",
+     "label": "BÖRSE SÃO PAULO",
+     "title": "DER ECHTE TEST",
+     "value": "ÖFFNUNG",
+     "sub": "erst dann zählt der Kurs",
+     "icon": "landmark"
+    }
+   ]
+  },
+  {
+   "start": 47.02,
+   "end": 50.52,
+   "panda": {
+    "pose": "nachdenklich"
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "FÜR ANLEGER ZÄHLT",
+      "LULAS SPARKURS"
+     ],
+     "tone": "dark",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "gauge",
+     "at": 0.05,
+     "x": 1270,
+     "y": 640,
+     "s": 0.93,
+     "level": 0.5,
+     "settle": 1.6,
+     "lo": "LOCKER",
+     "hi": "STRENG",
+     "label": "SPARWILLE?"
+    }
+   ]
+  },
+  {
+   "start": 50.52,
+   "end": 53.74,
+   "panda": {
+    "pose": "wuetend"
+   },
+   "push": "left",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "SEIN GEGNER",
+      "ERKENNT NICHT AN"
+     ],
+     "tone": "bad",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "newspaper",
+     "at": 0.05,
+     "x": 1270,
+     "y": 650,
+     "s": 0.75,
+     "headline": "ERGEBNIS?\nUNMÖGLICH!"
+    }
+   ]
+  },
+  {
+   "start": 53.74,
+   "end": 62.4,
+   "panda": {
+    "pose": "tipp_geben",
+    "swap": [
+     [
+      3.75,
+      "zeigen"
+     ]
+    ]
+   },
+   "push": "right",
+   "elements": [
+    {
+     "type": "headline",
+     "at": 0,
+     "text": [
+      "SCHLAGZEILE LAUT",
+      "FOLGEN HÄNGEN AN DEN PLÄNEN"
+     ],
+     "tone": "dark",
+     "until": 3.65,
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "phone",
+     "at": 0.05,
+     "x": 1270,
+     "y": 630,
+     "s": 0.7,
+     "name": "Brasilien News",
+     "handle": "@markt · jetzt",
+     "text": "LULA GEWINNT\nBÖRSE IM MINUS",
+     "trend": "down",
+     "until": 3.6
+    },
+    {
+     "type": "headline",
+     "at": 3.75,
+     "text": [
+      "DAS SOLLTEST DU",
+      "GENAU BEOBACHTEN"
+     ],
+     "tone": "good",
+     "from": "down",
+     "y": 138
+    },
+    {
+     "type": "illus",
+     "kind": "checklist",
+     "at": 3.8,
+     "x": 1270,
+     "y": 640,
+     "s": 0.8,
+     "title": "WATCHLIST",
+     "items": [
+      [
+       0.8,
+       "Finanzminister"
+      ],
+      [
+       1.75,
+       "Budget 2027"
+      ],
+      [
+       3.35,
+       "São Paulo öffnet"
+      ]
+     ]
+    }
+   ],
+   "sfx": [
+    [
+     4.6,
+     "pop",
+     0.6
+    ],
+    [
+     5.55,
+     "pop",
+     0.6
+    ],
+    [
+     7.15,
+     "pop",
+     0.6
+    ]
+   ]
+  }
+ ],
+ "words": [
+  {
+   "w": "Breaking",
+   "s": 0.0,
+   "e": 0.24
+  },
+  {
+   "w": "News",
+   "s": 0.24,
+   "e": 0.48
+  },
+  {
+   "w": "in",
+   "s": 0.48,
+   "e": 0.64
+  },
+  {
+   "w": "Brasilien,",
+   "s": 0.64,
+   "e": 1.16
+  },
+  {
+   "w": "die",
+   "s": 1.18,
+   "e": 1.24
+  },
+  {
+   "w": "unverhofften",
+   "s": 1.24,
+   "e": 1.82
+  },
+  {
+   "w": "Wahlen",
+   "s": 1.82,
+   "e": 2.08
+  },
+  {
+   "w": "lassen",
+   "s": 2.08,
+   "e": 2.34
+  },
+  {
+   "w": "die",
+   "s": 2.34,
+   "e": 2.56
+  },
+  {
+   "w": "Börse",
+   "s": 2.56,
+   "e": 2.86
+  },
+  {
+   "w": "abstürzen,",
+   "s": 2.86,
+   "e": 3.44
+  },
+  {
+   "w": "ein",
+   "s": 3.54,
+   "e": 3.66
+  },
+  {
+   "w": "ETF",
+   "s": 3.66,
+   "e": 3.98
+  },
+  {
+   "w": "alleine",
+   "s": 3.98,
+   "e": 4.44
+  },
+  {
+   "w": "minus",
+   "s": 4.44,
+   "e": 4.92
+  },
+  {
+   "w": "18",
+   "s": 4.92,
+   "e": 5.54
+  },
+  {
+   "w": "Prozent",
+   "s": 5.54,
+   "e": 5.98
+  },
+  {
+   "w": "und",
+   "s": 5.98,
+   "e": 6.16
+  },
+  {
+   "w": "weitere",
+   "s": 6.16,
+   "e": 6.46
+  },
+  {
+   "w": "starke",
+   "s": 6.46,
+   "e": 6.9
+  },
+  {
+   "w": "Aktien",
+   "s": 6.9,
+   "e": 7.22
+  },
+  {
+   "w": "hat",
+   "s": 7.22,
+   "e": 7.36
+  },
+  {
+   "w": "es",
+   "s": 7.36,
+   "e": 7.48
+  },
+  {
+   "w": "enorm",
+   "s": 7.48,
+   "e": 7.76
+  },
+  {
+   "w": "stark",
+   "s": 7.76,
+   "e": 8.08
+  },
+  {
+   "w": "getroffen",
+   "s": 8.08,
+   "e": 8.46
+  },
+  {
+   "w": "und",
+   "s": 8.46,
+   "e": 8.6
+  },
+  {
+   "w": "im",
+   "s": 8.6,
+   "e": 8.7
+  },
+  {
+   "w": "Kleingedruckten",
+   "s": 8.7,
+   "e": 9.32
+  },
+  {
+   "w": "steht",
+   "s": 9.32,
+   "e": 9.5
+  },
+  {
+   "w": "hier",
+   "s": 9.5,
+   "e": 9.66
+  },
+  {
+   "w": "noch",
+   "s": 9.66,
+   "e": 9.8
+  },
+  {
+   "w": "ein",
+   "s": 9.8,
+   "e": 9.98
+  },
+  {
+   "w": "Haken,",
+   "s": 9.98,
+   "e": 10.3
+  },
+  {
+   "w": "warum",
+   "s": 10.46,
+   "e": 10.64
+  },
+  {
+   "w": "siehst",
+   "s": 10.64,
+   "e": 10.94
+  },
+  {
+   "w": "du",
+   "s": 10.94,
+   "e": 11.02
+  },
+  {
+   "w": "gleich.",
+   "s": 11.02,
+   "e": 11.26
+  },
+  {
+   "w": "Am",
+   "s": 11.38,
+   "e": 11.44
+  },
+  {
+   "w": "Sonntag",
+   "s": 11.44,
+   "e": 11.88
+  },
+  {
+   "w": "gewinnt",
+   "s": 11.88,
+   "e": 12.24
+  },
+  {
+   "w": "Lula",
+   "s": 12.24,
+   "e": 12.5
+  },
+  {
+   "w": "die",
+   "s": 12.5,
+   "e": 12.72
+  },
+  {
+   "w": "Stichwahl",
+   "s": 12.72,
+   "e": 13.12
+  },
+  {
+   "w": "in",
+   "s": 13.12,
+   "e": 13.24
+  },
+  {
+   "w": "Brasilien",
+   "s": 13.24,
+   "e": 13.74
+  },
+  {
+   "w": "knapp",
+   "s": 13.74,
+   "e": 13.98
+  },
+  {
+   "w": "51,8",
+   "s": 13.98,
+   "e": 15.22
+  },
+  {
+   "w": "zu",
+   "s": 15.22,
+   "e": 15.38
+  },
+  {
+   "w": "48,2",
+   "s": 15.38,
+   "e": 16.6
+  },
+  {
+   "w": "Prozent.",
+   "s": 16.6,
+   "e": 17.04
+  },
+  {
+   "w": "Nach",
+   "s": 17.12,
+   "e": 17.22
+  },
+  {
+   "w": "der",
+   "s": 17.22,
+   "e": 17.38
+  },
+  {
+   "w": "ersten",
+   "s": 17.38,
+   "e": 17.58
+  },
+  {
+   "w": "Runde",
+   "s": 17.58,
+   "e": 17.88
+  },
+  {
+   "w": "hatte",
+   "s": 17.88,
+   "e": 18.2
+  },
+  {
+   "w": "der",
+   "s": 18.2,
+   "e": 18.4
+  },
+  {
+   "w": "Markt",
+   "s": 18.4,
+   "e": 18.66
+  },
+  {
+   "w": "aber",
+   "s": 18.66,
+   "e": 18.82
+  },
+  {
+   "w": "auf",
+   "s": 18.82,
+   "e": 18.96
+  },
+  {
+   "w": "seinen",
+   "s": 18.96,
+   "e": 19.16
+  },
+  {
+   "w": "Gegner",
+   "s": 19.16,
+   "e": 19.64
+  },
+  {
+   "w": "gesetzt.",
+   "s": 19.64,
+   "e": 20.04
+  },
+  {
+   "w": "Der",
+   "s": 20.12,
+   "e": 20.18
+  },
+  {
+   "w": "Zugewinn",
+   "s": 20.18,
+   "e": 20.78
+  },
+  {
+   "w": "von",
+   "s": 20.78,
+   "e": 20.88
+  },
+  {
+   "w": "damals",
+   "s": 20.88,
+   "e": 21.26
+  },
+  {
+   "w": "ist",
+   "s": 21.26,
+   "e": 21.56
+  },
+  {
+   "w": "weitgehend",
+   "s": 21.56,
+   "e": 22.12
+  },
+  {
+   "w": "weg,",
+   "s": 22.12,
+   "e": 22.34
+  },
+  {
+   "w": "der",
+   "s": 22.52,
+   "e": 22.6
+  },
+  {
+   "w": "Real-Terminkurs",
+   "s": 22.6,
+   "e": 23.64
+  },
+  {
+   "w": "fällt",
+   "s": 23.64,
+   "e": 23.9
+  },
+  {
+   "w": "um",
+   "s": 23.9,
+   "e": 24.1
+  },
+  {
+   "w": "rund",
+   "s": 24.1,
+   "e": 24.3
+  },
+  {
+   "w": "9",
+   "s": 24.3,
+   "e": 24.58
+  },
+  {
+   "w": "Prozent.",
+   "s": 24.58,
+   "e": 25.04
+  },
+  {
+   "w": "Die",
+   "s": 25.1,
+   "e": 25.18
+  },
+  {
+   "w": "Nubank,",
+   "s": 25.18,
+   "e": 25.58
+  },
+  {
+   "w": "wo",
+   "s": 25.78,
+   "e": 25.78
+  },
+  {
+   "w": "ich",
+   "s": 25.78,
+   "e": 25.9
+  },
+  {
+   "w": "auch",
+   "s": 25.9,
+   "e": 26.04
+  },
+  {
+   "w": "ein",
+   "s": 26.04,
+   "e": 26.22
+  },
+  {
+   "w": "Fan",
+   "s": 26.22,
+   "e": 26.44
+  },
+  {
+   "w": "bin,",
+   "s": 26.44,
+   "e": 26.7
+  },
+  {
+   "w": "minus",
+   "s": 27.1,
+   "e": 27.1
+  },
+  {
+   "w": "23",
+   "s": 27.1,
+   "e": 27.74
+  },
+  {
+   "w": "Prozent,",
+   "s": 27.74,
+   "e": 28.3
+  },
+  {
+   "w": "so",
+   "s": 28.5,
+   "e": 28.64
+  },
+  {
+   "w": "auch",
+   "s": 28.64,
+   "e": 28.76
+  },
+  {
+   "w": "bei",
+   "s": 28.76,
+   "e": 28.92
+  },
+  {
+   "w": "Trade",
+   "s": 28.92,
+   "e": 29.18
+  },
+  {
+   "w": "Republic.",
+   "s": 29.18,
+   "e": 29.58
+  },
+  {
+   "w": "Petrobras",
+   "s": 29.58,
+   "e": 30.3
+  },
+  {
+   "w": "bei",
+   "s": 30.3,
+   "e": 30.52
+  },
+  {
+   "w": "minus",
+   "s": 30.52,
+   "e": 30.72
+  },
+  {
+   "w": "17",
+   "s": 30.72,
+   "e": 31.18
+  },
+  {
+   "w": "Prozent",
+   "s": 31.18,
+   "e": 31.58
+  },
+  {
+   "w": "von",
+   "s": 31.58,
+   "e": 31.84
+  },
+  {
+   "w": "26",
+   "s": 31.84,
+   "e": 32.54
+  },
+  {
+   "w": "auf",
+   "s": 32.54,
+   "e": 32.76
+  },
+  {
+   "w": "knapp",
+   "s": 32.76,
+   "e": 32.92
+  },
+  {
+   "w": "22",
+   "s": 32.92,
+   "e": 33.58
+  },
+  {
+   "w": "Dollar.",
+   "s": 33.58,
+   "e": 33.94
+  },
+  {
+   "w": "Die",
+   "s": 34.08,
+   "e": 34.08
+  },
+  {
+   "w": "Bank",
+   "s": 34.08,
+   "e": 34.28
+  },
+  {
+   "w": "Itaú",
+   "s": 34.28,
+   "e": 34.72
+  },
+  {
+   "w": "mit",
+   "s": 34.72,
+   "e": 34.82
+  },
+  {
+   "w": "minus",
+   "s": 34.82,
+   "e": 35.08
+  },
+  {
+   "w": "13",
+   "s": 35.08,
+   "e": 35.48
+  },
+  {
+   "w": "und",
+   "s": 35.48,
+   "e": 35.72
+  },
+  {
+   "w": "auch",
+   "s": 35.72,
+   "e": 35.84
+  },
+  {
+   "w": "MercadoLibre,",
+   "s": 35.84,
+   "e": 36.62
+  },
+  {
+   "w": "minus",
+   "s": 36.68,
+   "e": 36.86
+  },
+  {
+   "w": "9,",
+   "s": 36.86,
+   "e": 37.22
+  },
+  {
+   "w": "alles",
+   "s": 37.38,
+   "e": 37.6
+  },
+  {
+   "w": "im",
+   "s": 37.6,
+   "e": 37.82
+  },
+  {
+   "w": "Handel",
+   "s": 37.82,
+   "e": 38.14
+  },
+  {
+   "w": "über",
+   "s": 38.14,
+   "e": 38.32
+  },
+  {
+   "w": "Nacht",
+   "s": 38.32,
+   "e": 38.6
+  },
+  {
+   "w": "und",
+   "s": 38.6,
+   "e": 38.78
+  },
+  {
+   "w": "vorbörslich.",
+   "s": 38.78,
+   "e": 39.46
+  },
+  {
+   "w": "Der",
+   "s": 39.5,
+   "e": 39.6
+  },
+  {
+   "w": "Haken",
+   "s": 39.6,
+   "e": 39.88
+  },
+  {
+   "w": "kommt",
+   "s": 39.88,
+   "e": 40.12
+  },
+  {
+   "w": "jetzt,",
+   "s": 40.12,
+   "e": 40.36
+  },
+  {
+   "w": "das",
+   "s": 40.52,
+   "e": 40.6
+  },
+  {
+   "w": "ist",
+   "s": 40.6,
+   "e": 40.74
+  },
+  {
+   "w": "ein",
+   "s": 40.74,
+   "e": 40.9
+  },
+  {
+   "w": "dünner",
+   "s": 40.9,
+   "e": 41.16
+  },
+  {
+   "w": "Handel,",
+   "s": 41.16,
+   "e": 41.56
+  },
+  {
+   "w": "ein",
+   "s": 41.66,
+   "e": 41.74
+  },
+  {
+   "w": "Teil,",
+   "s": 41.74,
+   "e": 41.98
+  },
+  {
+   "w": "Wetten",
+   "s": 42.4,
+   "e": 42.7
+  },
+  {
+   "w": "auf",
+   "s": 42.7,
+   "e": 42.92
+  },
+  {
+   "w": "Bolsonaro,",
+   "s": 42.92,
+   "e": 43.46
+  },
+  {
+   "w": "die",
+   "s": 43.82,
+   "e": 43.9
+  },
+  {
+   "w": "aufgelöst",
+   "s": 43.9,
+   "e": 44.52
+  },
+  {
+   "w": "werden.",
+   "s": 44.52,
+   "e": 44.74
+  },
+  {
+   "w": "Der",
+   "s": 44.82,
+   "e": 44.9
+  },
+  {
+   "w": "echte",
+   "s": 44.9,
+   "e": 45.1
+  },
+  {
+   "w": "Test",
+   "s": 45.1,
+   "e": 45.4
+  },
+  {
+   "w": "kommt,",
+   "s": 45.4,
+   "e": 45.68
+  },
+  {
+   "w": "wenn",
+   "s": 45.84,
+   "e": 45.94
+  },
+  {
+   "w": "São",
+   "s": 45.94,
+   "e": 46.16
+  },
+  {
+   "w": "Paulo",
+   "s": 46.16,
+   "e": 46.44
+  },
+  {
+   "w": "öffnet,",
+   "s": 46.44,
+   "e": 46.9
+  },
+  {
+   "w": "aus",
+   "s": 47.04,
+   "e": 47.14
+  },
+  {
+   "w": "Sicht",
+   "s": 47.14,
+   "e": 47.32
+  },
+  {
+   "w": "von",
+   "s": 47.32,
+   "e": 47.52
+  },
+  {
+   "w": "Anlegern",
+   "s": 47.52,
+   "e": 48.06
+  },
+  {
+   "w": "zählt,",
+   "s": 48.06,
+   "e": 48.34
+  },
+  {
+   "w": "wie",
+   "s": 48.52,
+   "e": 48.6
+  },
+  {
+   "w": "ernst",
+   "s": 48.6,
+   "e": 48.88
+  },
+  {
+   "w": "Lula",
+   "s": 48.88,
+   "e": 49.2
+  },
+  {
+   "w": "es",
+   "s": 49.2,
+   "e": 49.38
+  },
+  {
+   "w": "mit",
+   "s": 49.38,
+   "e": 49.56
+  },
+  {
+   "w": "dem",
+   "s": 49.56,
+   "e": 49.7
+  },
+  {
+   "w": "Sparen",
+   "s": 49.7,
+   "e": 50.1
+  },
+  {
+   "w": "meint,",
+   "s": 50.1,
+   "e": 50.44
+  },
+  {
+   "w": "aus",
+   "s": 50.54,
+   "e": 50.56
+  },
+  {
+   "w": "Sicht",
+   "s": 50.56,
+   "e": 50.78
+  },
+  {
+   "w": "seines",
+   "s": 50.78,
+   "e": 51.04
+  },
+  {
+   "w": "Gegners",
+   "s": 51.04,
+   "e": 51.52
+  },
+  {
+   "w": "ist",
+   "s": 51.52,
+   "e": 51.7
+  },
+  {
+   "w": "das",
+   "s": 51.7,
+   "e": 51.82
+  },
+  {
+   "w": "Ergebnis",
+   "s": 51.82,
+   "e": 52.16
+  },
+  {
+   "w": "unmöglich",
+   "s": 52.16,
+   "e": 52.94
+  },
+  {
+   "w": "anzuerkennen.",
+   "s": 52.94,
+   "e": 53.72
+  },
+  {
+   "w": "Heißt",
+   "s": 53.76,
+   "e": 53.96
+  },
+  {
+   "w": "für",
+   "s": 53.96,
+   "e": 54.14
+  },
+  {
+   "w": "dich,",
+   "s": 54.14,
+   "e": 54.28
+  },
+  {
+   "w": "die",
+   "s": 54.4,
+   "e": 54.44
+  },
+  {
+   "w": "Schlagzeile",
+   "s": 54.44,
+   "e": 55.0
+  },
+  {
+   "w": "ist",
+   "s": 55.0,
+   "e": 55.16
+  },
+  {
+   "w": "extrem",
+   "s": 55.16,
+   "e": 55.52
+  },
+  {
+   "w": "laut,",
+   "s": 55.52,
+   "e": 55.84
+  },
+  {
+   "w": "die",
+   "s": 55.98,
+   "e": 56.06
+  },
+  {
+   "w": "Folgen",
+   "s": 56.06,
+   "e": 56.4
+  },
+  {
+   "w": "hängen",
+   "s": 56.4,
+   "e": 56.62
+  },
+  {
+   "w": "an",
+   "s": 56.62,
+   "e": 56.8
+  },
+  {
+   "w": "Lulas",
+   "s": 56.8,
+   "e": 57.1
+  },
+  {
+   "w": "Plänen,",
+   "s": 57.1,
+   "e": 57.52
+  },
+  {
+   "w": "beobachte",
+   "s": 57.52,
+   "e": 58.08
+  },
+  {
+   "w": "genau",
+   "s": 58.08,
+   "e": 58.34
+  },
+  {
+   "w": "Finanzminister",
+   "s": 58.34,
+   "e": 59.26
+  },
+  {
+   "w": "Budget",
+   "s": 59.26,
+   "e": 59.58
+  },
+  {
+   "w": "2027",
+   "s": 59.58,
+   "e": 60.64
+  },
+  {
+   "w": "und",
+   "s": 60.64,
+   "e": 60.8
+  },
+  {
+   "w": "die",
+   "s": 60.8,
+   "e": 60.9
+  },
+  {
+   "w": "Eröffnung",
+   "s": 60.9,
+   "e": 61.3
+  },
+  {
+   "w": "in",
+   "s": 61.3,
+   "e": 61.42
+  },
+  {
+   "w": "São",
+   "s": 61.42,
+   "e": 61.62
+  },
+  {
+   "w": "Paulo.",
+   "s": 61.62,
+   "e": 61.92
+  }
+ ]
+}
