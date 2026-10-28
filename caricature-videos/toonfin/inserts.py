@@ -178,7 +178,7 @@ def el_ring(ink, t, e):
         v = float(e.get("value", 99.96))
         if k > 0.002:
             ink.arc(0, cy, R, R, -90, -90 + 360 * v / 100 * k, GREEN, 54, wob=0)
-        T(ink, 0, cy - 10, de_num(v * k, 2) + " %", 104, DARK)
+        T(ink, 0, cy - 10, de_num(v * k, e.get("dec", 2)) + " %", 104, DARK)
         T(ink, 0, cy + 78, e.get("label", "JA-STIMMEN"), 38, GREEN, "mont")
         if t >= fe:
             kk = ease_out_back(seg(t, fe, fe + 0.4), 2.0)
@@ -304,8 +304,9 @@ def el_timeline(ink, t, e):
     with c:
         sticker(ink, w, h, WHITE)
         T(ink, -w / 2 + 44, -h / 2 + 62, e.get("title", "FAHRPLAN"), 38, TXT2, "montb", "lm")
-        lx = -w / 2 + 110
-        top, bot = -h / 2 + 170, h / 2 - 110
+        inline = e.get("inline", False)  # compact rows: date pill and text on one line (many stops)
+        lx = -w / 2 + (70 if inline else 110)
+        top, bot = (-h / 2 + 140, h / 2 - 70) if inline else (-h / 2 + 170, h / 2 - 110)
         da = e.get("draw_at", e["at"] + 0.4)
         step = e.get("step", 0.55)
         n = len(stops)
@@ -314,20 +315,32 @@ def el_timeline(ink, t, e):
         ink.line([(lx, top), (lx, bot)], (236, 238, 242), 12, wob=0)
         if kline > 0.01:
             ink.line([(lx, top), (lx, lerp(top, bot, kline))], DARK, 12, wob=0)
-        for i, (date, text, icon_) in enumerate(stops):
+        for i, (date, text, icon_, *rest) in enumerate(stops):
             at = da + i * step
             if t < at:
                 continue
             kk = ease_out_back(seg(t, at, at + 0.4), 1.8)
             hot = i == 0
             col = RED if hot else (GREEN if i == n - 1 else BLUE)
+            if rest:
+                col = {"rot": RED, "gruen": GREEN, "blau": BLUE, "gelb": (232, 160, 0), "dunkel": DARK}[rest[0]]
+            r0 = 22 if inline else 34
             if hot:
                 for j in range(2):
                     q = ((t - at) * 1.2 + j / 2) % 1
-                    ink.circle(lx, ys[i], 34 + 40 * q, fill=None, outline=mix(RED, WHITE, 0.4 + 0.6 * q),
+                    ink.circle(lx, ys[i], r0 + 34 * q, fill=None, outline=mix(col, WHITE, 0.4 + 0.6 * q),
                                w=8 * (1 - q) + 1, wob=0)
             with ink.at(lx, ys[i], 0, max(0.05, kk)):
-                ink.circle(0, 0, 34, fill=col, outline=DARK, w=6, wob=0)
+                ink.circle(0, 0, r0, fill=col, outline=DARK, w=6, wob=0)
+            if inline:
+                with ink.at(lx + 50 + 40 * (1 - smooth(seg(t, at, at + 0.4))), ys[i]):
+                    ps = e.get("pill_size", 28)
+                    pw = pill(ink, ink.text_w(date, ps, "mont") / 2 + ps * 0.55, 0, date, ps, col)
+                    tx = e.get("text_x", pw + 24)
+                    T(ink, tx, 2, text, fit_size(ink, text, 36, w - 120 - tx - (90 if icon_ else 0)), DARK, "mont", "lm")
+                    if icon_:
+                        ico(ink, icon_, w - 175, 0, 60, DARK)
+                continue
             with ink.at(lx + 70 + 40 * (1 - smooth(seg(t, at, at + 0.4))), ys[i]):
                 pill(ink, ink.text_w(date, 40, "mont") / 2 + 22, -26, date, 40, col)
                 T(ink, 0, 40, text, fit_size(ink, text, 40, w - 330), DARK, "montb", "lm")
