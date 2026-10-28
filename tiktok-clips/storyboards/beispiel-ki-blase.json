@@ -1,50 +1,422 @@
 {
-  "name": "beispiel-ki-blase",
-  "fps": 30,
-  "theme": "dark",
-  "layout": "top",
-  "scenes": [
-    { "id": "01", "type": "hook", "duration": 3, "script": "In 72 Stunden wissen wir, ob die KI-Blase platzt.",
-      "params": { "text": "KI-BLASE PLATZT?", "emoji": "🚨", "sub": "In 72 Stunden" } },
-    { "id": "02", "type": "flow", "title": "Größte KI-Investoren", "pill": "Earnings · 28.–29. Okt", "duration": 5,
-      "script": "Microsoft, Google und Amazon – die größten KI-Investoren – verraten uns, ob sie weiter in KI investieren.",
-      "params": { "sources": ["MSFT", "GOOGL", "AMZN"], "target": "KI", "warnAt": 3.4 } },
-    { "id": "03", "type": "linechart", "title": "Meta Aktie", "duration": 4.5, "script": "Dann hat Meta Zahlen gemeldet – und die Aktie ist 8 % gecrasht.",
-      "params": { "ticker": "META", "yLabel": "KURS ($)", "xLabels": ["13.10", "19.10", "23.10"],
-        "data": { "from": 760, "to": 697.52, "points": 40, "vol": 0.012, "seed": 4 },
-        "event": { "label": "EARNINGS", "at": 1.9 },
-        "drop": { "badge": "-8.3%", "sub": "nach Earnings", "at": 2.5, "data": { "to": 639.69 } } } },
-    { "id": "04", "type": "bars", "title": "Meta Earnings", "duration": 4.5, "script": "Meta hat die Umsatzerwartungen klar geschlagen – Rekordumsatz.",
-      "params": { "ticker": "META", "header": "Q3 Umsatz", "min": 60, "max": 66, "unit": "$", "suffix": "B", "revealAt": 0.9,
-        "items": [ { "label": "Erwartet", "value": 63.3, "text": "$63.3B", "style": "ghost" },
-                   { "label": "Tatsächlich", "value": 64.6, "text": "$64.6B", "color": "green", "colorAt": 1.9 } ],
-        "stamp": { "text": "BEAT", "at": 2.1 }, "badge": { "text": "REKORD", "at": 3.2 } } },
-    { "id": "05", "type": "cards", "title": "KI-Aktien mitgerissen", "duration": 4, "script": "Und hat die KI-Aktien mit runtergezogen.",
-      "params": { "main": { "ticker": "META", "change": "-8.3%" },
-        "items": [ { "ticker": "NVDA", "change": "-4.8%" }, { "ticker": "CRWV", "change": "-13.5%" }, { "ticker": "GOOGL", "change": "-3.8%" }, { "ticker": "MSFT", "change": "-2.4%" } ] } },
-    { "id": "06", "type": "number", "theme": "dark", "duration": 3, "script": "Problem Nummer 1: Schulden.",
-      "params": { "value": "1", "label": "SCHULDEN", "color": "red" } },
-    { "id": "07", "type": "series", "title": "Metas Free Cashflow", "duration": 4, "script": "Seit 2012 hat Meta zum ersten Mal mehr ausgegeben als eingenommen.",
-      "params": { "ticker": "META", "header": "FREE CASHFLOW", "pill": "seit IPO 2012", "startLabel": "2012", "endLabel": "HEUTE",
-        "values": [2, 3, 4, 5, 7, 9, 10, 12, 13, 15, 16, 18, 19, 21, -4], "highlight": { "badge": "ERSTES MAL SEIT 2012" } } },
-    { "id": "08", "type": "tanks", "title": "Wem geht zuerst das Geld aus?", "duration": 4.5, "script": "Also fragen sich Anleger: Wem geht zuerst das Geld aus?",
-      "params": { "items": [ { "ticker": "META", "level": 0.85 }, { "ticker": "GOOGL", "level": 0.82 }, { "ticker": "MSFT", "level": 0.8 }, { "ticker": "AMZN", "level": 0.74 }, { "ticker": "CRWV", "level": 0.3 } ],
-        "drain": { "index": 4, "at": 2.0, "badge": "LEER" }, "questionAt": 1.2 } },
-    { "id": "09", "type": "loop", "title": "Die Teufelsspirale", "theme": "alarm", "duration": 4, "script": "Diese zwei Probleme füttern sich gegenseitig.",
-      "params": { "nodes": [ { "text": "SCHULDEN", "icon": "🔒" }, { "text": "RÜCKZAHLUNG", "icon": "●" } ] } },
-    { "id": "10", "type": "calendar", "title": "Diese Woche", "theme": "light", "duration": 4, "script": "Am 28. und 29. Oktober melden Google, Microsoft und Amazon.",
-      "params": { "dates": [ { "month": "OKT", "day": "28", "label": "Earnings", "logos": ["GOOGL", "MSFT"] }, { "month": "OKT", "day": "29", "label": "Earnings", "logos": ["AMZN"] } ], "highlightAt": 1.5 } },
-    { "id": "11", "type": "rule", "title": "KI hat die Regel gebrochen", "theme": "light", "duration": 4.5, "script": "Die alte Regel: Zahlen schlagen, Aktie steigt. Aber KI hat diese Regel gebrochen.",
-      "params": { "tag": "DIE ALTE REGEL", "left": { "label": "BEAT" }, "right": { "label": "AKTIE ↑" }, "breaker": "AI", "activateAt": 0.8, "breakAt": 2.6 } },
-    { "id": "12", "type": "linechart", "title": "Meta Earnings", "duration": 4.5, "script": "Die Aktie hätte also steigen müssen – stattdessen ist sie gecrasht.",
-      "params": { "ticker": "META", "header": "AKTIENKURS", "data": { "from": 690, "to": 697.52, "points": 16, "vol": 0.01, "seed": 7 }, "xLabels": ["21.10", "22.10"],
-        "projection": { "label": "MÜSSTE STEIGEN", "at": 1.4, "strikeAt": 2.6 },
-        "drop": { "badge": "-8.3%", "sub": "am nächsten Tag", "at": 2.7, "data": { "to": 639.69, "points": 8 } } } },
-    { "id": "13", "type": "mystery", "title": "Was KI jetzt bewegt", "duration": 4, "script": "Also, was sind diese drei Dinge?",
-      "params": { "count": 3, "reveal": [ { "text": "Capex", "icon": "🏗️", "at": 1.6 }, { "text": "Cloud-Wachstum", "icon": "☁️", "at": 2.1 }, { "text": "Margen", "icon": "📊", "at": 2.6 } ] } },
-    { "id": "14", "type": "list", "title": "Darauf achten", "duration": 4.5, "script": "Erstens Capex, zweitens Cloud, drittens Margen.",
-      "params": { "items": [ { "text": "Capex-Ausblick", "value": "$100B+", "color": "cyan" }, { "text": "Cloud-Wachstum", "value": "+30%", "color": "green" }, { "text": "Operative Marge", "value": "?", "color": "amber" } ] } },
-    { "id": "15", "type": "cta", "duration": 4, "script": "Folg mir für mehr – über 50.000 Investoren sind schon dabei.",
-      "params": { "brand": "PANDA_INVESTIERT", "glyph": "🐼", "stats": [ { "value": "50,000+", "label": "Follower" } ] } }
-  ]
+ "name": "beispiel-ki-blase",
+ "fps": 30,
+ "theme": "dark",
+ "layout": "full",
+ "scenes": [
+  {
+   "id": "01",
+   "type": "hook",
+   "duration": 3,
+   "script": "In 72 Stunden wissen wir, ob die KI-Blase platzt.",
+   "params": {
+    "text": "KI-BLASE PLATZT?",
+    "emoji": "🚨",
+    "sub": "In 72 Stunden"
+   }
+  },
+  {
+   "id": "02",
+   "type": "flow",
+   "title": "Größte KI-Investoren",
+   "pill": "Earnings · 28.–29. Okt",
+   "duration": 5,
+   "script": "Microsoft, Google und Amazon – die größten KI-Investoren – verraten uns, ob sie weiter in KI investieren.",
+   "params": {
+    "sources": [
+     "MSFT",
+     "GOOGL",
+     "AMZN"
+    ],
+    "target": "KI",
+    "warnAt": 3.4
+   }
+  },
+  {
+   "id": "03",
+   "type": "linechart",
+   "title": "Meta Aktie",
+   "duration": 4.5,
+   "script": "Dann hat Meta Zahlen gemeldet – und die Aktie ist 8 % gecrasht.",
+   "params": {
+    "ticker": "META",
+    "yLabel": "KURS ($)",
+    "xLabels": [
+     "13.10",
+     "19.10",
+     "23.10"
+    ],
+    "data": {
+     "from": 760,
+     "to": 697.52,
+     "points": 40,
+     "vol": 0.012,
+     "seed": 4
+    },
+    "event": {
+     "label": "EARNINGS",
+     "at": 1.9
+    },
+    "drop": {
+     "badge": "-8.3%",
+     "sub": "nach Earnings",
+     "at": 2.5,
+     "data": {
+      "to": 639.69
+     }
+    }
+   }
+  },
+  {
+   "type": "statement",
+   "duration": 3.5,
+   "script": "Das ergibt eigentlich überhaupt keinen Sinn.",
+   "params": {
+    "text": "Das ergibt *keinen* Sinn.",
+    "icon": "🤯",
+    "color": "amber"
+   },
+   "id": "04"
+  },
+  {
+   "id": "05",
+   "type": "bars",
+   "title": "Meta Earnings",
+   "duration": 4.5,
+   "script": "Meta hat die Umsatzerwartungen klar geschlagen – Rekordumsatz.",
+   "params": {
+    "ticker": "META",
+    "header": "Q3 Umsatz",
+    "min": 60,
+    "max": 66,
+    "unit": "$",
+    "suffix": "B",
+    "revealAt": 0.9,
+    "items": [
+     {
+      "label": "Erwartet",
+      "value": 63.3,
+      "text": "$63.3B",
+      "style": "ghost"
+     },
+     {
+      "label": "Tatsächlich",
+      "value": 64.6,
+      "text": "$64.6B",
+      "color": "green",
+      "colorAt": 1.9
+     }
+    ],
+    "stamp": {
+     "text": "BEAT",
+     "at": 2.1
+    },
+    "badge": {
+     "text": "REKORD",
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "cards",
+   "title": "KI-Aktien mitgerissen",
+   "duration": 4,
+   "script": "Und hat die KI-Aktien mit runtergezogen.",
+   "params": {
+    "main": {
+     "ticker": "META",
+     "change": "-8.3%"
+    },
+    "items": [
+     {
+      "ticker": "NVDA",
+      "change": "-4.8%"
+     },
+     {
+      "ticker": "CRWV",
+      "change": "-13.5%"
+     },
+     {
+      "ticker": "GOOGL",
+      "change": "-3.8%"
+     },
+     {
+      "ticker": "MSFT",
+      "change": "-2.4%"
+     }
+    ]
+   }
+  },
+  {
+   "type": "statement",
+   "duration": 3.5,
+   "script": "Und hier wird es richtig gefährlich.",
+   "params": {
+    "text": "Und hier wird es *richtig* *gefährlich.*",
+    "icon": "⚠️",
+    "color": "red"
+   },
+   "theme": "alarm",
+   "id": "07"
+  },
+  {
+   "id": "08",
+   "type": "number",
+   "theme": "dark",
+   "duration": 3,
+   "script": "Problem Nummer 1: Schulden.",
+   "params": {
+    "value": "1",
+    "label": "SCHULDEN",
+    "color": "red"
+   }
+  },
+  {
+   "id": "09",
+   "type": "series",
+   "title": "Metas Free Cashflow",
+   "duration": 4,
+   "script": "Seit 2012 hat Meta zum ersten Mal mehr ausgegeben als eingenommen.",
+   "params": {
+    "ticker": "META",
+    "header": "FREE CASHFLOW",
+    "pill": "seit IPO 2012",
+    "startLabel": "2012",
+    "endLabel": "HEUTE",
+    "values": [
+     2,
+     3,
+     4,
+     5,
+     7,
+     9,
+     10,
+     12,
+     13,
+     15,
+     16,
+     18,
+     19,
+     21,
+     -4
+    ],
+    "highlight": {
+     "badge": "ERSTES MAL SEIT 2012"
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "tanks",
+   "title": "Wem geht zuerst das Geld aus?",
+   "duration": 4.5,
+   "script": "Also fragen sich Anleger: Wem geht zuerst das Geld aus?",
+   "params": {
+    "items": [
+     {
+      "ticker": "META",
+      "level": 0.85
+     },
+     {
+      "ticker": "GOOGL",
+      "level": 0.82
+     },
+     {
+      "ticker": "MSFT",
+      "level": 0.8
+     },
+     {
+      "ticker": "AMZN",
+      "level": 0.74
+     },
+     {
+      "ticker": "CRWV",
+      "level": 0.3
+     }
+    ],
+    "drain": {
+     "index": 4,
+     "at": 2.0,
+     "badge": "LEER"
+    },
+    "questionAt": 1.2
+   }
+  },
+  {
+   "id": "11",
+   "type": "loop",
+   "title": "Die Teufelsspirale",
+   "theme": "alarm",
+   "duration": 4,
+   "script": "Diese zwei Probleme füttern sich gegenseitig.",
+   "params": {
+    "nodes": [
+     {
+      "text": "SCHULDEN",
+      "icon": "🔒"
+     },
+     {
+      "text": "RÜCKZAHLUNG",
+      "icon": "●"
+     }
+    ]
+   }
+  },
+  {
+   "id": "12",
+   "type": "calendar",
+   "title": "Diese Woche",
+   "theme": "light",
+   "duration": 4,
+   "script": "Am 28. und 29. Oktober melden Google, Microsoft und Amazon.",
+   "params": {
+    "dates": [
+     {
+      "month": "OKT",
+      "day": "28",
+      "label": "Earnings",
+      "logos": [
+       "GOOGL",
+       "MSFT"
+      ]
+     },
+     {
+      "month": "OKT",
+      "day": "29",
+      "label": "Earnings",
+      "logos": [
+       "AMZN"
+      ]
+     }
+    ],
+    "highlightAt": 1.5
+   }
+  },
+  {
+   "id": "13",
+   "type": "rule",
+   "title": "KI hat die Regel gebrochen",
+   "theme": "light",
+   "duration": 4.5,
+   "script": "Die alte Regel: Zahlen schlagen, Aktie steigt. Aber KI hat diese Regel gebrochen.",
+   "params": {
+    "tag": "DIE ALTE REGEL",
+    "left": {
+     "label": "BEAT"
+    },
+    "right": {
+     "label": "AKTIE ↑"
+    },
+    "breaker": "AI",
+    "activateAt": 0.8,
+    "breakAt": 2.6
+   }
+  },
+  {
+   "id": "14",
+   "type": "linechart",
+   "title": "Meta Earnings",
+   "duration": 4.5,
+   "script": "Die Aktie hätte also steigen müssen – stattdessen ist sie gecrasht.",
+   "params": {
+    "ticker": "META",
+    "header": "AKTIENKURS",
+    "data": {
+     "from": 690,
+     "to": 697.52,
+     "points": 16,
+     "vol": 0.01,
+     "seed": 7
+    },
+    "xLabels": [
+     "21.10",
+     "22.10"
+    ],
+    "projection": {
+     "label": "MÜSSTE STEIGEN",
+     "at": 1.4,
+     "strikeAt": 2.6
+    },
+    "drop": {
+     "badge": "-8.3%",
+     "sub": "am nächsten Tag",
+     "at": 2.7,
+     "data": {
+      "to": 639.69,
+      "points": 8
+     }
+    }
+   }
+  },
+  {
+   "id": "15",
+   "type": "mystery",
+   "title": "Was KI jetzt bewegt",
+   "duration": 4,
+   "script": "Also, was sind diese drei Dinge?",
+   "params": {
+    "count": 3,
+    "reveal": [
+     {
+      "text": "Capex",
+      "icon": "🏗️",
+      "at": 1.6
+     },
+     {
+      "text": "Cloud-Wachstum",
+      "icon": "☁️",
+      "at": 2.1
+     },
+     {
+      "text": "Margen",
+      "icon": "📊",
+      "at": 2.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "16",
+   "type": "list",
+   "title": "Darauf achten",
+   "duration": 4.5,
+   "script": "Erstens Capex, zweitens Cloud, drittens Margen.",
+   "params": {
+    "items": [
+     {
+      "text": "Capex-Ausblick",
+      "value": "$100B+",
+      "color": "cyan"
+     },
+     {
+      "text": "Cloud-Wachstum",
+      "value": "+30%",
+      "color": "green"
+     },
+     {
+      "text": "Operative Marge",
+      "value": "?",
+      "color": "amber"
+     }
+    ]
+   }
+  },
+  {
+   "id": "17",
+   "type": "cta",
+   "duration": 4,
+   "script": "Folg mir für mehr – über 50.000 Investoren sind schon dabei.",
+   "params": {
+    "brand": "PANDA_INVESTIERT",
+    "glyph": "🐼",
+    "stats": [
+     {
+      "value": "50,000+",
+      "label": "Follower"
+     }
+    ]
+   }
+  }
+ ]
 }

@@ -10,8 +10,13 @@
   // ---------------------------------------------------------------- hook ---
   // Red alarm badge over the face cam (render with --alpha). "AI BUBBLE POP SIGNAL 🚨"
   S.hook = (st, p, ctx) => {
-    ctx.frame.classList.add('hook-scene');
-    const wrap = C.place(C.h('div', { class: 'ctr', style: { flexDirection: 'column', gap: '18px' } }, ctx.frame), 540, p.y ?? 330);
+    // Faceless default: badge sits mid-frame on pulsing alarm rings. With a
+    // face cam (layout "top" + --alpha) it sits high, like the reference.
+    const full = ctx.frame.classList.contains('layout-full');
+    const cy = p.y ?? (full ? 820 : 330);
+    const rings = full && p.rings !== false ? C.svg(ctx.frame, 1080, 1920) : null;
+    const ringEls = rings ? [0, 1, 2, 3].map(() => C.s('circle', { cx: 540, cy, fill: 'none', stroke: C.color(p.color || 'red'), 'stroke-width': 4, filter: 'url(#glow-sm)' }, rings)) : [];
+    const wrap = C.place(C.h('div', { class: 'ctr', style: { flexDirection: 'column', gap: '22px' } }, ctx.frame), 540, cy);
     wrap.style.zIndex = 6;
     const badge = C.h('div', { class: 'badge', style: {
       background: `linear-gradient(180deg, ${C.color(p.color || '#ff2d2d')} 0%, #c30d0d 100%)`, fontSize: (p.size || 74) + 'px',
@@ -28,7 +33,42 @@
       badge.style.opacity = C.k(t, 0.05, 0.15);
       shine.style.left = C.lerp(-160, 1000, C.k(t, 0.6, 0.7, 'inOut')) + 'px';
       if (sub) { const s = C.k(t, 0.45, 0.4); sub.style.opacity = s; sub.style.transform = `translateY(${(1 - s) * 24}px)`; }
+      ringEls.forEach((r, i) => {
+        const ph = ((t + i * 0.55) / 2.2) % 1;
+        r.setAttribute('r', 160 + ph * 420);
+        r.style.opacity = C.k(t, 0.3, 0.3) * (1 - ph) * 0.7;
+      });
+      if (full) ctx.tint(C.k(t, 0, 0.5) * 0.8, 'red');
       ctx.flash(t, 0.05, 'rgba(255,40,40,.35)');
+    };
+  };
+
+  // ----------------------------------------------------------- statement ---
+  // Kinetic typography for sentences without data, so faceless videos never
+  // fall back to an empty frame. Wrap key words in *stars* to highlight them.
+  S.statement = (st, p, ctx) => {
+    const col = C.color(p.color || 'cyan');
+    const icon = p.icon ? C.place(C.h('div', { style: { fontSize: '150px', lineHeight: 1, filter: `drop-shadow(0 0 30px ${col}88)` } }, st, p.icon), 540, 170) : null;
+    const box = C.place(C.h('div', { class: 'ctr', style: { flexWrap: 'wrap', width: '940px', gap: '6px 24px', textAlign: 'center' } }, st), 540, icon ? 520 : 430);
+    const words = String(p.text || '').split(/\s+/).filter(Boolean).map((w) => {
+      const hl = /^\*.*\*[.,!?:]*$/.test(w);
+      const clean = w.replace(/\*/g, '');
+      const el = C.h('span', { style: { display: 'inline-block', fontSize: (p.size || 92) + 'px', fontWeight: 900, lineHeight: 1.12, letterSpacing: '-1px',
+        color: hl ? col : 'var(--text)', textShadow: hl ? `0 0 28px ${col}` : 'none', position: 'relative' } }, box, clean);
+      const ul = hl ? C.h('span', { style: { position: 'absolute', left: 0, right: 0, bottom: '-4px', height: '8px', borderRadius: '4px', background: col, boxShadow: `0 0 16px ${col}`, transformOrigin: '0 50%' } }, el) : null;
+      return { el, hl, ul };
+    });
+    const stagger = p.stagger ?? Math.min(0.2, 1.8 / Math.max(1, words.length));
+    return (t) => {
+      if (icon) { C.pop(icon, t, 0.05, 0.5); icon.style.marginTop = Math.sin(t * 2.4) * 10 + 'px'; }
+      words.forEach((w, i) => {
+        const s = 0.15 + i * stagger;
+        const k = C.k(t, s, 0.4, 'back');
+        const bump = w.hl ? 1 + Math.sin(C.clamp((t - s - 0.25) / 0.35) * Math.PI) * 0.12 : 1;
+        w.el.style.transform = `translateY(${(1 - k) * 50}px) scale(${Math.max(0, k) * bump})`;
+        w.el.style.opacity = C.k(t, s, 0.15);
+        if (w.ul) w.ul.style.transform = `scaleX(${C.k(t, s + 0.3, 0.35)})`;
+      });
     };
   };
 

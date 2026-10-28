@@ -37,7 +37,7 @@
   function mount(sb, index) {
     const sc = sb.scenes[index];
     const theme = sc.theme || sb.theme || 'dark';
-    const layout = sc.layout || sb.layout || 'top';
+    const layout = sc.layout || sb.layout || 'full';
     frame.className = `theme-${theme} layout-${layout}` + (sc.grid ?? sb.grid ? ' grid-on' : '');
     frame.innerHTML = '<div id="bg"></div><div id="tint"></div><div id="flash"></div><div id="chrome"><div id="title"></div><div id="pill"></div></div><div id="stage"></div>';
     flashEl = frame.querySelector('#flash');

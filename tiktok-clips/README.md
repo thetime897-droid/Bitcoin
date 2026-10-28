@@ -1,8 +1,9 @@
 # TikTok-Clips: Retention-Animationen aus einem Skript
 
 Baut animierte Grafik-Clips im Stil des Referenzvideos (dunkle Glas-Panels,
-Neon-Glow, hochzählende Zahlen, Crash-Stempel), die du in CapCut/Premiere
-über bzw. neben deine Facecam legst. Stil und Regeln: [STYLE.md](STYLE.md).
+Neon-Glow, hochzählende Zahlen, Crash-Stempel) für **Faceless-Videos**: kein
+Greenscreen, keine Facecam – jeder Satz des Skripts bekommt eine vollflächige
+Animation. Stil und Regeln: [STYLE.md](STYLE.md).
 
 ## Ablauf
 
@@ -25,7 +26,7 @@ node render.cjs storyboards/beispiel-ki-blase.json --concat
 
 | Option | Wirkung |
 |---|---|
-| `--alpha` | Transparenter Hintergrund als `.mov` (ProRes 4444) – zum Überlagern (z. B. Hook-Badge über Facecam) |
+| `--alpha` | Transparenter Hintergrund als `.mov` (ProRes 4444) – nur falls du eine Grafik über eigenes Footage legen willst |
 | `--only 03,05` | Nur diese Szenen-IDs |
 | `--stills` | Nur ein Standbild (PNG) pro Szene – schnelle Kontrolle |
 | `--preview` | Erzeugt `out/<name>/preview.html` zum Abspielen/Scrubben im Browser |
@@ -38,7 +39,7 @@ node render.cjs storyboards/beispiel-ki-blase.json --concat
 {
   "name": "mein-video",
   "theme": "dark",          // dark | alarm | light  (pro Szene überschreibbar)
-  "layout": "top",          // top = Grafik oben, unten Platz für Facecam | full
+  "layout": "full",         // Standard: Grafik groß & mittig (faceless). "top" nicht verwenden
   "scenes": [
     { "id": "01", "type": "linechart", "title": "Bitcoin Kurs", "pill": "Live · 24h",
       "duration": 4.5, "script": "Der Satz aus dem Skript, zu dem der Clip gehört",
@@ -56,7 +57,8 @@ oder mit echtem Logo `{ "ticker": "META", "logo": "logos/meta.png" }`.
 
 | Typ | Wofür | Wichtige `params` |
 |---|---|---|
-| `hook` | Alarm-Badge für den Einstieg (mit `--alpha` über Facecam) | `text`, `emoji`, `sub`, `color`, `y` |
+| `hook` | Alarm-Badge mit pulsierenden Ringen für den Einstieg | `text`, `emoji`, `sub`, `color`, `rings` |
+| `statement` | Satz ohne Daten als animierte Schlagworte (füllt jede Lücke) | `text` (`*Wort*` = hervorgehoben), `icon`, `color`, `size`, `stagger` |
 | `flow` | Akteure → Ziel, Geld fließt; kippt bei `warnAt` auf Warnung | `sources[]`, `target`, `warnAt`, `color` |
 | `linechart` | Kursverlauf, zeichnet sich, Crash-Abschnitt | `ticker`, `header`, `data` (Array oder `{from,to,points,vol,seed}`), `xLabels`, `yLabel`, `unit`, `event{label,at,index}`, `drop{badge,sub,at,data}`, `projection{label,at,strikeAt}` |
 | `bars` | Erwartet vs. tatsächlich, A vs. B | `items[{label,value,text,style:"ghost",color,colorAt}]`, `min`, `max`, `unit`, `suffix`, `revealAt`, `stamp{text,at,color}`, `badge{text,at}`, `line{value,label,at}` |
@@ -75,7 +77,9 @@ Das Beispiel `storyboards/beispiel-ki-blase.json` nutzt jeden Typ einmal.
 
 ## Im Editor (CapCut)
 
-- MP4-Clips: als Hauptspur an die passende Stelle, Facecam freistellen
-  („Hintergrund entfernen“) und unten darüberlegen – wie im Referenzvideo.
-- `--alpha`-Clips (`.mov`): als Overlay über die Facecam legen.
-- Untertitel wie gewohnt automatisch erzeugen; die Clips lassen dafür Platz.
+- Voiceover als Tonspur, die MP4-Clips der Reihe nach als einzige Videospur
+  darüber (Spalte `script` zeigt, zu welchem Satz ein Clip gehört).
+  Clip-Länge bei Bedarf auf die Satzlänge trimmen oder Szene neu mit anderer
+  `duration` rendern.
+- Untertitel automatisch erzeugen und unter die Grafik setzen
+  (≈ 1500–1700 px Höhe) – dort ist in jedem Clip Platz.

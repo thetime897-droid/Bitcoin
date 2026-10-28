@@ -5,3 +5,5 @@
   **Schickt der Nutzer ein Skript, immer den Skill `tiktok-animationen`
   (`.claude/skills/tiktok-animationen/SKILL.md`) befolgen** und die Clips nach
   `tiktok-clips/STYLE.md` bauen.
+- Die TikTok-Videos sind **Faceless-Content**: der Nutzer ist nie zu sehen
+  (kein Greenscreen, keine Facecam). Jeder Satz bekommt eine vollflächige Animation.
