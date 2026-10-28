@@ -1,0 +1,12 @@
+{
+  "name": "tiktok-clips",
+  "private": true,
+  "description": "Rendert Retention-Animationen (9:16) aus einem Storyboard als einzelne Videoclips.",
+  "scripts": {
+    "render": "node render.cjs",
+    "beispiel": "node render.cjs storyboards/beispiel-ki-blase.json --concat"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}

@@ -1,0 +1,116 @@
+/* 1080x1920 (9:16) frame. Themes switch the variables; scenes only use vars. */
+:root {
+  --font: 'Inter', 'Inter Display', 'Helvetica Neue', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #111; font-family: var(--font); }
+body.render { background: transparent; overflow: hidden; }
+
+#frame {
+  position: relative; width: 1080px; height: 1920px; overflow: hidden;
+  color: var(--text); font-family: var(--font);
+  --text: #fff; --muted: #8a96a3; --accent: #3fd0ff;
+  --panel: linear-gradient(180deg, #101b25 0%, #0a1219 100%);
+  --panel-border: rgba(95, 175, 215, 0.28); --panel-shadow: 0 0 80px rgba(30, 140, 220, 0.10);
+  --chip-bg: #fff; --grid: rgba(255, 255, 255, 0.035);
+}
+#frame.theme-light {
+  --text: #121417; --muted: #6b7380; --accent: #1aa0d8;
+  --panel: linear-gradient(180deg, #ffffff 0%, #f4f6f8 100%);
+  --panel-border: rgba(0, 0, 0, 0.08); --panel-shadow: 0 18px 50px rgba(20, 40, 60, 0.12);
+  --grid: rgba(0, 0, 0, 0.045);
+}
+#frame.theme-alarm { --accent: #ff3b3b; --panel-border: rgba(255, 70, 70, 0.35); --panel-shadow: 0 0 90px rgba(255, 40, 40, 0.14); }
+
+#bg { position: absolute; inset: 0; }
+.theme-dark #bg { background: radial-gradient(ellipse 70% 45% at 50% 28%, #0b1a24 0%, #04070a 60%, #020304 100%); }
+.theme-alarm #bg { background: radial-gradient(ellipse 75% 50% at 50% 26%, #3a0707 0%, #160304 55%, #050101 100%); }
+.theme-light #bg {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 70%),
+    linear-gradient(var(--grid) 2px, transparent 2px) 0 0 / 54px 54px,
+    linear-gradient(90deg, var(--grid) 2px, transparent 2px) 0 0 / 54px 54px,
+    #eceff2;
+}
+.grid-on #bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 54px 54px,
+              linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 54px 54px;
+  -webkit-mask: radial-gradient(ellipse 70% 40% at 50% 30%, #000 0%, transparent 80%);
+}
+body.alpha #bg { display: none; }
+
+#chrome { position: absolute; left: 0; right: 0; top: 0; text-align: center; z-index: 5; }
+#title {
+  position: absolute; left: 0; right: 0; top: 168px; font-size: 50px; font-weight: 800;
+  letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap;
+}
+#title::after {
+  content: ''; display: block; margin: 16px auto 0; width: 64px; height: 5px; border-radius: 3px;
+  background: var(--accent); box-shadow: 0 0 14px var(--accent); transform: scaleX(var(--ul, 1));
+}
+#title:empty::after { display: none; }
+#pill {
+  position: absolute; left: 50%; top: 262px; transform: translateX(-50%);
+  padding: 8px 22px; border-radius: 30px; font-size: 24px; font-weight: 700; letter-spacing: 1px;
+  border: 2px solid color-mix(in srgb, var(--accent) 45%, transparent); color: var(--text);
+  background: color-mix(in srgb, var(--accent) 10%, transparent); white-space: nowrap; text-transform: uppercase;
+}
+#pill:empty { display: none; }
+#pill::before { content: '●'; color: var(--accent); margin-right: 10px; font-size: 18px; vertical-align: 3px; }
+
+/* Stage: 1080x860 drawing area. layout-top = upper part, room for a face cam below. */
+#stage { position: absolute; left: 0; width: 1080px; height: 860px; top: 300px; transform-origin: 50% 50%; z-index: 4; }
+.layout-full #stage { top: 530px; transform: scale(1.18); }
+.layout-full #title { top: 330px; }
+.layout-full #pill { top: 424px; }
+#flash { position: absolute; inset: 0; pointer-events: none; z-index: 3; opacity: 0; }
+
+.layer { position: absolute; left: 0; top: 0; overflow: visible; }
+.abs { position: absolute; transform: translate(-50%, -50%); }
+.ctr { display: flex; align-items: center; justify-content: center; }
+
+.chip {
+  background: var(--chip-bg); border-radius: 22%; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,.35), inset 0 -3px 0 rgba(0,0,0,.08); flex: none;
+}
+.chip span { color: var(--c); font-weight: 900; line-height: 1; letter-spacing: -1px; }
+.chip img { width: 72%; height: 72%; object-fit: contain; }
+
+.panel {
+  background: var(--panel); border: 2px solid var(--panel-border); border-radius: 22px;
+  box-shadow: var(--panel-shadow);
+}
+.corners::before, .corners::after {
+  content: ''; position: absolute; width: 34px; height: 34px; border: 3px solid var(--accent); opacity: .8;
+}
+.corners::before { left: -10px; top: -10px; border-right: 0; border-bottom: 0; }
+.corners::after { right: -10px; bottom: -10px; border-left: 0; border-top: 0; }
+
+.label { font-weight: 800; font-size: 26px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+.muted { color: var(--muted); }
+.tag {
+  padding: 6px 14px; border-radius: 10px; font-weight: 800; font-size: 26px; white-space: nowrap;
+  border: 2px solid currentColor; background: rgba(5, 12, 18, .85);
+}
+.theme-light .tag { background: rgba(255,255,255,.92); }
+.badge {
+  padding: 10px 24px; border-radius: 14px; font-weight: 900; font-size: 34px; color: #fff; white-space: nowrap;
+  letter-spacing: .5px; text-transform: uppercase;
+}
+.stamp {
+  padding: 6px 26px; border: 6px solid currentColor; border-radius: 14px; font-weight: 900; font-size: 64px;
+  letter-spacing: 4px; background: rgba(0,0,0,.35); text-shadow: 0 0 18px currentColor; box-shadow: 0 0 26px currentColor, inset 0 0 18px currentColor;
+}
+.axis { font-size: 22px; font-weight: 600; fill: var(--muted); font-family: var(--font); }
+.axis-dom { font-size: 22px; font-weight: 600; color: var(--muted); }
+.pipe-bg { fill: none; stroke: rgba(46, 232, 106, .12); stroke-width: 26; stroke-linecap: round; }
+.pipe { fill: none; stroke-width: 12; stroke-linecap: round; }
+
+/* Preview UI (hidden while rendering) */
+#ui { position: fixed; right: 16px; top: 16px; width: 330px; background: #1b1f24; color: #ddd; font: 14px/1.4 var(--font);
+  padding: 14px; border-radius: 12px; z-index: 99; }
+body.render #ui { display: none; }
+#ui select, #ui button, #ui input { width: 100%; margin: 4px 0; font: inherit; }
+#ui .script { color: #9fb3c8; font-style: italic; margin-top: 8px; max-height: 200px; overflow: auto; }
+body:not(.render) #frame { transform-origin: 0 0; }
