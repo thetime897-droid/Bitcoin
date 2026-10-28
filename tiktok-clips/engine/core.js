@@ -73,6 +73,12 @@
     return k;
   };
 
+  // Shrinks an element's font size until it is at most maxW pixels wide.
+  C.fit = (el, maxW) => {
+    const w = el.scrollWidth;
+    if (w > maxW) el.style.fontSize = parseFloat(getComputedStyle(el).fontSize) * (maxW / w) + 'px';
+  };
+
   // Interpolates a number inside a display string: "$64.6B" at k=.5 -> "$32.3B".
   C.count = (str, k, from = 0) => {
     const m = String(str).match(/^(.*?)(\d[\d,]*(?:\.\d+)?)(.*)$/);
@@ -145,7 +151,10 @@
     b = C.brand(b);
     const d = C.h('div', { class: 'chip', style: { width: size + 'px', height: size + 'px', '--c': b.color } }, parent);
     if (b.logo) C.h('img', { src: b.logo }, d);
-    else C.h('span', { style: { fontSize: size * (b.glyph.length > 2 ? 0.3 : b.glyph.length > 1 ? 0.4 : 0.58) + 'px' } }, d, b.glyph);
+    else {
+      const n = [...b.glyph].length, emoji = /\p{Extended_Pictographic}/u.test(b.glyph);
+      C.h('span', { style: { fontSize: size * (emoji ? 0.6 : n > 3 ? 0.24 : n > 2 ? 0.3 : n > 1 ? 0.4 : 0.58) + 'px' } }, d, b.glyph);
+    }
     return d;
   };
 

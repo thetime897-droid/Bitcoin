@@ -13,6 +13,17 @@ Werkzeug und Stil liegen in `tiktok-clips/`.
 keine Facecam. Layout `full`, jeder Satz bekommt einen Clip (Lücken mit
 `statement`), nichts für eine Facecam freihalten, keine Overlays „über den Sprecher“.
 
+**Einzelne Clips statt fertigem Video:** Der Nutzer hat oft schon eigene
+Szenen (z. B. Cartoon-Clips) und will die Animationen als **einzelne
+Einblend-Clips** pro Fakt/Moment. Jede Szene = eigene MP4, mit Zeitmarke im
+Feld `script`, damit klar ist, wo sie hingehört.
+
+**Immer mit Soundeffekten** (eingebaut, siehe README „Soundeffekte“). Geldbeträge
+bekommen `cash`, Enthüllungen einen `stamp` mit `riser` davor. Externe
+Sound-Seiten (Pixabay usw.) sind in der Cloud-Umgebung meist gesperrt; dann die
+synthetischen Sounds nutzen und darauf hinweisen, dass eigene Dateien unter
+`tiktok-clips/sfx/<name>.mp3` Vorrang haben.
+
 ## Vorgehen
 
 1. `tiktok-clips/STYLE.md` lesen (Dramaturgie + Entscheidungstabelle) und
@@ -33,8 +44,8 @@ keine Facecam. Layout `full`, jeder Satz bekommt einen Clip (Lücken mit
    ansehen (Überlappungen, abgeschnittener Text, leere Bereiche) → korrigieren.
 6. Dann `node render.cjs storyboards/<name>.json --concat`.
    Ergebnis liegt in `tiktok-clips/out/<name>/`.
-7. Dem Nutzer `_alle_szenen.mp4` schicken und eine Tabelle geben:
-   Clip-Datei → Satz im Skript → was passiert.
+7. Dem Nutzer `_alle_szenen.mp4` (nur zur Vorschau) schicken und eine
+   Tabelle geben: Clip-Datei → Zeitmarke/Satz im Skript → was passiert → Sounds.
 8. Storyboard committen (Clips in `out/` sind gitignored).
 
 Fehlt ein Szenentyp für eine gute Idee im Skript, neuen Typ in

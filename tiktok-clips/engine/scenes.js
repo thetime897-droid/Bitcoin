@@ -7,6 +7,21 @@
   const S = (C.scenes = {});
   const G = C.COLORS;
 
+  // Optional rubber stamp ("AUSVERKAUFT", "LÄUFT") that slams in at p.stamp.at.
+  const addStamp = (st, p, ctx, def = {}) => {
+    if (!p.stamp) return () => {};
+    const sp = { at: 1.4, color: 'red', y: 700, ...def, ...p.stamp };
+    const col = C.color(sp.color);
+    const el = C.place(C.h('div', { class: 'stamp', style: { color: col, fontSize: (sp.size || 64) + 'px' } }, st, sp.text || ''), sp.x ?? 540, sp.y);
+    C.fit(el, 780);
+    ctx.cue('stamp', sp.at);
+    return (t) => {
+      const ks = C.k(t, sp.at, 0.28);
+      C.tf(el, { s: C.lerp(2.2, 1, ks), r: sp.rotate ?? -8, o: ks });
+      ctx.flash(t, sp.at + 0.12, col + '55');
+    };
+  };
+
   // ---------------------------------------------------------------- hook ---
   // Red alarm badge over the face cam (render with --alpha). "AI BUBBLE POP SIGNAL 🚨"
   S.hook = (st, p, ctx) => {
@@ -26,6 +41,8 @@
     const shine = C.h('div', { style: { position: 'absolute', top: '-20%', bottom: '-20%', width: '120px', left: '0',
       background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent)', transform: 'skewX(-20deg)' } }, badge);
     const sub = p.sub ? C.h('div', { style: { fontSize: '46px', fontWeight: 800, color: '#fff', textShadow: '0 3px 12px rgba(0,0,0,.8)' } }, wrap, p.sub) : null;
+    ctx.cue('whoosh', 0); ctx.cue('impact', 0.05); ctx.cue('shine', 0.6);
+    if (sub) ctx.cue('pop', 0.45);
     return (t) => {
       const k = C.k(t, 0.05, 0.5, 'back');
       const shake = t > 0.3 && t < 0.6 ? Math.sin(t * 90) * 6 * (0.6 - t) / 0.3 : 0;
@@ -49,7 +66,7 @@
   S.statement = (st, p, ctx) => {
     const col = C.color(p.color || 'cyan');
     const icon = p.icon ? C.place(C.h('div', { style: { fontSize: '150px', lineHeight: 1, filter: `drop-shadow(0 0 30px ${col}88)` } }, st, p.icon), 540, 170) : null;
-    const box = C.place(C.h('div', { class: 'ctr', style: { flexWrap: 'wrap', width: '940px', gap: '6px 24px', textAlign: 'center' } }, st), 540, icon ? 520 : 430);
+    const box = C.place(C.h('div', { class: 'ctr', style: { flexWrap: 'wrap', width: '820px', gap: '6px 24px', textAlign: 'center' } }, st), 540, icon ? 520 : 430);
     const words = String(p.text || '').split(/\s+/).filter(Boolean).map((w) => {
       const hl = /^\*.*\*[.,!?:]*$/.test(w);
       const clean = w.replace(/\*/g, '');
@@ -59,7 +76,12 @@
       return { el, hl, ul };
     });
     const stagger = p.stagger ?? Math.min(0.2, 1.8 / Math.max(1, words.length));
+    ctx.cue('whoosh', 0.05, 0.7);
+    if (icon) ctx.cue('pop', 0.05);
+    words.forEach((w, i) => w.hl && ctx.cue('ping', 0.15 + i * stagger + 0.25, 0.7));
+    const stampUp = addStamp(st, p, ctx, { y: icon ? 800 : 720, at: 0.15 + words.length * stagger + 0.4 });
     return (t) => {
+      stampUp(t);
       if (icon) { C.pop(icon, t, 0.05, 0.5); icon.style.marginTop = Math.sin(t * 2.4) * 10 + 'px'; }
       words.forEach((w, i) => {
         const s = 0.15 + i * stagger;
@@ -103,7 +125,13 @@
     const qs = src.map((b, i) => C.place(C.h('div', { class: 'ctr', style: { width: '44px', height: '44px', borderRadius: '50%', background: warnColor, color: '#1a1000', fontWeight: 900, fontSize: '30px', boxShadow: `0 0 20px ${warnColor}` } }, st, '?'), xs[i] + 46, padY - 20));
     const hubLabel = C.place(C.h('div', { class: 'tag', style: { color: G.cyan, fontSize: '30px', padding: '6px 22px', borderRadius: '30px' } }, st, p.target?.label || p.target || 'AI'), hubX, hubY + 130);
     const warnAt = p.warnAt ?? Infinity;
+    ctx.cue('whoosh', 0);
+    src.forEach((_, i) => ctx.cue('pop', 0.15 + i * 0.28));
+    ctx.cue('whoosh', 1.05, 0.8); ctx.cue('coins', 1.6, 0.7);
+    ctx.cue('alert', warnAt, 0.6);
+    const stampUp = addStamp(st, p, ctx, { y: 480, color: 'green', at: 3 });
     return (t) => {
+      stampUp(t);
       const kw = C.k(t, warnAt, 0.5);
       src.forEach((b, i) => {
         const s = 0.15 + i * 0.28;
@@ -232,6 +260,10 @@
       prLab = C.place(C.h('div', { class: 'tag', style: { color: G.green, position: 'absolute' } }, panel, pr.label || 'SHOULD GO UP'), 230, 112);
       prStrike = C.h('div', { style: { position: 'absolute', left: '-6px', right: '-6px', top: '50%', height: '5px', background: G.red, transformOrigin: '0 50%', boxShadow: `0 0 10px ${G.red}` } }, prLab);
     }
+    ctx.cue('whoosh', 0); ctx.cue('whoosh', 0.3, 0.5);
+    if (ev) ctx.cue('ping', ev.at);
+    if (pr) { ctx.cue('whoosh', pr.at, 0.7); if (pr.strikeAt != null) ctx.cue('error', pr.strikeAt); }
+    if (dr) { ctx.cue('downer', dr.at); ctx.cue('impact', dr.at + 0.75); }
     return (t) => {
       C.pop(panel, t, 0, 0.45);
       const kd = C.k(t, 0.3, drawDur, 'inOut');
@@ -320,6 +352,11 @@
     const start = p.revealAt ?? 0.4;
     const stamp = p.stamp ? C.place(C.h('div', { class: 'stamp', style: { color: C.color(p.stamp.color || 'green') } }, panel, p.stamp.text || 'BEAT'), p.stamp.x ?? X0 + slot * 0.55, p.stamp.y ?? Y0 + 20) : null;
     const badge = p.badge ? C.place(C.h('div', { class: 'badge', style: { background: `linear-gradient(180deg, ${C.color(p.badge.color || 'gold')}, #c98a00)`, color: '#2a1a00', fontSize: '24px', padding: '6px 16px', borderRadius: '20px' } }, panel, p.badge.text), bars[p.badge.index ?? n - 1]?.cx ?? pw / 2, 0) : null;
+    ctx.cue('whoosh', 0);
+    if (q) ctx.cue('pop', 0.2);
+    items.forEach((it, i) => ctx.cue('pop', start + i * 0.25, 0.6));
+    if (stamp) { const at = p.stamp.at ?? start + 1.3; ctx.cue('riser', at - 1.1, 0.6); ctx.cue('stamp', at); }
+    if (badge) ctx.cue('ding', p.badge.at ?? start + 2);
     return (t) => {
       C.pop(panel, t, 0, 0.45);
       if (q) { const kq = C.k(t, start - 0.15, 0.3); C.tf(q, { s: 1 + kq * 0.3, o: (1 - kq) * C.k(t, 0.2, 0.3) }); }
@@ -385,6 +422,9 @@
     const endLab = p.endLabel ? C.place(C.h('div', { class: 'axis-dom', style: { fontWeight: 800 } }, panel, p.endLabel), X1 - slot / 2, Y1 + 40) : null;
     const badge = hl?.badge ? C.place(C.h('div', { class: 'tag', style: { color: C.color(hl.color || 'red'), fontSize: '28px', padding: '10px 26px', boxShadow: `0 0 24px ${C.color(hl.color || 'red')}66` } }, panel, hl.badge), pw / 2 + 100, ph + 30) : null;
     const step = Math.min(0.12, 1.6 / vals.length);
+    ctx.cue('whoosh', 0);
+    vals.forEach((_, i) => ctx.cue('tick', 0.3 + i * step, 0.7));
+    if (hl) ctx.cue('error', hl.at ?? 0.3 + vals.length * step + 0.4);
     return (t) => {
       panel.style.opacity = C.k(t, 0, 0.3);
       bars.forEach((b, i) => {
@@ -435,6 +475,8 @@
       const l = C.s('path', { d: `M540,180 C540,${y - 70} ${x},${y - 110} ${x},${y - 55}`, fill: 'none', stroke: items[0]?.col || G.red, 'stroke-width': 4, filter: 'url(#glow-sm)' }, svg);
       const L = l.getTotalLength(); l.style.strokeDasharray = L; return { l, L };
     }) : [];
+    if (main) ctx.cue('impact', 0.15, 0.7);
+    items.forEach((_, i) => ctx.cue('pop', (main ? 0.8 : 0.15) + i * 0.18));
     return (t) => {
       if (main) { C.pop(main.d, t, 0.1); main.val.textContent = C.count(main.ch, C.k(t, 0.2, 0.8)); }
       lines.forEach((l, i) => (l.l.style.strokeDashoffset = l.L * (1 - C.k(t, 0.55 + i * 0.08, 0.45))));
@@ -458,9 +500,15 @@
       dots.push({ d, el: C.s('circle', { cx: 540 + x * 28, cy: 400 + y * 28, r: 3.2, fill: col }, svg) });
     }
     const num = C.place(C.h('div', { style: { fontSize: (p.size || 300) + 'px', fontWeight: 900, color: p.textColor || '#fff', lineHeight: 1, textShadow: `0 0 40px ${col}, 0 0 4px ${col}`, whiteSpace: 'nowrap', letterSpacing: '-6px' } }, st), 540, 360);
+    num.textContent = p.value ?? '1';
+    C.fit(num, 800);
     const lab = C.place(C.h('div', { class: 'label', style: { fontSize: '50px', letterSpacing: '8px' } }, st, p.label || ''), 540, 560);
     const ul = C.place(C.h('div', { style: { width: '120px', height: '6px', background: col, boxShadow: `0 0 14px ${col}`, borderRadius: '3px' } }, st), 540, 610);
+    ctx.cue('impact', 0.1);
+    if (p.countUp !== false) for (let i = 0; i < 9; i++) ctx.cue('tick', 0.1 + i * ((p.countDur ?? 0.9) / 9), 0.6);
+    const stampUp = addStamp(st, p, ctx, { y: 730 });
     return (t) => {
+      stampUp(t);
       dots.forEach((d) => {
         const wave = Math.max(0, 1 - Math.abs(d.d - (t * 9) % 22) / 3);
         d.el.style.opacity = C.k(t, d.d * 0.03, 0.3) * ((1 - d.d / 15) * 0.55 + wave * 0.35);
@@ -505,6 +553,9 @@
     const dr = p.drain;
     const badge = dr ? C.place(C.h('div', { class: 'badge', style: { background: G.red, fontSize: '26px', padding: '6px 16px', boxShadow: `0 0 24px ${G.red}` } }, st, dr.badge || 'EMPTY'), tanks[dr.index ?? n - 1].cx, TT - 90) : null;
     const q = p.questionAt != null ? C.place(C.h('div', { class: 'ctr', style: { width: '120px', height: '120px', borderRadius: '50%', border: `4px dashed ${G.cyan}`, color: G.cyan, fontSize: '80px', fontWeight: 900, textShadow: `0 0 20px ${G.cyan}` } }, st, '?'), 540, 30) : null;
+    tanks.forEach((_, i) => ctx.cue('pop', 0.1 + i * 0.1, 0.6));
+    if (dr) { ctx.cue('downer', dr.at ?? 2); ctx.cue('alert', (dr.at ?? 2) + 1.1, 0.7); }
+    if (q) ctx.cue('pop', p.questionAt);
     return (t) => {
       tanks.forEach((tk, i) => {
         tk.g.style.opacity = C.k(t, i * 0.1, 0.3);
@@ -555,6 +606,7 @@
       const num = C.place(C.h('div', { class: 'label muted', style: { fontSize: '26px' } }, st, String(i + 1).padStart(2, '0')), 540 + (i - (n - 1) / 2) * gap, 380 + h / 2 + 34);
       return { c, front, back, num, r };
     });
+    cards.forEach((cd, i) => { ctx.cue('pop', 0.15 + i * 0.22); if (cd.r && cd.r.at != null) { ctx.cue('whoosh', cd.r.at, 0.5); ctx.cue('ping', cd.r.at + 0.25); } });
     return (t) => {
       box.style.opacity = C.k(t, 0, 0.3) * 0.9;
       C.tf(box, {});
@@ -597,6 +649,11 @@
         const L = pth.getTotalLength(); pth.style.strokeDasharray = L; return { pth, L };
       });
       return { d, cal, lab, logos, names, lines };
+    });
+    cols.forEach((c, i) => {
+      ctx.cue('whoosh-down', 0.1 + i * 0.25, 0.6);
+      ctx.cue('ping', c.d.at ?? (p.highlightAt ?? 1.2) + i * 0.3, 0.8);
+      c.logos.forEach((_, j) => ctx.cue('pop', (c.d.logosAt ?? 0.5 + i * 0.25) + j * 0.12, 0.6));
     });
     return (t) => {
       cols.forEach((c, i) => {
@@ -648,6 +705,9 @@
     const breaker = p.breaker ? C.place(C.chip(p.breaker, 110, st), 540, 160) : null;
     if (breaker) breaker.style.boxShadow = `0 0 40px ${G.cyan}`;
     const actAt = p.activateAt ?? 0.9, brAt = p.breakAt ?? 2.2;
+    ctx.cue('whoosh', 0); ctx.cue('success', actAt, 0.8);
+    if (breaker) ctx.cue('whoosh-down', brAt - 0.45);
+    ctx.cue('crack', brAt); ctx.cue('error', brAt + 0.5, 0.8);
     return (t) => {
       C.pop(wrap, t, 0, 0.5);
       const ka = C.k(t, actAt, 0.35);
@@ -699,6 +759,8 @@
       return C.place(C.h('div', { class: 'ctr', style: { gap: '10px', padding: '12px 26px', borderRadius: '40px', fontWeight: 900, fontSize: '32px', color: '#fff', background: 'rgba(30,5,6,.95)', border: `3px solid ${col}`, boxShadow: `0 0 26px ${col}88` } }, st, `${nd.icon ? `<span style="color:${col}">${nd.icon}</span>` : ''}${nd.text}`), x, y);
     });
     const center = p.center ? C.place(C.h('div', { class: 'label', style: { fontSize: '34px', color: col, textAlign: 'center', whiteSpace: 'normal', width: '260px' } }, st, p.center), cx, cy) : null;
+    ctx.cue('whoosh', 0.2); ctx.cue('alert', 0.3, 0.45);
+    nodes.forEach((_, i) => ctx.cue('pop', 0.3 + i * 0.35));
     return (t) => {
       ring.style.opacity = C.k(t, 0.2, 0.4);
       ring.setAttribute('transform', `rotate(${t * (p.speed ?? 70)} ${cx} ${cy})`);
@@ -709,13 +771,70 @@
     };
   };
 
+  // -------------------------------------------------------------- versus ---
+  // Two options side by side. flow "out": data leaves to the top (bad);
+  // flow "stay": data circles the icon and gets locked in (good).
+  S.versus = (st, p, ctx) => {
+    const sides = [p.left || {}, p.right || {}];
+    const rightAt = p.rightAt ?? 1.4;
+    const N = 12;
+    const cols = sides.map((sd, i) => {
+      const x = i ? 780 : 300, s0 = i ? rightAt : 0.1;
+      const col = C.color(sd.color || (i ? 'green' : 'red'));
+      const panel = C.place(C.h('div', { class: 'panel', style: { width: '400px', height: '760px', borderColor: col + '88', boxShadow: `0 0 50px ${col}22, inset 0 0 40px ${col}10` } }, st), x, 430);
+      const title = C.place(C.h('div', { class: 'label', style: { fontSize: '32px', color: col } }, st, sd.title || ''), x, 100);
+      const icon = C.place(C.h('div', { style: { fontSize: '120px', lineHeight: 1 } }, st, sd.icon || ''), x, 250);
+      const you = C.place(C.h('div', { style: { fontSize: '86px', lineHeight: 1 } }, st, sd.from || '📱'), x, 540);
+      const parts = [...Array(N)].map(() => C.place(C.h('div', { style: { width: '22px', height: '16px', borderRadius: '4px', background: col, boxShadow: `0 0 12px ${col}` } }, st), x, 400));
+      const lock = sd.lock ? C.place(C.h('div', { style: { fontSize: '64px' } }, st, '🔒'), x + 70, 300) : null;
+      const verdict = C.place(C.h('div', { class: 'badge', style: { background: col, color: i ? '#05210f' : '#fff', fontSize: '28px', boxShadow: `0 0 26px ${col}88` } }, st, sd.verdict || ''), x, 700);
+      const vAt = sd.verdictAt ?? s0 + 1.6;
+      ctx.cue('whoosh', s0, 0.7); ctx.cue('pop', s0 + 0.25); ctx.cue('pop', s0 + 0.45, 0.6);
+      for (let k = 0; k < 4; k++) ctx.cue('blip', s0 + 0.8 + k * 0.22, 0.5);
+      ctx.cue(i ? 'success' : 'error', vAt, 0.9);
+      if (lock) ctx.cue('lock', vAt - 0.35);
+      return { sd, x, s0, col, panel, title, icon, you, parts, lock, verdict, vAt };
+    });
+    const vs = C.place(C.h('div', { class: 'ctr', style: { width: '96px', height: '96px', borderRadius: '50%', background: '#0b141c', border: '3px solid var(--muted)', fontWeight: 900, fontSize: '34px' } }, st, 'VS'), 540, 400);
+    return (t) => {
+      C.pop(vs, t, rightAt - 0.2);
+      cols.forEach((c, i) => {
+        C.pop(c.panel, t, c.s0, 0.45);
+        c.title.style.opacity = C.k(t, c.s0 + 0.1, 0.3);
+        C.pop(c.icon, t, c.s0 + 0.25);
+        C.pop(c.you, t, c.s0 + 0.45);
+        const ft = t - c.s0 - 0.8;
+        c.parts.forEach((q, j) => {
+          if (ft < 0) { q.style.opacity = 0; return; }
+          let px, py, o;
+          if ((c.sd.flow || (i ? 'stay' : 'out')) === 'out') {
+            const ph = (ft * 0.7 + j / N) % 1;
+            px = c.x + (C.rand(j * 3 + i) - 0.5) * 120 + Math.sin(ph * 6 + j) * 10;
+            py = C.lerp(480, 120, ph);
+            o = Math.sin(Math.PI * ph);
+          } else {
+            const a = ft * 2.2 + (j / N) * Math.PI * 2;
+            const r = C.lerp(1.6, 1, C.k(ft, 0, 0.8));
+            px = c.x + Math.cos(a) * 130 * r; py = 260 + Math.sin(a) * 50 * r;
+            o = 0.9;
+          }
+          q.style.left = px + 'px'; q.style.top = py + 'px';
+          q.style.opacity = o * C.k(ft, j * 0.05, 0.2);
+        });
+        if (c.lock) C.pop(c.lock, t, c.vAt - 0.35);
+        C.pop(c.verdict, t, c.vAt);
+      });
+    };
+  };
+
   // ---------------------------------------------------------------- list ---
   // Numbered points sliding in on their beats ("3 reasons ...").
   S.list = (st, p, ctx) => {
     const items = p.items || [];
     const rowH = Math.min(150, 760 / items.length);
     const rows = items.map((it, i) => {
-      const r = C.place(C.h('div', { class: 'panel ctr', style: { width: '860px', height: rowH - 22 + 'px', justifyContent: 'flex-start', gap: '26px', padding: '0 28px' } }, st), 540, 60 + rowH * i + rowH / 2);
+      const top = Math.max(40, (820 - rowH * items.length) / 2);
+      const r = C.place(C.h('div', { class: 'panel ctr', style: { width: '860px', height: rowH - 22 + 'px', justifyContent: 'flex-start', gap: '26px', padding: '0 28px' } }, st), 540, top + rowH * i + rowH / 2);
       const col = C.color(it.color || 'cyan');
       C.h('div', { class: 'ctr', style: { width: '74px', height: '74px', borderRadius: '18px', fontSize: '36px', fontWeight: 900, color: col, border: `3px solid ${col}`, boxShadow: `0 0 20px ${col}55`, flex: 'none' } }, r, it.icon || String(i + 1));
       if (it.ticker) C.chip(it.ticker, 66, r);
@@ -723,6 +842,7 @@
       if (it.value) C.h('div', { style: { marginLeft: 'auto', fontSize: '40px', fontWeight: 900, color: col } }, r, it.value);
       return { r, it };
     });
+    rows.forEach((rw, i) => { const at = rw.it.at ?? 0.2 + i * 0.5; ctx.cue('whoosh', at, 0.6); ctx.cue('pop', at + 0.15, 0.6); });
     return (t) => rows.forEach((rw, i) => {
       const k = C.k(t, rw.it.at ?? 0.2 + i * 0.5, 0.45, 'back');
       C.tf(rw.r, { x: (1 - k) * 300, o: C.k(t, rw.it.at ?? 0.2 + i * 0.5, 0.2) });
@@ -756,6 +876,8 @@
       C.h('div', { class: 'label', style: { fontSize: '22px', color: '#fff', marginTop: '6px' } }, d, s.label || '');
       return { d, v, s };
     });
+    ctx.cue('shine', 0.1); ctx.cue('pop', 0.1);
+    stats.forEach((_, i) => ctx.cue('ding', 0.9 + i * 0.3, 0.8));
     return (t) => {
       leaves.forEach((l) => (l.el.style.opacity = C.k(t, 0.2 + l.i * 0.05, 0.25)));
       C.pop(medal, t, 0.1, 0.5);

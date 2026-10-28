@@ -100,7 +100,7 @@ body.alpha #bg { display: none; }
 }
 .stamp {
   padding: 6px 26px; border: 6px solid currentColor; border-radius: 14px; font-weight: 900; font-size: 64px;
-  letter-spacing: 4px; background: rgba(0,0,0,.35); text-shadow: 0 0 18px currentColor; box-shadow: 0 0 26px currentColor, inset 0 0 18px currentColor;
+  letter-spacing: 4px; white-space: nowrap; background: rgba(0,0,0,.35); text-shadow: 0 0 18px currentColor; box-shadow: 0 0 26px currentColor, inset 0 0 18px currentColor;
 }
 .axis { font-size: 22px; font-weight: 600; fill: var(--muted); font-family: var(--font); }
 .axis-dom { font-size: 22px; font-weight: 600; color: var(--muted); }

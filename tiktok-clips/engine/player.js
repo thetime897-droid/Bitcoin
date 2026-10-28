@@ -19,7 +19,7 @@
   </defs></svg>`);
 
   const frame = C.h('div', { id: 'frame' }, document.body);
-  let update = () => {}, dur = 3, flashEl, tintEl, flashOp = 0, flashCol = '', tintOp = 0;
+  let update = () => {}, cues = [], dur = 3, flashEl, tintEl, flashOp = 0, flashCol = '', tintOp = 0;
 
   const ctx = {
     frame,
@@ -30,6 +30,8 @@
       const o = d < 0.06 ? d / 0.06 : 1 - (d - 0.06) / 0.44;
       if (o > flashOp) { flashOp = o; flashCol = color; }
     },
+    // Sound cue: scenes register which effect plays at which second.
+    cue(name, at, gain = 1) { if (Number.isFinite(at) && at >= 0) cues.push({ name, at, gain }); },
     // Persistent mood tint (e.g. the scene turns red after a crash).
     tint(k, color) { tintOp = Math.max(tintOp, k); tintEl.dataset.c = color; },
   };
@@ -50,6 +52,7 @@
     dur = sc.duration || 3;
     const fn = C.scenes[sc.type];
     if (!fn) throw new Error('Unknown scene type: ' + sc.type);
+    cues = [];
     const sceneUpdate = fn(frame.querySelector('#stage'), sc.params || {}, { ...ctx, dur });
     update = (t) => {
       flashOp = 0; tintOp = 0;
@@ -73,6 +76,7 @@
     return dur;
   };
   C.seek = (t) => update(t);
+  C.cues = () => cues.filter((c) => c.at < dur);
 
   if (RENDER) return;
 

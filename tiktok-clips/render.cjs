@@ -7,12 +7,14 @@
 //   node render.cjs storyboards/beispiel.json --stills   -> one PNG per scene (quick check)
 //   node render.cjs storyboards/beispiel.json --preview  -> out/<name>/preview.html (browser)
 //   node render.cjs storyboards/beispiel.json --concat   -> also _alle_szenen.mp4
+//   node render.cjs storyboards/beispiel.json --nosfx    -> clips without sound effects
 //
 // Needs Node 18+, ffmpeg on PATH and Playwright (npm install in this folder).
 const fs = require('fs');
 const path = require('path');
 const { spawn, execFileSync } = require('child_process');
 const { pathToFileURL } = require('url');
+const SFX = require('./sfx.cjs');
 
 const args = process.argv.slice(2);
 const flag = (n) => args.includes('--' + n);
@@ -72,10 +74,24 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
       continue;
     }
     const file = path.join(outDir, base + (alpha ? '.mov' : '.mp4'));
+    // Sound effects: the scene's own cues plus any extra ones from the
+    // storyboard ("sfx": [{ "name": "cash", "at": 1.2 }]). "sfxDefault": false
+    // drops the scene's built-in cues, "sfx": false makes the clip silent.
+    let audio = [];
+    if (!flag('nosfx')) {
+      const own = s.sfxDefault === false || s.sfx === false ? [] : await page.evaluate(() => window.Clip.cues());
+      const cues = own.concat(Array.isArray(s.sfx) ? s.sfx : []);
+      const audioFile = path.join(outDir, `.${base}.f32`);
+      const samples = SFX.mix(cues, dur, sb.sfxVolume ?? 1);
+      fs.writeFileSync(audioFile, Buffer.from(samples.buffer, samples.byteOffset, samples.byteLength));
+      audio = ['-f', 'f32le', '-ar', String(SFX.SR), '-ac', '1', '-i', audioFile];
+      s._audioFile = audioFile;
+    }
+    const aenc = audio.length ? ['-map', '0:v', '-map', '1:a', '-ac', '2', ...(alpha ? ['-c:a', 'pcm_s16le'] : ['-c:a', 'aac', '-b:a', '192k'])] : [];
     const enc = alpha
       ? ['-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le', '-vendor', 'apl0']
       : ['-c:v', 'libx264', '-preset', 'medium', '-crf', '16', '-pix_fmt', 'yuv420p', '-movflags', '+faststart'];
-    const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', alpha ? 'png' : 'mjpeg', '-i', '-', ...enc, '-r', String(fps), file], { stdio: ['pipe', 'inherit', 'inherit'] });
+    const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', alpha ? 'png' : 'mjpeg', '-i', '-', ...audio, ...enc, ...aenc, '-r', String(fps), file], { stdio: ['pipe', 'inherit', 'inherit'] });
     const frames = Math.round(dur * fps);
     for (let f = 0; f < frames; f++) {
       await page.evaluate((t) => window.Clip.seek(t), f / fps);
@@ -84,6 +100,7 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
     }
     ff.stdin.end();
     await new Promise((r, j) => ff.on('close', (c) => (c ? j(new Error('ffmpeg ' + c)) : r())));
+    if (s._audioFile) fs.unlinkSync(s._audioFile);
     files.push(file);
     console.log(`✓ ${path.basename(file)}  (${dur}s)`);
   }

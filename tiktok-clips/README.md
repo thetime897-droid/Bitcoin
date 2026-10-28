@@ -58,13 +58,14 @@ oder mit echtem Logo `{ "ticker": "META", "logo": "logos/meta.png" }`.
 | Typ | Wofür | Wichtige `params` |
 |---|---|---|
 | `hook` | Alarm-Badge mit pulsierenden Ringen für den Einstieg | `text`, `emoji`, `sub`, `color`, `rings` |
-| `statement` | Satz ohne Daten als animierte Schlagworte (füllt jede Lücke) | `text` (`*Wort*` = hervorgehoben), `icon`, `color`, `size`, `stagger` |
-| `flow` | Akteure → Ziel, Geld fließt; kippt bei `warnAt` auf Warnung | `sources[]`, `target`, `warnAt`, `color` |
+| `statement` | Satz ohne Daten als animierte Schlagworte (füllt jede Lücke) | `text` (`*Wort*` = hervorgehoben), `icon`, `color`, `size`, `stagger`, `stamp` |
+| `versus` | Zwei Optionen nebeneinander, Daten fliegen weg (links) bzw. bleiben (rechts) | `left`/`right {title,icon,from,verdict,verdictAt,color,lock,flow:"out"\|"stay"}`, `rightAt` |
+| `flow` | Akteure → Ziel, Geld fließt; kippt bei `warnAt` auf Warnung | `sources[]`, `target`, `warnAt`, `color`, `stamp` |
 | `linechart` | Kursverlauf, zeichnet sich, Crash-Abschnitt | `ticker`, `header`, `data` (Array oder `{from,to,points,vol,seed}`), `xLabels`, `yLabel`, `unit`, `event{label,at,index}`, `drop{badge,sub,at,data}`, `projection{label,at,strikeAt}` |
 | `bars` | Erwartet vs. tatsächlich, A vs. B | `items[{label,value,text,style:"ghost",color,colorAt}]`, `min`, `max`, `unit`, `suffix`, `revealAt`, `stamp{text,at,color}`, `badge{text,at}`, `line{value,label,at}` |
 | `series` | Viele Balken über Zeit, ein Ausreißer | `values[]`, `ticker`, `header`, `pill`, `startLabel`, `endLabel`, `highlight{index,color,badge,at}` |
 | `cards` | Ticker-Karten mit % (eine reißt andere mit) | `main{ticker,change}`, `items[{ticker,change}]`, `columns` |
-| `number` | Riesige Zahl / Kapitelmarke | `value`, `label`, `color`, `countUp` |
+| `number` | Riesige Zahl / Kapitelmarke | `value`, `label`, `color`, `size`, `countUp`, `countDur`, `stamp` |
 | `tanks` | Reserven/Füllstände, einer läuft leer | `items[{ticker,level}]`, `drain{index,at,badge,level}`, `questionAt` |
 | `loop` | Teufelskreis | `nodes[{text,icon}]`, `center`, `speed` |
 | `calendar` | Termine | `dates[{month,day,label,logos[],at}]`, `highlightAt` |
@@ -73,7 +74,41 @@ oder mit echtem Logo `{ "ticker": "META", "logo": "logos/meta.png" }`.
 | `list` | Aufzählung, Punkte fliegen nacheinander rein | `items[{text,value,color,icon,ticker,at}]` |
 | `cta` | Kanal/Produkt mit Lorbeer-Medaille | `brand`, `glyph`, `stats[{value,label}]` |
 
-Das Beispiel `storyboards/beispiel-ki-blase.json` nutzt jeden Typ einmal.
+`stamp` (bei `number`, `statement`, `flow`): `{ "text": "AUSVERKAUFT", "at": 4.9, "color": "red", "size": 64, "y": 700, "rotate": -8 }` –
+ein Stempel, der mit Knall reinfliegt.
+
+Beispiele: `storyboards/beispiel-ki-blase.json` (fast jeder Typ) und
+`storyboards/ghost-core.json` (Faceless-Short mit Sounds).
+
+## Soundeffekte
+
+Jeder Clip bekommt automatisch passende Sounds, abgestimmt auf die Animation:
+Whoosh beim Reinfliegen, Pop bei Logos/Karten, Ticks beim Hochzählen, Stempel-Knall,
+Ping bei Highlights, Absturz-Sound + Impact beim Crash, Alarm bei Warnungen usw.
+
+Alle Sounds werden in `sfx.cjs` **synthetisch erzeugt** – keine Lizenzfragen.
+Eigene Sounds (z. B. von Pixabay) haben Vorrang: Datei mit dem gleichen Namen nach
+`sfx/` legen, z. B. `sfx/cash.mp3`, `sfx/whoosh.wav`.
+
+| Name | Klang | Name | Klang |
+|---|---|---|---|
+| `whoosh` / `whoosh-down` | Luftzug hoch/runter | `impact` | tiefer Boom |
+| `pop` | Plopp beim Erscheinen | `stamp` | Stempel-Knall |
+| `ping` / `ding` | Glocke / Doppel-Gong | `riser` | Spannungsaufbau (1,1 s) |
+| `cash` | Kassenklingeln „Ka-Ching“ | `downer` | fallender Ton (Crash) |
+| `coins` | Münzen | `error` / `success` | falsch / richtig |
+| `alert` | Alarm | `tick` / `blip` | Klick / Digital-Blip |
+| `crack` | Riss/Bruch | `lock` | Schloss rastet ein |
+| `shine` | Glitzer | | |
+
+`node sfx.cjs` legt alle Sounds als WAV in `sfx/generiert/` ab (auch direkt in
+CapCut nutzbar). Im Storyboard pro Szene:
+
+- `"sfx": [{ "name": "cash", "at": 1.4, "gain": 0.8 }]` – zusätzliche Sounds
+- `"sfxDefault": false` – eingebaute Sounds der Szene weglassen
+- `"sfx": false` – Clip ganz ohne Ton
+- `--nosfx` beim Rendern – alle Clips stumm
+- `"sfxVolume": 0.7` auf oberster Ebene – Gesamtlautstärke
 
 ## Im Editor (CapCut)
 

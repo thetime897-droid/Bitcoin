@@ -56,7 +56,9 @@ Beim Lesen des Skripts **jeden Satz** markieren und so zuordnen:
 | Termine, „diese Woche“, Datum | `calendar` (Thema light) |
 | „Früher galt … aber jetzt …“, Regel bricht | `rule` (Thema light) |
 | „Es gibt 3 Dinge …“ (Spannung aufbauen) | `mystery`, Auflösung danach mit `list` |
-| Aufzählung, Checkliste, Gründe | `list` |
+| Aufzählung, Checkliste, Gründe, Team, technische Daten | `list` |
+| A gegen B, „bei X … bei Y dagegen …“ | `versus` |
+| Preis / Betrag mit Pointe („… und ausverkauft“) | `number` + `stamp` |
 | Hook / Clickbait-Frage am Anfang | `hook` |
 | Satz ohne Daten: Übergang, Meinung, Spannung („Und genau hier wird’s gefährlich“) | `statement` (Schlagwörter mit `*Sternchen*` hervorheben, passendes Emoji als `icon`) |
 | Folgen / Kanal / Produkt | `cta` |
@@ -71,7 +73,16 @@ Beim Lesen des Skripts **jeden Satz** markieren und so zuordnen:
 - Titel max. ~22 Zeichen, GROSS, Deutsch.
 - Keine echten Markenlogos einbetten, außer der Nutzer legt PNGs bei (`"logo": "logos/meta.png"`). Standard sind Glyph-Kacheln in Markenfarbe.
 
-## 4. Technische Konstanten
+## 4. Sound
+
+- **Jeder Beat hat einen Sound**: Reinfliegen = `whoosh`, Erscheinen = `pop`,
+  Zahl zählt = `tick`, Stempel = `stamp`, Highlight = `ping`, Crash = `downer` + `impact`,
+  Warnung = `alert`, Bruch = `crack`, positiv = `success`, negativ = `error`.
+- **Geld = `cash`**, gesetzt genau auf das Wort mit dem Betrag (über `"sfx"` im Storyboard).
+- Vor großen Enthüllungen (Stempel nach einer Pause) einen `riser` davor.
+- Sounds bleiben unter der Stimme (Spitzen ≈ −6 dB), sie sollen betonen, nicht übertönen.
+
+## 5. Technische Konstanten
 
 - Auflösung **1080 × 1920**, **30 fps**, H.264 MP4 (oder ProRes 4444 mit Alpha via `--alpha`).
 - Layout `full` (Standard, faceless): Titel bei y ≈ 330 px, Grafik ≈ 450–1470 px,
