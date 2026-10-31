@@ -68,18 +68,19 @@
     const col = C.color(p.color || 'cyan');
     const icon = p.icon ? C.place(C.h('div', { style: { fontSize: '150px', lineHeight: 1, filter: `drop-shadow(0 0 30px ${col}88)` } }, st, p.icon), 540, 170) : null;
     const box = C.place(C.h('div', { class: 'ctr', style: { flexWrap: 'wrap', width: '820px', gap: '6px 24px', textAlign: 'center' } }, st), 540, icon ? 520 : 430);
+    const paper = ctx.theme === 'paper';
     const words = String(p.text || '').split(/\s+/).filter(Boolean).map((w) => {
       const hl = /^\*.*\*[.,!?:]*$/.test(w);
       const clean = w.replace(/\*/g, '');
       const el = C.h('span', { style: { display: 'inline-block', fontSize: (p.size || 92) + 'px', fontWeight: 900, lineHeight: 1.12, letterSpacing: '-1px',
-        color: hl ? col : 'var(--text)', textShadow: hl ? `0 0 28px ${col}` : 'none', position: 'relative' } }, box, clean);
-      const ul = hl ? C.h('span', { style: { position: 'absolute', left: 0, right: 0, bottom: '-4px', height: '8px', borderRadius: '4px', background: col, boxShadow: `0 0 16px ${col}`, transformOrigin: '0 50%' } }, el) : null;
+        color: hl && !paper ? col : 'var(--text)', textShadow: hl && !paper ? `0 0 28px ${col}` : 'none', position: 'relative' } }, box, clean);
+      const ul = hl && !paper ? C.h('span', { style: { position: 'absolute', left: 0, right: 0, bottom: '-4px', height: '8px', borderRadius: '4px', background: col, boxShadow: `0 0 16px ${col}`, transformOrigin: '0 50%' } }, el) : null;
       return { el, hl, ul };
     });
     const stagger = p.stagger ?? Math.min(0.14, 1.3 / Math.max(1, words.length));
     ctx.cue('whoosh', 0.05, 0.7);
     if (icon) ctx.cue('pop', 0.05);
-    words.forEach((w, i) => w.hl && ctx.cue('ping', 0.15 + i * stagger + 0.25, 0.7));
+    words.forEach((w, i) => w.hl && (paper ? ctx.mark(w.el, 0.15 + i * stagger + 0.3, 0.4) : ctx.cue('ping', 0.15 + i * stagger + 0.25, 0.7)));
     const stampUp = addStamp(st, p, ctx, { y: icon ? 800 : 720, at: 0.15 + words.length * stagger + 0.4 });
     return (t) => {
       stampUp(t);
@@ -495,20 +496,22 @@
   // -------------------------------------------------------------- number ---
   S.number = (st, p, ctx) => {
     const col = C.color(p.color || 'red');
+    const paper = ctx.theme === 'paper';
     const svg = C.svg(st);
     const dots = [];
-    for (let x = -14; x <= 14; x++) for (let y = -14; y <= 14; y++) {
+    if (!paper) for (let x = -14; x <= 14; x++) for (let y = -14; y <= 14; y++) {
       const d = Math.hypot(x, y);
       if (d > 14) continue;
       dots.push({ d, el: C.s('circle', { cx: 540 + x * 28, cy: 400 + y * 28, r: 3.2, fill: col }, svg) });
     }
-    const num = C.place(C.h('div', { style: { fontSize: (p.size || 300) + 'px', fontWeight: 900, color: p.textColor || '#fff', lineHeight: 1, textShadow: `0 0 40px ${col}, 0 0 4px ${col}`, whiteSpace: 'nowrap', letterSpacing: '-6px' } }, st), 540, 360);
+    const num = C.place(C.h('div', { style: { fontSize: (p.size || 300) + 'px', fontWeight: 900, color: p.textColor || (paper ? 'var(--text)' : '#fff'), lineHeight: 1, textShadow: paper ? 'none' : `0 0 40px ${col}, 0 0 4px ${col}`, whiteSpace: 'nowrap', letterSpacing: '-6px' } }, st), 540, 360);
     num.textContent = p.value ?? '1';
     C.fit(num, 800);
     const lab = C.place(C.h('div', { class: 'label', style: { fontSize: '50px', letterSpacing: '8px' } }, st, p.label || ''), 540, 560);
     const ul = C.place(C.h('div', { style: { width: '120px', height: '6px', background: col, boxShadow: `0 0 14px ${col}`, borderRadius: '3px' } }, st), 540, 610);
     ctx.cue('impact', 0.1);
     if (p.countUp !== false) for (let i = 0; i < 9; i++) ctx.cue('tick', 0.1 + i * ((p.countDur ?? 0.9) / 9), 0.6);
+    if (paper) ctx.mark(num, 0.1 + (p.countDur ?? 0.9) + 0.15, 0.5);
     const stampUp = addStamp(st, p, ctx, { y: 730 });
     return (t) => {
       stampUp(t);
@@ -919,6 +922,250 @@
       C.rise(lab, t, 0.5);
       if (sub) C.rise(sub, t, 0.7);
       ctx.flash(t, at + sweep, col + '44');
+    };
+  };
+
+  // =========================================================== paper look ===
+  // Scenes built for theme "paper": a printed analysis sheet that gets marked
+  // up with a highlighter. Text is wrapped as *marked* to get a stroke.
+  const markup = (el, html, ctx, times, start = 0.8, gap = 0.55) => {
+    el.innerHTML = html.replace(/\*([^*]+)\*/g, '<span class="m">$1</span>');
+    [...el.querySelectorAll('.m')].forEach((m, i) => ctx.mark(m, times?.[i] ?? start + i * gap, 0.45));
+  };
+  const INK = '#3e3e44', GREEN = '#4f8a3c', RED = '#d9573b';
+
+  // Title sheet: brand tile, question headline, small price chart with tag.
+  S.sheet = (st, p, ctx) => {
+    const chip = C.place(C.chip(p.ticker || 'AMZN', 92, st), 540, 30);
+    const head = C.place(C.h('div', { style: { width: '900px', textAlign: 'center', fontSize: (p.size || 88) + 'px', fontWeight: 800, lineHeight: 1.1, color: INK, letterSpacing: '-2px' } }, st), 540, 190);
+    markup(head, p.text || '', ctx, p.markAt);
+    const arrow = C.place(C.h('div', { style: { fontSize: '60px', color: INK } }, st, '→'), 540, 335);
+    const pts = p.points || [168, 175, 160, 125, 100, 90, 95, 105, 128, 140, 150, 175, 180, 185, 180, 195, 225, 210, 230, 220, 240, 235, 250, 253];
+    const data = [];
+    for (let i = 0; i < (pts.length - 1) * 6; i++) {
+      const a = pts[Math.floor(i / 6)], b = pts[Math.floor(i / 6) + 1];
+      data.push(C.lerp(a, b, (i % 6) / 6) * (1 + (C.rand(i + 3) - 0.5) * 0.05));
+    }
+    data.push(pts[pts.length - 1]);
+    const X0 = 170, X1 = 900, Y0 = 410, Y1 = 740, hi = p.max || 400;
+    const xAt = (i) => X0 + ((X1 - X0) * i) / (data.length - 1), yAt = (v) => Y1 - (v / hi) * (Y1 - Y0);
+    const svg = C.svg(st);
+    [0, 100, 200, 300, 400].filter((v) => v <= hi).forEach((v) => {
+      C.s('line', { x1: X0, x2: X1, y1: yAt(v), y2: yAt(v), stroke: 'rgba(0,0,0,.08)', 'stroke-width': 2 }, svg);
+      C.s('text', { x: X0 - 18, y: yAt(v) + 8, class: 'axis', 'text-anchor': 'end' }, svg).textContent = '$' + v;
+    });
+    (p.xLabels || ['2022', '2023', '2024', '2025', '2026']).forEach((l, i, a) => {
+      C.s('text', { x: X0 + ((X1 - X0) * (i + 0.5)) / a.length, y: Y1 + 40, class: 'axis', 'text-anchor': 'middle' }, svg).textContent = l;
+    });
+    const area = C.s('path', { fill: 'rgba(79,138,60,.12)' }, svg);
+    const line = C.s('path', { fill: 'none', stroke: '#55555c', 'stroke-width': 4, 'stroke-linejoin': 'round' }, svg);
+    const dot = C.s('circle', { r: 9, fill: '#fff', stroke: GREEN, 'stroke-width': 4 }, svg);
+    const tag = C.place(C.h('div', { class: 'badge', style: { background: GREEN, fontSize: '30px', padding: '6px 16px', borderRadius: '10px' } }, st, p.price || '$253'), X1 - 40, yAt(data[data.length - 1]) - 50);
+    const foot = C.place(C.h('div', { style: { fontSize: '34px', fontWeight: 700, color: INK } }, st), 540, 815);
+    markup(foot, p.footer || '', ctx, [p.footerAt ?? 2.4]);
+    const drawAt = p.drawAt ?? 0.3, drawDur = p.drawDur ?? 1.3;
+    ctx.cue('paper', 0, 0.8); ctx.cue('pop', 0.1); ctx.cue('whoosh', drawAt, 0.5); ctx.cue('pop', drawAt + drawDur);
+    return (t) => {
+      C.pop(chip, t, 0.05);
+      C.rise(head, t, 0.1, 0.4, 30);
+      arrow.style.opacity = C.k(t, 0.3, 0.3);
+      arrow.style.marginLeft = Math.sin(t * 3) * 8 + 'px';
+      const n = Math.max(1, Math.floor(C.k(t, drawAt, drawDur, 'inOut') * (data.length - 1)) + 1);
+      const d = data.slice(0, n).map((v, i) => (i ? 'L' : 'M') + xAt(i).toFixed(1) + ',' + yAt(v).toFixed(1)).join('');
+      line.setAttribute('d', d);
+      area.setAttribute('d', d + `L${xAt(n - 1)},${Y1}L${X0},${Y1}Z`);
+      dot.setAttribute('cx', xAt(n - 1)); dot.setAttribute('cy', yAt(data[n - 1]));
+      C.pop(tag, t, drawAt + drawDur);
+      foot.style.opacity = C.k(t, drawAt + drawDur, 0.3);
+    };
+  };
+
+  // Five phases of a business; steps highlight a column and drop a tag in.
+  S.phases = (st, p, ctx) => {
+    const names = p.names || ['1\nStart-up', '2\nHyper-\nwachstum', '3\nOperativer\nHebel', '4\nKapital-\nrückgabe', '5\nNieder-\ngang'];
+    const X0 = 40, X1 = 1040, Y0 = 60, YH = 230, Y1 = 760, cw = (X1 - X0) / 5, base = 540;
+    const box = C.h('div', { style: { position: 'absolute', left: X0 + 'px', top: Y0 + 'px', width: X1 - X0 + 'px', height: Y1 - Y0 + 'px', background: '#fff', border: '3px solid #5a5a60', borderRadius: '10px' } }, st);
+    const svg = C.svg(st);
+    for (let i = 1; i < 5; i++) C.s('line', { x1: X0 + cw * i, x2: X0 + cw * i, y1: Y0, y2: Y1, stroke: '#5a5a60', 'stroke-width': 2.5 }, svg);
+    C.s('line', { x1: X0, x2: X1, y1: YH, y2: YH, stroke: '#5a5a60', 'stroke-width': 2.5 }, svg);
+    C.s('line', { x1: X0, x2: X1, y1: base, y2: base, stroke: '#9a9aa0', 'stroke-width': 2, 'stroke-dasharray': '8 8' }, svg);
+    C.s('text', { x: X0 - 12, y: base + 8, class: 'axis', 'text-anchor': 'end', 'font-size': 26, fill: INK }, svg).textContent = '$0';
+    const heads = names.map((n, i) => {
+      const h = C.place(C.h('div', { style: { width: cw - 16 + 'px', textAlign: 'center', fontSize: '30px', fontWeight: 800, lineHeight: 1.1, color: INK, whiteSpace: 'pre-line' } }, st, n), X0 + cw * (i + 0.5), (Y0 + YH) / 2);
+      return h;
+    });
+    (p.markHeads || []).forEach((at, i) => at != null && ctx.mark(heads[i], at, 0.4));
+    const curve = (pts, color, label, lx, ly) => {
+      const d = pts.map(([u, v], i) => (i ? 'L' : 'M') + (X0 + u * (X1 - X0)).toFixed(1) + ',' + (base - v).toFixed(1)).join('');
+      C.s('path', { d, fill: 'none', stroke: color, 'stroke-width': 6, 'stroke-dasharray': '1 13', 'stroke-linecap': 'round', 'clip-path': 'url(#ph-clip)' }, svg);
+      C.s('text', { x: lx, y: ly, 'font-size': 24, 'font-weight': 700, fill: color, 'font-family': 'Inter', 'clip-path': 'url(#ph-clip)' }, svg).textContent = label;
+    };
+    const clip = C.s('rect', { x: X0, y: Y0, height: Y1 - Y0, width: 0 }, C.s('clipPath', { id: 'ph-clip' }, C.s('defs', {}, svg)));
+    curve([[0, 6], [0.1, 14], [0.2, 40], [0.3, 105], [0.4, 175], [0.5, 220], [0.6, 250], [0.7, 262], [0.8, 262], [0.88, 245], [0.95, 205], [1, 170]], GREEN, p.revenueLabel || 'Umsatz', X0 + cw * 2.2, base - 275);
+    curve([[0, -8], [0.08, -50], [0.18, -85], [0.28, -70], [0.36, -25], [0.42, 12], [0.5, 60], [0.6, 120], [0.7, 160], [0.78, 168], [0.86, 140], [0.94, 70], [1, 10]], RED, p.profitLabel || 'Gewinn', X0 + cw * 0.45, base + 125);
+    const steps = (p.steps || []).map((sp, i) => {
+      const cx = X0 + cw * (sp.col - 0.5);
+      const fill = C.h('div', { style: { position: 'absolute', left: X0 + cw * (sp.col - 1) + 4 + 'px', top: YH + 3 + 'px', width: cw - 8 + 'px', height: Y1 - YH - 6 + 'px', background: 'rgba(246,255,40,.35)', mixBlendMode: 'multiply', transformOrigin: '50% 0' } }, st);
+      ctx.mark(heads[sp.col - 1], sp.at, 0.5);
+      const tag = C.place(C.h('div', { class: 'badge', style: { background: sp.color ? C.color(sp.color) : GREEN, fontSize: '28px', padding: '6px 16px', borderRadius: '10px' } }, st, sp.tag || 'AMZN'), cx, Y1 - 50);
+      const x = C.s('path', { d: `M${cx - 60},${YH + 60} L${cx + 60},${Y1 - 110} M${cx + 60},${YH + 60} L${cx - 60},${Y1 - 110}`, stroke: RED, 'stroke-width': 9, 'stroke-linecap': 'round', fill: 'none', pathLength: 100 }, svg);
+      ctx.cue('pop', sp.at + 0.5);
+      if (sp.crossAt != null) ctx.cue('error', sp.crossAt, 0.7);
+      return { sp, fill, tag, x };
+    });
+    const drawAt = p.drawAt ?? 0.3, drawDur = p.drawDur ?? 1.4;
+    ctx.cue('paper', 0, 0.8); ctx.cue('whoosh', drawAt, 0.4);
+    heads.forEach((_, i) => ctx.cue('tick', 0.15 + i * 0.1, 0.5));
+    return (t) => {
+      box.style.opacity = C.k(t, 0, 0.25);
+      svg.style.opacity = C.k(t, 0, 0.25);
+      heads.forEach((h, i) => C.rise(h, t, 0.15 + i * 0.1, 0.35, 20));
+      clip.setAttribute('width', (X1 - X0) * C.k(t, drawAt, drawDur, 'inOut'));
+      steps.forEach((s) => {
+        const k = C.k(t, s.sp.at + 0.1, 0.4, 'out');
+        s.fill.style.transform = `scaleY(${k})`;
+        s.fill.style.opacity = s.sp.crossAt != null ? 1 - C.k(t, s.sp.crossAt, 0.4) * 0.6 : 1;
+        C.pop(s.tag, t, s.sp.at + 0.5);
+        s.x.setAttribute('stroke-dasharray', `${s.sp.crossAt != null ? C.k(t, s.sp.crossAt, 0.35) * 100 : 0} 100`);
+      });
+    };
+  };
+
+  // Yes/no checklist with green answers, plus small revenue/profit lines.
+  S.checklist = (st, p, ctx) => {
+    const card = C.h('div', { style: { position: 'absolute', left: '60px', top: '20px', width: '960px', background: '#fff', border: '2px solid #e5e5ea', borderRadius: '20px', padding: '10px 34px' } }, st);
+    const rows = (p.items || []).map((it, i) => {
+      const r = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', padding: '20px 0', borderTop: i ? '2px solid #efeff2' : '0' } }, card);
+      const txt = C.h('div', {}, r);
+      C.h('div', { style: { fontSize: '40px', fontWeight: 800, color: INK } }, txt, it.q);
+      const sub = C.h('div', { style: { fontSize: '30px', fontWeight: 500, color: '#6d6d75', marginTop: '6px', display: 'inline-block' } }, txt);
+      markup(sub, it.sub || '', ctx, [it.markAt ?? (it.at ?? 0.3 + i * 0.7) + 0.5]);
+      const ans = C.h('div', { class: 'badge', style: { background: it.no ? RED : GREEN, fontSize: '30px', padding: '8px 22px', borderRadius: '30px' } }, r, it.ans || '✓ Ja');
+      const at = it.at ?? 0.3 + i * 0.7;
+      ctx.cue('pop', at + 0.25); ctx.cue('ping', at + 0.3, 0.5);
+      return { r, ans, at };
+    });
+    const series = p.series || [];
+    const X0 = 120, X1 = 960, svg = C.svg(st);
+    const lines = series.map((se, j) => {
+      const yTop = 560 + j * 150, yBot = yTop + 70;
+      const lo = Math.min(...se.values), hi = Math.max(...se.values);
+      const pts = se.values.map((v, i) => [X0 + ((X1 - X0) * i) / (se.values.length - 1), yBot - ((v - lo) / (hi - lo || 1)) * (yBot - yTop)]);
+      const path = C.s('path', { d: pts.map((q, i) => (i ? 'L' : 'M') + q.join(',')).join(''), fill: 'none', stroke: se.color ? C.color(se.color) : j ? GREEN : '#55555c', 'stroke-width': 5, pathLength: 100 }, svg);
+      const labs = se.values.map((v, i) => C.place(C.h('div', { style: { fontSize: '26px', fontWeight: 700, color: INK } }, st, se.fmt ? se.fmt.replace('#', String(v).replace('.', ',')) : v), pts[i][0], pts[i][1] - 32));
+      const name = C.place(C.h('div', { class: 'label muted', style: { fontSize: '22px' } }, st, se.label || ''), X0 + 40, yTop - 46);
+      return { path, labs, name };
+    });
+    const xl = (p.xLabels || []).map((l, i, a) => C.place(C.h('div', { class: 'axis-dom' }, st, l), X0 + ((X1 - X0) * i) / (a.length - 1), 860));
+    const chartAt = p.chartAt ?? 2.4;
+    ctx.cue('paper', 0, 0.8); if (lines.length) ctx.cue('whoosh', chartAt, 0.4);
+    return (t) => {
+      card.style.opacity = C.k(t, 0, 0.25);
+      rows.forEach((r) => { r.ans.style.transform = `scale(${Math.max(0, C.k(t, r.at + 0.25, 0.38, 'back'))})`; r.r.style.opacity = C.k(t, r.at, 0.3); });
+      lines.forEach((l, j) => {
+        const k = C.k(t, chartAt + j * 0.2, 1.1, 'inOut');
+        l.path.setAttribute('stroke-dasharray', `${k * 100} 100`);
+        l.labs.forEach((lb, i) => (lb.style.opacity = C.k(t, chartAt + j * 0.2 + (i / l.labs.length) * 1.1, 0.25)));
+        l.name.style.opacity = C.k(t, chartAt, 0.3);
+      });
+      xl.forEach((x) => (x.style.opacity = C.k(t, chartAt, 0.3)));
+    };
+  };
+
+  // Metric tiles; bad ones get a red hand-drawn strike and a note.
+  S.tiles = (st, p, ctx) => {
+    const items = p.items || [];
+    const tiles = items.map((it, i) => {
+      const x = 300 + (i % 2) * 480, y = 150 + Math.floor(i / 2) * 230;
+      const d = C.place(C.h('div', { style: { width: '440px', height: '190px', background: '#fff', border: '2px solid #e5e5ea', borderRadius: '18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 34px' } }, st), x, y);
+      C.h('div', { style: { fontSize: '32px', fontWeight: 700, color: '#6d6d75' } }, d, it.label);
+      const v = C.h('div', { style: { fontSize: '54px', fontWeight: 900, color: INK, position: 'relative' } }, d, it.value);
+      let strike, note;
+      if (it.bad) {
+        strike = C.s('path', { d: 'M-8,40 C40,30 90,48 140,34 S220,30 260,38', stroke: RED, 'stroke-width': 8, fill: 'none', 'stroke-linecap': 'round', pathLength: 100 }, C.svg(v, 250, 80));
+        strike.parentNode.style.left = '-6px'; strike.parentNode.style.top = '0';
+        note = C.place(C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: RED, fontFamily: "'Comic Sans MS','Segoe Print',cursive" } }, st, it.note || 'nutzlos!'), x + 120, y + 112);
+      }
+      const at = 0.15 + i * 0.12, badAt = it.badAt ?? (p.badAt ?? 1.4) + i * 0.35;
+      ctx.cue('pop', at, 0.7);
+      if (it.bad) { ctx.cue('marker', badAt); ctx.cue('error', badAt + 0.3, 0.5); }
+      if (it.mark) ctx.mark(v, it.markAt ?? 2.2, 0.4);
+      return { it, d, strike, note, at, badAt };
+    });
+    const stampUp = addStamp(st, p, ctx, { y: 650, color: 'red' });
+    ctx.cue('paper', 0, 0.8);
+    return (t) => {
+      stampUp(t);
+      tiles.forEach((tl, i) => {
+        C.pop(tl.d, t, tl.at, 0.38, { y: Math.sin(t * 1.5 + i) * 3 });
+        if (tl.strike) {
+          tl.strike.setAttribute('stroke-dasharray', `${C.k(t, tl.badAt, 0.3) * 100} 100`);
+          C.tf(tl.note, { r: -6, s: Math.max(0, C.k(t, tl.badAt + 0.25, 0.3, 'back')), o: C.k(t, tl.badAt + 0.25, 0.15) });
+        }
+      });
+    };
+  };
+
+  // Valuation: P/OCF history with expensive / fair / cheap bands and prices.
+  S.valuation = (st, p, ctx) => {
+    const ratings = p.ratings || ['Sehr teuer', 'Teuer', 'Fair', 'Attraktiv', 'Sehr attraktiv'];
+    const scale = C.h('div', { class: 'ctr', style: { position: 'absolute', left: '60px', top: '0', width: '960px', height: '120px', background: '#fff', border: '2px solid #e5e5ea', borderRadius: '18px', gap: '0', justifyContent: 'space-around' } }, st);
+    const rDots = ratings.map((r, i) => {
+      const c = C.h('div', { class: 'ctr', style: { flexDirection: 'column', gap: '6px', width: '180px' } }, scale);
+      const dot = C.h('div', { class: 'ctr', style: { width: '46px', height: '46px', borderRadius: '50%', background: '#ececf0', color: '#8b8b93', fontWeight: 800, fontSize: '22px' } }, c, String(i + 1));
+      const lab = C.h('div', { style: { fontSize: '22px', color: '#8b8b93', fontWeight: 600 } }, c, r);
+      return { dot, lab };
+    });
+    const pts = p.points || [30, 33, 31, 38, 42, 30, 28, 40, 36, 27, 22, 20, 21, 19, 23, 20, 18, 21, 19, 17, 20, 21, 18, 20, 19, 17, 18, 20, 18, 17];
+    const data = [];
+    for (let i = 0; i < (pts.length - 1) * 5; i++) {
+      const a = pts[Math.floor(i / 5)], b = pts[Math.floor(i / 5) + 1];
+      data.push(C.lerp(a, b, (i % 5) / 5) + (C.rand(i * 1.7) - 0.5) * 1.6);
+    }
+    data.push(pts[pts.length - 1]);
+    const lo = 8, hi = 44, X0 = 150, X1 = 770, Y0 = 200, Y1 = 700;
+    const xAt = (i) => X0 + ((X1 - X0) * i) / (data.length - 1), yAt = (v) => Y1 - ((v - lo) / (hi - lo)) * (Y1 - Y0);
+    const svg = C.svg(st);
+    const bands = p.bands || { expensive: 25.6, cheap: 17.5 };
+    C.s('rect', { x: X0, y: Y0, width: X1 - X0, height: yAt(bands.expensive) - Y0, fill: 'rgba(225,110,110,.13)' }, svg);
+    C.s('rect', { x: X0, y: yAt(bands.expensive), width: X1 - X0, height: yAt(bands.cheap) - yAt(bands.expensive), fill: 'rgba(240,200,70,.16)' }, svg);
+    C.s('rect', { x: X0, y: yAt(bands.cheap), width: X1 - X0, height: Y1 - yAt(bands.cheap), fill: 'rgba(90,170,90,.13)' }, svg);
+    [8, 14, 20, 26, 32, 38, 44].forEach((v) => (C.s('text', { x: X0 - 14, y: yAt(v) + 8, class: 'axis', 'text-anchor': 'end' }, svg).textContent = v + '×'));
+    (p.xLabels || ['2022', '2023', '2024', '2025', '2026']).forEach((l, i, a) => (C.s('text', { x: X0 + ((X1 - X0) * (i + 0.3)) / a.length, y: Y1 + 40, class: 'axis' }, svg).textContent = l));
+    const avg = p.average ?? 21;
+    const avgLine = C.s('line', { x1: X0, x2: X1, y1: yAt(avg), y2: yAt(avg), stroke: INK, 'stroke-width': 3, 'stroke-dasharray': '10 8' }, svg);
+    const line = C.s('path', { fill: 'none', stroke: INK, 'stroke-width': 3.5, 'stroke-linejoin': 'round' }, svg);
+    const dot = C.s('circle', { r: 11, fill: '#e2a03f', stroke: '#fff', 'stroke-width': 3 }, svg);
+    const levels = (p.levels || [{ price: '$384', label: 'Teuer', at: bands.expensive }, { price: '$322', label: 'Schnitt', at: avg }, { price: '$260', label: 'Günstig', at: 17 }]).map((lv, i) => {
+      const d = C.place(C.h('div', { style: { display: 'flex', alignItems: 'baseline', gap: '10px', width: '240px' } }, st), X1 + 140, yAt(lv.at));
+      const pr = C.h('div', { style: { fontSize: '36px', fontWeight: 900, color: INK, display: 'inline-block' } }, d, lv.price);
+      C.h('div', { style: { fontSize: '22px', fontWeight: 700, color: ['#c0504d', '#8b8b93', GREEN][i] || '#8b8b93' } }, d, lv.label);
+      if (lv.markAt != null) ctx.mark(pr, lv.markAt, 0.4);
+      return d;
+    });
+    const nowTag = C.place(C.h('div', { class: 'badge', style: { background: '#e2a03f', fontSize: '28px', padding: '6px 16px', borderRadius: '10px' } }, st, p.nowLabel || 'heute ≈ 17×'), X1 - 120, yAt(data[data.length - 1]) + 70);
+    const avgTag = C.place(C.h('div', { style: { fontSize: '28px', fontWeight: 800, color: INK, background: '#fff', padding: '2px 10px', borderRadius: '8px' } }, st, p.avgLabel || 'Ø 21×'), X0 + 90, yAt(avg) - 30);
+    const drawAt = p.drawAt ?? 0.3, drawDur = p.drawDur ?? 1.4, avgAt = p.avgAt ?? drawAt + drawDur + 0.1, nowAt = p.nowAt ?? avgAt + 0.8;
+    ctx.mark(avgTag, avgAt + 0.2, 0.4);
+    ctx.mark(nowTag, nowAt + 0.25, 0.4);
+    ctx.cue('paper', 0, 0.8); ctx.cue('whoosh', drawAt, 0.4); ctx.cue('pop', nowAt); ctx.cue('ping', p.ratingAt ?? 0.4, 0.5);
+    return (t) => {
+      scale.style.opacity = C.k(t, 0, 0.25);
+      rDots.forEach((r, i) => {
+        const on = i === (p.rating ?? 2) && t > (p.ratingAt ?? 0.4);
+        r.dot.style.background = on ? '#8a6a3b' : '#ececf0'; r.dot.style.color = on ? '#fff' : '#8b8b93';
+        r.dot.style.transform = `scale(${on ? 1 + 0.25 * Math.sin(C.clamp((t - (p.ratingAt ?? 0.4)) / 0.3) * Math.PI) + 0.15 : 1})`;
+        r.lab.style.color = on ? INK : '#8b8b93'; r.lab.style.fontWeight = on ? 800 : 600;
+      });
+      svg.style.opacity = C.k(t, 0.1, 0.3);
+      const n = Math.max(1, Math.floor(C.k(t, drawAt, drawDur, 'inOut') * (data.length - 1)) + 1);
+      line.setAttribute('d', data.slice(0, n).map((v, i) => (i ? 'L' : 'M') + xAt(i).toFixed(1) + ',' + yAt(v).toFixed(1)).join(''));
+      dot.setAttribute('cx', xAt(n - 1)); dot.setAttribute('cy', yAt(data[n - 1]));
+      dot.setAttribute('r', 11 + Math.sin(t * 4) * 1.5);
+      avgLine.style.opacity = C.k(t, avgAt, 0.3);
+      avgTag.style.opacity = C.k(t, avgAt, 0.3);
+      levels.forEach((l, i) => C.rise(l, t, avgAt + i * 0.12, 0.35, 16));
+      C.pop(nowTag, t, nowAt);
     };
   };
 

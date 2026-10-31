@@ -146,7 +146,7 @@ const SYNTH = {
 const GAIN = {
   whoosh: 0.7, 'whoosh-down': 0.7, pop: 0.55, ping: 0.55, ding: 0.6, tick: 0.3, blip: 0.35,
   cash: 0.9, coins: 0.5, stamp: 0.8, impact: 0.75, riser: 0.45, downer: 0.55, error: 0.5,
-  success: 0.55, alert: 0.45, crack: 0.45, lock: 0.55, shine: 0.5,
+  success: 0.55, alert: 0.45, crack: 0.45, lock: 0.55, shine: 0.5, marker: 0.4, paper: 0.35,
 };
 
 const DIR = path.join(__dirname, 'sfx');
@@ -169,6 +169,9 @@ const LIB = {
   crack: [EL + 'glitch.mp3'],
   downer: [KI + 'minimize_001.wav', KI + 'minimize_003.wav'],
   shine: [EL + 'magic-reveal.mp3'],
+  // Felt tip dragged over paper.
+  marker: [KI + 'scratch_002.wav', KI + 'scratch_004.wav', KI + 'scratch_001.wav', KI + 'scratch_005.wav'],
+  paper: [KI + 'scroll_001.wav', KI + 'scroll_002.wav'],
   stamp: [[{ f: EL + 'boom.mp3', gain: 0.7 }, { f: KI + 'drop_004.wav', gain: 0.9, rate: 0.8 }]],
   coins: [[0, 0.07, 0.15, 0.21, 0.3, 0.42].map((at, i) => ({ f: KI + `glass_00${[2, 3, 5, 6][i % 4]}.wav`, at, gain: 1 - i * 0.12, rate: 1.4 + (i % 3) * 0.25 }))],
   // "Ka-ching": drawer clack, bell, then a little coin jingle.

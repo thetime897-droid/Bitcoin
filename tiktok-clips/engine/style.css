@@ -114,3 +114,39 @@ body.render #ui { display: none; }
 #ui select, #ui button, #ui input { width: 100%; margin: 4px 0; font: inherit; }
 #ui .script { color: #9fb3c8; font-style: italic; margin-top: 8px; max-height: 200px; overflow: auto; }
 body:not(.render) #frame { transform-origin: 0 0; }
+
+/* Paper look: printed sheet on a wooden desk, highlighter, red ink stamps. */
+#frame.theme-paper {
+  --text: #3e3e44; --muted: #8b8b93; --accent: #4f8a3c;
+  --panel: #ffffff; --panel-border: #e5e5ea; --panel-shadow: 0 2px 0 rgba(0,0,0,.03);
+  --grid: rgba(0, 0, 0, 0.07); --chip-bg: var(--c);
+}
+.theme-paper #bg { background: #c98a45; }
+.theme-paper .chip span { color: #fff; }
+.theme-paper .chip { box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+#paper {
+  position: absolute; left: 26px; right: 26px; top: 240px; bottom: 290px; z-index: 2; border-radius: 6px;
+  background: linear-gradient(172deg, #ffffff 0%, #fafaf8 60%, #f1f1ee 100%);
+  box-shadow: 0 34px 70px rgba(70, 35, 0, .38), 0 3px 8px rgba(0,0,0,.18);
+}
+.theme-paper #title {
+  top: 296px; left: 96px; right: auto; text-align: left; font-size: 78px; letter-spacing: -2px;
+  text-transform: none; color: var(--text);
+}
+.theme-paper #title::after { display: none; }
+.theme-paper #pill {
+  top: 408px; left: 96px; transform: none; background: var(--accent); color: #fff; border: 0; font-size: 26px; padding: 8px 24px;
+}
+.theme-paper #pill::before { display: none; }
+.theme-paper #title:empty ~ #pill { top: 300px; }
+.theme-paper .stamp {
+  background: transparent; box-shadow: none; text-shadow: none; mix-blend-mode: multiply; opacity: .88; border-width: 7px;
+}
+.theme-paper .tag { background: #fff; }
+.hlm {
+  background-image: linear-gradient(100deg, rgba(246,255,40,0) 0, rgba(246,255,40,.92) 1.5%, rgba(240,250,30,.85) 98%, rgba(246,255,40,0) 100%);
+  background-repeat: no-repeat; background-position: 0 72%; background-size: 0% 64%;
+  mix-blend-mode: multiply; padding: 0 6px; margin: 0 -6px; border-radius: 4px;
+}
+.theme-paper.layout-full #stage { top: 590px; transform: scale(0.93); }
+.theme-paper .chip { background: var(--c); }

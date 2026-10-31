@@ -19,6 +19,7 @@
   </defs></svg>`);
 
   const frame = C.h('div', { id: 'frame' }, document.body);
+  let strokes = [];
   let update = () => {}, cues = [], dur = 3, flashEl, tintEl, flashOp = 0, flashCol = '', tintOp = 0;
 
   const ctx = {
@@ -29,6 +30,12 @@
       if (d < 0 || d > 0.5) return;
       const o = d < 0.06 ? d / 0.06 : 1 - (d - 0.06) / 0.44;
       if (o > flashOp) { flashOp = o; flashCol = color; }
+    },
+    // Highlighter stroke over `el` (sweeps left to right, a pen follows the tip).
+    mark(el, at, dur = 0.45) {
+      el.classList.add('hlm');
+      strokes.push({ el, at, dur });
+      cues.push({ name: 'marker', at, gain: 1 });
     },
     // Sound cue: scenes register which effect plays at which second.
     cue(name, at, gain = 1) { if (Number.isFinite(at) && at >= 0) cues.push({ name, at, gain }); },
@@ -52,8 +59,17 @@
     dur = sc.duration || 3;
     const fn = C.scenes[sc.type];
     if (!fn) throw new Error('Unknown scene type: ' + sc.type);
-    cues = [];
-    const sceneUpdate = fn(frame.querySelector('#stage'), sc.params || {}, { ...ctx, dur });
+    cues = []; strokes = [];
+    const paper = theme === 'paper';
+    if (paper) {
+      frame.querySelector('#bg').innerHTML = `<svg width="1080" height="1920" style="position:absolute;inset:0"><defs>
+        <filter id="wood" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.11" numOctaves="4" seed="7"/>
+        <feColorMatrix values="0 0 0 0 0.45  0 0 0 0 0.24  0 0 0 0 0.07  1.4 0 0 0 -0.45"/></filter>
+        <radialGradient id="vig" cx="50%" cy="45%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#2a1200" stop-opacity=".45"/></radialGradient></defs>
+        <rect width="1080" height="1920" fill="#d0924c"/><rect width="1080" height="1920" filter="url(#wood)"/><rect width="1080" height="1920" fill="url(#vig)"/></svg>`;
+      frame.querySelector('#bg').after(C.h('div', { id: 'paper' }));
+    }
+    const sceneUpdate = fn(frame.querySelector('#stage'), sc.params || {}, { ...ctx, dur, theme });
     // Clean edges: content sharpens in over the first 0.3 s and zooms/blurs out
     // over the last 0.4 s, so every clip can be cut in and out without a jump.
     // The background stays put. "exit": false on a scene keeps the last frame.
@@ -70,15 +86,30 @@
       el: C.h('div', { style: { position: 'absolute', borderRadius: '50%', background: 'var(--accent)', filter: 'blur(1.5px)' } }, dust),
     }));
     const stageEl = frame.querySelector('#stage'), chromeEl = frame.querySelector('#chrome');
+    const paperEl = frame.querySelector('#paper');
     const still = sc.drift === false;
+    if (paper) motes.forEach((m) => (m.el.style.display = 'none'));
+    // On paper the sheet, its title and the content move together like a
+    // handheld shot of a desk, around one shared origin.
+    if (paper) [paperEl, stageEl, chromeEl].forEach((el) => (el.style.transformOrigin = '540px 960px'));
+    if (paper) { chromeEl.style.position = 'absolute'; chromeEl.style.height = '1920px'; stageEl.style.transformOrigin = '540px 430px'; }
+    strokes.sort((a, b) => a.at - b.at);
+    const pen = strokes.length ? C.h('div', { id: 'pen', style: { position: 'absolute', left: 0, top: 0, width: '420px', height: '74px', zIndex: 20, transformOrigin: '0 50%', filter: 'drop-shadow(14px 22px 14px rgba(40,20,0,.35))' } }, frame,
+      `<svg width="420" height="74" viewBox="0 0 420 74"><polygon points="0,37 28,20 28,54" fill="#c9c400"/><rect x="26" y="14" width="50" height="46" rx="6" fill="#e9e52a"/>
+       <rect x="70" y="8" width="350" height="58" rx="26" fill="#f4f13a"/><rect x="70" y="8" width="350" height="18" rx="9" fill="#fffb8a" opacity=".7"/>
+       <text x="190" y="47" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="30" fill="#2c2a10" opacity=".75">Highlight</text></svg>`) : null;
     update = (t) => {
       flashOp = 0; tintOp = 0;
       const kin = C.k(t, 0, 0.3), kout = C.k(t, exitAt, 0.4, 'in');
       layers().forEach((el) => {
         el.style.filter = kin < 1 || kout > 0 ? `blur(${(1 - kin) * 10 + kout * 16}px)` : '';
-        const push = still || el !== stageEl ? 1 : 1 + 0.035 * (t / dur);
+        const hand = paper && (el === paperEl || el === stageEl || el === chromeEl);
+        const push = still || (el !== stageEl && !hand) ? 1 : 1 + 0.03 * (t / dur);
         el.style.scale = String((1 - kout * 0.06) * push);
-        if (!still && (el === stageEl || el === chromeEl)) {
+        if (!still && hand) {
+          el.style.translate = `${Math.sin(t * 0.9) * 7 + Math.sin(t * 2.3) * 2}px ${Math.sin(t * 1.3 + 1) * 8 + Math.sin(t * 3.1) * 1.5}px`;
+          el.style.rotate = `${-0.8 + Math.sin(t * 0.6) * 0.45}deg`;
+        } else if (!still && (el === stageEl || el === chromeEl)) {
           el.style.translate = `${Math.sin(t * 0.7) * (el === stageEl ? 6 : 2)}px ${Math.sin(t * 1.1 + 1) * (el === stageEl ? 7 : 3)}px`;
           if (el === stageEl) el.style.rotate = `${Math.sin(t * 0.5) * 0.35}deg`;
         }
@@ -90,6 +121,31 @@
       title.style.setProperty('--ul', C.k(t, 0.15, 0.4));
       pill.style.opacity = C.k(t, 0.2, 0.3);
       sceneUpdate(t);
+      strokes.forEach((st) => (st.el.style.backgroundSize = `${C.k(t, st.at, st.dur, 'inOut') * 100}% 64%`));
+      if (pen) {
+        const fr = frame.getBoundingClientRect(), sc = fr.width / 1080;
+        const at = (st, k) => {
+          const r = st.el.getBoundingClientRect();
+          return [(r.left - fr.left) / sc + (r.width / sc) * k, (r.top - fr.top) / sc + (r.height / sc) * 0.66];
+        };
+        const cur = strokes.find((st) => t >= st.at && t <= st.at + st.dur);
+        const next = strokes.find((st) => st.at > t);
+        const prev = [...strokes].reverse().find((st) => st.at + st.dur < t);
+        let x, y;
+        if (cur) [x, y] = at(cur, C.k(t, cur.at, cur.dur, 'inOut'));
+        else if (prev && next) {
+          const a = at(prev, 1), b = at(next, 0), e = prev.at + prev.dur, k = C.k(t, e, next.at - e, 'inOut');
+          x = C.lerp(a[0], b[0], k); y = C.lerp(a[1], b[1], k) - Math.sin(k * Math.PI) * 45;
+        } else if (next) {
+          const b = at(next, 0), k = C.k(t, next.at - 0.55, 0.55, 'out');
+          x = b[0] + (1 - k) * 700; y = b[1] + (1 - k) * 520;
+        } else {
+          const a = at(prev, 1), k = C.k(t, prev.at + prev.dur + 0.5, 0.7, 'in');
+          x = a[0] + 40 + k * 700; y = a[1] + 20 + k * 560;
+        }
+        x += Math.sin(t * 3.1) * 3; y += Math.cos(t * 2.4) * 3;
+        pen.style.transform = `translate(${x}px, ${y - 37}px) rotate(-34deg)`;
+      }
       const fade = Math.min(kin * 1.5, 1) * (1 - kout);
       motes.forEach((m) => {
         const y = (((m.y - t * m.v) % 1920) + 1920) % 1920;

@@ -38,7 +38,7 @@ node render.cjs storyboards/beispiel-ki-blase.json --concat
 ```jsonc
 {
   "name": "mein-video",
-  "theme": "dark",          // dark | alarm | light  (pro Szene überschreibbar)
+  "theme": "dark",          // dark | alarm | light | paper  (pro Szene überschreibbar)
   "layout": "full",         // Standard: Grafik groß & mittig (faceless). "top" nicht verwenden
   "scenes": [
     { "id": "01", "type": "linechart", "title": "Bitcoin Kurs", "pill": "Live · 24h",
@@ -61,6 +61,11 @@ oder mit echtem Logo `{ "ticker": "META", "logo": "logos/meta.png" }`.
 | `statement` | Satz ohne Daten als animierte Schlagworte (füllt jede Lücke) | `text` (`*Wort*` = hervorgehoben), `icon`, `color`, `size`, `stagger`, `stamp` |
 | `quote` | Zitat/Post-Karte, Passagen werden nacheinander farbig markiert | `author`, `handle`, `initials`, `text[]` (`*Passage*` = Markierung), `highlightAt[]`, `hlColors`, `meta`, `size` |
 | `gauge` | Tacho, Nadel schwingt auf einen Prozentwert | `value` (0–100), `ticker`, `name`, `label`, `sub`, `color`, `at`, `sweepDur` |
+| `sheet` *(paper)* | Titelblatt: Logo-Kachel, Frage mit Marker, kleiner Kurs-Chart mit Preis | `ticker`, `text` (`*markiert*`), `markAt[]`, `price`, `points[]`, `footer`, `footerAt` |
+| `phases` *(paper)* | 5 Unternehmensphasen mit Umsatz-/Gewinnkurve, Spalten markieren, Tag setzen, durchstreichen | `markHeads[]`, `steps[{col,at,tag,color,crossAt}]`, `drawAt`, `drawDur` |
+| `checklist` *(paper)* | Ja/Nein-Fragen mit grünen Antworten + Mini-Zeitreihen | `items[{q,sub,ans,no,at,markAt}]`, `series[{label,values,fmt}]`, `xLabels`, `chartAt` |
+| `tiles` *(paper)* | Kennzahl-Kacheln, schlechte werden rot durchgestrichen | `items[{label,value,bad,note,mark}]`, `badAt`, `stamp` |
+| `valuation` *(paper)* | Bewertungs-Chart mit Zonen teuer/fair/günstig, Ø-Linie, Preis-Stufen, 1–5-Skala | `rating`, `ratingAt`, `points[]`, `average`, `bands`, `levels[{price,label,at,markAt}]`, `drawAt`, `avgAt`, `nowAt` |
 | `versus` | Zwei Optionen nebeneinander, Daten fliegen weg (links) bzw. bleiben (rechts) | `left`/`right {title,icon,from,verdict,verdictAt,color,lock,flow:"out"\|"stay"}`, `rightAt` |
 | `flow` | Akteure → Ziel, Geld fließt; kippt bei `warnAt` auf Warnung | `sources[]`, `target`, `warnAt`, `color`, `stamp` |
 | `linechart` | Kursverlauf, zeichnet sich, Crash-Abschnitt | `ticker`, `header`, `data` (Array oder `{from,to,points,vol,seed}`), `xLabels`, `yLabel`, `unit`, `event{label,at,index}`, `drop{badge,sub,at,data}`, `projection{label,at,strikeAt}` |
@@ -136,3 +141,10 @@ werden. `"exit": false` an einer Szene lässt das letzte Bild stehen.
   `duration` rendern.
 - Untertitel automatisch erzeugen und unter die Grafik setzen
   (≈ 1500–1700 px Höhe) – dort ist in jedem Clip Platz.
+
+## Papier-Look (`"theme": "paper"`)
+
+Nachbau des „Analyse-Blatt auf dem Schreibtisch“-Stils: Holztisch, weißes Blatt
+mit Handkamera-Wackeln, gelber Textmarker mit sichtbarem Stift (inkl. Kratz-Sound),
+rote Tintenstempel. Jeder `*markierte*` Text bekommt einen Marker-Strich; `statement`
+und `number` funktionieren auch im Papier-Look. Beispiel: `storyboards/amazon-bewertung.json`.

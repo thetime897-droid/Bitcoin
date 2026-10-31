@@ -1,0 +1,64 @@
+{
+  "name": "amazon-bewertung",
+  "fps": 30,
+  "theme": "paper",
+  "layout": "full",
+  "scenes": [
+    { "id": "01", "type": "sheet", "duration": 4.4,
+      "script": "0:00 · Ist Amazon bei 253 Dollar billig – oder teuer?",
+      "params": { "ticker": "AMZN", "text": "Ist *Amazon* billig oder *teuer?*", "markAt": [0.7, 1.4], "price": "$253", "footer": "*+55 %* in 5 Jahren", "footerAt": 2.5, "drawAt": 0.4, "drawDur": 1.4 } },
+
+    { "id": "02", "type": "phases", "title": "Phase", "duration": 6.6,
+      "script": "0:04 · Dafür musst du wissen, in welcher Phase ein Unternehmen steckt. Es gibt fünf: Start-up, Hyperwachstum, operativer Hebel, Kapitalrückgabe und Niedergang.",
+      "params": { "drawAt": 0.4, "drawDur": 1.8, "markHeads": [3.2, 3.8, 4.4, 5.0, 5.6] } },
+
+    { "id": "03", "type": "checklist", "title": "Phase-Check", "pill": "Amazon", "duration": 8.2,
+      "script": "0:13 · Amazon wächst – plus acht Prozent im letzten Jahr. Es ist hochprofitabel: fast 94 Milliarden Dollar operativer Gewinn. Und es kauft eigene Aktien zurück.",
+      "params": { "items": [
+          { "q": "Wächst der Umsatz?", "sub": "*+8 %* im letzten Jahr", "at": 0.3, "markAt": 1.1 },
+          { "q": "Ist es profitabel?", "sub": "*93,7 Mrd. $* operativer Gewinn", "at": 2.6, "markAt": 3.6 },
+          { "q": "Gibt es Geld zurück?", "sub": "*nur Aktienrückkäufe*", "at": 5.4, "markAt": 6.2 } ],
+        "chartAt": 1.0, "xLabels": ["FY21", "FY22", "FY23", "FY24", "FY25"],
+        "series": [ { "label": "Umsatz", "values": [470, 514, 575, 638, 717], "fmt": "$#B" },
+                    { "label": "Op. Gewinn", "values": [24.9, 12.2, 36.9, 68.6, 80], "fmt": "$#B" } ] },
+      "sfx": [ { "name": "cash", "at": 3.6, "gain": 0.7 } ] },
+
+    { "id": "04", "type": "phases", "title": "Phase", "duration": 7,
+      "script": "0:23 · Klingt nach Phase vier. Aber: Die Zahl der Aktien steigt trotzdem weiter – Amazon steckt also noch in Phase drei.",
+      "params": { "drawAt": 0, "drawDur": 0.7,
+        "steps": [ { "col": 4, "at": 0.4, "tag": "?", "color": "amber", "crossAt": 3.4 }, { "col": 3, "at": 4.6, "tag": "AMZN" } ] } },
+
+    { "id": "05", "type": "tiles", "title": "Bewertung", "pill": "Typisch für Phase 3", "duration": 6.6,
+      "script": "0:31 · Firmen in Phase drei bewertet man meist mit KGV oder Kurs-Free-Cashflow. Bei Amazon funktioniert beides nicht.",
+      "params": { "badAt": 3.9, "items": [
+          { "label": "KGV", "value": "20,4×", "bad": true, "note": "verzerrt!" },
+          { "label": "Kurs/FCF", "value": "−235×", "bad": true, "note": "negativ!" },
+          { "label": "KUV", "value": "3,5×" },
+          { "label": "KBV", "value": "5,0×" } ] } },
+
+    { "id": "06", "type": "number", "title": "Sondereffekt", "pill": "Q2 2026", "duration": 6,
+      "script": "0:38 · Das KGV ist verzerrt: Allein im zweiten Quartal hat Amazon 53 Milliarden Dollar Buchgewinn mit seiner Anthropic-Beteiligung gemacht.",
+      "params": { "value": "53,4 MRD. $", "label": "BUCHGEWINN ANTHROPIC", "size": 200, "countDur": 1.0,
+        "stamp": { "text": "KEIN ECHTER GEWINN", "color": "red", "at": 3.4, "size": 50, "y": 720 } },
+      "sfx": [ { "name": "cash", "at": 1.0, "gain": 0.8 } ] },
+
+    { "id": "07", "type": "statement", "duration": 5,
+      "script": "0:46 · Und der Free Cashflow ist negativ, weil Amazon gerade Milliarden in Rechenzentren steckt.",
+      "params": { "text": "Free Cashflow: *negativ* – wegen *Rechenzentren.*", "icon": "🏗️", "size": 88,
+        "stamp": { "text": "INVESTITIONSPHASE", "color": "red", "at": 3.0, "size": 54 } } },
+
+    { "id": "08", "type": "valuation", "title": "Bewertung", "pill": "Kurs / operativer Cashflow", "duration": 7.6,
+      "script": "0:51 · Besser passt das Kurs-Cashflow-Verhältnis. Im Schnitt der letzten fünf Jahre lag es bei etwa 21 – heute bei rund 17.",
+      "params": { "rating": 2, "ratingAt": 0.5, "drawAt": 0.4, "drawDur": 1.8, "avgAt": 3.6, "nowAt": 5.5 } },
+
+    { "id": "09", "type": "valuation", "title": "Bewertung", "pill": "Kurs / operativer Cashflow", "duration": 4.6,
+      "script": "0:59 · Heißt: Unter etwa 260 Dollar ist Amazon eher günstig bewertet.",
+      "params": { "rating": 3, "ratingAt": 2.4, "drawAt": 0, "drawDur": 0.5, "avgAt": 0.5, "nowAt": 0.8,
+        "levels": [ { "price": "$384", "label": "Teuer", "at": 25.6 }, { "price": "$322", "label": "Schnitt", "at": 21 }, { "price": "$260", "label": "Günstig", "at": 17, "markAt": 1.6 } ] } },
+
+    { "id": "10", "type": "statement", "duration": 4.4,
+      "script": "1:04 · Keine Anlageberatung – folg mir für mehr Aktien-Checks.",
+      "params": { "text": "Folg mir für mehr *Aktien-Checks*", "icon": "🐼", "size": 92,
+        "stamp": { "text": "KEINE ANLAGEBERATUNG", "color": "red", "at": 2.2, "size": 46 } } }
+  ]
+}

@@ -60,6 +60,7 @@ Beim Lesen des Skripts **jeden Satz** markieren und so zuordnen:
 | A gegen B, „bei X … bei Y dagegen …“ | `versus` |
 | Jemand hat etwas gesagt/gepostet (Zitat, Tweet, Aussage) | `quote` (eigene Karte, sinngemäß übersetzt, kein Plattform-Nachbau) |
 | Wahrscheinlichkeit, Risiko, Stimmung in % | `gauge` |
+| Aktien-Analyse / Bewertung („billig oder teuer?“) | Papier-Look: `sheet`, `phases`, `checklist`, `tiles`, `valuation` |
 | Preis / Betrag mit Pointe („… und ausverkauft“) | `number` + `stamp` |
 | Hook / Clickbait-Frage am Anfang | `hook` |
 | Satz ohne Daten: Übergang, Meinung, Spannung („Und genau hier wird’s gefährlich“) | `statement` (Schlagwörter mit `*Sternchen*` hervorheben, passendes Emoji als `icon`) |
@@ -89,7 +90,14 @@ Beim Lesen des Skripts **jeden Satz** markieren und so zuordnen:
 
 **Bewegung:** Nie ein Standbild – Partikel im Hintergrund, langsamer Kamera-Zoom und leichtes Schweben laufen immer weiter. Beats schnell hintereinander (0,1–0,3 s Abstand), Clips eher kurz (3–5 s).
 
-## 5. Technische Konstanten
+## 5. Zweiter Stil: Papier-Look
+
+Für ruhigere Analyse-Videos (Aktien-Checks, Bewertungen) gibt es `"theme": "paper"`:
+gedrucktes Blatt auf Holztisch, Textmarker statt Neon, rote Tintenstempel. Gleiches
+Tempo und gleiche Regeln (jeder Satz eine Grafik, Marker-Strich auf das Schlüsselwort).
+Wenn der Nutzer ein Video in diesem Stil schickt oder „im Stil dort“ sagt → Papier-Look.
+
+## 6. Technische Konstanten
 
 - Auflösung **1080 × 1920**, **30 fps**, H.264 MP4 (oder ProRes 4444 mit Alpha via `--alpha`).
 - Layout `full` (Standard, faceless): Titel bei y ≈ 330 px, Grafik ≈ 450–1470 px,

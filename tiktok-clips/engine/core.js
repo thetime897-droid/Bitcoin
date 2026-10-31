@@ -83,6 +83,11 @@
   C.count = (str, k, from = 0) => {
     const m = String(str).match(/^(.*?)(\d[\d,]*(?:\.\d+)?)(.*)$/);
     if (!m) return String(str);
+    // German decimals ("53,4") count as decimals, not thousands separators.
+    if (/^\d+,\d{1,2}$/.test(m[2])) {
+      const [i, f] = m[2].split(',');
+      return m[1] + C.lerp(from, parseFloat(i + '.' + f), k).toFixed(f.length).replace('.', ',') + m[3];
+    }
     const raw = m[2].replace(/,/g, '');
     const dec = (raw.split('.')[1] || '').length;
     let v = C.lerp(from, parseFloat(raw), k).toFixed(dec);
