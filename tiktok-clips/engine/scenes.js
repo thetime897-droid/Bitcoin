@@ -38,6 +38,7 @@
       padding: '14px 34px', borderRadius: '22px', fontFamily: "'Inter Display', var(--font)", letterSpacing: '-1px',
       boxShadow: '0 10px 40px rgba(255,0,0,.45), inset 0 2px 0 rgba(255,255,255,.35)', position: 'relative', overflow: 'hidden',
     } }, wrap, `${p.text || 'HOOK'}${p.emoji ? ' <span>' + p.emoji + '</span>' : ''}`);
+    C.fit(badge, 960);
     const shine = C.h('div', { style: { position: 'absolute', top: '-20%', bottom: '-20%', width: '120px', left: '0',
       background: 'linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent)', transform: 'skewX(-20deg)' } }, badge);
     const sub = p.sub ? C.h('div', { style: { fontSize: '46px', fontWeight: 800, color: '#fff', textShadow: '0 3px 12px rgba(0,0,0,.8)' } }, wrap, p.sub) : null;
@@ -202,7 +203,7 @@
     if (p.yLabel) C.s('text', { x: 34, y: (Y0 + Y1) / 2, class: 'axis', transform: `rotate(-90 34 ${(Y0 + Y1) / 2})`, 'text-anchor': 'middle', 'font-size': 20 }, svg).textContent = p.yLabel;
     ticks.forEach((v) => {
       C.s('line', { x1: X0, x2: X1, y1: yAt(v), y2: yAt(v), stroke: 'var(--grid)', 'stroke-width': 2 }, svg);
-      C.s('text', { x: X0 - 16, y: yAt(v) + 8, class: 'axis', 'text-anchor': 'end' }, svg).textContent = unit + (dec > 0 && v % 1 ? v.toFixed(1) : Math.round(v));
+      if (p.yTicks !== false) C.s('text', { x: X0 - 16, y: yAt(v) + 8, class: 'axis', 'text-anchor': 'end' }, svg).textContent = unit + (dec > 0 && v % 1 ? v.toFixed(1) : Math.round(v));
     });
     (p.xLabels || []).forEach((lab, i, a) => {
       C.s('text', { x: X0 + ((X1 - X0) * i) / Math.max(1, a.length - 1) * (a.length > 1 ? 1 : 0) + (a.length === 1 ? (X1 - X0) / 2 : 0), y: ph - 40, class: 'axis', 'text-anchor': 'middle' }, svg).textContent = lab;
@@ -264,7 +265,9 @@
     if (ev) ctx.cue('ping', ev.at);
     if (pr) { ctx.cue('whoosh', pr.at, 0.7); if (pr.strikeAt != null) ctx.cue('error', pr.strikeAt); }
     if (dr) { ctx.cue('downer', dr.at); ctx.cue('impact', dr.at + 0.75); }
+    const stampUp = addStamp(st, p, ctx, { y: 800, color: 'amber' });
     return (t) => {
+      stampUp(t);
       C.pop(panel, t, 0, 0.45);
       const kd = C.k(t, 0.3, drawDur, 'inOut');
       const f = kd * (main.length - 1);
@@ -787,11 +790,11 @@
       const you = C.place(C.h('div', { style: { fontSize: '86px', lineHeight: 1 } }, st, sd.from || '📱'), x, 540);
       const parts = [...Array(N)].map(() => C.place(C.h('div', { style: { width: '22px', height: '16px', borderRadius: '4px', background: col, boxShadow: `0 0 12px ${col}` } }, st), x, 400));
       const lock = sd.lock ? C.place(C.h('div', { style: { fontSize: '64px' } }, st, '🔒'), x + 70, 300) : null;
-      const verdict = C.place(C.h('div', { class: 'badge', style: { background: col, color: i ? '#05210f' : '#fff', fontSize: '28px', boxShadow: `0 0 26px ${col}88` } }, st, sd.verdict || ''), x, 700);
+      const verdict = C.place(C.h('div', { class: 'badge', style: { background: col, color: col === G.green ? '#05210f' : '#fff', fontSize: '28px', boxShadow: `0 0 26px ${col}88` } }, st, sd.verdict || ''), x, 700);
       const vAt = sd.verdictAt ?? s0 + 1.6;
       ctx.cue('whoosh', s0, 0.7); ctx.cue('pop', s0 + 0.25); ctx.cue('pop', s0 + 0.45, 0.6);
       for (let k = 0; k < 4; k++) ctx.cue('blip', s0 + 0.8 + k * 0.22, 0.5);
-      ctx.cue(i ? 'success' : 'error', vAt, 0.9);
+      ctx.cue(col === G.green ? 'success' : 'error', vAt, 0.9);
       if (lock) ctx.cue('lock', vAt - 0.35);
       return { sd, x, s0, col, panel, title, icon, you, parts, lock, verdict, vAt };
     });
@@ -824,6 +827,98 @@
         if (c.lock) C.pop(c.lock, t, c.vAt - 0.35);
         C.pop(c.verdict, t, c.vAt);
       });
+    };
+  };
+
+  // --------------------------------------------------------------- quote ---
+  // A quoted post with phrases that get marker-highlighted on their beats.
+  // Mark phrases with *stars*; generic card, deliberately not a platform clone.
+  S.quote = (st, p, ctx) => {
+    const card = C.place(C.h('div', { class: 'panel', style: { width: '860px', padding: '40px 46px', textAlign: 'left' } }, st), 540, p.y ?? 410);
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '20px', marginBottom: '26px' } }, card);
+    const initials = p.initials || (p.author || '?').split(/\s+/).map((w) => w[0]).join('').slice(0, 2);
+    C.h('div', { class: 'ctr', style: { width: '78px', height: '78px', borderRadius: '50%', background: 'linear-gradient(135deg,#3a4656,#1b232d)', fontWeight: 900, fontSize: '32px', flex: 'none' } }, head, initials);
+    const who = C.h('div', {}, head);
+    C.h('div', { style: { fontWeight: 900, fontSize: '36px' } }, who, p.author || '');
+    if (p.handle) C.h('div', { class: 'muted', style: { fontSize: '26px', fontWeight: 600 } }, who, p.handle);
+    const cols = (p.hlColors || ['cyan', 'amber', 'red']).map((c) => C.color(c));
+    const hls = [];
+    const paras = (p.text || []).map((txt) => {
+      const el = C.h('div', { style: { fontSize: (p.size || 38) + 'px', fontWeight: 600, lineHeight: 1.4, marginBottom: '22px' } }, card);
+      el.innerHTML = txt.replace(/\*([^*]+)\*/g, (_, m) => `<span class="hl">${m}</span>`);
+      el.querySelectorAll('.hl').forEach((h) => hls.push(h));
+      return el;
+    });
+    hls.forEach((h, i) => {
+      const c = cols[i % cols.length];
+      Object.assign(h.style, { backgroundImage: `linear-gradient(90deg, ${c}66 0 50%, transparent 50%)`, backgroundSize: '200% 100%', backgroundRepeat: 'no-repeat', borderRadius: '6px', padding: '0 4px', boxDecorationBreak: 'clone', webkitBoxDecorationBreak: 'clone' });
+    });
+    const meta = p.meta ? C.h('div', { class: 'muted', style: { fontSize: '24px', fontWeight: 600 } }, card, p.meta) : null;
+    const times = hls.map((_, i) => (p.highlightAt || [])[i] ?? 1.2 + i * 1.1);
+    ctx.cue('whoosh', 0); ctx.cue('pop', 0.1);
+    times.forEach((at) => { ctx.cue('whoosh', at, 0.35); ctx.cue('ping', at + 0.3, 0.6); });
+    return (t) => {
+      C.pop(card, t, 0, 0.5);
+      paras.forEach((el, i) => {
+        const k = C.k(t, 0.25 + i * 0.25, 0.4);
+        el.style.opacity = k;
+        el.style.transform = `translateY(${(1 - k) * 20}px)`;
+      });
+      if (meta) meta.style.opacity = C.k(t, 0.8, 0.4);
+      hls.forEach((h, i) => {
+        const k = C.k(t, times[i], 0.6, 'inOut');
+        h.style.backgroundPosition = `${100 - k * 100}% 0`;
+        h.style.color = k > 0.5 ? '#fff' : '';
+      });
+    };
+  };
+
+  // --------------------------------------------------------------- gauge ---
+  // Speedometer whose needle swings to a percentage (risk, odds, sentiment).
+  S.gauge = (st, p, ctx) => {
+    const col = C.color(p.color || 'red');
+    const v = C.clamp((p.value ?? 60) / 100);
+    const cx = 540, cy = 440, R = 280;
+    const pt = (deg, r) => [cx + r * Math.cos((deg * Math.PI) / 180), cy + r * Math.sin((deg * Math.PI) / 180)];
+    const arc = (r) => { const a = pt(150, r), b = pt(390, r); return `M${a} A${r},${r} 0 1 1 ${b}`; };
+    const svg = C.svg(st);
+    C.s('circle', { cx, cy, r: R + 46, fill: 'rgba(20,28,36,.6)', stroke: 'rgba(255,255,255,.12)', 'stroke-width': 3 }, svg);
+    C.s('path', { d: arc(R), fill: 'none', stroke: 'rgba(255,255,255,.1)', 'stroke-width': 34, 'stroke-linecap': 'round' }, svg);
+    const val = C.s('path', { d: arc(R), fill: 'none', stroke: col, 'stroke-width': 34, 'stroke-linecap': 'round', pathLength: 100, filter: 'url(#glow-sm)' }, svg);
+    for (let i = 0; i <= 10; i++) {
+      const deg = 150 + 24 * i, [x1, y1] = pt(deg, R - 34), [x2, y2] = pt(deg, R - 58);
+      C.s('line', { x1, y1, x2, y2, stroke: 'rgba(255,255,255,.5)', 'stroke-width': i % 5 ? 3 : 5 }, svg);
+      const [tx, ty] = pt(deg, R - 86);
+      C.s('text', { x: tx, y: ty + 8, class: 'axis', 'text-anchor': 'middle', 'font-size': 24 }, svg).textContent = i * 10;
+    }
+    const needle = C.s('g', {}, svg);
+    C.s('polygon', { points: `${cx - 10},${cy} ${cx},${cy - R + 70} ${cx + 10},${cy}`, fill: col, filter: 'url(#glow-sm)' }, needle);
+    C.s('circle', { cx, cy, r: 26, fill: '#d9dee3', stroke: '#6b7682', 'stroke-width': 4 }, svg);
+    const num = C.place(C.h('div', { style: { fontSize: '120px', fontWeight: 900, color: col, textShadow: `0 0 30px ${col}` } }, st, ''), cx, cy + 215);
+    const chip = p.ticker ? C.place(C.h('div', { class: 'tag ctr', style: { gap: '12px', color: 'var(--text)', background: '#fff', borderColor: '#fff', padding: '6px 18px' } }, st), cx, cy + 300) : null;
+    if (chip) { C.chip(p.ticker, 40, chip); C.h('span', { style: { color: '#111' } }, chip, p.name || C.brand(p.ticker).name); }
+    const lab = C.place(C.h('div', { class: 'label', style: { fontSize: '34px' } }, st, p.label || ''), cx, cy + (chip ? 362 : 300));
+    const sub = p.sub ? C.place(C.h('div', { class: 'label muted', style: { fontSize: '24px' } }, st, p.sub), cx, cy + (chip ? 408 : 346)) : null;
+    const at = p.at ?? 0.9, sweep = p.sweepDur ?? 1.6;
+    ctx.cue('whoosh', 0); ctx.cue('riser', at + sweep - 1.1, 0.6);
+    for (let i = 0; i < 8; i++) ctx.cue('tick', at + (i * sweep) / 8, 0.5);
+    ctx.cue('alert', at + sweep, 0.7);
+    return (t) => {
+      svg.style.opacity = C.k(t, 0, 0.3);
+      svg.style.transformOrigin = `${cx}px ${cy}px`;
+      svg.style.transform = `scale(${C.lerp(0.85, 1, C.k(t, 0, 0.5, 'back'))})`;
+      const k = C.k(t, at, sweep, 'back');
+      const wob = t > at + sweep ? Math.sin(t * 22) * 0.6 * Math.exp(-(t - at - sweep) * 2) : 0;
+      const cur = v * k;
+      needle.setAttribute('transform', `rotate(${240 * cur - 120 + wob} ${cx} ${cy})`);
+      val.setAttribute('stroke-dasharray', `${Math.max(0, cur) * 100} 100`);
+      val.style.opacity = cur > 0.005 ? 1 : 0;
+      num.textContent = Math.round(Math.max(0, Math.min(v, cur)) * 100) + '%';
+      num.style.opacity = C.k(t, at, 0.3);
+      if (chip) C.pop(chip, t, 0.3);
+      C.rise(lab, t, 0.5);
+      if (sub) C.rise(sub, t, 0.7);
+      ctx.flash(t, at + sweep, col + '44');
     };
   };
 

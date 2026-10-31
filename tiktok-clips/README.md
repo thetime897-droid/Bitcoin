@@ -59,6 +59,8 @@ oder mit echtem Logo `{ "ticker": "META", "logo": "logos/meta.png" }`.
 |---|---|---|
 | `hook` | Alarm-Badge mit pulsierenden Ringen für den Einstieg | `text`, `emoji`, `sub`, `color`, `rings` |
 | `statement` | Satz ohne Daten als animierte Schlagworte (füllt jede Lücke) | `text` (`*Wort*` = hervorgehoben), `icon`, `color`, `size`, `stagger`, `stamp` |
+| `quote` | Zitat/Post-Karte, Passagen werden nacheinander farbig markiert | `author`, `handle`, `initials`, `text[]` (`*Passage*` = Markierung), `highlightAt[]`, `hlColors`, `meta`, `size` |
+| `gauge` | Tacho, Nadel schwingt auf einen Prozentwert | `value` (0–100), `ticker`, `name`, `label`, `sub`, `color`, `at`, `sweepDur` |
 | `versus` | Zwei Optionen nebeneinander, Daten fliegen weg (links) bzw. bleiben (rechts) | `left`/`right {title,icon,from,verdict,verdictAt,color,lock,flow:"out"\|"stay"}`, `rightAt` |
 | `flow` | Akteure → Ziel, Geld fließt; kippt bei `warnAt` auf Warnung | `sources[]`, `target`, `warnAt`, `color`, `stamp` |
 | `linechart` | Kursverlauf, zeichnet sich, Crash-Abschnitt | `ticker`, `header`, `data` (Array oder `{from,to,points,vol,seed}`), `xLabels`, `yLabel`, `unit`, `event{label,at,index}`, `drop{badge,sub,at,data}`, `projection{label,at,strikeAt}` |
@@ -74,7 +76,7 @@ oder mit echtem Logo `{ "ticker": "META", "logo": "logos/meta.png" }`.
 | `list` | Aufzählung, Punkte fliegen nacheinander rein | `items[{text,value,color,icon,ticker,at}]` |
 | `cta` | Kanal/Produkt mit Lorbeer-Medaille | `brand`, `glyph`, `stats[{value,label}]` |
 
-`stamp` (bei `number`, `statement`, `flow`): `{ "text": "AUSVERKAUFT", "at": 4.9, "color": "red", "size": 64, "y": 700, "rotate": -8 }` –
+`stamp` (bei `number`, `statement`, `flow`, `linechart`): `{ "text": "AUSVERKAUFT", "at": 4.9, "color": "red", "size": 64, "y": 700, "rotate": -8 }` –
 ein Stempel, der mit Knall reinfliegt.
 
 Beispiele: `storyboards/beispiel-ki-blase.json` (fast jeder Typ) und

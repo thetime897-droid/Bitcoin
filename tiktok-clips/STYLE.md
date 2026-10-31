@@ -58,6 +58,8 @@ Beim Lesen des Skripts **jeden Satz** markieren und so zuordnen:
 | „Es gibt 3 Dinge …“ (Spannung aufbauen) | `mystery`, Auflösung danach mit `list` |
 | Aufzählung, Checkliste, Gründe, Team, technische Daten | `list` |
 | A gegen B, „bei X … bei Y dagegen …“ | `versus` |
+| Jemand hat etwas gesagt/gepostet (Zitat, Tweet, Aussage) | `quote` (eigene Karte, sinngemäß übersetzt, kein Plattform-Nachbau) |
+| Wahrscheinlichkeit, Risiko, Stimmung in % | `gauge` |
 | Preis / Betrag mit Pointe („… und ausverkauft“) | `number` + `stamp` |
 | Hook / Clickbait-Frage am Anfang | `hook` |
 | Satz ohne Daten: Übergang, Meinung, Spannung („Und genau hier wird’s gefährlich“) | `statement` (Schlagwörter mit `*Sternchen*` hervorheben, passendes Emoji als `icon`) |
