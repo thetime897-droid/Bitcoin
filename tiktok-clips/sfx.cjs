@@ -1,10 +1,17 @@
 #!/usr/bin/env node
-// Sound-effect library for the clips. Every effect is synthesized here, so
-// there is nothing to license. To use a downloaded effect instead (Pixabay,
-// Mixkit, ...), drop it into sfx/<name>.mp3|.wav|.ogg - it then wins over the
-// synthesized version everywhere.
+// Sound-effect library for the clips.
 //
-//   node sfx.cjs            -> writes the synthesized set to sfx/generiert/*.wav
+// Each effect name (whoosh, pop, ping, cash, ...) maps to real recorded CC0
+// samples in sfx/lib/ (see sfx/lib/QUELLEN.md); several variants per name are
+// rotated so repeated pops or whooshes do not sound identical. Composite
+// effects (cash, coins, stamp) are layered from those samples. Anything not
+// covered falls back to the synthesized versions below. A file dropped into
+// sfx/<name>.mp3|.wav|.ogg (e.g. from Pixabay) always wins.
+//
+// All samples are loudness-matched, so the mix volume is predictable; clips
+// are mixed quietly on purpose (sfxVolume, default 0.35) to sit under a voice.
+//
+//   node sfx.cjs            -> writes every effect to sfx/vorschau/*.wav
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -136,33 +143,106 @@ const SYNTH = {
     return b;
   },
 };
-const GAIN = { whoosh: 0.55, 'whoosh-down': 0.55, pop: 0.55, tick: 0.35, blip: 0.4, coins: 0.6, shine: 0.55, riser: 0.6, ping: 0.7, ding: 0.7 };
+const GAIN = {
+  whoosh: 0.7, 'whoosh-down': 0.7, pop: 0.55, ping: 0.55, ding: 0.6, tick: 0.3, blip: 0.35,
+  cash: 0.9, coins: 0.5, stamp: 0.8, impact: 0.75, riser: 0.45, downer: 0.55, error: 0.5,
+  success: 0.55, alert: 0.45, crack: 0.45, lock: 0.55, shine: 0.5,
+};
 
 const DIR = path.join(__dirname, 'sfx');
-const cache = {};
-// Returns mono float samples at 48 kHz: user file from sfx/ if present, else synth.
-function get(name) {
-  if (cache[name]) return cache[name];
-  const file = ['mp3', 'wav', 'ogg', 'm4a'].map((e) => path.join(DIR, `${name}.${e}`)).find((f) => fs.existsSync(f));
-  let b;
-  if (file) {
-    const raw = execFileSync('ffmpeg', ['-v', 'error', '-i', file, '-f', 'f32le', '-ac', '1', '-ar', String(SR), '-'], { maxBuffer: 1 << 28 });
-    b = new Float32Array(raw.buffer, raw.byteOffset, raw.length / 4);
-  } else if (SYNTH[name]) {
-    seed = 7 + name.length;
-    b = normalize(SYNTH[name](), 0.9 * (GAIN[name] ?? 0.8));
-  } else {
-    console.warn(`  Unbekannter Sound "${name}" – übersprungen`);
-    b = new Float32Array(0);
-  }
-  return (cache[name] = b);
+const EL = 'lib/crafter-elements/', KI = 'lib/kenney-interface/';
+// name -> variants; a variant is a file or a list of layers {f, at, gain, rate}.
+const LIB = {
+  whoosh: [EL + 'whoosh.mp3', EL + 'whoosh-alt1.mp3', EL + 'whoosh-alt2.mp3', EL + 'swoosh.mp3'],
+  'whoosh-down': [EL + 'swoosh.mp3', EL + 'whoosh-alt2.mp3'],
+  pop: [KI + 'drop_002.wav', KI + 'drop_003.wav', EL + 'pop.mp3', KI + 'pluck_002.wav'],
+  ping: [KI + 'glass_001.wav', KI + 'glass_004.wav', KI + 'confirmation_001.wav'],
+  ding: [KI + 'confirmation_002.wav', KI + 'confirmation_004.wav'],
+  tick: [KI + 'tick_001.wav', KI + 'tick_002.wav', KI + 'tick_004.wav'],
+  blip: [KI + 'select_001.wav', KI + 'select_002.wav'],
+  impact: [EL + 'boom.mp3'],
+  riser: [EL + 'riser.mp3'],
+  success: [KI + 'confirmation_003.wav', EL + 'success.mp3'],
+  error: [KI + 'error_003.wav', KI + 'error_001.wav'],
+  alert: [EL + 'error.mp3', KI + 'question_001.wav'],
+  lock: [KI + 'switch_002.wav'],
+  crack: [EL + 'glitch.mp3'],
+  downer: [KI + 'minimize_001.wav', KI + 'minimize_003.wav'],
+  shine: [EL + 'magic-reveal.mp3'],
+  stamp: [[{ f: EL + 'boom.mp3', gain: 0.7 }, { f: KI + 'drop_004.wav', gain: 0.9, rate: 0.8 }]],
+  coins: [[0, 0.07, 0.15, 0.21, 0.3, 0.42].map((at, i) => ({ f: KI + `glass_00${[2, 3, 5, 6][i % 4]}.wav`, at, gain: 1 - i * 0.12, rate: 1.4 + (i % 3) * 0.25 }))],
+  // "Ka-ching": drawer clack, bell, then a little coin jingle.
+  cash: [[
+    { f: KI + 'switch_001.wav', gain: 0.9 },
+    { f: KI + 'switch_003.wav', at: 0.05, gain: 0.7, rate: 0.85 },
+    { f: KI + 'glass_004.wav', at: 0.11, gain: 1, rate: 1.5 },
+    { f: KI + 'glass_001.wav', at: 0.13, gain: 0.7, rate: 2 },
+    ...[0.24, 0.31, 0.4, 0.5].map((at, i) => ({ f: KI + `glass_00${[2, 5, 3, 6][i]}.wav`, at, gain: 0.45 - i * 0.06, rate: 1.7 + i * 0.15 })),
+  ]],
+};
+
+// Decodes a file to mono 48 kHz, trims leading/trailing silence, optional pitch.
+const decoded = {};
+function decode(file, rate = 1) {
+  const key = file + '@' + rate;
+  if (decoded[key]) return decoded[key];
+  const trim = 'silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-55dB,areverse';
+  const af = (rate !== 1 ? `asetrate=${Math.round(SR * rate)},aresample=${SR},` : '') + trim;
+  const raw = execFileSync('ffmpeg', ['-v', 'error', '-i', file, '-af', af, '-f', 'f32le', '-ac', '1', '-ar', String(SR), '-'], { maxBuffer: 1 << 28 });
+  return (decoded[key] = new Float32Array(raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.length)));
+}
+// Loudness match: RMS of the audible part to -20 dBFS, peaks capped.
+function level(b) {
+  let sum = 0, n = 0, peak = 0;
+  for (const v of b) { const a = Math.abs(v); peak = Math.max(peak, a); if (a > 0.01) { sum += v * v; n++; } }
+  if (!n) return b;
+  const g = Math.min(0.1 / Math.sqrt(sum / n), 0.9 / peak);
+  return b.map((v) => v * g);
+}
+function render(variant) {
+  if (typeof variant === 'string') return level(decode(path.join(DIR, variant)));
+  const parts = variant.map((l) => ({ ...l, b: decode(path.join(DIR, l.f), l.rate || 1) }));
+  const out = buf(Math.max(...parts.map((l) => (l.at || 0) + l.b.length / SR)) + 0.01);
+  parts.forEach((l) => add(out, l.b, l.at || 0, l.gain ?? 1));
+  return level(out);
 }
 
-// Mixes cue list [{name, at, gain}] into one buffer of `dur` seconds.
-function mix(cues, dur, volume = 1) {
+const cache = {};
+// Mono samples for effect `name`; `pick` selects among its variants.
+function get(name, pick = 0) {
+  const user = ['mp3', 'wav', 'ogg', 'm4a'].map((e) => path.join(DIR, `${name}.${e}`)).find((f) => fs.existsSync(f));
+  const variants = user ? [user] : LIB[name];
+  const idx = variants ? Math.abs(pick) % variants.length : 0;
+  const key = name + '#' + idx;
+  if (cache[key]) return cache[key];
+  let b;
+  if (user) b = level(decode(user));
+  else if (variants) b = render(variants[idx]);
+  else if (SYNTH[name]) { seed = 7 + name.length; b = level(SYNTH[name]()); }
+  else { console.warn(`  Unbekannter Sound "${name}" – übersprungen`); b = new Float32Array(0); }
+  for (let i = 0; i < b.length; i++) b[i] *= GAIN[name] ?? 0.6;
+  return (cache[key] = b);
+}
+
+// Mixes cue list [{name, at, gain}] into one buffer of `dur` seconds. The same
+// effect firing twice within 0.12 s is played once, which keeps busy scenes calm.
+function mix(cues, dur, volume = 0.35) {
   const out = buf(dur);
-  for (const c of cues) add(out, get(c.name), c.at, (c.gain ?? 1) * volume);
-  for (let i = 0; i < out.length; i++) out[i] = Math.tanh(out[i] * 1.1);
+  const last = {}, count = {};
+  [...cues].sort((a, b) => a.at - b.at).forEach((c) => {
+    if (last[c.name] != null && c.at - last[c.name] < 0.12) return;
+    last[c.name] = c.at;
+    count[c.name] = (count[c.name] || 0) + 1;
+    let b = get(c.name, count[c.name] - 1), at = c.at;
+    // Scenes cue a riser 1.1 s before its peak; recorded risers are longer, so
+    // align the end of the sample to that peak and cut whatever starts too early.
+    if (c.name === 'riser') {
+      at = c.at + 1.1 - b.length / SR;
+      if (at < 0) { b = b.subarray(Math.round(-at * SR)); at = 0; }
+    }
+    add(out, b, at, (c.gain ?? 1) * volume);
+  });
+  for (let i = 0; i < out.length; i++) out[i] = Math.tanh(out[i]);
   const fade = Math.round(0.04 * SR);
   for (let i = 0; i < fade && i < out.length; i++) out[out.length - 1 - i] *= i / fade;
   return out;
@@ -178,10 +258,18 @@ function wav(samples) {
   return Buffer.concat([h, pcm]);
 }
 
-module.exports = { SR, get, mix, names: Object.keys(SYNTH) };
+const names = [...new Set([...Object.keys(LIB), ...Object.keys(SYNTH)])];
+module.exports = { SR, get, mix, names };
 
 if (require.main === module) {
-  const out = path.join(DIR, 'generiert');
+  const out = path.join(DIR, 'vorschau');
   fs.mkdirSync(out, { recursive: true });
-  for (const n of Object.keys(SYNTH)) { fs.writeFileSync(path.join(out, n + '.wav'), wav(get(n))); console.log('✓', n + '.wav'); }
+  for (const n of names) {
+    const k = LIB[n] ? LIB[n].length : 1;
+    for (let i = 0; i < k; i++) {
+      const f = `${n}${k > 1 ? '-' + (i + 1) : ''}.wav`;
+      fs.writeFileSync(path.join(out, f), wav(get(n, i)));
+      console.log('✓', f);
+    }
+  }
 }

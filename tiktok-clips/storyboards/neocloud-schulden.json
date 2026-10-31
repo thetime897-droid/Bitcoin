@@ -1,73 +1,292 @@
 {
-  "name": "neocloud-schulden",
-  "fps": 30,
-  "theme": "dark",
-  "layout": "full",
-  "scenes": [
-    { "id": "01", "type": "hook", "duration": 4,
-      "script": "0:00 · ab „Elon Musk“ · Elon Musk sagt: Über 200 KI-Firmen werden sterben.",
-      "params": { "text": "MUSK: 200 KI-FIRMEN STERBEN", "emoji": "🚨", "sub": "Und kaum einer versteht, warum", "size": 64 } },
-
-    { "id": "02", "type": "quote", "duration": 6,
-      "script": "0:03 · ab „Der Grund“ · Der Grund: Die Kreditmärkte drehen ihnen gerade den Geldhahn zu.",
-      "params": { "author": "Elon Musk", "handle": "@elonmusk", "size": 34, "meta": "25.10.2026 · sinngemäß übersetzt",
-        "text": [ "Seit ein paar Wochen haben die Kreditmärkte *fast komplett den Geldhahn zugedreht* – für jede Firma ohne nennenswerten Umsatz außerhalb von KI-Rechenzentren.",
-                  "Heißt: *Die über 200 Neoclouds werden sterben.* Ein paar schaffen es, aber nicht viele." ],
-        "highlightAt": [1.4, 3.6] } },
-
-    { "id": "03", "type": "flow", "title": "So verdienen Neoclouds", "pill": "Nvidia-Chips zur Miete", "duration": 5.5,
-      "script": "0:07 · ab „Diese Neoclouds“ · Diese Neoclouds kaufen Nvidia-Chips und vermieten Rechenleistung an KI-Firmen wie OpenAI oder Meta.",
-      "params": { "sources": ["OPENAI", "MSFT", "META"], "target": "NEOCLOUD", "color": "cyan" },
-      "sfx": [ { "name": "coins", "at": 2.0, "gain": 0.6 } ] },
-
-    { "id": "04", "type": "number", "title": "KI-Schulden 2026", "pill": "Prognose Morgan Stanley", "duration": 4.5,
-      "script": "0:12 · ab „über 500 Milliarden“ · Bezahlt wird das auf Pump: Die KI-Branche macht dieses Jahr wohl über 500 Milliarden Dollar neue Schulden.",
-      "params": { "value": "500 MRD. $", "label": "NEUE SCHULDEN", "color": "red", "size": 230, "countDur": 1.1,
-        "stamp": { "text": "AUF PUMP", "color": "red", "at": 2.4, "size": 70 } },
-      "sfx": [ { "name": "cash", "at": 1.15 } ] },
-
-    { "id": "05", "type": "loop", "title": "Der Teufelskreis", "theme": "alarm", "duration": 5.5,
-      "script": "0:19 · ab „Und neue Kredite“ · Und neue Kredite werden teurer. Alte Schulden zahlt man mit neuen – ein Teufelskreis.",
-      "params": { "nodes": [ { "text": "NEUE KREDITE", "icon": "💳" }, { "text": "ALTE SCHULDEN", "icon": "🔒" } ], "center": "HÖHERE ZINSEN" } },
-
-    { "id": "06", "type": "number", "title": "CoreWeave", "pill": "Größte Neocloud", "theme": "alarm", "duration": 4,
-      "script": "0:24 · ab „Bestes Beispiel“ · Bestes Beispiel: CoreWeave. Über 50 Milliarden Dollar Schulden.",
-      "params": { "value": "50 MRD. $", "label": "SCHULDEN", "color": "red", "size": 240, "countDur": 1.0 },
-      "sfx": [ { "name": "downer", "at": 1.1, "gain": 0.7 } ] },
-
-    { "id": "07", "type": "gauge", "title": "Ausfallrisiko", "duration": 6,
-      "script": "0:28 · ab „Der Kreditmarkt“ · Der Kreditmarkt preist schon 60 Prozent Wahrscheinlichkeit ein, dass CoreWeave in fünf Jahren nicht mehr zahlen kann.",
-      "params": { "value": 60, "ticker": "CRWV", "name": "COREWEAVE", "label": "CHANCE AUF ZAHLUNGSAUSFALL", "sub": "laut CDS-Markt · innerhalb von 5 Jahren", "at": 0.8, "sweepDur": 1.6 } },
-
-    { "id": "08", "type": "versus", "title": "Die KI-Welt spaltet sich", "duration": 6.5,
-      "script": "0:35 · ab „Die Giganten“ · Die Giganten wie Amazon, Microsoft und Google zahlen mit eigenem Geld. Neoclouds leben auf Pump.",
-      "params": { "rightAt": 3.4,
-        "left": { "title": "GIGANTEN", "icon": "💰", "from": "🏢", "verdict": "✓ EIGENES GELD", "color": "green", "flow": "stay", "verdictAt": 2.2 },
-        "right": { "title": "NEOCLOUDS", "icon": "💸", "from": "🏦", "verdict": "✗ AUF PUMP", "color": "red", "flow": "out", "verdictAt": 5.2 } } },
-
-    { "id": "09", "type": "statement", "duration": 7,
-      "script": "0:41 · ab „Das gab's schon mal“ · Das gab's schon mal: Um 2000 baute die Telekom-Branche das Internet auf Pump. Dann versiegten die Kredite – Pleitewelle.",
-      "params": { "text": "*2000:* Internet-Boom auf *Pump.*", "icon": "📡", "color": "amber", "stagger": 0.22,
-        "stamp": { "text": "PLEITEWELLE", "color": "red", "at": 5.4, "size": 70, "y": 830 } },
-      "sfx": [ { "name": "riser", "at": 4.3, "gain": 0.5 } ] },
-
-    { "id": "10", "type": "linechart", "title": "Dip oder Crash?", "duration": 5.5,
-      "script": "0:49 · ab „Ist das jetzt“ · Ist das jetzt ein Dip oder der Anfang vom Crash? Das weiß niemand.",
-      "params": { "name": "NEOCLOUD-AKTIEN", "header": "SCHEMATISCH", "yTicks": false, "tag": false, "unit": "", "decimals": 0,
-        "data": { "from": 100, "to": 62, "points": 30, "vol": 0.035, "seed": 5 }, "drawDur": 1.0,
-        "projection": { "label": "DIP?", "at": 1.3 },
-        "drop": { "badge": "CRASH?", "sub": "oder", "at": 2.3, "data": { "to": 30, "points": 10 } },
-        "stamp": { "text": "WEISS NIEMAND", "color": "amber", "at": 4.0, "size": 58 } } },
-
-    { "id": "11", "type": "list", "title": "Sei für beides bereit", "duration": 6,
-      "script": "0:54 · ab „Also sei“ · Also sei für beides bereit: breit streuen, Schulden prüfen, nie alles auf eine Karte.",
-      "params": { "items": [
-        { "icon": "🧺", "text": "Breit streuen", "color": "green", "at": 1.6 },
-        { "icon": "🔍", "text": "Schulden prüfen", "color": "cyan", "at": 2.6 },
-        { "icon": "🃏", "text": "Nie alles auf eine Karte", "color": "amber", "at": 3.6 } ] } },
-
-    { "id": "12", "type": "cta", "duration": 4,
-      "script": "0:59 · ab „Keine Anlageberatung“ · Keine Anlageberatung. Folg mir für mehr.",
-      "params": { "brand": "PANDA_INVESTIERT", "glyph": "🐼", "stats": [ { "value": "FOLG MIR", "label": "Keine Anlageberatung" } ] } }
-  ]
+ "name": "neocloud-schulden",
+ "fps": 30,
+ "theme": "dark",
+ "layout": "full",
+ "scenes": [
+  {
+   "id": "01",
+   "type": "hook",
+   "duration": 4.4,
+   "script": "0:00 · ab „Elon Musk“ · Elon Musk sagt: Über 200 KI-Firmen werden sterben.",
+   "params": {
+    "text": "MUSK: 200 KI-FIRMEN STERBEN",
+    "emoji": "🚨",
+    "sub": "Und kaum einer versteht, warum",
+    "size": 64
+   }
+  },
+  {
+   "id": "02",
+   "type": "quote",
+   "duration": 6.4,
+   "script": "0:03 · ab „Der Grund“ · Der Grund: Die Kreditmärkte drehen ihnen gerade den Geldhahn zu.",
+   "params": {
+    "author": "Elon Musk",
+    "handle": "@elonmusk",
+    "size": 34,
+    "meta": "25.10.2026 · sinngemäß übersetzt",
+    "text": [
+     "Seit ein paar Wochen haben die Kreditmärkte *fast komplett den Geldhahn zugedreht* – für jede Firma ohne nennenswerten Umsatz außerhalb von KI-Rechenzentren.",
+     "Heißt: *Die über 200 Neoclouds werden sterben.* Ein paar schaffen es, aber nicht viele."
+    ],
+    "highlightAt": [
+     1.4,
+     3.6
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "flow",
+   "title": "So verdienen Neoclouds",
+   "pill": "Nvidia-Chips zur Miete",
+   "duration": 5.9,
+   "script": "0:07 · ab „Diese Neoclouds“ · Diese Neoclouds kaufen Nvidia-Chips und vermieten Rechenleistung an KI-Firmen wie OpenAI oder Meta.",
+   "params": {
+    "sources": [
+     "OPENAI",
+     "MSFT",
+     "META"
+    ],
+    "target": "NEOCLOUD",
+    "color": "cyan"
+   },
+   "sfx": [
+    {
+     "name": "coins",
+     "at": 2.0,
+     "gain": 0.6
+    }
+   ]
+  },
+  {
+   "id": "04",
+   "type": "number",
+   "title": "KI-Schulden 2026",
+   "pill": "Prognose Morgan Stanley",
+   "duration": 4.9,
+   "script": "0:12 · ab „über 500 Milliarden“ · Bezahlt wird das auf Pump: Die KI-Branche macht dieses Jahr wohl über 500 Milliarden Dollar neue Schulden.",
+   "params": {
+    "value": "500 MRD. $",
+    "label": "NEUE SCHULDEN",
+    "color": "red",
+    "size": 230,
+    "countDur": 1.1,
+    "stamp": {
+     "text": "AUF PUMP",
+     "color": "red",
+     "at": 2.4,
+     "size": 70
+    }
+   },
+   "sfx": [
+    {
+     "name": "cash",
+     "at": 1.15
+    }
+   ]
+  },
+  {
+   "id": "05",
+   "type": "loop",
+   "title": "Der Teufelskreis",
+   "theme": "alarm",
+   "duration": 5.9,
+   "script": "0:19 · ab „Und neue Kredite“ · Und neue Kredite werden teurer. Alte Schulden zahlt man mit neuen – ein Teufelskreis.",
+   "params": {
+    "nodes": [
+     {
+      "text": "NEUE KREDITE",
+      "icon": "💳"
+     },
+     {
+      "text": "ALTE SCHULDEN",
+      "icon": "🔒"
+     }
+    ],
+    "center": "HÖHERE ZINSEN"
+   }
+  },
+  {
+   "id": "06",
+   "type": "number",
+   "title": "CoreWeave",
+   "pill": "Größte Neocloud",
+   "theme": "alarm",
+   "duration": 4.4,
+   "script": "0:24 · ab „Bestes Beispiel“ · Bestes Beispiel: CoreWeave. Über 50 Milliarden Dollar Schulden.",
+   "params": {
+    "value": "50 MRD. $",
+    "label": "SCHULDEN",
+    "color": "red",
+    "size": 240,
+    "countDur": 1.0
+   },
+   "sfx": [
+    {
+     "name": "downer",
+     "at": 1.1,
+     "gain": 0.7
+    }
+   ]
+  },
+  {
+   "id": "07",
+   "type": "gauge",
+   "title": "Ausfallrisiko",
+   "duration": 6.4,
+   "script": "0:28 · ab „Der Kreditmarkt“ · Der Kreditmarkt preist schon 60 Prozent Wahrscheinlichkeit ein, dass CoreWeave in fünf Jahren nicht mehr zahlen kann.",
+   "params": {
+    "value": 60,
+    "ticker": "CRWV",
+    "name": "COREWEAVE",
+    "label": "CHANCE AUF ZAHLUNGSAUSFALL",
+    "sub": "laut CDS-Markt · innerhalb von 5 Jahren",
+    "at": 0.8,
+    "sweepDur": 1.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "versus",
+   "title": "Die KI-Welt spaltet sich",
+   "duration": 6.9,
+   "script": "0:35 · ab „Die Giganten“ · Die Giganten wie Amazon, Microsoft und Google zahlen mit eigenem Geld. Neoclouds leben auf Pump.",
+   "params": {
+    "rightAt": 3.4,
+    "left": {
+     "title": "GIGANTEN",
+     "icon": "💰",
+     "from": "🏢",
+     "verdict": "✓ EIGENES GELD",
+     "color": "green",
+     "flow": "stay",
+     "verdictAt": 2.2
+    },
+    "right": {
+     "title": "NEOCLOUDS",
+     "icon": "💸",
+     "from": "🏦",
+     "verdict": "✗ AUF PUMP",
+     "color": "red",
+     "flow": "out",
+     "verdictAt": 5.2
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "statement",
+   "duration": 7.4,
+   "script": "0:41 · ab „Das gab's schon mal“ · Das gab's schon mal: Um 2000 baute die Telekom-Branche das Internet auf Pump. Dann versiegten die Kredite – Pleitewelle.",
+   "params": {
+    "text": "*2000:* Internet-Boom auf *Pump.*",
+    "icon": "📡",
+    "color": "amber",
+    "stagger": 0.22,
+    "stamp": {
+     "text": "PLEITEWELLE",
+     "color": "red",
+     "at": 5.4,
+     "size": 70,
+     "y": 830
+    }
+   },
+   "sfx": [
+    {
+     "name": "riser",
+     "at": 4.3,
+     "gain": 0.5
+    }
+   ]
+  },
+  {
+   "id": "10",
+   "type": "linechart",
+   "title": "Dip oder Crash?",
+   "duration": 5.9,
+   "script": "0:49 · ab „Ist das jetzt“ · Ist das jetzt ein Dip oder der Anfang vom Crash? Das weiß niemand.",
+   "params": {
+    "name": "NEOCLOUD-AKTIEN",
+    "header": "SCHEMATISCH",
+    "yTicks": false,
+    "tag": false,
+    "unit": "",
+    "decimals": 0,
+    "data": {
+     "from": 100,
+     "to": 62,
+     "points": 30,
+     "vol": 0.035,
+     "seed": 5
+    },
+    "drawDur": 1.0,
+    "projection": {
+     "label": "DIP?",
+     "at": 1.3
+    },
+    "drop": {
+     "badge": "CRASH?",
+     "sub": "oder",
+     "at": 2.3,
+     "data": {
+      "to": 30,
+      "points": 10
+     }
+    },
+    "stamp": {
+     "text": "WEISS NIEMAND",
+     "color": "amber",
+     "at": 4.0,
+     "size": 58
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "list",
+   "title": "Sei für beides bereit",
+   "duration": 6.4,
+   "script": "0:54 · ab „Also sei“ · Also sei für beides bereit: breit streuen, Schulden prüfen, nie alles auf eine Karte.",
+   "params": {
+    "items": [
+     {
+      "icon": "🧺",
+      "text": "Breit streuen",
+      "color": "green",
+      "at": 1.6
+     },
+     {
+      "icon": "🔍",
+      "text": "Schulden prüfen",
+      "color": "cyan",
+      "at": 2.6
+     },
+     {
+      "icon": "🃏",
+      "text": "Nie alles auf eine Karte",
+      "color": "amber",
+      "at": 3.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "12",
+   "type": "cta",
+   "duration": 4.4,
+   "script": "0:59 · ab „Keine Anlageberatung“ · Keine Anlageberatung. Folg mir für mehr.",
+   "params": {
+    "brand": "PANDA_INVESTIERT",
+    "glyph": "🐼",
+    "stats": [
+     {
+      "value": "FOLG MIR",
+      "label": "Keine Anlageberatung"
+     }
+    ]
+   }
+  }
+ ]
 }

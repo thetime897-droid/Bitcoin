@@ -82,7 +82,7 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
       const own = s.sfxDefault === false || s.sfx === false ? [] : await page.evaluate(() => window.Clip.cues());
       const cues = own.concat(Array.isArray(s.sfx) ? s.sfx : []);
       const audioFile = path.join(outDir, `.${base}.f32`);
-      const samples = SFX.mix(cues, dur, sb.sfxVolume ?? 1);
+      const samples = SFX.mix(cues, dur, sb.sfxVolume);
       fs.writeFileSync(audioFile, Buffer.from(samples.buffer, samples.byteOffset, samples.byteLength));
       audio = ['-f', 'f32le', '-ar', String(SFX.SR), '-ac', '1', '-i', audioFile];
       s._audioFile = audioFile;

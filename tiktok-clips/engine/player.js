@@ -54,17 +54,30 @@
     if (!fn) throw new Error('Unknown scene type: ' + sc.type);
     cues = [];
     const sceneUpdate = fn(frame.querySelector('#stage'), sc.params || {}, { ...ctx, dur });
+    // Clean edges: content sharpens in over the first 0.3 s and zooms/blurs out
+    // over the last 0.4 s, so every clip can be cut in and out without a jump.
+    // The background stays put. "exit": false on a scene keeps the last frame.
+    const exitAt = sc.exit === false ? Infinity : dur - 0.4;
+    if (sc.exit !== false) cues.push({ name: 'whoosh', at: exitAt - 0.05, gain: 0.35 });
+    const layers = () => [...frame.children].filter((el) => el.id !== 'bg');
     update = (t) => {
       flashOp = 0; tintOp = 0;
+      const kin = C.k(t, 0, 0.3), kout = C.k(t, exitAt, 0.4, 'in');
+      layers().forEach((el) => {
+        el.style.filter = kin < 1 || kout > 0 ? `blur(${(1 - kin) * 10 + kout * 16}px)` : '';
+        el.style.scale = String(1 - kout * 0.06);
+        el.style.opacity = String(Math.min(kin * 1.5, 1) * (1 - kout));
+      });
       const k = C.k(t, 0, 0.35);
       title.style.opacity = k;
       title.style.transform = `translateY(${(1 - k) * -16}px)`;
       title.style.setProperty('--ul', C.k(t, 0.15, 0.4));
       pill.style.opacity = C.k(t, 0.2, 0.3);
       sceneUpdate(t);
-      flashEl.style.opacity = flashOp;
+      const fade = Math.min(kin * 1.5, 1) * (1 - kout);
+      flashEl.style.opacity = flashOp * fade;
       flashEl.style.background = `radial-gradient(ellipse 70% 45% at 50% 32%, ${flashCol} 0%, rgba(0,0,0,0) 75%)`;
-      tintEl.style.opacity = tintOp;
+      tintEl.style.opacity = tintOp * fade;
     };
     update(0);
   }

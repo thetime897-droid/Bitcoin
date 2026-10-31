@@ -88,29 +88,39 @@ Jeder Clip bekommt automatisch passende Sounds, abgestimmt auf die Animation:
 Whoosh beim Reinfliegen, Pop bei Logos/Karten, Ticks beim Hochzählen, Stempel-Knall,
 Ping bei Highlights, Absturz-Sound + Impact beim Crash, Alarm bei Warnungen usw.
 
-Alle Sounds werden in `sfx.cjs` **synthetisch erzeugt** – keine Lizenzfragen.
-Eigene Sounds (z. B. von Pixabay) haben Vorrang: Datei mit dem gleichen Namen nach
-`sfx/` legen, z. B. `sfx/cash.mp3`, `sfx/whoosh.wav`.
+Die Sounds sind **echte Aufnahmen unter CC0** (frei nutzbar, auch kommerziell) aus
+`sfx/lib/` – Quellen in [sfx/lib/QUELLEN.md](sfx/lib/QUELLEN.md). Pro Effekt gibt es
+mehrere Varianten, die abwechselnd verwendet werden. Alle sind auf gleiche Lautheit
+gebracht und werden **bewusst leise** gemischt (Spitzen ca. −15 bis −22 dB), damit
+sie unter der Stimme dezent bleiben. Eigene Sounds (z. B. von Pixabay) haben Vorrang:
+Datei mit dem Effekt-Namen nach `sfx/` legen, z. B. `sfx/cash.mp3`.
 
 | Name | Klang | Name | Klang |
 |---|---|---|---|
 | `whoosh` / `whoosh-down` | Luftzug hoch/runter | `impact` | tiefer Boom |
 | `pop` | Plopp beim Erscheinen | `stamp` | Stempel-Knall |
-| `ping` / `ding` | Glocke / Doppel-Gong | `riser` | Spannungsaufbau (1,1 s) |
+| `ping` / `ding` | Glas-Ping / Bestätigungs-Gong | `riser` | Spannungsaufbau, endet auf dem Beat |
 | `cash` | Kassenklingeln „Ka-Ching“ | `downer` | fallender Ton (Crash) |
 | `coins` | Münzen | `error` / `success` | falsch / richtig |
 | `alert` | Alarm | `tick` / `blip` | Klick / Digital-Blip |
 | `crack` | Riss/Bruch | `lock` | Schloss rastet ein |
 | `shine` | Glitzer | | |
 
-`node sfx.cjs` legt alle Sounds als WAV in `sfx/generiert/` ab (auch direkt in
-CapCut nutzbar). Im Storyboard pro Szene:
+`node sfx.cjs` legt alle Sounds samt Varianten als WAV in `sfx/vorschau/` ab
+(zum Anhören oder direkt für CapCut). Im Storyboard pro Szene:
 
 - `"sfx": [{ "name": "cash", "at": 1.4, "gain": 0.8 }]` – zusätzliche Sounds
 - `"sfxDefault": false` – eingebaute Sounds der Szene weglassen
 - `"sfx": false` – Clip ganz ohne Ton
 - `--nosfx` beim Rendern – alle Clips stumm
-- `"sfxVolume": 0.7` auf oberster Ebene – Gesamtlautstärke
+- `"sfxVolume": 0.5` auf oberster Ebene – Gesamtlautstärke (Standard 0.35 = dezent)
+
+## Ein- und Ausblendung
+
+Jeder Clip blendet sauber ein (Inhalt wird in 0,3 s scharf) und aus (Inhalt zoomt
+in 0,4 s weich raus, leiser Whoosh) – der Hintergrund bleibt stehen. So kann jeder
+Clip hart in dein Video geschnitten oder mit einer CapCut-Überblendung kombiniert
+werden. `"exit": false` an einer Szene lässt das letzte Bild stehen.
 
 ## Im Editor (CapCut)
 

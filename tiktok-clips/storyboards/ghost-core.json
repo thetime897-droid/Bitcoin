@@ -1,85 +1,352 @@
 {
-  "name": "ghost-core",
-  "fps": 30,
-  "theme": "dark",
-  "layout": "full",
-  "scenes": [
-    { "id": "01", "type": "number", "title": "Mit 19 Jahren", "duration": 4.5,
-      "script": "0:00 · Dieser 19-Jährige hat gerade 11 Millionen Dollar eingesammelt. Für einen Computer ohne Bildschirm.",
-      "params": { "value": "11 MIO. $", "label": "EINGESAMMELT", "color": "green", "size": 230, "countDur": 1.4,
-        "stamp": { "text": "OHNE BILDSCHIRM", "color": "cyan", "size": 48, "at": 3.0, "rotate": -6 } },
-      "sfx": [ { "name": "cash", "at": 1.45 } ] },
-
-    { "id": "02", "type": "statement", "duration": 4.5,
-      "script": "0:04,5 · Und das Krasseste: Nicht mal seine eigene Firma kann lesen, was du damit machst.",
-      "params": { "text": "Nicht mal *Ghost* selbst kann *mitlesen.*", "icon": "🔒", "color": "cyan", "stagger": 0.24 } },
-
-    { "id": "03", "type": "list", "title": "Das Ghost-Team", "pill": "San Francisco", "duration": 5.5,
-      "script": "0:09,5 · Sein Name: Zain Javaid. Er hat in San Francisco das Start-up Ghost gegründet. Mit drei Freunden.",
-      "params": { "items": [
-        { "icon": "👑", "text": "Zain Javaid", "value": "19 J.", "color": "gold", "at": 0.3 },
-        { "text": "Nicholas Chua", "value": "19 J.", "color": "cyan", "at": 3.6 },
-        { "text": "Yifei Chen", "value": "24 J.", "color": "cyan", "at": 3.9 },
-        { "text": "Gautam Sharda", "value": "23 J.", "color": "cyan", "at": 4.2 } ] } },
-
-    { "id": "04", "type": "number", "title": "Ghost Core", "pill": "Erste Charge", "duration": 6,
-      "script": "0:15 · Sein erstes Produkt heißt Core. Ein kleiner Kasten für 3.499 Dollar. Und die erste Ladung? (Pause) Ausverkauft.",
-      "params": { "value": "3.499 $", "label": "PREIS", "color": "cyan", "size": 240, "countDur": 1.2,
-        "stamp": { "text": "AUSVERKAUFT", "color": "red", "at": 4.9, "size": 70 } },
-      "sfx": [ { "name": "cash", "at": 1.3 }, { "name": "riser", "at": 3.8, "gain": 0.5 } ] },
-
-    { "id": "05", "type": "list", "title": "Was steckt drin?", "theme": "light", "duration": 5.5,
-      "script": "0:21 · Drin steckt eine Nvidia-Grafikkarte, 64 Gigabyte Arbeitsspeicher und ein Terabyte Speicher. Die KI ist schon vorinstalliert.",
-      "params": { "items": [
-        { "icon": "🎮", "text": "Nvidia RTX Pro 4000", "value": "24 GB", "color": "green", "at": 0.3 },
-        { "icon": "🧠", "text": "Arbeitsspeicher", "value": "64 GB", "color": "cyan", "at": 1.6 },
-        { "icon": "💾", "text": "SSD-Speicher", "value": "1 TB", "color": "purple", "at": 2.8 },
-        { "icon": "🤖", "text": "KI vorinstalliert", "value": "✓", "color": "green", "at": 4.0 } ] } },
-
-    { "id": "06", "type": "flow", "title": "Wer bezahlt das?", "pill": "Angeführt von a16z", "duration": 5.5,
-      "script": "0:26,5 · Und wer bezahlt das alles? Andreessen Horowitz. Einer der größten Investoren im ganzen Silicon Valley.",
-      "params": { "sources": [
-          { "name": "A16Z", "glyph": "a16z", "color": "#e8590c" },
-          { "name": "ABSTRACT", "glyph": "AB", "color": "#5b5bd6" },
-          { "name": "AUDACIOUS", "glyph": "AV", "color": "#0f9d8a" },
-          { "name": "SV ANGEL", "glyph": "SV", "color": "#d6336c" },
-          { "name": "NOVA", "glyph": "N", "color": "#1c7ed6" } ],
-        "target": "GHOST · 11 MIO. $" },
-      "sfx": [ { "name": "cash", "at": 2.0 } ] },
-
-    { "id": "07", "type": "versus", "title": "Cloud vs. Zuhause", "duration": 7,
-      "script": "0:32 · Der Unterschied zu ChatGPT und Co.: Dort landen deine Fragen und Dateien auf den Servern der Firma. Beim Core bleibt alles bei dir zu Hause.",
-      "params": { "rightAt": 3.6,
-        "left": { "title": "CHATGPT & CO.", "icon": "☁️", "from": "📱", "verdict": "✗ BEI DER FIRMA", "verdictAt": 2.6 },
-        "right": { "title": "GHOST CORE", "icon": "🏠", "from": "📱", "verdict": "✓ BLEIBT BEI DIR", "lock": true, "verdictAt": 5.4 } } },
-
-    { "id": "08", "type": "flow", "title": "Alles auf dem Gerät", "duration": 5,
-      "script": "0:39 · Die KI-Assistenten laufen direkt auf dem Gerät, und deine Daten sind verschlüsselt.",
-      "params": { "sources": [
-          { "name": "KI-MODELLE", "glyph": "🧠", "color": "#3fd0ff" },
-          { "name": "GEDÄCHTNIS", "glyph": "💾", "color": "#3fd0ff" },
-          { "name": "DEINE DATEN", "glyph": "📁", "color": "#3fd0ff" } ],
-        "target": "🔒 GHOST CORE", "color": "cyan",
-        "stamp": { "text": "VERSCHLÜSSELT", "color": "green", "at": 3.3, "size": 56 } },
-      "sfx": [ { "name": "lock", "at": 3.15 } ] },
-
-    { "id": "09", "type": "statement", "duration": 5.5,
-      "script": "0:44 · Und wenn Ghost irgendwann pleitegeht? Dein Core läuft trotzdem weiter. Er gehört dir.",
-      "params": { "text": "Und wenn Ghost *pleitegeht?*", "icon": "💸", "color": "red", "stagger": 0.22,
-        "stamp": { "text": "CORE LÄUFT WEITER", "color": "green", "at": 2.6, "size": 54 } },
-      "sfx": [ { "name": "success", "at": 3.0, "gain": 0.7 } ] },
-
-    { "id": "10", "type": "mystery", "title": "Noch ungetestet", "pill": "Nur Versprechen des Gründers", "theme": "alarm", "duration": 5.5,
-      "script": "0:49,5 · Aber Achtung: Getestet hat das noch niemand Unabhängiges. Bisher sind das alles Versprechen des Gründers.",
-      "params": { "count": 3, "reveal": [
-          { "icon": "🛡️", "text": "Daten&shy;schutz?", "color": "amber", "at": 2.0 },
-          { "icon": "🔐", "text": "Sicher&shy;heit?", "color": "amber", "at": 2.5 },
-          { "icon": "🚧", "text": "Firewall fehlt", "color": "red", "at": 3.0 } ] },
-      "sfx": [ { "name": "alert", "at": 0.2, "gain": 0.6 }, { "name": "error", "at": 3.4 } ] },
-
-    { "id": "11", "type": "statement", "duration": 5,
-      "script": "0:55 · Gehört die Zukunft der KI auf deinen Schreibtisch statt in riesige Rechenzentren? Schreib's in die Kommentare. Und folg mir für mehr.",
-      "params": { "text": "KI auf deinem *Schreibtisch* oder im *Rechenzentrum?*", "icon": "🖥️", "color": "cyan", "stagger": 0.2,
-        "stamp": { "text": "👇 AB IN DIE KOMMENTARE", "color": "amber", "at": 3.0, "size": 48, "rotate": -4 } } }
-  ]
+ "name": "ghost-core",
+ "fps": 30,
+ "theme": "dark",
+ "layout": "full",
+ "scenes": [
+  {
+   "id": "01",
+   "type": "number",
+   "title": "Mit 19 Jahren",
+   "duration": 4.9,
+   "script": "0:00 · Dieser 19-Jährige hat gerade 11 Millionen Dollar eingesammelt. Für einen Computer ohne Bildschirm.",
+   "params": {
+    "value": "11 MIO. $",
+    "label": "EINGESAMMELT",
+    "color": "green",
+    "size": 230,
+    "countDur": 1.4,
+    "stamp": {
+     "text": "OHNE BILDSCHIRM",
+     "color": "cyan",
+     "size": 48,
+     "at": 3.0,
+     "rotate": -6
+    }
+   },
+   "sfx": [
+    {
+     "name": "cash",
+     "at": 1.45
+    }
+   ]
+  },
+  {
+   "id": "02",
+   "type": "statement",
+   "duration": 4.9,
+   "script": "0:04,5 · Und das Krasseste: Nicht mal seine eigene Firma kann lesen, was du damit machst.",
+   "params": {
+    "text": "Nicht mal *Ghost* selbst kann *mitlesen.*",
+    "icon": "🔒",
+    "color": "cyan",
+    "stagger": 0.24
+   }
+  },
+  {
+   "id": "03",
+   "type": "list",
+   "title": "Das Ghost-Team",
+   "pill": "San Francisco",
+   "duration": 5.9,
+   "script": "0:09,5 · Sein Name: Zain Javaid. Er hat in San Francisco das Start-up Ghost gegründet. Mit drei Freunden.",
+   "params": {
+    "items": [
+     {
+      "icon": "👑",
+      "text": "Zain Javaid",
+      "value": "19 J.",
+      "color": "gold",
+      "at": 0.3
+     },
+     {
+      "text": "Nicholas Chua",
+      "value": "19 J.",
+      "color": "cyan",
+      "at": 3.6
+     },
+     {
+      "text": "Yifei Chen",
+      "value": "24 J.",
+      "color": "cyan",
+      "at": 3.9
+     },
+     {
+      "text": "Gautam Sharda",
+      "value": "23 J.",
+      "color": "cyan",
+      "at": 4.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "number",
+   "title": "Ghost Core",
+   "pill": "Erste Charge",
+   "duration": 6.4,
+   "script": "0:15 · Sein erstes Produkt heißt Core. Ein kleiner Kasten für 3.499 Dollar. Und die erste Ladung? (Pause) Ausverkauft.",
+   "params": {
+    "value": "3.499 $",
+    "label": "PREIS",
+    "color": "cyan",
+    "size": 240,
+    "countDur": 1.2,
+    "stamp": {
+     "text": "AUSVERKAUFT",
+     "color": "red",
+     "at": 4.9,
+     "size": 70
+    }
+   },
+   "sfx": [
+    {
+     "name": "cash",
+     "at": 1.3
+    },
+    {
+     "name": "riser",
+     "at": 3.8,
+     "gain": 0.5
+    }
+   ]
+  },
+  {
+   "id": "05",
+   "type": "list",
+   "title": "Was steckt drin?",
+   "theme": "light",
+   "duration": 5.9,
+   "script": "0:21 · Drin steckt eine Nvidia-Grafikkarte, 64 Gigabyte Arbeitsspeicher und ein Terabyte Speicher. Die KI ist schon vorinstalliert.",
+   "params": {
+    "items": [
+     {
+      "icon": "🎮",
+      "text": "Nvidia RTX Pro 4000",
+      "value": "24 GB",
+      "color": "green",
+      "at": 0.3
+     },
+     {
+      "icon": "🧠",
+      "text": "Arbeitsspeicher",
+      "value": "64 GB",
+      "color": "cyan",
+      "at": 1.6
+     },
+     {
+      "icon": "💾",
+      "text": "SSD-Speicher",
+      "value": "1 TB",
+      "color": "purple",
+      "at": 2.8
+     },
+     {
+      "icon": "🤖",
+      "text": "KI vorinstalliert",
+      "value": "✓",
+      "color": "green",
+      "at": 4.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "flow",
+   "title": "Wer bezahlt das?",
+   "pill": "Angeführt von a16z",
+   "duration": 5.9,
+   "script": "0:26,5 · Und wer bezahlt das alles? Andreessen Horowitz. Einer der größten Investoren im ganzen Silicon Valley.",
+   "params": {
+    "sources": [
+     {
+      "name": "A16Z",
+      "glyph": "a16z",
+      "color": "#e8590c"
+     },
+     {
+      "name": "ABSTRACT",
+      "glyph": "AB",
+      "color": "#5b5bd6"
+     },
+     {
+      "name": "AUDACIOUS",
+      "glyph": "AV",
+      "color": "#0f9d8a"
+     },
+     {
+      "name": "SV ANGEL",
+      "glyph": "SV",
+      "color": "#d6336c"
+     },
+     {
+      "name": "NOVA",
+      "glyph": "N",
+      "color": "#1c7ed6"
+     }
+    ],
+    "target": "GHOST · 11 MIO. $"
+   },
+   "sfx": [
+    {
+     "name": "cash",
+     "at": 2.0
+    }
+   ]
+  },
+  {
+   "id": "07",
+   "type": "versus",
+   "title": "Cloud vs. Zuhause",
+   "duration": 7.4,
+   "script": "0:32 · Der Unterschied zu ChatGPT und Co.: Dort landen deine Fragen und Dateien auf den Servern der Firma. Beim Core bleibt alles bei dir zu Hause.",
+   "params": {
+    "rightAt": 3.6,
+    "left": {
+     "title": "CHATGPT & CO.",
+     "icon": "☁️",
+     "from": "📱",
+     "verdict": "✗ BEI DER FIRMA",
+     "verdictAt": 2.6
+    },
+    "right": {
+     "title": "GHOST CORE",
+     "icon": "🏠",
+     "from": "📱",
+     "verdict": "✓ BLEIBT BEI DIR",
+     "lock": true,
+     "verdictAt": 5.4
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "flow",
+   "title": "Alles auf dem Gerät",
+   "duration": 5.4,
+   "script": "0:39 · Die KI-Assistenten laufen direkt auf dem Gerät, und deine Daten sind verschlüsselt.",
+   "params": {
+    "sources": [
+     {
+      "name": "KI-MODELLE",
+      "glyph": "🧠",
+      "color": "#3fd0ff"
+     },
+     {
+      "name": "GEDÄCHTNIS",
+      "glyph": "💾",
+      "color": "#3fd0ff"
+     },
+     {
+      "name": "DEINE DATEN",
+      "glyph": "📁",
+      "color": "#3fd0ff"
+     }
+    ],
+    "target": "🔒 GHOST CORE",
+    "color": "cyan",
+    "stamp": {
+     "text": "VERSCHLÜSSELT",
+     "color": "green",
+     "at": 3.3,
+     "size": 56
+    }
+   },
+   "sfx": [
+    {
+     "name": "lock",
+     "at": 3.15
+    }
+   ]
+  },
+  {
+   "id": "09",
+   "type": "statement",
+   "duration": 5.9,
+   "script": "0:44 · Und wenn Ghost irgendwann pleitegeht? Dein Core läuft trotzdem weiter. Er gehört dir.",
+   "params": {
+    "text": "Und wenn Ghost *pleitegeht?*",
+    "icon": "💸",
+    "color": "red",
+    "stagger": 0.22,
+    "stamp": {
+     "text": "CORE LÄUFT WEITER",
+     "color": "green",
+     "at": 2.6,
+     "size": 54
+    }
+   },
+   "sfx": [
+    {
+     "name": "success",
+     "at": 3.0,
+     "gain": 0.7
+    }
+   ]
+  },
+  {
+   "id": "10",
+   "type": "mystery",
+   "title": "Noch ungetestet",
+   "pill": "Nur Versprechen des Gründers",
+   "theme": "alarm",
+   "duration": 5.9,
+   "script": "0:49,5 · Aber Achtung: Getestet hat das noch niemand Unabhängiges. Bisher sind das alles Versprechen des Gründers.",
+   "params": {
+    "count": 3,
+    "reveal": [
+     {
+      "icon": "🛡️",
+      "text": "Daten&shy;schutz?",
+      "color": "amber",
+      "at": 2.0
+     },
+     {
+      "icon": "🔐",
+      "text": "Sicher&shy;heit?",
+      "color": "amber",
+      "at": 2.5
+     },
+     {
+      "icon": "🚧",
+      "text": "Firewall fehlt",
+      "color": "red",
+      "at": 3.0
+     }
+    ]
+   },
+   "sfx": [
+    {
+     "name": "alert",
+     "at": 0.2,
+     "gain": 0.6
+    },
+    {
+     "name": "error",
+     "at": 3.4
+    }
+   ]
+  },
+  {
+   "id": "11",
+   "type": "statement",
+   "duration": 5.4,
+   "script": "0:55 · Gehört die Zukunft der KI auf deinen Schreibtisch statt in riesige Rechenzentren? Schreib's in die Kommentare. Und folg mir für mehr.",
+   "params": {
+    "text": "KI auf deinem *Schreibtisch* oder im *Rechenzentrum?*",
+    "icon": "🖥️",
+    "color": "cyan",
+    "stagger": 0.2,
+    "stamp": {
+     "text": "👇 AB IN DIE KOMMENTARE",
+     "color": "amber",
+     "at": 3.0,
+     "size": 48,
+     "rotate": -4
+    }
+   }
+  }
+ ]
 }

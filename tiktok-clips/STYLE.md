@@ -82,7 +82,9 @@ Beim Lesen des Skripts **jeden Satz** markieren und so zuordnen:
   Warnung = `alert`, Bruch = `crack`, positiv = `success`, negativ = `error`.
 - **Geld = `cash`**, gesetzt genau auf das Wort mit dem Betrag (über `"sfx"` im Storyboard).
 - Vor großen Enthüllungen (Stempel nach einer Pause) einen `riser` davor.
-- Sounds bleiben unter der Stimme (Spitzen ≈ −6 dB), sie sollen betonen, nicht übertönen.
+- **Dezent**: Sounds bleiben deutlich unter der Stimme (Spitzen ≈ −15 bis −22 dB). Lieber ein Sound zu wenig als zu viel.
+- Nur echte, freie Aufnahmen (CC0) aus `sfx/lib/`, keine generischen Synth-Töne; Varianten wechseln sich ab.
+- Jeder Clip hat eine saubere Ein- und Ausblendung (Blur-in, Zoom-out), damit er sich gut einschneiden lässt.
 
 ## 5. Technische Konstanten
 

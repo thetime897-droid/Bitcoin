@@ -18,11 +18,17 @@ Szenen (z. B. Cartoon-Clips) und will die Animationen als **einzelne
 Einblend-Clips** pro Fakt/Moment. Jede Szene = eigene MP4, mit Zeitmarke im
 Feld `script`, damit klar ist, wo sie hingehört.
 
-**Immer mit Soundeffekten** (eingebaut, siehe README „Soundeffekte“). Geldbeträge
-bekommen `cash`, Enthüllungen einen `stamp` mit `riser` davor. Externe
-Sound-Seiten (Pixabay usw.) sind in der Cloud-Umgebung meist gesperrt; dann die
-synthetischen Sounds nutzen und darauf hinweisen, dass eigene Dateien unter
-`tiktok-clips/sfx/<name>.mp3` Vorrang haben.
+**Immer mit Soundeffekten, aber dezent** (eingebaut, siehe README „Soundeffekte“):
+echte CC0-Aufnahmen aus `tiktok-clips/sfx/lib/` (Whooshes, Pops, Pings, Ka-Ching),
+leise gemischt (Standard `sfxVolume` 0.35). Nicht lauter machen, außer der Nutzer
+will es. Geldbeträge bekommen `cash`, Enthüllungen einen `stamp` mit `riser` davor.
+Pixabay & Co. sind in der Cloud-Umgebung gesperrt; GitHub und npm gehen – neue
+Sounds nur mit klarer CC0-Lizenz in `sfx/lib/` aufnehmen und in `QUELLEN.md`
+eintragen. Eigene Dateien unter `tiktok-clips/sfx/<name>.mp3` haben Vorrang.
+
+**Saubere Einblendungen:** Jeder Clip blendet automatisch weich ein und aus.
+Letzten Beat mindestens 0,5 s vor Clip-Ende legen, damit er nicht in die
+Ausblendung fällt.
 
 ## Vorgehen
 
