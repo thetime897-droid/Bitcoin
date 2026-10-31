@@ -85,6 +85,9 @@ Beim Lesen des Skripts **jeden Satz** markieren und so zuordnen:
 - **Dezent**: Sounds bleiben deutlich unter der Stimme (Spitzen ≈ −15 bis −22 dB). Lieber ein Sound zu wenig als zu viel.
 - Nur echte, freie Aufnahmen (CC0) aus `sfx/lib/`, keine generischen Synth-Töne; Varianten wechseln sich ab.
 - Jeder Clip hat eine saubere Ein- und Ausblendung (Blur-in, Zoom-out), damit er sich gut einschneiden lässt.
+- Stereo-Mix mit Panning und leichtem Raumhall, damit die Sounds produziert und nicht trocken klingen.
+
+**Bewegung:** Nie ein Standbild – Partikel im Hintergrund, langsamer Kamera-Zoom und leichtes Schweben laufen immer weiter. Beats schnell hintereinander (0,1–0,3 s Abstand), Clips eher kurz (3–5 s).
 
 ## 5. Technische Konstanten
 

@@ -1,0 +1,71 @@
+{
+  "name": "billion-weg",
+  "fps": 30,
+  "theme": "dark",
+  "layout": "full",
+  "scenes": [
+    { "id": "01", "type": "hook", "duration": 3.4,
+      "script": "0:00 · ab „Eine Billion“ · Eine Billion Dollar – an einem einzigen Tag weg.",
+      "params": { "text": "1 BILLION $ WEG", "emoji": "🚨", "sub": "an einem einzigen Tag", "size": 76 } },
+
+    { "id": "02", "type": "statement", "duration": 3.2,
+      "script": "0:03 · ab „Platzt jetzt“ · Platzt jetzt die KI-Blase?",
+      "params": { "text": "Platzt jetzt die *KI-Blase?*", "icon": "🫧", "color": "red", "size": 104,
+        "stamp": { "text": "TECH-CRASH", "color": "red", "at": 1.4, "size": 66 } } },
+
+    { "id": "03", "type": "number", "title": "Intel", "pill": "An einem Tag", "theme": "alarm", "duration": 3.8,
+      "script": "0:06 · ab „Der Auslöser“ · Der Auslöser: Intel. Minus 29 Prozent an einem einzigen Tag – einer der schlimmsten Tage der Firmengeschichte.",
+      "params": { "value": "-29%", "label": "AKTIE", "color": "red", "size": 300, "countDur": 0.8,
+        "stamp": { "text": "HISTORISCHER CRASH", "color": "red", "at": 1.6, "size": 54 } },
+      "sfx": [ { "name": "downer", "at": 0.15, "gain": 0.8 } ] },
+
+    { "id": "04", "type": "quote", "duration": 4.6,
+      "script": "0:13 · ab „Intel-Chef“ · Intel-Chef Lip-Bu Tan: Man konnte die starke Nachfrage nicht bedienen. Und teure Speicherchips bremsen das PC-Geschäft.",
+      "params": { "author": "Lip-Bu Tan", "handle": "CEO, Intel", "initials": "LT", "size": 38, "meta": "Earnings Call · sinngemäß übersetzt",
+        "text": [ "„Ich bin *enttäuscht*, dass wir die *starke Nachfrage* in diesem Quartal nicht bedienen konnten.“",
+                  "Problem dahinter: *teure Speicherchips* bremsen die PC-Nachfrage." ],
+        "highlightAt": [0.8, 1.6, 2.8] } },
+
+    { "id": "05", "type": "cards", "title": "Chips mitgerissen", "theme": "alarm", "duration": 4,
+      "script": "0:20 · ab „Und das hat“ · Und das hat die ganze Chip-Branche mitgerissen: AMD, Arm, Qualcomm, Marvell – alle rund zehn Prozent im Minus.",
+      "params": { "main": { "ticker": "INTC", "change": "-29%" },
+        "items": [ { "ticker": "AMD", "change": "-10.9%" }, { "ticker": "ARM", "change": "-10.0%" }, { "ticker": "QCOM", "change": "-11.1%" }, { "ticker": "MRVL", "change": "-10.1%" } ] } },
+
+    { "id": "06", "type": "number", "title": "Amazon", "pill": "Investitionen 2026", "duration": 3.8,
+      "script": "0:27 · ab „Trotzdem“ · Trotzdem wollen die Giganten noch mehr ausgeben. Amazon allein: 220 Milliarden Dollar dieses Jahr.",
+      "params": { "value": "220 MRD. $", "label": "FÜR KI-RECHENZENTREN", "color": "amber", "size": 230, "countDur": 0.9,
+        "stamp": { "text": "REKORD", "color": "amber", "at": 1.6, "size": 66 } },
+      "sfx": [ { "name": "cash", "at": 1.0 } ] },
+
+    { "id": "07", "type": "flow", "title": "Big Tech gibt aus", "pill": "KI-Ausgaben 2026", "duration": 4.2,
+      "script": "0:33 · ab „Zusammen“ · Zusammen stecken Amazon, Microsoft, Google und Meta dieses Jahr über 700 Milliarden Dollar in KI.",
+      "params": { "sources": ["AMZN", "MSFT", "GOOGL", "META"], "target": "700+ MRD. $ IN KI", "color": "green" },
+      "sfx": [ { "name": "cash", "at": 1.5, "gain": 0.8 } ] },
+
+    { "id": "08", "type": "statement", "duration": 4.2,
+      "script": "0:39 · ab „Und genau da“ · Und genau da kippt die Stimmung: Aus Hoffnung wird – zeig mir endlich die Gewinne.",
+      "params": { "text": "Aus *Hoffnung* wird: Zeig mir die *Gewinne.*", "icon": "🔍", "color": "amber",
+        "stamp": { "text": "SHOW-ME-PHASE", "color": "cyan", "at": 2.2, "size": 60 } } },
+
+    { "id": "09", "type": "linechart", "title": "Nasdaq 100", "duration": 4.4,
+      "script": "0:45 · ab „Der Nasdaq“ · Der Nasdaq 100 fiel am Freitag um 3,5 Prozent – und kratzt an der Marke für eine offizielle Korrektur.",
+      "params": { "name": "NASDAQ 100", "header": "SCHEMATISCH", "yTicks": false, "tag": false, "unit": "", "decimals": 0,
+        "data": { "from": 100, "to": 112, "points": 32, "vol": 0.012, "seed": 8 }, "drawDur": 0.9,
+        "drop": { "badge": "-3.5%", "sub": "an einem Tag", "at": 1.2, "data": { "to": 107.5, "points": 8 } },
+        "stamp": { "text": "KORREKTUR?", "color": "amber", "at": 2.6, "size": 60 } } },
+
+    { "id": "10", "type": "flow", "title": "Betrifft dich das?", "duration": 4.4,
+      "script": "0:51 · ab „Und das trifft“ · Und das trifft auch dich: Apple, Nvidia, Microsoft, Amazon und Google stecken in fast jedem großen ETF.",
+      "params": { "sources": ["AAPL", "NVDA", "MSFT", "AMZN", "GOOGL"], "target": "DEIN ETF", "color": "cyan", "warnAt": 2.6, "warnColor": "red" } },
+
+    { "id": "11", "type": "versus", "title": "Korrektur oder Blase?", "duration": 5,
+      "script": "0:57 · ab „Ist das jetzt“ · Ist das jetzt nur eine gesunde Korrektur – oder platzt die Blase? Das entscheiden die nächsten Wochen.",
+      "params": { "rightAt": 1.6,
+        "left": { "title": "KORREKTUR", "icon": "📈", "from": "🧘", "verdict": "✓ KAUFCHANCE?", "color": "green", "flow": "stay", "verdictAt": 1.2 },
+        "right": { "title": "BLASE PLATZT", "icon": "🫧", "from": "💥", "verdict": "✗ WEITER RUNTER?", "color": "red", "flow": "out", "verdictAt": 2.8 } } },
+
+    { "id": "12", "type": "cta", "duration": 3.6,
+      "script": "1:03 · ab „Was glaubst du“ · Was glaubst du? Schreib's in die Kommentare. Keine Anlageberatung.",
+      "params": { "brand": "PANDA_INVESTIERT", "glyph": "🐼", "stats": [ { "value": "KOMMENTIER!", "label": "Keine Anlageberatung" } ] } }
+  ]
+}

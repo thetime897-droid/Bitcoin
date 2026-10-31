@@ -17,7 +17,7 @@
     ctx.cue('stamp', sp.at);
     return (t) => {
       const ks = C.k(t, sp.at, 0.28);
-      C.tf(el, { s: C.lerp(2.2, 1, ks), r: sp.rotate ?? -8, o: ks });
+      C.tf(el, { s: C.lerp(2.2, 1, ks) * (1 + Math.sin(t * 2.6) * 0.012 * ks), r: (sp.rotate ?? -8) + Math.sin(t * 1.9) * 0.9 * ks, o: ks });
       ctx.flash(t, sp.at + 0.12, col + '55');
     };
   };
@@ -76,7 +76,7 @@
       const ul = hl ? C.h('span', { style: { position: 'absolute', left: 0, right: 0, bottom: '-4px', height: '8px', borderRadius: '4px', background: col, boxShadow: `0 0 16px ${col}`, transformOrigin: '0 50%' } }, el) : null;
       return { el, hl, ul };
     });
-    const stagger = p.stagger ?? Math.min(0.2, 1.8 / Math.max(1, words.length));
+    const stagger = p.stagger ?? Math.min(0.14, 1.3 / Math.max(1, words.length));
     ctx.cue('whoosh', 0.05, 0.7);
     if (icon) ctx.cue('pop', 0.05);
     words.forEach((w, i) => w.hl && ctx.cue('ping', 0.15 + i * stagger + 0.25, 0.7));
@@ -88,7 +88,7 @@
         const s = 0.15 + i * stagger;
         const k = C.k(t, s, 0.4, 'back');
         const bump = w.hl ? 1 + Math.sin(C.clamp((t - s - 0.25) / 0.35) * Math.PI) * 0.12 : 1;
-        w.el.style.transform = `translateY(${(1 - k) * 50}px) scale(${Math.max(0, k) * bump})`;
+        w.el.style.transform = `translateY(${(1 - k) * 50 + Math.sin(t * 2.2 + i * 0.7) * 3 * k}px) scale(${Math.max(0, k) * bump})`;
         w.el.style.opacity = C.k(t, s, 0.15);
         if (w.ul) w.ul.style.transform = `scaleX(${C.k(t, s + 0.3, 0.35)})`;
       });
@@ -127,15 +127,15 @@
     const hubLabel = C.place(C.h('div', { class: 'tag', style: { color: G.cyan, fontSize: '30px', padding: '6px 22px', borderRadius: '30px' } }, st, p.target?.label || p.target || 'AI'), hubX, hubY + 130);
     const warnAt = p.warnAt ?? Infinity;
     ctx.cue('whoosh', 0);
-    src.forEach((_, i) => ctx.cue('pop', 0.15 + i * 0.28));
-    ctx.cue('whoosh', 1.05, 0.8); ctx.cue('coins', 1.6, 0.7);
+    src.forEach((_, i) => ctx.cue('pop', 0.1 + i * 0.16));
+    ctx.cue('whoosh', 0.75, 0.8); ctx.cue('coins', 1.2, 0.7);
     ctx.cue('alert', warnAt, 0.6);
     const stampUp = addStamp(st, p, ctx, { y: 480, color: 'green', at: 3 });
     return (t) => {
       stampUp(t);
       const kw = C.k(t, warnAt, 0.5);
       src.forEach((b, i) => {
-        const s = 0.15 + i * 0.28;
+        const s = 0.1 + i * 0.16;
         C.pop(chips[i], t, s);
         const kn = C.k(t, s, 0.3);
         names[i].style.opacity = kn;
@@ -145,24 +145,24 @@
         pads[i].style.transform = `translateY(${(1 - kp) * 30}px)`;
         C.pop(qs[i], t, warnAt + i * 0.12, 0.4);
       });
-      const kh = C.k(t, 0.9, 0.5, 'back');
-      [hub, hubInner].forEach((g) => { g.style.opacity = C.k(t, 0.9, 0.2); g.style.transformOrigin = `${hubX}px ${hubY}px`; g.style.transform = `scale(${kh})`; });
-      C.pop(hubLabel, t, 1.15);
+      const kh = C.k(t, 0.6, 0.45, 'back');
+      [hub, hubInner].forEach((g) => { g.style.opacity = C.k(t, 0.6, 0.2); g.style.transformOrigin = `${hubX}px ${hubY}px`; g.style.transform = `scale(${kh})`; });
+      C.pop(hubLabel, t, 0.85);
       const col = C.mix(flowColor, warnColor, kw);
       pipes.forEach((pp, i) => {
-        const k = C.k(t, 1.1 + i * 0.12, 0.8, 'inOut');
+        const k = C.k(t, 0.8 + i * 0.1, 0.6, 'inOut');
         pp.path.style.strokeDashoffset = pp.L * (1 - k);
         pp.path.setAttribute('stroke', col);
         pp.path.style.opacity = 1 - kw * 0.45;
-        pp.bg.style.opacity = C.k(t, 1.1 + i * 0.12, 0.4);
+        pp.bg.style.opacity = C.k(t, 0.8 + i * 0.1, 0.4);
       });
-      const flowT = t - 1.6;
+      const flowT = t - 1.2;
       const speed = C.lerp(0.55, 0.22, kw);
       parts.forEach((q) => {
         const pp = pipes[q.i];
         if (flowT < 0) { q.el.style.opacity = 0; return; }
         // integrate speed change so particles do not jump when the warn beat hits
-        const travel = t < warnAt ? flowT * 0.55 : (warnAt - 1.6) * 0.55 + (t - warnAt) * speed;
+        const travel = t < warnAt ? flowT * 0.55 : (warnAt - 1.2) * 0.55 + (t - warnAt) * speed;
         const ph = (travel + q.j / N + C.rand(q.i * 50 + q.j) * 0.05) % 1;
         const pt = pp.path.getPointAtLength(ph * pp.L);
         const jx = (C.rand(q.j * 7 + q.i) - 0.5) * 22, jy = (C.rand(q.j * 13 + q.i) - 0.5) * 12;
@@ -479,13 +479,13 @@
       const L = l.getTotalLength(); l.style.strokeDasharray = L; return { l, L };
     }) : [];
     if (main) ctx.cue('impact', 0.15, 0.7);
-    items.forEach((_, i) => ctx.cue('pop', (main ? 0.8 : 0.15) + i * 0.18));
+    items.forEach((_, i) => ctx.cue('pop', (main ? 0.55 : 0.1) + i * 0.12));
     return (t) => {
       if (main) { C.pop(main.d, t, 0.1); main.val.textContent = C.count(main.ch, C.k(t, 0.2, 0.8)); }
-      lines.forEach((l, i) => (l.l.style.strokeDashoffset = l.L * (1 - C.k(t, 0.55 + i * 0.08, 0.45))));
+      lines.forEach((l, i) => (l.l.style.strokeDashoffset = l.L * (1 - C.k(t, 0.4 + i * 0.06, 0.35))));
       items.forEach((it, i) => {
-        const s = (main ? 0.8 : 0.15) + i * 0.18;
-        C.pop(it.d, t, s);
+        const s = (main ? 0.55 : 0.1) + i * 0.12;
+        C.pop(it.d, t, s, 0.4, { y: Math.sin(t * 1.7 + i) * 4 });
         it.val.textContent = C.count(it.ch, C.k(t, s + 0.1, 0.7));
       });
       if (main && p.flash !== false) ctx.flash(t, 0.15, 'rgba(255,30,30,.25)');
@@ -517,7 +517,7 @@
         d.el.style.opacity = C.k(t, d.d * 0.03, 0.3) * ((1 - d.d / 15) * 0.55 + wave * 0.35);
       });
       const kn = C.k(t, 0.1, 0.5, 'back');
-      C.tf(num, { s: C.lerp(0.6, 1, kn), o: C.k(t, 0.1, 0.2) });
+      C.tf(num, { s: C.lerp(0.6, 1, kn) * (1 + Math.sin(t * 3) * 0.012 * kn), o: C.k(t, 0.1, 0.2) });
       num.textContent = C.count(p.value ?? '1', p.countUp === false ? 1 : C.k(t, 0.1, p.countDur ?? 0.9));
       C.rise(lab, t, 0.45);
       ul.style.transform = `translate(-50%,-50%) scaleX(${C.k(t, 0.6, 0.4)})`;
@@ -609,7 +609,7 @@
       const num = C.place(C.h('div', { class: 'label muted', style: { fontSize: '26px' } }, st, String(i + 1).padStart(2, '0')), 540 + (i - (n - 1) / 2) * gap, 380 + h / 2 + 34);
       return { c, front, back, num, r };
     });
-    cards.forEach((cd, i) => { ctx.cue('pop', 0.15 + i * 0.22); if (cd.r && cd.r.at != null) { ctx.cue('whoosh', cd.r.at, 0.5); ctx.cue('ping', cd.r.at + 0.25); } });
+    cards.forEach((cd, i) => { ctx.cue('pop', 0.1 + i * 0.14); if (cd.r && cd.r.at != null) { ctx.cue('whoosh', cd.r.at, 0.5); ctx.cue('ping', cd.r.at + 0.25); } });
     return (t) => {
       box.style.opacity = C.k(t, 0, 0.3) * 0.9;
       C.tf(box, {});
@@ -617,7 +617,7 @@
       scan.style.left = ((t * 0.55) % 1) * bw + 'px';
       scan.style.opacity = 0.5 * C.k(t, 0.3, 0.3);
       cards.forEach((cd, i) => {
-        const s = 0.15 + i * 0.22;
+        const s = 0.1 + i * 0.14;
         const k = C.pop(cd.c, t, s);
         cd.front.style.opacity = 0.75 + 0.25 * Math.sin(t * 5 + i);
         cd.num.style.opacity = C.k(t, s, 0.3);
@@ -937,10 +937,10 @@
       if (it.value) C.h('div', { style: { marginLeft: 'auto', fontSize: '40px', fontWeight: 900, color: col } }, r, it.value);
       return { r, it };
     });
-    rows.forEach((rw, i) => { const at = rw.it.at ?? 0.2 + i * 0.5; ctx.cue('whoosh', at, 0.6); ctx.cue('pop', at + 0.15, 0.6); });
+    rows.forEach((rw, i) => { const at = rw.it.at ?? 0.15 + i * 0.3; ctx.cue('whoosh', at, 0.6); ctx.cue('pop', at + 0.15, 0.6); });
     return (t) => rows.forEach((rw, i) => {
-      const k = C.k(t, rw.it.at ?? 0.2 + i * 0.5, 0.45, 'back');
-      C.tf(rw.r, { x: (1 - k) * 300, o: C.k(t, rw.it.at ?? 0.2 + i * 0.5, 0.2) });
+      const k = C.k(t, rw.it.at ?? 0.15 + i * 0.3, 0.4, 'back');
+      C.tf(rw.r, { x: (1 - k) * 300, o: C.k(t, rw.it.at ?? 0.15 + i * 0.3, 0.2) });
     });
   };
 

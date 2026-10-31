@@ -67,7 +67,7 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
     const dur = await page.evaluate(([sb, i]) => window.Clip.load(sb, i), [sb, i]);
     const base = `${s.id}-${s.type}`;
     if (flag('stills')) {
-      const at = s.stillAt ?? dur - 0.05;
+      const at = s.stillAt ?? dur - 0.5;
       await page.evaluate((t) => window.Clip.seek(t), at);
       await page.screenshot({ path: path.join(outDir, base + '.png'), omitBackground: alpha });
       console.log('✓', base + '.png');
@@ -84,7 +84,7 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
       const audioFile = path.join(outDir, `.${base}.f32`);
       const samples = SFX.mix(cues, dur, sb.sfxVolume);
       fs.writeFileSync(audioFile, Buffer.from(samples.buffer, samples.byteOffset, samples.byteLength));
-      audio = ['-f', 'f32le', '-ar', String(SFX.SR), '-ac', '1', '-i', audioFile];
+      audio = ['-f', 'f32le', '-ar', String(SFX.SR), '-ac', '2', '-i', audioFile];
       s._audioFile = audioFile;
     }
     const aenc = audio.length ? ['-map', '0:v', '-map', '1:a', '-ac', '2', ...(alpha ? ['-c:a', 'pcm_s16le'] : ['-c:a', 'aac', '-b:a', '192k'])] : [];

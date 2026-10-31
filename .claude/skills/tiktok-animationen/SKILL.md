@@ -26,6 +26,9 @@ Pixabay & Co. sind in der Cloud-Umgebung gesperrt; GitHub und npm gehen – neue
 Sounds nur mit klarer CC0-Lizenz in `sfx/lib/` aufnehmen und in `QUELLEN.md`
 eintragen. Eigene Dateien unter `tiktok-clips/sfx/<name>.mp3` haben Vorrang.
 
+**Dynamisch & schnell:** Clips bewegen sich immer leicht weiter (Partikel, Zoom,
+Schweben – automatisch). Einblendungen schnell hintereinander, Clips 3–5 s.
+
 **Saubere Einblendungen:** Jeder Clip blendet automatisch weich ein und aus.
 Letzten Beat mindestens 0,5 s vor Clip-Ende legen, damit er nicht in die
 Ausblendung fällt.

@@ -59,13 +59,29 @@
     // The background stays put. "exit": false on a scene keeps the last frame.
     const exitAt = sc.exit === false ? Infinity : dur - 0.4;
     if (sc.exit !== false) cues.push({ name: 'whoosh', at: exitAt - 0.05, gain: 0.35 });
-    const layers = () => [...frame.children].filter((el) => el.id !== 'bg');
+    const layers = () => [...frame.children].filter((el) => el.id !== 'bg' && el.id !== 'dust');
+    // Never fully still: floating dust in the background and a slow camera
+    // push-in with a gentle sway on the stage, even after every beat has landed.
+    const dust = C.h('div', { id: 'dust', style: { position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' } });
+    frame.querySelector('#bg').after(dust);
+    const motes = [...Array(ALPHA ? 0 : 34)].map((_, i) => ({
+      x: C.rand(i * 3.1) * 1080, y: C.rand(i * 7.7) * 1920, r: 2 + C.rand(i * 5.3) * 5,
+      v: 18 + C.rand(i * 9.1) * 40, ph: C.rand(i * 2.2) * 6,
+      el: C.h('div', { style: { position: 'absolute', borderRadius: '50%', background: 'var(--accent)', filter: 'blur(1.5px)' } }, dust),
+    }));
+    const stageEl = frame.querySelector('#stage'), chromeEl = frame.querySelector('#chrome');
+    const still = sc.drift === false;
     update = (t) => {
       flashOp = 0; tintOp = 0;
       const kin = C.k(t, 0, 0.3), kout = C.k(t, exitAt, 0.4, 'in');
       layers().forEach((el) => {
         el.style.filter = kin < 1 || kout > 0 ? `blur(${(1 - kin) * 10 + kout * 16}px)` : '';
-        el.style.scale = String(1 - kout * 0.06);
+        const push = still || el !== stageEl ? 1 : 1 + 0.035 * (t / dur);
+        el.style.scale = String((1 - kout * 0.06) * push);
+        if (!still && (el === stageEl || el === chromeEl)) {
+          el.style.translate = `${Math.sin(t * 0.7) * (el === stageEl ? 6 : 2)}px ${Math.sin(t * 1.1 + 1) * (el === stageEl ? 7 : 3)}px`;
+          if (el === stageEl) el.style.rotate = `${Math.sin(t * 0.5) * 0.35}deg`;
+        }
         el.style.opacity = String(Math.min(kin * 1.5, 1) * (1 - kout));
       });
       const k = C.k(t, 0, 0.35);
@@ -75,6 +91,13 @@
       pill.style.opacity = C.k(t, 0.2, 0.3);
       sceneUpdate(t);
       const fade = Math.min(kin * 1.5, 1) * (1 - kout);
+      motes.forEach((m) => {
+        const y = (((m.y - t * m.v) % 1920) + 1920) % 1920;
+        m.el.style.width = m.el.style.height = m.r + 'px';
+        m.el.style.left = m.x + Math.sin(t * 0.8 + m.ph) * 24 + 'px';
+        m.el.style.top = y + 'px';
+        m.el.style.opacity = (0.12 + 0.18 * (0.5 + 0.5 * Math.sin(t * 1.5 + m.ph))) * Math.min(1, kin * 2);
+      });
       flashEl.style.opacity = flashOp * fade;
       flashEl.style.background = `radial-gradient(ellipse 70% 45% at 50% 32%, ${flashCol} 0%, rgba(0,0,0,0) 75%)`;
       tintEl.style.opacity = tintOp * fade;

@@ -224,11 +224,41 @@ function get(name, pick = 0) {
   return (cache[key] = b);
 }
 
-// Mixes cue list [{name, at, gain}] into one buffer of `dur` seconds. The same
-// effect firing twice within 0.12 s is played once, which keeps busy scenes calm.
+// Small Schroeder reverb (parallel combs + series allpasses). Run on a send,
+// it puts the dry samples into a little room instead of straight in the ear.
+function reverb(x, delays, damp = 0.35, fb = 0.78) {
+  const y = new Float32Array(x.length);
+  for (const d0 of delays.combs) {
+    const d = Math.round((d0 / 1000) * SR), line = new Float32Array(d);
+    let idx = 0, lp = 0;
+    for (let i = 0; i < x.length; i++) {
+      const o = line[idx];
+      lp = o * (1 - damp) + lp * damp;
+      line[idx] = x[i] + lp * fb;
+      y[i] += o / delays.combs.length;
+      idx = (idx + 1) % d;
+    }
+  }
+  for (const d0 of delays.allpass) {
+    const d = Math.round((d0 / 1000) * SR), line = new Float32Array(d);
+    let idx = 0;
+    for (let i = 0; i < y.length; i++) {
+      const b = line[idx], v = y[i] + b * 0.5;
+      line[idx] = v; y[i] = b - v * 0.5;
+      idx = (idx + 1) % d;
+    }
+  }
+  return y;
+}
+
+// Mixes cue list [{name, at, gain}] into interleaved stereo of `dur` seconds.
+// Each hit sits slightly left or right, whooshes sweep across the stereo field,
+// and a quiet shared reverb glues it together - closer to a produced edit than
+// dry mono samples. The same effect twice within 0.12 s plays once.
 function mix(cues, dur, volume = 0.35) {
-  const out = buf(dur);
+  const L = buf(dur), R = buf(dur), send = buf(dur);
   const last = {}, count = {};
+  let n = 0;
   [...cues].sort((a, b) => a.at - b.at).forEach((c) => {
     if (last[c.name] != null && c.at - last[c.name] < 0.12) return;
     last[c.name] = c.at;
@@ -240,11 +270,27 @@ function mix(cues, dur, volume = 0.35) {
       at = c.at + 1.1 - b.length / SR;
       if (at < 0) { b = b.subarray(Math.round(-at * SR)); at = 0; }
     }
-    add(out, b, at, (c.gain ?? 1) * volume);
+    const g = (c.gain ?? 1) * volume;
+    const side = n++ % 2 ? 1 : -1;
+    const sweep = c.name.startsWith('whoosh');
+    const o = Math.round(at * SR);
+    for (let i = 0; i < b.length && o + i < L.length; i++) {
+      const pan = sweep ? side * (0.7 * (i / b.length) - 0.35) : side * 0.18;
+      const v = b[i] * g;
+      L[o + i] += v * Math.cos(((pan + 1) * Math.PI) / 4);
+      R[o + i] += v * Math.sin(((pan + 1) * Math.PI) / 4);
+      send[o + i] += v;
+    }
   });
-  for (let i = 0; i < out.length; i++) out[i] = Math.tanh(out[i]);
+  const wl = reverb(send, { combs: [29.7, 37.1, 41.1, 43.7], allpass: [5, 1.7] });
+  const wr = reverb(send, { combs: [31.3, 36.7, 40.3, 45.1], allpass: [5.3, 1.9] });
+  const out = new Float32Array(L.length * 2);
   const fade = Math.round(0.04 * SR);
-  for (let i = 0; i < fade && i < out.length; i++) out[out.length - 1 - i] *= i / fade;
+  for (let i = 0; i < L.length; i++) {
+    const f = i > L.length - fade ? (L.length - i) / fade : 1;
+    out[i * 2] = Math.tanh(L[i] + wl[i] * 0.22) * f;
+    out[i * 2 + 1] = Math.tanh(R[i] + wr[i] * 0.22) * f;
+  }
   return out;
 }
 

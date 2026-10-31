@@ -61,7 +61,7 @@
     if (o != null) el.style.opacity = o;
   };
   // Standard "pop in": scale up with overshoot while fading in.
-  C.pop = (el, t, start, dur = 0.45, extra = {}) => {
+  C.pop = (el, t, start, dur = 0.38, extra = {}) => {
     const k = C.k(t, start, dur, 'back');
     const f = C.k(t, start, dur * 0.5);
     C.tf(el, { ...extra, s: (extra.s ?? 1) * Math.max(0, k), o: f });
@@ -119,6 +119,10 @@
     AAPL: { name: 'APPLE', color: '#8e959b', glyph: 'A' },
     TSLA: { name: 'TESLA', color: '#e31937', glyph: 'T' },
     AMD: { name: 'AMD', color: '#ed1c24', glyph: 'AMD' },
+    INTC: { name: 'INTEL', color: '#0071c5', glyph: 'i' },
+    ARM: { name: 'ARM', color: '#0091bd', glyph: 'arm' },
+    QCOM: { name: 'QUALCOMM', color: '#3253dc', glyph: 'Q' },
+    MRVL: { name: 'MARVELL', color: '#c8102e', glyph: 'M' },
     TSM: { name: 'TSMC', color: '#c4161c', glyph: 'TS' },
     CRWV: { name: 'COREWEAVE', color: '#2c6bed', glyph: 'CW' },
     OPENAI: { name: 'OPENAI', color: '#10a37f', glyph: 'AI' },

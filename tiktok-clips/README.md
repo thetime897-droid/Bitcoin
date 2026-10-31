@@ -91,7 +91,8 @@ Ping bei Highlights, Absturz-Sound + Impact beim Crash, Alarm bei Warnungen usw.
 Die Sounds sind **echte Aufnahmen unter CC0** (frei nutzbar, auch kommerziell) aus
 `sfx/lib/` – Quellen in [sfx/lib/QUELLEN.md](sfx/lib/QUELLEN.md). Pro Effekt gibt es
 mehrere Varianten, die abwechselnd verwendet werden. Alle sind auf gleiche Lautheit
-gebracht und werden **bewusst leise** gemischt (Spitzen ca. −15 bis −22 dB), damit
+gebracht und werden in **Stereo** gemischt (Hits leicht links/rechts, Whooshes
+wandern durchs Stereobild, dezenter Raumhall), dabei **bewusst leise** (Spitzen ca. −15 bis −22 dB), damit
 sie unter der Stimme dezent bleiben. Eigene Sounds (z. B. von Pixabay) haben Vorrang:
 Datei mit dem Effekt-Namen nach `sfx/` legen, z. B. `sfx/cash.mp3`.
 
@@ -115,7 +116,12 @@ Datei mit dem Effekt-Namen nach `sfx/` legen, z. B. `sfx/cash.mp3`.
 - `--nosfx` beim Rendern – alle Clips stumm
 - `"sfxVolume": 0.5` auf oberster Ebene – Gesamtlautstärke (Standard 0.35 = dezent)
 
-## Ein- und Ausblendung
+## Bewegung, Tempo, Ein- und Ausblendung
+
+Kein Clip steht still: Im Hintergrund treiben leuchtende Partikel, die Bühne zoomt
+langsam rein und schwebt leicht, Zahlen und Stempel „atmen“ weiter. `"drift": false`
+an einer Szene schaltet Zoom und Schweben ab. Die Elemente kommen schnell nacheinander
+(Standard-Abstände 0,12–0,3 s).
 
 Jeder Clip blendet sauber ein (Inhalt wird in 0,3 s scharf) und aus (Inhalt zoomt
 in 0,4 s weich raus, leiser Whoosh) – der Hintergrund bleibt stehen. So kann jeder
