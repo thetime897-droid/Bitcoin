@@ -1,0 +1,365 @@
+{
+ "name": "ki-agenten-pro",
+ "fps": 30,
+ "theme": "pro",
+ "layout": "full",
+ "sfxOnly": [
+  "whoosh",
+  "cash"
+ ],
+ "sfxGap": 0.7,
+ "sfxVolume": 0.35,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "proHook",
+   "title": "Alle 4 sagten *dasselbe Wort*",
+   "duration": 5,
+   "script": "0:00 · Alle vier Big-Tech-Chefs haben diese Woche dasselbe Wort gesagt.",
+   "params": {
+    "sources": [
+     "GOOGL",
+     "META",
+     "MSFT",
+     "AMZN"
+    ],
+    "word": "KI-AGENTEN",
+    "bubble": "AGENTEN",
+    "revealAt": 2.0,
+    "stamp": {
+     "text": "DIESE WOCHE",
+     "color": "red",
+     "at": 2.9,
+     "size": 52,
+     "y": 840
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "proChart",
+   "title": "Letztes Mal: *Speicherchips*",
+   "duration": 4.4,
+   "script": "0:03 · Letztes Mal hat sich danach eine Aktie vervierfacht.",
+   "params": {
+    "ticker": "MU",
+    "name": "MICRON",
+    "market": "NASDAQ: MU",
+    "data": {
+     "from": 100,
+     "to": 400,
+     "points": 60,
+     "vol": 0.035,
+     "seed": 11
+    },
+    "yTicks": false,
+    "tag": false,
+    "badge": "4×",
+    "badgeSub": "IN EINEM JAHR",
+    "drawAt": 0.3,
+    "drawDur": 1.5,
+    "badgeAt": 1.9,
+    "cashAt": 1.95
+   }
+  },
+  {
+   "id": "03",
+   "type": "proAgent",
+   "title": "Was ist ein *KI-Agent*?",
+   "duration": 5.4,
+   "script": "0:07 · Das Wort: KI-Agenten. Eine KI, die nicht nur antwortet – sondern Flüge bucht, Code schreibt und für dich einkauft.",
+   "params": {
+    "tasks": [
+     {
+      "icon": "✈️",
+      "text": "Flug",
+      "done": "GEBUCHT",
+      "at": 2.3
+     },
+     {
+      "icon": "💻",
+      "text": "Code",
+      "done": "FERTIG",
+      "at": 2.9
+     },
+     {
+      "icon": "🛍️",
+      "text": "Einkauf",
+      "done": "BEZAHLT",
+      "at": 3.5,
+      "cash": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "proStats",
+   "title": "Der *Agenten-Boom*",
+   "duration": 5.4,
+   "script": "0:14 · Microsoft zählt schon über 50 Millionen Agenten. Bei Meta haben in sechs Wochen über 10 Millionen Menschen ihren eigenen Agenten eingerichtet.",
+   "params": {
+    "items": [
+     {
+      "ticker": "MSFT",
+      "name": "MICROSOFT",
+      "value": "50",
+      "unit": "MIO.",
+      "label": "KI-Agenten registriert",
+      "delta": "+30 % im Quartal",
+      "at": 0.2
+     },
+     {
+      "ticker": "META",
+      "name": "META MUSE",
+      "value": "10",
+      "unit": "MIO.",
+      "label": "Nutzer in 6 Wochen",
+      "delta": "seit Sept.",
+      "at": 2.6,
+      "spark": [
+       0,
+       1,
+       2,
+       3,
+       5,
+       7,
+       9,
+       10
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "proPhone",
+   "title": "Was Amazons Chef *verrät*",
+   "duration": 6.2,
+   "script": "0:22 · Und jetzt der Teil, den kaum einer sieht: Agenten laufen vor allem auf normalen Prozessoren – CPUs, nicht auf Nvidias Grafikchips. Das sagt Amazon-Chef Andy Jassy selbst.",
+   "params": {
+    "ticker": "AMZN",
+    "speaker": "Andy Jassy",
+    "role": "CEO Amazon · sinngemäß",
+    "docTitle": "AMZN Earnings<br>Transkript Q3",
+    "query": "Agenten CPU",
+    "typeAt": 0.6,
+    "highlightAt": [
+     2.4
+    ],
+    "paragraphs": [
+     "KI bleibt ein Rückenwind für Graviton, denn *Post-Training, Reinforcement Learning und die Werkzeug-Nutzung von Agenten laufen überwiegend auf CPUs* – nicht auf KI-Beschleunigern.",
+     "Graviton ist unser stärkster CPU-Chip, mit 30 bis 40 % besserem Preis-Leistungs-Verhältnis.",
+     "Kunden unserer eigenen Chips haben allein im dritten Quartal über 2 Milliarden Dollar gespart."
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "proLayers",
+   "title": "Wohin fließt das *Geld*?",
+   "duration": 4.6,
+   "script": "0:31 · Mehr Agenten heißt: mehr CPUs. Und das Geld fließt in drei Ebenen.",
+   "params": {
+    "items": [
+     {
+      "icon": "🖥️",
+      "text": "CPU-Hersteller",
+      "color": "cyan",
+      "at": 1.9
+     },
+     {
+      "icon": "📐",
+      "text": "Chip-Design",
+      "color": "green",
+      "at": 2.35
+     },
+     {
+      "icon": "🛒",
+      "text": "Checkout",
+      "color": "amber",
+      "at": 2.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "proGlobe",
+   "title": "Ebene 1: *CPU-Hersteller*",
+   "duration": 4.2,
+   "script": "0:35 · Ebene eins: die klassischen CPU-Hersteller – Intel und AMD.",
+   "params": {
+    "chips": [
+     {
+      "label": "intel",
+      "name": "INTEL"
+     },
+     {
+      "label": "AMD",
+      "name": "AMD"
+     }
+    ],
+    "caption": "FAST JEDER SERVER",
+    "captionAt": 1.5
+   }
+  },
+  {
+   "id": "08",
+   "type": "proBlueprint",
+   "title": "Ebene 2: *Chip-Design*",
+   "duration": 6.2,
+   "script": "0:38 · Ebene zwei: Amazon, Google und Microsoft bauen eigene Chips – fast alle auf der Bauanleitung von ARM. Und ARM kassiert bei jedem Chip mit.",
+   "params": {
+    "sources": [
+     "AMZN",
+     "GOOGL",
+     "MSFT"
+    ],
+    "licenseAt": 2.6,
+    "coinsAt": 3.7
+   }
+  },
+  {
+   "id": "09",
+   "type": "proGrowth",
+   "title": "Amazons *eigene Chips*",
+   "duration": 4.2,
+   "script": "0:46 · Amazons Bestellungen für eigene Chips sind um mehr als das Zwanzigfache gestiegen.",
+   "params": {
+    "ticker": "AMZN",
+    "caption": "Auftragszusagen<br>Graviton & Trainium",
+    "value": "20×",
+    "growAt": 0.7,
+    "growDur": 1.5
+   }
+  },
+  {
+   "id": "10",
+   "type": "proCheckout",
+   "title": "Ebene 3: Wer die *Kasse* hat",
+   "duration": 5.8,
+   "script": "0:50 · Ebene drei: Agenten geben Geld aus. Und Gewinner ist, wer die Kasse besitzt – wie Shopify, dessen Checkout jetzt in Metas Agenten steckt.",
+   "params": {
+    "agent": "META MUSE",
+    "owner": "SHOP",
+    "ownerText": "SHOPIFY",
+    "slashAt": 1.2,
+    "paidAt": 2.4,
+    "ownerAt": 3.6
+   }
+  },
+  {
+   "id": "11",
+   "type": "proChart",
+   "title": "Aber *Vorsicht*",
+   "duration": 5,
+   "script": "0:58 · Aber Vorsicht: Intel ist trotzdem gerade fast 30 Prozent an einem Tag abgestürzt. Ein Trend allein macht noch keine gute Aktie.",
+   "params": {
+    "ticker": "INTC",
+    "name": "INTEL",
+    "market": "NASDAQ: INTC",
+    "color": "red",
+    "data": [
+     100.0,
+     98.73,
+     96.58,
+     96.46,
+     94.75,
+     92.53,
+     92.49,
+     95.67,
+     98.17,
+     100.49,
+     99.21,
+     100.03,
+     99.14,
+     97.6,
+     95.7,
+     94.52,
+     97.67,
+     100.29,
+     102.8,
+     105.33,
+     103.88,
+     103.23,
+     104.61,
+     106.68,
+     109.58,
+     112.7,
+     110.44,
+     111.72,
+     113.46,
+     114.07,
+     112.46,
+     112.86,
+     110.71,
+     114.09,
+     117.1,
+     118.0,
+     117.21,
+     120.55,
+     121.63,
+     124.87,
+     127.94,
+     128.58,
+     128.53,
+     129.83,
+     129.9,
+     128.0,
+     121.81,
+     115.63,
+     109.44,
+     103.25,
+     97.07,
+     90.88
+    ],
+    "yTicks": false,
+    "tag": false,
+    "badge": "−29 %",
+    "badgeSub": "AN EINEM TAG",
+    "drawAt": 0.3,
+    "drawDur": 1.4,
+    "badgeAt": 1.8,
+    "tint": true,
+    "stamp": {
+     "text": "TREND ≠ GUTE AKTIE",
+     "color": "red",
+     "at": 2.7,
+     "size": 50
+    },
+    "badgeX": 300,
+    "badgeY": 250
+   }
+  },
+  {
+   "id": "12",
+   "type": "proLayers",
+   "duration": 4.4,
+   "script": "1:05 · Welche Ebene ist für dich am spannendsten? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "revealed": true,
+    "question": "Welche Ebene?",
+    "note": "Keine Anlageberatung",
+    "questionAt": 0.6,
+    "items": [
+     {
+      "icon": "🖥️",
+      "text": "CPU-Hersteller",
+      "color": "cyan"
+     },
+     {
+      "icon": "📐",
+      "text": "Chip-Design",
+      "color": "green"
+     },
+     {
+      "icon": "🛒",
+      "text": "Checkout",
+      "color": "amber"
+     }
+    ]
+   }
+  }
+ ]
+}

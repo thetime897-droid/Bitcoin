@@ -97,7 +97,13 @@ gedrucktes Blatt auf Holztisch, Textmarker statt Neon, rote Tintenstempel. Gleic
 Tempo und gleiche Regeln (jeder Satz eine Grafik, Marker-Strich auf das Schlüsselwort).
 Wenn der Nutzer ein Video in diesem Stil schickt oder „im Stil dort“ sagt → Papier-Look.
 
-## 6. Technische Konstanten
+## 6. Dritter Stil: Profi-Look (bevorzugt für Erklärvideos)
+
+`"theme": "pro"` – hochwertige Motion-Graphics (Glas, HUD, iso-3D, Globus, Roboter,
+Phone-Transkript). Für informative Erklärvideos Standard. Sounds nur Whoosh + Cash
+(`sfxOnly`, `sfxGap`), keine Ping/Pop/Tick-Flut.
+
+## 7. Technische Konstanten
 
 - Auflösung **1080 × 1920**, **30 fps**, H.264 MP4 (oder ProRes 4444 mit Alpha via `--alpha`).
 - Layout `full` (Standard, faceless): Titel bei y ≈ 330 px, Grafik ≈ 450–1470 px,

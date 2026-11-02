@@ -50,7 +50,7 @@ if (flag('preview')) {
   const rel = (f) => pathToFileURL(path.join(engine, f)).href;
   const html = `<!doctype html><html><head><meta charset="utf-8"><title>${name}</title><link rel="stylesheet" href="${rel('style.css')}"></head><body>
 <script>window.__STORYBOARD__=${JSON.stringify(sb)}</script>
-<script src="${rel('core.js')}"></script><script src="${rel('scenes.js')}"></script><script src="${rel('player.js')}"></script></body></html>`;
+<script src="${rel('core.js')}"></script><script src="${rel('scenes.js')}"></script><script src="${rel('pro.js')}"></script><script src="${rel('player.js')}"></script></body></html>`;
   const f = path.join(outDir, 'preview.html');
   fs.writeFileSync(f, html);
   console.log('Preview:', f);
@@ -84,7 +84,18 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
     let audio = [];
     if (!flag('nosfx')) {
       const own = s.sfxDefault === false || s.sfx === false ? [] : await page.evaluate(() => window.Clip.cues());
-      const cues = own.concat(Array.isArray(s.sfx) ? s.sfx : []);
+      let cues = own.concat(Array.isArray(s.sfx) ? s.sfx : []);
+      // "sfxOnly": ["whoosh", "cash"] keeps just those effects; "sfxGap"
+      // thins out whooshes so they never stack up within that many seconds.
+      if (Array.isArray(sb.sfxOnly)) cues = cues.filter((c) => sb.sfxOnly.some((n) => c.name === n || c.name.startsWith(n + '-')));
+      if (sb.sfxGap) {
+        let last = -Infinity;
+        cues = cues.sort((a, b) => a.at - b.at).filter((c) => {
+          if (!c.name.startsWith('whoosh')) return true;
+          if (c.at - last < sb.sfxGap) return false;
+          last = c.at; return true;
+        });
+      }
       const audioFile = path.join(outDir, `.${base}.f32`);
       const samples = SFX.mix(cues, dur, sb.sfxVolume);
       fs.writeFileSync(audioFile, Buffer.from(samples.buffer, samples.byteOffset, samples.byteLength));

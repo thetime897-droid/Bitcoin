@@ -152,6 +152,32 @@ body:not(.render) #frame { transform-origin: 0 0; }
 .theme-paper .chip { background: var(--c); }
 
 /* Chroma key: no glows or soft shadows that would bleed into the key colour. */
-body.key #frame * { text-shadow: none !important; }
-body.key #frame [filter] { filter: none !important; }
-body.key .panel, body.key .badge, body.key .stamp, body.key .chip, body.key .tag { box-shadow: none !important; }
+body.key #frame:not(.theme-pro) * { text-shadow: none !important; }
+body.key #frame:not(.theme-pro) [filter] { filter: none !important; }
+body.key #frame:not(.theme-pro) :is(.panel, .badge, .stamp, .chip, .tag) { box-shadow: none !important; }
+
+/* Pro look: deep navy stage, faint grid, top spotlight, glass tiles. */
+#frame.theme-pro { --text: #fff; --muted: #7f93a6; --accent: #3fd0ff; }
+.theme-pro #bg, #screen {
+  background:
+    linear-gradient(rgba(63,208,255,.05) 1px, transparent 1px) 0 0 / 60px 60px,
+    linear-gradient(90deg, rgba(63,208,255,.05) 1px, transparent 1px) 0 0 / 60px 60px,
+    radial-gradient(ellipse 70% 40% at 50% 38%, #12283a 0%, #08121b 55%, #04080c 100%);
+}
+#screen {
+  position: absolute; left: 28px; right: 28px; top: 180px; bottom: 290px; z-index: 2; border-radius: 40px;
+  border: 2px solid rgba(63,208,255,.28); overflow: hidden;
+}
+.theme-pro #title { top: 240px; font-size: 54px; font-weight: 900; letter-spacing: .5px; }
+.theme-pro #title::after { display: none; }
+.theme-pro #title .acc { color: var(--accent); }
+.theme-pro #pill { top: 318px; font-size: 22px; background: rgba(63,208,255,.08); border-color: rgba(63,208,255,.35); }
+.theme-pro.layout-full #stage { top: 470px; transform: scale(1.1); transform-origin: 50% 0; }
+.ptile:not(.abs) { position: relative; }
+.ptile {
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(30,54,76,.96) 0%, rgba(10,20,31,.97) 100%);
+  border: 2px solid rgba(110,210,255,.38);
+  box-shadow: 0 24px 50px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.14), 0 0 34px rgba(63,208,255,.16);
+}
+.plabel { font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #cfe9f7; white-space: nowrap; }

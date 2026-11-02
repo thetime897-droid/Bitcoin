@@ -150,3 +150,28 @@ Nachbau des „Analyse-Blatt auf dem Schreibtisch“-Stils: Holztisch, weißes B
 mit Handkamera-Wackeln, gelber Textmarker mit sichtbarem Stift (inkl. Kratz-Sound),
 rote Tintenstempel. Jeder `*markierte*` Text bekommt einen Marker-Strich; `statement`
 und `number` funktionieren auch im Papier-Look. Beispiel: `storyboards/amazon-bewertung.json`.
+
+## Profi-Look (`"theme": "pro"`)
+
+Erklärvideo-Stil wie bei hochwertigen Finanz-Shorts: dunkles Navy mit Raster,
+Glas-Kacheln mit HUD-Ecken, isometrische 3D-Chips, rotierender Punkte-Globus,
+Roboter-Agent unter Lichtkegel, Smartphone mit Transkript (Suchbegriff tippt sich,
+Satz wird markiert), Münzen, Kassen-Terminal. Alles blendet unscharf ein und bewegt
+sich weiter. Titel: `*Wort*` = Akzentfarbe. Mit `--bluescreen` liegt alles auf einem
+dunklen, abgerundeten Screen – der wird über dein Video gekeyt.
+
+| Typ | Wofür | Wichtige `params` |
+|---|---|---|
+| `proHook` | 2×2 Logo-Kacheln, rotes Fadenkreuz mit „?“, Sprechblasen drehen auf ein Wort, Banner | `sources[]`, `word`, `bubble`, `revealAt`, `stamp` |
+| `proChart` | Glas-Chartkarte, Linie zeichnet sich, großes Ergebnis-Badge (rot = Crash) | `ticker`, `name`, `market`, `data`, `color`, `badge`, `badgeSub`, `badgeAt`, `badgeX/Y`, `cashAt`, `tint`, `yTicks`, `tag`, `stamp` |
+| `proAgent` | Roboter auf Plattform, Aufgaben-Karten werden abgehakt | `tasks[{icon,text,done,at,cash}]` |
+| `proStats` | Kennzahl-Karten mit Hochzählen und Sparkline | `items[{ticker,name,value,unit,label,delta,at,spark}]` |
+| `proPhone` | Smartphone mit Transkript, Markierung, Sprecher-Chip | `ticker`, `speaker`, `role`, `docTitle`, `query`, `paragraphs[]` (`*markiert*`), `highlightAt[]` |
+| `proLayers` | „?“-Medaillons drehen sich zu Antworten; als CTA mit Frage | `items[{icon,text,color,at}]`, `focus`, `revealed`, `question`, `note` |
+| `proGlobe` | Punkte-Globus, darunter iso-Chips | `chips[{label,name}]`, `caption`, `captionAt` |
+| `proBlueprint` | Eigene Chips → Lizenz → Münzen fließen zum Lizenzgeber | `sources[]`, `hubText`, `licenseAt`, `coinsAt`, `caption` |
+| `proGrowth` | Zwei iso-Säulen, Vorjahr vs. heute, Faktor zählt hoch | `ticker`, `caption`, `value`, `growAt` |
+| `proCheckout` | Shop-Seiten fallen weg, Agent geht direkt zur Kasse, „BEZAHLT“, Krone | `agent`, `owner`, `ownerText`, `slashAt`, `paidAt`, `ownerAt` |
+
+Sounds sparsam: `"sfxOnly": ["whoosh", "cash"]` und `"sfxGap": 0.7` im Storyboard
+(nur Whooshes mit Abstand, Kassenklingeln bei Geld). Beispiel: `storyboards/ki-agenten-pro.json`.

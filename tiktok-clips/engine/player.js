@@ -18,6 +18,14 @@
   <svg width="0" height="0" style="position:absolute"><defs>
     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     <filter id="glow-sm" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="pglow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur in="SourceGraphic" stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <linearGradient id="pg-chip" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b3a48"/><stop offset="1" stop-color="#121a22"/></linearGradient>
+    <linearGradient id="pg-die" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5d6b78"/><stop offset=".45" stop-color="#28323c"/><stop offset="1" stop-color="#3c4854"/></linearGradient>
+    <linearGradient id="pg-beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfefff" stop-opacity=".5"/><stop offset="1" stop-color="#3fd0ff" stop-opacity="0"/></linearGradient>
+    <radialGradient id="pg-floor"><stop offset="0" stop-color="#3fd0ff" stop-opacity=".55"/><stop offset=".6" stop-color="#3fd0ff" stop-opacity=".12"/><stop offset="1" stop-color="#3fd0ff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="pg-sphere" cx=".4" cy=".35"><stop offset="0" stop-color="#14405a"/><stop offset=".7" stop-color="#0a2233"/><stop offset="1" stop-color="#061520"/></radialGradient>
+    <linearGradient id="pg-robot" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f5373"/><stop offset=".45" stop-color="#1a3048"/><stop offset="1" stop-color="#0d1a28"/></linearGradient>
+    <linearGradient id="pg-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a0"/><stop offset="1" stop-color="#c88f17"/></linearGradient>
     <marker id="arrow-g" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2ee86a"/></marker>
     <marker id="arrow-r" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ff3b3b"/></marker>
   </defs></svg>`);
@@ -59,7 +67,8 @@
     if (ALPHA || KEY) tintEl.style.display = 'none';
     if (KEY) flashEl.style.display = 'none';
     const title = frame.querySelector('#title'), pill = frame.querySelector('#pill');
-    title.textContent = sc.title || '';
+    // *word* in a title is drawn in the accent colour.
+    title.innerHTML = (sc.title || '').replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[c]).replace(/\*([^*]+)\*/g, '<span class="acc">$1</span>');
     pill.textContent = sc.pill || '';
     dur = sc.duration || 3;
     const fn = C.scenes[sc.type];
@@ -81,7 +90,11 @@
     // The background stays put. "exit": false on a scene keeps the last frame.
     const exitAt = sc.exit === false ? Infinity : dur - 0.4;
     if (sc.exit !== false) cues.push({ name: 'whoosh', at: exitAt - 0.05, gain: 0.35 });
-    const layers = () => [...frame.children].filter((el) => el.id !== 'bg' && el.id !== 'dust');
+    // Pro look on a key colour: a dark rounded screen carries the graphics, so
+    // their glow lands on dark instead of bleeding into the key. It stays put
+    // while the content enters and leaves.
+    if (theme === 'pro' && KEY) frame.querySelector('#bg').after(C.h('div', { id: 'screen' }));
+    const layers = () => [...frame.children].filter((el) => el.id !== 'bg' && el.id !== 'dust' && el.id !== 'screen');
     // Never fully still: floating dust in the background and a slow camera
     // push-in with a gentle sway on the stage, even after every beat has landed.
     const dust = C.h('div', { id: 'dust', style: { position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' } });
