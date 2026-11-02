@@ -50,7 +50,7 @@ if (flag('preview')) {
   const rel = (f) => pathToFileURL(path.join(engine, f)).href;
   const html = `<!doctype html><html><head><meta charset="utf-8"><title>${name}</title><link rel="stylesheet" href="${rel('style.css')}"></head><body>
 <script>window.__STORYBOARD__=${JSON.stringify(sb)}</script>
-<script src="${rel('core.js')}"></script><script src="${rel('scenes.js')}"></script><script src="${rel('pro.js')}"></script><script src="${rel('player.js')}"></script></body></html>`;
+<script src="${rel('core.js')}"></script><script src="${rel('scenes.js')}"></script><script src="${rel('pro.js')}"></script><script src="${rel('tr.js')}"></script><script src="${rel('player.js')}"></script></body></html>`;
   const f = path.join(outDir, 'preview.html');
   fs.writeFileSync(f, html);
   console.log('Preview:', f);

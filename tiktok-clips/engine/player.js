@@ -99,7 +99,7 @@
     // push-in with a gentle sway on the stage, even after every beat has landed.
     const dust = C.h('div', { id: 'dust', style: { position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' } });
     frame.querySelector('#bg').after(dust);
-    const motes = [...Array(ALPHA || KEY ? 0 : 34)].map((_, i) => ({
+    const motes = [...Array(ALPHA || KEY || theme === 'tr' ? 0 : 34)].map((_, i) => ({
       x: C.rand(i * 3.1) * 1080, y: C.rand(i * 7.7) * 1920, r: 2 + C.rand(i * 5.3) * 5,
       v: 18 + C.rand(i * 9.1) * 40, ph: C.rand(i * 2.2) * 6,
       el: C.h('div', { style: { position: 'absolute', borderRadius: '50%', background: 'var(--accent)', filter: 'blur(1.5px)' } }, dust),
@@ -121,7 +121,7 @@
       flashOp = 0; tintOp = 0;
       const kin = C.k(t, 0, 0.3), kout = C.k(t, exitAt, 0.4, 'in');
       layers().forEach((el) => {
-        el.style.filter = kin < 1 || kout > 0 ? `blur(${(1 - kin) * 10 + kout * 16}px)` : '';
+        el.style.filter = theme !== 'tr' && (kin < 1 || kout > 0) ? `blur(${(1 - kin) * 10 + kout * 16}px)` : '';
         const hand = paper && (el === paperEl || el === stageEl || el === chromeEl);
         const push = still || (el !== stageEl && !hand) ? 1 : 1 + 0.03 * (t / dur);
         el.style.scale = String((1 - kout * 0.06) * push);

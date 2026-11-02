@@ -183,3 +183,23 @@ Szene eine `.mov` (ProRes 4444 mit Alpha-Kanal – in CapCut, Premiere, Final Cu
 transparent) und eine kleine `.webm` (VP9 mit Alpha). Kein Keyen nötig, Ein-/Ausblendungen
 sind sauber transparent. Papier-Look: nur das Blatt; Profi-Look: Grafiken schweben frei.
 Storyboards dürfen Papier- und Profi-Szenen mischen (`"theme"` pro Szene).
+
+## Broker-App-Look (`"theme": "tr"`)
+
+Weiße, abgerundete Karten oben im Bild wie bei Finanz-Creatorn, die über ihre
+Trade-Republic-Bildschirmaufnahme einblenden: fette schwarze Schrift, grüne Akzente
+(`*Wort*`), große Zahlen, Icon-Kachel, schwarze Pills, Sticker. Immer mit `--alpha`
+exportieren (nur die Karte ist sichtbar). Kopfzeile: `brand` (Standard „Trade Republic“
+mit gezeichneter Flagge, oder ein Ticker / eigenes `{name, glyph, color, logo}`) + `context`.
+Echte Logos: PNG mit `"logo": "logos/xyz.png"` am Ticker/Brand.
+
+| Typ | Wofür | Wichtige `params` |
+|---|---|---|
+| `trHeadline` | Überschrift + große Zahl („3 Dinge musst du …“), Pills, Sticker | `brand`, `context`, `text`, `big`, `bigSide`, `bigColor`, `pills[]`, `sticker{text,icon,color,at,x,y}` |
+| `trStat` | Icon-Kachel + Riesen-Zahl (grün/rot), Unterzeile, Pills | `label`, `icon`, `value`, `tone:"red"`, `sub`, `pills[]`, `cashAt` |
+| `trNumber` | „Nummer 2 von 3“ mit Fortschrittsring | `n`, `of`, `title` |
+| `trList` | „So geht's“-Zeilen mit grünem Haken / rotem Kreuz | `title`, `items[{text,sub,value,ok,at}]` |
+| `trWarn` | „Achtung“-Karte mit rotem Warndreieck | `tag`, `text`, `sub`, `pills[]` |
+| `trChart` | App-Chartkarte: Name, Preis zählt, Änderung, Linie, Zeitraum-Tabs | `ticker`, `name`, `price`, `priceFrom`, `change`, `range`, `data`, `color`, `threshold{value,label,at}`, `sticker` |
+
+Beispiel: `storyboards/jahresendrallye-tr.json`.

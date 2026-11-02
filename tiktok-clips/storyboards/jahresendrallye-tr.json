@@ -1,0 +1,376 @@
+{
+ "name": "jahresendrallye-tr",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "sfxOnly": [
+  "whoosh",
+  "cash"
+ ],
+ "sfxGap": 0.6,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trChart",
+   "duration": 5.2,
+   "script": "0:00 · Der Nasdaq ist diesen Monat über 6 Prozent gefallen – und genau das könnte das beste Kaufsignal des Jahres sein.",
+   "params": {
+    "ticker": {
+     "name": "NASDAQ",
+     "glyph": "NDQ",
+     "color": "#0096d6"
+    },
+    "name": "Nasdaq 100 USD (Acc)",
+    "price": "59,29 €",
+    "priceFrom": 63.3,
+    "change": "−6,33 %",
+    "range": "1M",
+    "data": [
+     63.3,
+     63.04,
+     63.178,
+     63.275,
+     63.253,
+     63.032,
+     63.248,
+     63.476,
+     63.48,
+     63.478,
+     63.271,
+     62.888,
+     62.785,
+     62.843,
+     62.513,
+     62.728,
+     62.52,
+     62.314,
+     61.965,
+     62.33,
+     62.503,
+     62.78,
+     62.861,
+     62.504,
+     62.369,
+     62.362,
+     62.068,
+     62.4,
+     62.155,
+     61.67,
+     61.926,
+     61.408,
+     61.787,
+     61.636,
+     61.597,
+     61.323,
+     61.208,
+     60.761,
+     60.149,
+     60.454,
+     60.063,
+     60.274,
+     59.853,
+     60.273,
+     60.614,
+     60.802,
+     61.0,
+     60.982,
+     61.147,
+     60.568,
+     60.423,
+     60.705,
+     60.222,
+     60.622,
+     60.982,
+     60.754,
+     60.471,
+     60.295,
+     60.038,
+     60.53,
+     60.273,
+     59.571,
+     58.956,
+     59.106,
+     59.591,
+     59.47,
+     59.344,
+     59.29
+    ],
+    "drawAt": 0.3,
+    "drawDur": 1.6,
+    "sticker": {
+     "text": "Kaufsignal?",
+     "icon": "📈",
+     "color": "#18a565",
+     "at": 3.2,
+     "x": 800,
+     "y": 830,
+     "size": 44
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 5.4,
+   "script": "0:05 · Drei Statistiken sagen: Die Jahresendrallye kommt. Aber eine Sache musst du morgen unbedingt im Blick haben.",
+   "params": {
+    "context": "Nasdaq 100",
+    "text": "Kommt jetzt die *Jahresendrallye?*",
+    "big": "3 Signale",
+    "bigSide": "sprechen\ndafür",
+    "bigAt": 0.6,
+    "sticker": {
+     "text": "+ 1 Risiko morgen",
+     "icon": "⚠",
+     "color": "#e5392f",
+     "at": 3.0,
+     "x": 700,
+     "y": 560,
+     "size": 38
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trNumber",
+   "duration": 2.6,
+   "script": "0:10 · Erstens:",
+   "params": {
+    "n": 1,
+    "of": 3,
+    "title": "Der\n*Abverkauf*"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStat",
+   "duration": 4.6,
+   "script": "0:11 · Seit 2023 ist der Nasdaq sieben Mal mit mehr als 2,5 Prozent Minus in den Tag gestartet. Drei Wochen später stand er jedes einzelne Mal höher.",
+   "params": {
+    "label": "Nach −2,5 %-Starts seit 2023",
+    "icon": "↗",
+    "value": "7 von 7",
+    "size": 150,
+    "at": 0.4,
+    "countDur": 1.4,
+    "sub": "*3 Wochen später* immer höher"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trStat",
+   "duration": 5.6,
+   "script": "0:17 · Im Schnitt plus 7,6 Prozent. Der größte Zwischenverlust: nur gut 2 Prozent. Klar, sieben Fälle sind wenig – aber es wird noch besser.",
+   "params": {
+    "label": "Ø Rendite nach 3 Wochen",
+    "icon": "%",
+    "value": "+7,6 %",
+    "at": 0.3,
+    "sub": "Ø größter Zwischenverlust: *nur −2,2 %*",
+    "pills": [
+     "7 Fälle",
+     "seit 2023",
+     "kleine Stichprobe"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trNumber",
+   "duration": 2.6,
+   "script": "0:23 · Zweitens:",
+   "params": {
+    "n": 2,
+    "of": 3,
+    "title": "Die\n*Saison*"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trHeadline",
+   "duration": 4.4,
+   "script": "0:24 · Wir sind jetzt in den besten sechs Monaten des Jahres – November bis April.",
+   "params": {
+    "brand": {
+     "name": "S&P 500",
+     "glyph": "500",
+     "color": "#c8102e"
+    },
+    "context": "Saisonalität",
+    "text": "Die *besten 6 Monate* beginnen jetzt",
+    "big": "Nov – Apr",
+    "bigColor": "#111317",
+    "bigAt": 0.5,
+    "countDur": 0.01
+   }
+  },
+  {
+   "id": "08",
+   "type": "trStat",
+   "duration": 7.4,
+   "script": "0:28 · Und in Jahren mit US-Zwischenwahlen ist der Markt in diesem Zeitraum seit 1950 kein einziges Mal gefallen. 19 von 19 Mal im Plus – im Schnitt fast 15 Prozent.",
+   "params": {
+    "label": "Nov–Apr in Midterm-Jahren · seit 1950",
+    "icon": "✓",
+    "value": "19 von 19",
+    "size": 150,
+    "at": 2.0,
+    "countDur": 1.6,
+    "sub": "Mal im Plus · Ø *+14,8 %*",
+    "pills": [
+     "Ø +14,8 %",
+     "Quelle: Carson Research"
+    ],
+    "pillsAt": 4.6,
+    "cashAt": 4.7
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 7.4,
+   "script": "0:36 · Und genau da kommt der Haken: Die Zwischenwahlen sind morgen. Umfragen sehen die Demokraten vorn – und ein Machtwechsel im Kongress kann die Börse kurz nervös machen.",
+   "params": {
+    "tag": "Der Haken",
+    "text": "Morgen: *US-Zwischen-\nwahlen*",
+    "sub": "Umfragen sehen die *Demokraten vorn* – ein Machtwechsel kann die Börse kurz nervös machen.",
+    "pills": [
+     "Di, 3. November",
+     "Kongress"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "10",
+   "type": "trNumber",
+   "duration": 2.6,
+   "script": "0:44 · Drittens – und das ist das wichtigste Signal:",
+   "params": {
+    "n": 3,
+    "of": 3,
+    "title": "Die\n*Angst*"
+   }
+  },
+  {
+   "id": "11",
+   "type": "trChart",
+   "duration": 6.0,
+   "script": "0:46 · Die Angst. Der VIX, das Angstbarometer der Börse, steht bei knapp 20. Echte Panik sieht man meist erst über 35.",
+   "params": {
+    "ticker": {
+     "name": "VIX",
+     "glyph": "VIX",
+     "color": "#5b5bd6"
+    },
+    "name": "CBOE Volatility Index (VIX)",
+    "price": "19,42",
+    "priceFrom": 17.2,
+    "change": "+2,00 %",
+    "color": "#111317",
+    "range": "1M",
+    "data": [
+     17.2,
+     17.49,
+     17.141,
+     17.263,
+     17.322,
+     17.462,
+     17.062,
+     16.658,
+     16.471,
+     16.957,
+     16.765,
+     16.871,
+     16.633,
+     16.159,
+     15.655,
+     15.993,
+     16.297,
+     16.144,
+     16.344,
+     16.539,
+     16.996,
+     17.538,
+     17.414,
+     18.008,
+     18.587,
+     18.698,
+     19.196,
+     19.175,
+     18.997,
+     18.648,
+     19.137,
+     18.669,
+     18.089,
+     18.473,
+     18.824,
+     18.792,
+     19.234,
+     18.612,
+     18.283,
+     18.0,
+     18.6,
+     19.5,
+     21.0,
+     23.5,
+     22.0,
+     20.3,
+     19.42
+    ],
+    "drawAt": 0.3,
+    "drawDur": 1.6,
+    "threshold": {
+     "value": 35,
+     "label": "Panik ab 35",
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "12",
+   "type": "trList",
+   "duration": 6.4,
+   "script": "0:52 · Heißt: Der Abverkauf war bisher ziemlich kontrolliert. Ein letzter Panik-Flush wäre der perfekte Startschuss für die Rallye.",
+   "params": {
+    "title": "Rallye-*Check*",
+    "items": [
+     {
+      "text": "Abverkauf",
+      "sub": "7 von 7 danach höher",
+      "at": 0.7
+     },
+     {
+      "text": "Saison",
+      "sub": "19 von 19 Midterm-Jahre im Plus",
+      "at": 1.3
+     },
+     {
+      "text": "Angst",
+      "sub": "Noch keine Panik – VIX unter 35",
+      "ok": false,
+      "value": "fehlt",
+      "at": 2.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "13",
+   "type": "trHeadline",
+   "duration": 4.8,
+   "script": "0:59 · Rallye oder doch noch ein Crash? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "context": "Deine Meinung",
+    "text": "*Rallye* oder doch noch ein *Crash?*",
+    "pills": [
+     "💬 Schreib's in die Kommentare",
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 0.9
+   }
+  }
+ ]
+}

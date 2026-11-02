@@ -182,3 +182,14 @@ body.key #frame:not(.theme-pro) :is(.panel, .badge, .stamp, .chip, .tag) { box-s
   box-shadow: 0 24px 50px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.14), 0 0 34px rgba(63,208,255,.16);
 }
 .plabel { font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #cfe9f7; white-space: nowrap; }
+
+/* Broker-app look: white cards pinned to the top over a phone recording. */
+#frame.theme-tr { --text: #111317; --muted: #8b9099; --accent: #18a565; font-family: 'Inter Display', 'Inter', sans-serif; }
+.theme-tr #bg { background: linear-gradient(180deg, #16181c 0%, #0b0c0e 100%); }
+.theme-tr #chrome { display: none; }
+.theme-tr.layout-full #stage { top: 0; height: 1920px; transform: none; }
+.trcard {
+  position: absolute; background: #fff; border-radius: 40px; color: #111317; transform-origin: 50% 0;
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+}
+body.alpha .trcard { box-shadow: none; }
