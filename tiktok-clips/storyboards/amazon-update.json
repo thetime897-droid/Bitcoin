@@ -1,0 +1,81 @@
+{
+ "name": "amazon-update",
+ "theme": "paper",
+ "layout": "full",
+ "scenes": [
+  {
+   "id": "01",
+   "type": "valuation",
+   "title": "Amazon-Update",
+   "pill": "223 € ≈ 250 $ · +4 %",
+   "duration": 7,
+   "stillAt": 6.5,
+   "params": {
+    "rating": 3,
+    "ratingAt": 0.5,
+    "points": [
+     30,
+     33,
+     31,
+     38,
+     42,
+     30,
+     28,
+     40,
+     36,
+     27,
+     22,
+     20,
+     21,
+     19,
+     23,
+     20,
+     18,
+     21,
+     19,
+     17,
+     20,
+     21,
+     18,
+     20,
+     19,
+     17,
+     18,
+     17,
+     15.6,
+     16.3
+    ],
+    "drawAt": 0.3,
+    "drawDur": 1.5,
+    "avgAt": 2.0,
+    "nowAt": 2.6,
+    "nowLabel": "heute ≈ 16× · 250 $",
+    "avgLabel": "Ø 21× = fair",
+    "levels": [
+     {
+      "price": "$384",
+      "label": "Teuer",
+      "at": 25.6
+     },
+     {
+      "price": "$322",
+      "label": "Fair",
+      "at": 21
+     },
+     {
+      "price": "$260",
+      "label": "Günstig",
+      "at": 17,
+      "markAt": 3.4
+     }
+    ],
+    "note": "Nach dem Rebound rückt Amazon *Richtung fair* – liegt aber noch *unter 260 $*.",
+    "noteAt": 3.6,
+    "noteMarkAt": [
+     4.2,
+     4.9
+    ]
+   }
+  }
+ ]
+}

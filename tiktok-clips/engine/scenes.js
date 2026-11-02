@@ -1143,6 +1143,11 @@
       if (lv.markAt != null) ctx.mark(pr, lv.markAt, 0.4);
       return d;
     });
+    let note;
+    if (p.note) {
+      note = C.place(C.h('div', { style: { width: '900px', textAlign: 'center', fontSize: '40px', fontWeight: 800, lineHeight: 1.3, color: INK } }, st), 540, 830);
+      markup(note, p.note, ctx, p.noteMarkAt);
+    }
     const nowTag = C.place(C.h('div', { class: 'badge', style: { background: '#e2a03f', fontSize: '28px', padding: '6px 16px', borderRadius: '10px' } }, st, p.nowLabel || 'heute ≈ 17×'), X1 - 120, yAt(data[data.length - 1]) + 70);
     const avgTag = C.place(C.h('div', { style: { fontSize: '28px', fontWeight: 800, color: INK, background: '#fff', padding: '2px 10px', borderRadius: '8px' } }, st, p.avgLabel || 'Ø 21×'), X0 + 90, yAt(avg) - 30);
     const drawAt = p.drawAt ?? 0.3, drawDur = p.drawDur ?? 1.4, avgAt = p.avgAt ?? drawAt + drawDur + 0.1, nowAt = p.nowAt ?? avgAt + 0.8;
@@ -1166,6 +1171,7 @@
       avgTag.style.opacity = C.k(t, avgAt, 0.3);
       levels.forEach((l, i) => C.rise(l, t, avgAt + i * 0.12, 0.35, 16));
       C.pop(nowTag, t, nowAt);
+      if (note) C.rise(note, t, p.noteAt ?? nowAt + 0.6, 0.4, 20);
     };
   };
 
