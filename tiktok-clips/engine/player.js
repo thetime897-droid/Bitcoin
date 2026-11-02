@@ -82,7 +82,7 @@
         <radialGradient id="vig" cx="50%" cy="45%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#2a1200" stop-opacity=".45"/></radialGradient></defs>
         <rect width="1080" height="1920" fill="#d0924c"/><rect width="1080" height="1920" filter="url(#wood)"/><rect width="1080" height="1920" fill="url(#vig)"/></svg>`;
     }
-    if (paper) frame.querySelector('#bg').after(C.h('div', { id: 'paper', style: KEY ? { boxShadow: 'none', borderRadius: '0' } : {} }));
+    if (paper) frame.querySelector('#bg').after(C.h('div', { id: 'paper', style: KEY || ALPHA ? { boxShadow: 'none', borderRadius: KEY ? '0' : '6px' } : {} }));
     if (KEY) frame.querySelector('#bg').style.background = '#' + KEY.replace(/[^0-9a-f]/gi, '');
     const sceneUpdate = fn(frame.querySelector('#stage'), sc.params || {}, { ...ctx, dur, theme });
     // Clean edges: content sharpens in over the first 0.3 s and zooms/blurs out
@@ -113,7 +113,7 @@
     if (paper) [paperEl, stageEl, chromeEl].forEach((el) => (el.style.transformOrigin = '540px 960px'));
     if (paper) { chromeEl.style.position = 'absolute'; chromeEl.style.height = '1920px'; stageEl.style.transformOrigin = '540px 430px'; }
     strokes.sort((a, b) => a.at - b.at);
-    const pen = strokes.length ? C.h('div', { id: 'pen', style: { position: 'absolute', left: 0, top: 0, width: '420px', height: '74px', zIndex: 20, transformOrigin: '0 50%', filter: KEY ? 'none' : 'drop-shadow(14px 22px 14px rgba(40,20,0,.35))' } }, frame,
+    const pen = strokes.length ? C.h('div', { id: 'pen', style: { position: 'absolute', left: 0, top: 0, width: '420px', height: '74px', zIndex: 20, transformOrigin: '0 50%', filter: KEY || ALPHA ? 'none' : 'drop-shadow(14px 22px 14px rgba(40,20,0,.35))' } }, frame,
       `<svg width="420" height="74" viewBox="0 0 420 74"><polygon points="0,37 28,20 28,54" fill="#c9c400"/><rect x="26" y="14" width="50" height="46" rx="6" fill="#e9e52a"/>
        <rect x="70" y="8" width="350" height="58" rx="26" fill="#f4f13a"/><rect x="70" y="8" width="350" height="18" rx="9" fill="#fffb8a" opacity=".7"/>
        <text x="190" y="47" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="30" fill="#2c2a10" opacity=".75">Highlight</text></svg>`) : null;
