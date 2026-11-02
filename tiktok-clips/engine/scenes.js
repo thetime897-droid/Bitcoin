@@ -947,12 +947,12 @@
       data.push(C.lerp(a, b, (i % 6) / 6) * (1 + (C.rand(i + 3) - 0.5) * 0.05));
     }
     data.push(pts[pts.length - 1]);
-    const X0 = 170, X1 = 900, Y0 = 410, Y1 = 740, hi = p.max || 400;
-    const xAt = (i) => X0 + ((X1 - X0) * i) / (data.length - 1), yAt = (v) => Y1 - (v / hi) * (Y1 - Y0);
+    const X0 = 170, X1 = 900, Y0 = 410, Y1 = 740, hi = p.max || 400, mn = p.min || 0;
+    const xAt = (i) => X0 + ((X1 - X0) * i) / (data.length - 1), yAt = (v) => Y1 - ((v - mn) / (hi - mn)) * (Y1 - Y0);
     const svg = C.svg(st);
-    [0, 100, 200, 300, 400].filter((v) => v <= hi).forEach((v) => {
+    (p.ticks || [0, 100, 200, 300, 400]).filter((v) => v <= hi && v >= mn).forEach((v) => {
       C.s('line', { x1: X0, x2: X1, y1: yAt(v), y2: yAt(v), stroke: 'rgba(0,0,0,.08)', 'stroke-width': 2 }, svg);
-      C.s('text', { x: X0 - 18, y: yAt(v) + 8, class: 'axis', 'text-anchor': 'end' }, svg).textContent = '$' + v;
+      C.s('text', { x: X0 - 18, y: yAt(v) + 8, class: 'axis', 'text-anchor': 'end' }, svg).textContent = (p.tickUnit ?? '$') + v + (p.tickSuffix ?? '');
     });
     (p.xLabels || ['2022', '2023', '2024', '2025', '2026']).forEach((l, i, a) => {
       C.s('text', { x: X0 + ((X1 - X0) * (i + 0.5)) / a.length, y: Y1 + 40, class: 'axis', 'text-anchor': 'middle' }, svg).textContent = l;
@@ -1079,7 +1079,7 @@
       const x = 300 + (i % 2) * 480, y = 150 + Math.floor(i / 2) * 230;
       const d = C.place(C.h('div', { style: { width: '440px', height: '190px', background: '#fff', border: '2px solid #e5e5ea', borderRadius: '18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 34px' } }, st), x, y);
       C.h('div', { style: { fontSize: '32px', fontWeight: 700, color: '#6d6d75' } }, d, it.label);
-      const v = C.h('div', { style: { fontSize: '54px', fontWeight: 900, color: INK, position: 'relative' } }, d, it.value);
+      const v = C.h('div', { style: { fontSize: '50px', fontWeight: 900, color: INK, position: 'relative', whiteSpace: 'nowrap' } }, d, it.value);
       let strike, note;
       if (it.bad) {
         strike = C.s('path', { d: 'M-8,40 C40,30 90,48 140,34 S220,30 260,38', stroke: RED, 'stroke-width': 8, fill: 'none', 'stroke-linecap': 'round', pathLength: 100 }, C.svg(v, 250, 80));

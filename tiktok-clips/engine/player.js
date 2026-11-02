@@ -65,7 +65,7 @@
     tintEl = frame.querySelector('#tint');
     Object.assign(tintEl.style, { position: 'absolute', inset: 0, opacity: 0, zIndex: 1, background: 'radial-gradient(ellipse 80% 55% at 50% 30%, rgba(150,10,10,.75) 0%, rgba(60,0,0,.5) 50%, rgba(0,0,0,0) 100%)' });
     if (ALPHA || KEY) tintEl.style.display = 'none';
-    if (KEY) flashEl.style.display = 'none';
+    if (KEY || ALPHA) flashEl.style.display = 'none';
     const title = frame.querySelector('#title'), pill = frame.querySelector('#pill');
     // *word* in a title is drawn in the accent colour.
     title.innerHTML = (sc.title || '').replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[c]).replace(/\*([^*]+)\*/g, '<span class="acc">$1</span>');

@@ -5,6 +5,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; background: #111; font-family: var(--font); }
 body.render { background: transparent; overflow: hidden; }
+html:has(body.render) { background: transparent; }
 
 #frame {
   position: relative; width: 1080px; height: 1920px; overflow: hidden;

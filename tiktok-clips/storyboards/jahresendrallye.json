@@ -1,0 +1,406 @@
+{
+ "name": "jahresendrallye",
+ "fps": 30,
+ "layout": "full",
+ "theme": "pro",
+ "sfxOnly": [
+  "whoosh",
+  "cash",
+  "marker"
+ ],
+ "sfxGap": 0.7,
+ "sfxVolume": 0.35,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "proChart",
+   "title": "Nasdaq 100: *letzter Monat*",
+   "duration": 5.2,
+   "script": "0:00 · Der Nasdaq ist diesen Monat über 6 Prozent gefallen – und genau das könnte das beste Kaufsignal des Jahres sein.",
+   "params": {
+    "name": "NASDAQ 100",
+    "market": "ETF · 1 MONAT",
+    "color": "red",
+    "data": [
+     63.0,
+     62.88,
+     62.59,
+     62.81,
+     62.44,
+     62.54,
+     62.46,
+     62.09,
+     62.15,
+     61.76,
+     61.76,
+     61.4,
+     61.06,
+     61.05,
+     61.43,
+     61.12,
+     60.92,
+     61.1,
+     61.59,
+     61.73,
+     61.69,
+     62.21,
+     61.83,
+     62.24,
+     62.1,
+     61.81,
+     61.5,
+     61.38,
+     61.75,
+     61.5,
+     61.59,
+     61.77,
+     61.56,
+     61.6,
+     60.93,
+     60.26,
+     59.8,
+     60.04,
+     59.91,
+     59.61,
+     59.71,
+     59.61,
+     59.3
+    ],
+    "yTicks": false,
+    "tag": false,
+    "badge": "−6,3 %",
+    "badgeSub": "IN EINEM MONAT",
+    "badgeX": 330,
+    "badgeY": 520,
+    "drawAt": 0.2,
+    "drawDur": 1.2,
+    "badgeAt": 1.5,
+    "tint": true,
+    "stamp": {
+     "text": "KAUFSIGNAL?",
+     "color": "green",
+     "at": 3.3,
+     "size": 62
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "proLayers",
+   "title": "3 Signale für die *Rallye*",
+   "duration": 5.4,
+   "script": "0:05 · Drei Statistiken sagen: Die Jahresendrallye kommt. Aber eine Sache musst du morgen unbedingt im Blick haben.",
+   "params": {
+    "focus": 2,
+    "items": [
+     {
+      "icon": "📉",
+      "text": "Abverkauf",
+      "color": "cyan",
+      "at": 1.0
+     },
+     {
+      "icon": "📅",
+      "text": "Saison",
+      "color": "green",
+      "at": 1.4
+     },
+     {
+      "icon": "😱",
+      "text": "Angst",
+      "color": "amber",
+      "at": 1.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "number",
+   "theme": "paper",
+   "title": "Signal 1",
+   "pill": "Nasdaq seit 2023",
+   "duration": 6.4,
+   "script": "0:10 · Erstens: Seit 2023 ist der Nasdaq sieben Mal mit mehr als 2,5 Prozent Minus in den Tag gestartet. Drei Wochen später stand er jedes einzelne Mal höher.",
+   "params": {
+    "value": "7 von 7",
+    "label": "3 WOCHEN SPÄTER HÖHER",
+    "size": 220,
+    "countDur": 1.2,
+    "stamp": {
+     "text": "100 % TREFFER",
+     "color": "green",
+     "at": 4.6,
+     "size": 60,
+     "y": 720
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "tiles",
+   "theme": "paper",
+   "title": "Signal 1",
+   "pill": "Nach −2,5 %-Starts",
+   "duration": 5.6,
+   "script": "0:17 · Im Schnitt plus 7,6 Prozent. Der größte Zwischenverlust: nur gut 2 Prozent. Klar, sieben Fälle sind wenig – aber es wird noch besser.",
+   "params": {
+    "items": [
+     {
+      "label": "Ø nach 3 Wo.",
+      "value": "+7,6 %",
+      "mark": true,
+      "markAt": 0.8
+     },
+     {
+      "label": "Ø max. Minus",
+      "value": "−2,2 %",
+      "mark": true,
+      "markAt": 2.2
+     },
+     {
+      "label": "Fälle",
+      "value": "7"
+     },
+     {
+      "label": "Seit",
+      "value": "2023"
+     }
+    ],
+    "stamp": {
+     "text": "KLEINE STICHPROBE",
+     "color": "red",
+     "at": 3.4,
+     "size": 50
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "sheet",
+   "theme": "paper",
+   "duration": 4.8,
+   "script": "0:23 · Zweitens: Wir sind jetzt in den besten sechs Monaten des Jahres – November bis April.",
+   "params": {
+    "ticker": {
+     "name": "S&P 500",
+     "glyph": "500",
+     "color": "#c8102e"
+    },
+    "text": "Die *besten 6 Monate* beginnen jetzt",
+    "markAt": [
+     1.6
+    ],
+    "points": [
+     0,
+     1,
+     3,
+     2,
+     5,
+     7,
+     6,
+     9,
+     11,
+     13,
+     12,
+     15
+    ],
+    "max": 18,
+    "price": "Ø +14,8 %",
+    "xLabels": [
+     "Nov",
+     "Dez",
+     "Jan",
+     "Feb",
+     "Mär",
+     "Apr"
+    ],
+    "footer": "Saisonal *stärkstes Halbjahr*",
+    "footerAt": 3.2,
+    "drawAt": 0.3,
+    "drawDur": 1.5,
+    "min": -2,
+    "ticks": [
+     0,
+     5,
+     10,
+     15
+    ],
+    "tickUnit": "+",
+    "tickSuffix": " %"
+   }
+  },
+  {
+   "id": "06",
+   "type": "number",
+   "theme": "paper",
+   "title": "Midterm-Jahre",
+   "pill": "seit 1950 · Nov–Apr",
+   "duration": 7.4,
+   "script": "0:28 · Und in Jahren mit US-Zwischenwahlen ist der Markt in diesem Zeitraum seit 1950 kein einziges Mal gefallen. 19 von 19 Mal im Plus – im Schnitt fast 15 Prozent.",
+   "params": {
+    "value": "19 von 19",
+    "label": "MAL IM PLUS",
+    "size": 200,
+    "countDur": 1.3,
+    "stamp": {
+     "text": "Ø +14,8 %",
+     "color": "green",
+     "at": 5.2,
+     "size": 76,
+     "y": 720
+    }
+   },
+   "sfx": [
+    {
+     "name": "cash",
+     "at": 5.25,
+     "gain": 0.8
+    }
+   ]
+  },
+  {
+   "id": "07",
+   "type": "proPhone",
+   "title": "Der *Haken*: morgen",
+   "duration": 7.4,
+   "script": "0:36 · Und genau da kommt der Haken: Die Zwischenwahlen sind morgen. Umfragen sehen die Demokraten vorn – und ein Machtwechsel im Kongress kann die Börse kurz nervös machen.",
+   "params": {
+    "ticker": {
+     "name": "USA",
+     "glyph": "🇺🇸",
+     "color": "#1c3d6e"
+    },
+    "speaker": "US-Zwischenwahlen",
+    "role": "Dienstag, 3. November",
+    "app": "NEWS",
+    "time": "08:12",
+    "docTitle": "Midterms:<br>Kampf um den Kongress",
+    "query": "Umfragen Kongress",
+    "typeAt": 0.8,
+    "highlightAt": [
+     3.0,
+     5.2
+    ],
+    "paragraphs": [
+     "Landesweite Umfragen sehen die *Demokraten vorn* im Rennen um das Repräsentantenhaus.",
+     "Ein Machtwechsel im Kongress könnte die Börse *kurzfristig nervös* machen – bevor die Saisonalität wieder greift.",
+     "Wichtige Themen: Wirtschaft, Lebenshaltungskosten, Gesundheit."
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "proChart",
+   "title": "Signal 3: Die *Angst*",
+   "duration": 7.4,
+   "script": "0:44 · Drittens – und das ist das wichtigste Signal: die Angst. Der VIX, das Angstbarometer der Börse, steht bei knapp 20. Echte Panik sieht man meist erst über 35.",
+   "params": {
+    "name": "VIX · ANGST-INDEX",
+    "market": "CBOE",
+    "color": "cyan",
+    "data": [
+     17.0,
+     17.36,
+     17.6,
+     17.2,
+     17.26,
+     17.26,
+     17.74,
+     18.04,
+     17.69,
+     18.34,
+     17.73,
+     17.57,
+     17.9,
+     17.35,
+     17.3,
+     16.6,
+     16.79,
+     17.12,
+     17.19,
+     17.69,
+     17.37,
+     17.62,
+     17.72,
+     17.8,
+     17.69,
+     18.16,
+     18.8,
+     18.72,
+     18.94,
+     18.2,
+     19.5,
+     21,
+     23.5,
+     21.8,
+     20.4,
+     19.4
+    ],
+    "unit": "",
+    "tag": false,
+    "badge": "19,4",
+    "badgeSub": "VIX HEUTE",
+    "badgeX": 640,
+    "badgeY": 420,
+    "drawAt": 0.3,
+    "drawDur": 1.6,
+    "badgeAt": 3.2,
+    "threshold": {
+     "value": 35,
+     "label": "PANIK > 35",
+     "color": "red",
+     "at": 5.0,
+     "min": 14
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "statement",
+   "duration": 6.4,
+   "script": "0:52 · Heißt: Der Abverkauf war bisher ziemlich kontrolliert. Ein letzter Panik-Flush wäre der perfekte Startschuss für die Rallye.",
+   "params": {
+    "text": "Ein letzter *Panik-Flush* = *Startschuss* für die Rallye",
+    "icon": "🚀",
+    "color": "cyan",
+    "size": 84,
+    "stamp": {
+     "text": "KAPITULATION?",
+     "color": "amber",
+     "at": 3.6,
+     "size": 58
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "proLayers",
+   "duration": 5,
+   "script": "0:59 · Rallye oder doch noch ein Crash? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "revealed": true,
+    "question": "Rallye oder Crash?",
+    "note": "Keine Anlageberatung",
+    "questionAt": 0.5,
+    "items": [
+     {
+      "icon": "📉",
+      "text": "Abverkauf",
+      "color": "cyan"
+     },
+     {
+      "icon": "📅",
+      "text": "Saison",
+      "color": "green"
+     },
+     {
+      "icon": "😱",
+      "text": "Angst",
+      "color": "amber"
+     }
+    ]
+   }
+  }
+ ]
+}

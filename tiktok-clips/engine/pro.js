@@ -102,8 +102,8 @@
     const red = C.h('div', { style: { position: 'absolute', left: '-200px', right: '-200px', top: '-150px', bottom: '-150px', background: 'radial-gradient(ellipse 50% 45% at 50% 50%, rgba(255,40,60,.32), rgba(255,40,60,0) 70%)' } }, st);
     const svg = C.svg(st);
     const cross = [
-      C.s('line', { x1: 540, y1: 40, x2: 540, y2: 800, stroke: RD, 'stroke-width': 4, filter: 'url(#glow-sm)' }, svg),
-      C.s('line', { x1: 80, y1: 415, x2: 1000, y2: 415, stroke: RD, 'stroke-width': 4, filter: 'url(#glow-sm)' }, svg),
+      C.s('line', { x1: 540, y1: 40, x2: 540, y2: 800, stroke: RD, 'stroke-width': 5 }, svg),
+      C.s('line', { x1: 80, y1: 415, x2: 1000, y2: 415, stroke: RD, 'stroke-width': 5 }, svg),
     ];
     const tiles = src.map((b, i) => {
       const d = C.place(P.tile(st, 400, 330, { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '22px' }), pos[i][0], pos[i][1]);
@@ -151,6 +151,7 @@
     if (p.market) C.h('div', { class: 'plabel', style: { position: 'absolute', right: '34px', top: '46px', fontSize: '22px', color: '#9fb4c6' } }, card, `<span style="color:${GR}">●</span> ${p.market}`);
     const data = Array.isArray(p.data) ? p.data : C.walk(p.data || { from: 100, to: 400, points: 60, vol: 0.04, seed: 3 });
     let lo = Math.min(...data), hi = Math.max(...data);
+    if (p.threshold) { hi = Math.max(hi, p.threshold.value * 1.08); lo = Math.min(lo, p.threshold.min ?? lo); }
     const pad = (hi - lo) * 0.12; lo -= pad; hi += pad * 2.2;
     const W = 940, H = 720, X0 = 120, X1 = W - 60, Y0 = 130, Y1 = H - 90;
     const xAt = (i) => X0 + ((X1 - X0) * i) / (data.length - 1), yAt = (v) => Y1 - ((v - lo) / (hi - lo)) * (Y1 - Y0);
@@ -165,6 +166,13 @@
       if (p.yTicks !== false) C.s('text', { x: X0 - 14, y: yAt(v) + 8, 'text-anchor': 'end', 'font-size': 22, 'font-weight': 600, fill: '#6f8598', 'font-family': 'Inter' }, svg).textContent = unit + Math.round(v).toLocaleString('de-DE');
     });
     (p.xLabels || []).forEach((l, i, a) => (C.s('text', { x: X0 + ((X1 - X0) * (i + 0.5)) / a.length, y: H - 40, 'text-anchor': 'middle', 'font-size': 22, fill: '#6f8598', 'font-weight': 600, 'font-family': 'Inter' }, svg).textContent = l));
+    // Optional threshold line ("PANIK > 35").
+    let thr, thrLab;
+    if (p.threshold) {
+      const ty = yAt(p.threshold.value), tc = C.color(p.threshold.color || 'red');
+      thr = C.s('line', { x1: X0, x2: X1, y1: ty, y2: ty, stroke: tc, 'stroke-width': 4, 'stroke-dasharray': '14 10' }, svg);
+      thrLab = C.place(C.h('div', { class: 'badge', style: { background: tc, fontSize: '24px', padding: '6px 14px', borderRadius: '10px' } }, card, p.threshold.label || ''), X0 + 150, ty - 34);
+    }
     const area = C.s('path', { fill: `url(#${gid})` }, svg);
     const line = C.s('path', { fill: 'none', stroke: col, 'stroke-width': 6, 'stroke-linejoin': 'round', filter: 'url(#glow-sm)' }, svg);
     const ring = C.s('circle', { r: 10, fill: 'none', stroke: col, 'stroke-width': 3 }, svg);
@@ -197,6 +205,7 @@
       tag.textContent = fmt(C.lerp(data[Math.min(n, data.length - 1)], data[Math.min(n + 1, data.length - 1)], r));
       tag.style.left = hx + 'px'; tag.style.top = hy - 56 + Math.sin(t * 2) * 3 + 'px';
       tag.style.opacity = p.tag === false ? 0 : C.k(t, drawAt + 0.1, 0.3);
+      if (thr) { const kt = C.k(t, p.threshold.at ?? badgeAt + 0.5, 0.5, 'inOut'); thr.setAttribute('x2', C.lerp(X0, X1, kt)); thr.style.opacity = kt > 0 ? 1 : 0; thrLab.style.transform = `translate(-50%,-50%) scale(${Math.max(0, C.k(t, (p.threshold.at ?? badgeAt + 0.5) + 0.3, 0.35, 'back'))})`; }
       P.show(badge, t, badgeAt, { s0: 0.5, dy: 0, blur: 14, s: 1 + Math.sin(t * 2.4) * 0.015 });
       stampUp(t);
     };

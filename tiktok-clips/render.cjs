@@ -104,7 +104,7 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
     }
     const aenc = audio.length ? ['-map', '0:v', '-map', '1:a', '-ac', '2', ...(alpha ? ['-c:a', 'pcm_s16le'] : ['-c:a', 'aac', '-b:a', '192k'])] : [];
     const enc = alpha
-      ? ['-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le', '-vendor', 'apl0']
+      ? ['-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le', '-qscale:v', '13', '-vendor', 'apl0']
       : ['-c:v', 'libx264', '-preset', 'medium', '-crf', '16', '-pix_fmt', 'yuv420p', '-movflags', '+faststart'];
     const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', alpha ? 'png' : 'mjpeg', '-i', '-', ...audio, ...enc, ...aenc, '-r', String(fps), file], { stdio: ['pipe', 'inherit', 'inherit'] });
     const frames = Math.round(dur * fps);
@@ -116,6 +116,8 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
     ff.stdin.end();
     await new Promise((r, j) => ff.on('close', (c) => (c ? j(new Error('ffmpeg ' + c)) : r())));
     if (s._audioFile) fs.unlinkSync(s._audioFile);
+    // Alongside the .mov, a small VP9 WebM with alpha for editors that take it.
+    if (alpha) execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', file, '-c:v', 'libvpx-vp9', '-pix_fmt', 'yuva420p', '-b:v', '3M', '-auto-alt-ref', '0', '-c:a', 'libopus', file.replace(/\.mov$/, '.webm')]);
     files.push(file);
     console.log(`✓ ${path.basename(file)}  (${dur}s)`);
   }

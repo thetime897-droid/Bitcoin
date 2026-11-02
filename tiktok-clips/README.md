@@ -27,7 +27,7 @@ node render.cjs storyboards/beispiel-ki-blase.json --concat
 | Option | Wirkung |
 |---|---|
 | `--bluescreen` / `--greenscreen` / `--key 0000ff` | Flacher Chroma-Key-Hintergrund statt Hintergrund (beim Papier-Look bleibt nur das Blatt). Ohne Schatten, Partikel und Farbblitze, damit es sauber keyt. Ausgabe nach `out/<name>-bluescreen/` |
-| `--alpha` | Transparenter Hintergrund als `.mov` (ProRes 4444) – nur falls du eine Grafik über eigenes Footage legen willst |
+| `--alpha` *(empfohlen statt Bluescreen)* | Transparenter Hintergrund als `.mov` (ProRes 4444) – nur falls du eine Grafik über eigenes Footage legen willst |
 | `--only 03,05` | Nur diese Szenen-IDs |
 | `--stills` | Nur ein Standbild (PNG) pro Szene – schnelle Kontrolle |
 | `--preview` | Erzeugt `out/<name>/preview.html` zum Abspielen/Scrubben im Browser |
@@ -175,3 +175,11 @@ dunklen, abgerundeten Screen – der wird über dein Video gekeyt.
 
 Sounds sparsam: `"sfxOnly": ["whoosh", "cash"]` und `"sfxGap": 0.7` im Storyboard
 (nur Whooshes mit Abstand, Kassenklingeln bei Geld). Beispiel: `storyboards/ki-agenten-pro.json`.
+
+## Transparent statt Bluescreen
+
+`node render.cjs storyboards/<name>.json --alpha --out out/<name>-transparent` erzeugt pro
+Szene eine `.mov` (ProRes 4444 mit Alpha-Kanal – in CapCut, Premiere, Final Cut direkt
+transparent) und eine kleine `.webm` (VP9 mit Alpha). Kein Keyen nötig, Ein-/Ausblendungen
+sind sauber transparent. Papier-Look: nur das Blatt; Profi-Look: Grafiken schweben frei.
+Storyboards dürfen Papier- und Profi-Szenen mischen (`"theme"` pro Szene).
