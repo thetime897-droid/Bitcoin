@@ -7,3 +7,4 @@
   `tiktok-clips/STYLE.md` bauen.
 - Die TikTok-Videos sind **Faceless-Content**: der Nutzer ist nie zu sehen
   (kein Greenscreen, keine Facecam). Jeder Satz bekommt eine vollflächige Animation.
+- Aktueller Standard-Stil: Broker-App-Karten (`theme: tr`), Export `--tiktok` + `--alpha`, immer mit „Keine Anlageberatung“.

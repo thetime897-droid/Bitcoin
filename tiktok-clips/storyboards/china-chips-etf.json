@@ -1,0 +1,257 @@
+{
+ "name": "china-chips-etf",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "sfxOnly": [
+  "whoosh",
+  "cash"
+ ],
+ "sfxGap": 0.6,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trStat",
+   "duration": 5.0,
+   "script": "0:00 · Es gibt jetzt einen ETF, in dem garantiert keine einzige Nvidia-Aktie steckt – und genau das ist der Plan.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Anteil im neuen ETF",
+    "label": "Nvidia-Gewicht",
+    "tone": "red",
+    "icon": "✕",
+    "value": "0 %",
+    "at": 0.4,
+    "countUp": false,
+    "sub": "Stattdessen: *100 % China-Chips*",
+    "sticker": {
+     "text": "Das ist der Plan",
+     "icon": "🇨🇳",
+     "color": "#18a565",
+     "at": 2.9,
+     "x": 780,
+     "y": 600,
+     "size": 40
+    },
+    "subAccent": "#18a565"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 5.0,
+   "script": "0:05 · Er setzt ausschließlich auf Chinas Chip-Industrie. Und er ist der erste seiner Art in Europa.",
+   "params": {
+    "brand": {
+     "name": "VanEck",
+     "glyph": "V",
+     "color": "#0058a3"
+    },
+    "context": "Neu in Europa",
+    "text": "Der *erste* reine\nChina-Chip-ETF Europas",
+    "pills": [
+     "UCITS-ETF",
+     "Nur China-Halbleiter"
+    ],
+    "pillsAt": 2.4,
+    "sticker": {
+     "text": "NEU",
+     "icon": "★",
+     "color": "#e5392f",
+     "at": 1.2,
+     "x": 860,
+     "y": 180,
+     "size": 40,
+     "rotate": 8
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trHeadline",
+   "duration": 6.6,
+   "script": "0:10 · Der VanEck China Semiconductor ETF. Gestartet am 23. Oktober – und seit dem 28. Oktober auch an deutschen Börsen handelbar.",
+   "params": {
+    "brand": {
+     "name": "VanEck",
+     "glyph": "V",
+     "color": "#0058a3"
+    },
+    "context": "ETF-Steckbrief",
+    "text": "VanEck China\n*Semiconductor* UCITS ETF",
+    "pills": [
+     "ISIN IE000TS4B6Y3",
+     "Start 23.10.",
+     "🇩🇪 seit 28.10.2026"
+    ],
+    "pillsAt": 2.0,
+    "size": 58
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 8.6,
+   "script": "0:17 · Warum gerade jetzt? Die USA beschränken Chinas Zugang zu Nvidias besten KI-Chips. Also baut China seine eigenen – mit massiver staatlicher Förderung.",
+   "params": {
+    "title": "Warum *jetzt*?",
+    "items": [
+     {
+      "text": "USA beschränken Nvidia-Exporte",
+      "sub": "Top-KI-Chips für China gesperrt",
+      "ok": false,
+      "at": 2.0
+     },
+     {
+      "text": "China baut eigene Chips",
+      "sub": "Ziel: Selbstversorgung",
+      "at": 4.6
+     },
+     {
+      "text": "Massive Staatsförderung",
+      "sub": "für heimische Chipfirmen",
+      "at": 5.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trStat",
+   "duration": 7.6,
+   "script": "0:26 · Einer der größten Profiteure heißt Cambricon – oft „Chinas Nvidia“ genannt. 2025 hat die Firma zum ersten Mal mehr als eine Milliarde Yuan Gewinn gemacht.",
+   "params": {
+    "brand": {
+     "name": "Cambricon",
+     "glyph": "寒",
+     "color": "#c8102e"
+    },
+    "context": "„Chinas Nvidia“",
+    "label": "Gewinn 2025 – zum ersten Mal über",
+    "icon": "¥",
+    "value": "1 Mrd. ¥",
+    "at": 3.8,
+    "countDur": 1.0,
+    "cashAt": 4.6,
+    "sub": "Umsatz 2025: *rund 2,88 Mrd. Yuan*",
+    "pills": [
+     "Staatliche Förderung",
+     "Profitiert vom US-Embargo"
+    ],
+    "pillsAt": 5.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trBars",
+   "duration": 7.4,
+   "script": "0:34 · Im ETF ist Cambricon die größte Position mit rund zehn Prozent. Dahinter folgen AMEC und GigaDevice mit jeweils knapp fünf Prozent.",
+   "params": {
+    "title": "Top-*Positionen*",
+    "max": 11,
+    "items": [
+     {
+      "name": "Cambricon",
+      "brand": {
+       "name": "Cambricon",
+       "glyph": "寒",
+       "color": "#c8102e"
+      },
+      "value": 10,
+      "label": "~10 %",
+      "at": 0.8
+     },
+     {
+      "name": "AMEC",
+      "brand": {
+       "name": "AMEC",
+       "glyph": "AM",
+       "color": "#1f5fbf"
+      },
+      "value": 4.6,
+      "label": "~4,6 %",
+      "at": 3.6
+     },
+     {
+      "name": "GigaDevice",
+      "brand": {
+       "name": "GigaDevice",
+       "glyph": "GD",
+       "color": "#e2231a"
+      },
+      "value": 4.6,
+      "label": "~4,6 %",
+      "at": 4.6
+     }
+    ],
+    "note": "Gewichte gerundet, Stand Auflage – Schwankungen möglich"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trStat",
+   "duration": 7.4,
+   "script": "0:41 · Insgesamt stecken 25 Firmen drin. Aufgenommen wird nur, wer mindestens die Hälfte seines Umsatzes mit Chips macht – und keine Firma darf mehr als zehn Prozent wiegen.",
+   "params": {
+    "label": "Unternehmen im Index",
+    "icon": "#",
+    "value": "25",
+    "size": 170,
+    "at": 0.3,
+    "sub": "Mindestens *50 % Umsatz* mit Halbleitern",
+    "pills": [
+     "max. 10 % pro Firma",
+     "MarketVector-Index",
+     "physisch"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trStat",
+   "duration": 4.4,
+   "script": "0:49 · Die Kosten: 0,65 Prozent pro Jahr.",
+   "params": {
+    "label": "Laufende Kosten (TER)",
+    "icon": "€",
+    "value": "0,65 %",
+    "at": 0.4,
+    "sub": "bei 10.000 € = *65 € pro Jahr*",
+    "cashAt": 1.3
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 8.4,
+   "script": "0:52 · Aber Achtung: Das ist eine Wette auf ein einziges Land und eine einzige Branche. Politische Risiken, Sanktionen – und technologisch liegt China noch hinter Nvidia.",
+   "params": {
+    "tag": "Achtung",
+    "text": "*Klumpenrisiko*:\nein Land, eine Branche",
+    "sub": "Politik & Sanktionen – und technologisch liegt China noch *hinter Nvidia*.",
+    "pills": [
+     "Hohe Schwankungen",
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 4.2
+   }
+  },
+  {
+   "id": "10",
+   "type": "trHeadline",
+   "duration": 5.0,
+   "script": "1:01 · Würdest du auf Chinas Nvidia setzen? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "context": "Deine Meinung",
+    "text": "Würdest du auf\n*Chinas Nvidia* setzen?",
+    "pills": [
+     "💬 Schreib's in die Kommentare",
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 1.0
+   }
+  }
+ ]
+}

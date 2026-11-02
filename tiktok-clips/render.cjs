@@ -8,6 +8,7 @@
 //   node render.cjs storyboards/beispiel.json --preview  -> out/<name>/preview.html (browser)
 //   node render.cjs storyboards/beispiel.json --concat   -> also _alle_szenen.mp4
 //   node render.cjs storyboards/beispiel.json --nosfx    -> clips without sound effects
+//   node render.cjs storyboards/beispiel.json --tiktok   -> TikTok-overlay MP4s, cropped to the graphic on black
 //   node render.cjs storyboards/beispiel.json --bluescreen -> flat blue background for keying (also --greenscreen, --key <hex>)
 //
 // Needs Node 18+, ffmpeg on PATH and Playwright (npm install in this folder).
@@ -26,14 +27,14 @@ if (!sbPath) { console.error('Usage: node render.cjs <storyboard.json> [--alpha]
 const sb = JSON.parse(fs.readFileSync(sbPath, 'utf8'));
 const sbDir = path.dirname(path.resolve(sbPath));
 const name = sb.name || path.basename(sbPath, '.json');
-const keySuffix = flag('bluescreen') ? '-bluescreen' : flag('greenscreen') ? '-greenscreen' : opt('key') ? '-key' : '';
+const keySuffix = flag('tiktok') ? '-tiktok' : flag('bluescreen') ? '-bluescreen' : flag('greenscreen') ? '-greenscreen' : opt('key') ? '-key' : '';
 const outDir = path.resolve(opt('out', path.join(__dirname, 'out', name + keySuffix)));
 fs.mkdirSync(outDir, { recursive: true });
 const engine = path.join(__dirname, 'engine');
 const fps = +(opt('fps', sb.fps || 30));
 const alpha = flag('alpha');
 // --bluescreen / --greenscreen / --key <hex>: flat chroma-key background.
-const key = flag('bluescreen') ? '0000ff' : flag('greenscreen') ? '00ff00' : opt('key', '');
+const key = flag('tiktok') ? '000000' : flag('bluescreen') ? '0000ff' : flag('greenscreen') ? '00ff00' : opt('key', '');
 
 // Logo paths in the storyboard are relative to the storyboard file.
 const fixLogos = (o) => {
@@ -116,6 +117,20 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
     ff.stdin.end();
     await new Promise((r, j) => ff.on('close', (c) => (c ? j(new Error('ffmpeg ' + c)) : r())));
     if (s._audioFile) fs.unlinkSync(s._audioFile);
+    // --tiktok: crop to the union of all non-black pixels (+20 px), keep H.264.
+    // The TikTok app cannot decode alpha video, so overlays must be plain MP4.
+    if (flag('tiktok')) {
+      const log = require('child_process').spawnSync('ffmpeg', ['-hide_banner', '-i', file, '-vf', 'cropdetect=limit=24:round=2:reset=0', '-f', 'null', '-'], { encoding: 'utf8' }).stderr;
+      const m = [...log.matchAll(/crop=(\d+):(\d+):(\d+):(\d+)/g)].pop();
+      if (m) {
+        let [w, h, x, y] = m.slice(1).map(Number);
+        x = Math.max(0, x - 20); y = Math.max(0, y - 20);
+        w = Math.min(1080 - x, w + 40) & ~1; h = Math.min(1920 - y, h + 40) & ~1;
+        const tmp = file.replace(/\.mp4$/, '.crop.mp4');
+        execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', file, '-vf', `crop=${w}:${h}:${x}:${y}`, '-c:v', 'libx264', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-crf', '18', '-r', '30', '-c:a', 'aac', '-b:a', '160k', '-ar', '44100', '-ac', '2', '-movflags', '+faststart', tmp]);
+        fs.renameSync(tmp, file);
+      }
+    }
     // Alongside the .mov, a small VP9 WebM with alpha for editors that take it.
     if (alpha) execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', file, '-c:v', 'libvpx-vp9', '-pix_fmt', 'yuva420p', '-b:v', '3M', '-auto-alt-ref', '0', '-c:a', 'libopus', file.replace(/\.mov$/, '.webm')]);
     files.push(file);

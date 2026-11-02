@@ -80,7 +80,7 @@
     const tile = C.h('div', { class: 'ctr', style: { width: '128px', height: '128px', borderRadius: '30px', background: red ? '#fde6e3' : '#ddf4e8', flex: 'none' } }, row);
     C.h('div', { class: 'ctr', style: { width: '64px', height: '64px', borderRadius: '50%', background: col, color: '#fff', fontSize: p.icon && p.icon.length > 1 ? '30px' : '38px', fontWeight: 900 } }, tile, p.icon || '%');
     const num = big(row, p.value || '', col, p.size || 170);
-    if (p.sub) C.h('div', { style: { fontSize: '32px', fontWeight: 700, color: '#4b5058', marginTop: '22px' } }, card, T.rich(p.sub, col));
+    if (p.sub) C.h('div', { style: { fontSize: '32px', fontWeight: 700, color: '#4b5058', marginTop: '22px' } }, card, T.rich(p.sub, p.subAccent ? C.color(p.subAccent) : col));
     const pills = p.pills ? T.pills(card, p.pills) : [];
     const stick = T.sticker(st, p.sticker, ctx);
     const at = p.at ?? 0.35;
@@ -228,6 +228,37 @@
       chg.style.opacity = C.k(t, drawAt + drawDur - 0.2, 0.3);
       if (thr) { const kt = C.k(t, p.threshold.at ?? drawAt + drawDur + 0.3, 0.5, 'inOut'); thr.setAttribute('x2', C.lerp(X0, X1, kt)); thr.style.opacity = kt > 0 ? 1 : 0; thrLab.style.transform = `scale(${Math.max(0, C.k(t, (p.threshold.at ?? drawAt + drawDur + 0.3) + 0.3, 0.3, 'back'))})`; }
       stick(t);
+    };
+  };
+  // -------------------------------------------------------------- trBars ---
+  // Holdings / ranking: logo tile, name, bar that grows to its share.
+  S.trBars = (st, p, ctx) => {
+    const card = T.card(st, p.card);
+    if (p.brand) T.header(card, p.brand, p.context);
+    if (p.title) C.h('div', { style: { fontSize: '50px', fontWeight: 900, color: INK, marginBottom: '24px' } }, card, T.rich(p.title));
+    const items = p.items || [];
+    const mx = p.max || Math.max(...items.map((i) => i.value));
+    const rows = items.map((it, i) => {
+      const r = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '18px', marginTop: i ? '20px' : 0 } }, card);
+      C.chip(it.brand || it.name, 64, r);
+      const col = C.h('div', { style: { flex: 1 } }, r);
+      const top = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', fontSize: '32px', fontWeight: 800, color: INK } }, col);
+      C.h('span', {}, top, it.name);
+      const val = C.h('span', { style: { color: G, fontWeight: 900 } }, top, '');
+      const track = C.h('div', { style: { height: '18px', borderRadius: '9px', background: '#eef0f2', marginTop: '10px', overflow: 'hidden' } }, col);
+      const bar = C.h('div', { style: { height: '100%', width: '0%', borderRadius: '9px', background: i === 0 ? GL : '#7fd3a6' } }, track);
+      return { it, val, bar, at: it.at ?? 0.5 + i * 0.35 };
+    });
+    const note = p.note ? C.h('div', { style: { fontSize: '24px', fontWeight: 600, color: GR, marginTop: '22px' } }, card, p.note) : null;
+    ctx.cue('whoosh', 0);
+    return (t) => {
+      T.enter(card, t);
+      rows.forEach((rw) => {
+        const k = C.k(t, rw.at, 0.8, 'out');
+        rw.bar.style.width = (rw.it.value / mx) * 100 * k + '%';
+        rw.val.textContent = C.count(rw.it.label || String(rw.it.value), k);
+      });
+      if (note) note.style.opacity = C.k(t, (rows[rows.length - 1]?.at ?? 0) + 0.6, 0.3);
     };
   };
 })();

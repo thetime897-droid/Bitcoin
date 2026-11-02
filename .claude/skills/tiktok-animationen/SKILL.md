@@ -29,6 +29,11 @@ eintragen. Eigene Dateien unter `tiktok-clips/sfx/<name>.mp3` haben Vorrang.
 **Dynamisch & schnell:** Clips bewegen sich immer leicht weiter (Partikel, Zoom,
 Schweben – automatisch). Einblendungen schnell hintereinander, Clips 3–5 s.
 
+**Standard-Look ab jetzt: Broker-App-Karten (`"theme": "tr"`)** – weiße Karten oben, wie bei
+Trade-Republic-Creatorn. Immer „Keine Anlageberatung“ in Skript und letzter Karte.
+Ausgabe immer: `--tiktok` (H.264, auf die Karte zugeschnitten – die TikTok-App kann keine
+Transparenz) plus `--alpha` (WebM für CapCut). Beides nach `exports/<name>-…/` kopieren.
+
 **Export:** Für Einblendungen über eigenes Material immer `--alpha` (transparente
 .mov + .webm) statt Bluescreen. Papier- und Profi-Look dürfen gemischt werden.
 
