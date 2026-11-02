@@ -67,6 +67,7 @@ oder mit echtem Logo `{ "ticker": "META", "logo": "logos/meta.png" }`.
 | `checklist` *(paper)* | Ja/Nein-Fragen mit grünen Antworten + Mini-Zeitreihen | `items[{q,sub,ans,no,at,markAt}]`, `series[{label,values,fmt}]`, `xLabels`, `chartAt` |
 | `tiles` *(paper)* | Kennzahl-Kacheln, schlechte werden rot durchgestrichen | `items[{label,value,bad,note,mark}]`, `badAt`, `stamp` |
 | `valuation` *(paper)* | Bewertungs-Chart mit Zonen teuer/fair/günstig, Ø-Linie, Preis-Stufen, 1–5-Skala | `rating`, `ratingAt`, `points[]`, `average`, `bands`, `levels[{price,label,at,markAt}]`, `drawAt`, `avgAt`, `nowAt` |
+| `echo` | Hook: mehrere Logos mit „???“-Sprechblasen drehen auf dasselbe Wort, Wort knallt rein | `sources[]`, `word`, `bubble`, `revealAt`, `step`, `color`, `stamp` |
 | `versus` | Zwei Optionen nebeneinander, Daten fliegen weg (links) bzw. bleiben (rechts) | `left`/`right {title,icon,from,verdict,verdictAt,color,lock,flow:"out"\|"stay"}`, `rightAt` |
 | `flow` | Akteure → Ziel, Geld fließt; kippt bei `warnAt` auf Warnung | `sources[]`, `target`, `warnAt`, `color`, `stamp` |
 | `linechart` | Kursverlauf, zeichnet sich, Crash-Abschnitt | `ticker`, `header`, `data` (Array oder `{from,to,points,vol,seed}`), `xLabels`, `yLabel`, `unit`, `event{label,at,index}`, `drop{badge,sub,at,data}`, `projection{label,at,strikeAt}` |

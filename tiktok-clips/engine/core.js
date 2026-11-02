@@ -128,6 +128,8 @@
     ARM: { name: 'ARM', color: '#0091bd', glyph: 'arm' },
     QCOM: { name: 'QUALCOMM', color: '#3253dc', glyph: 'Q' },
     MRVL: { name: 'MARVELL', color: '#c8102e', glyph: 'M' },
+    MU: { name: 'MICRON', color: '#1d58a8', glyph: 'MU' },
+    SHOP: { name: 'SHOPIFY', color: '#5e8e3e', glyph: 'S' },
     TSM: { name: 'TSMC', color: '#c4161c', glyph: 'TS' },
     CRWV: { name: 'COREWEAVE', color: '#2c6bed', glyph: 'CW' },
     OPENAI: { name: 'OPENAI', color: '#10a37f', glyph: 'AI' },

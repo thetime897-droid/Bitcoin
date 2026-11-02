@@ -150,3 +150,8 @@ body:not(.render) #frame { transform-origin: 0 0; }
 }
 .theme-paper.layout-full #stage { top: 590px; transform: scale(0.93); }
 .theme-paper .chip { background: var(--c); }
+
+/* Chroma key: no glows or soft shadows that would bleed into the key colour. */
+body.key #frame * { text-shadow: none !important; }
+body.key #frame [filter] { filter: none !important; }
+body.key .panel, body.key .badge, body.key .stamp, body.key .chip, body.key .tag { box-shadow: none !important; }

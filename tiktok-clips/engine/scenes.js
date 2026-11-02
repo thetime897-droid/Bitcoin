@@ -1169,6 +1169,47 @@
     };
   };
 
+  // ---------------------------------------------------------------- echo ---
+  // Several speakers say the same thing: "???" bubbles flip to one word,
+  // then the word lands big in the middle. Built for hooks.
+  S.echo = (st, p, ctx) => {
+    const src = (p.sources || ['GOOGL', 'META', 'MSFT', 'AMZN']).map(C.brand);
+    const n = src.length, gap = Math.min(230, 900 / n);
+    const at0 = p.at ?? 0.15, step = p.step ?? 0.32, revealAt = p.revealAt ?? at0 + n * step + 0.3;
+    const col = C.color(p.color || 'cyan');
+    const items = src.map((b, i) => {
+      const x = 540 + (i - (n - 1) / 2) * gap;
+      const chip = C.place(C.chip(b, 120, st), x, 380);
+      const name = C.place(C.h('div', { class: 'label', style: { fontSize: '22px' } }, st, b.name), x, 470);
+      const bub = C.place(C.h('div', { class: 'ctr', style: { minWidth: '150px', height: '84px', padding: '0 18px', borderRadius: '22px', background: '#fff', color: '#111', fontWeight: 900, fontSize: '34px', boxShadow: '0 10px 30px rgba(0,0,0,.35)' } }, st, '???'), x, 230);
+      C.h('div', { style: { position: 'absolute', left: '50%', bottom: '-14px', marginLeft: '-14px', borderLeft: '14px solid transparent', borderRight: '14px solid transparent', borderTop: '16px solid #fff' } }, bub);
+      const t = at0 + i * step;
+      ctx.cue('pop', t); ctx.cue('blip', t + 0.15, 0.6);
+      return { chip, name, bub, t, i };
+    });
+    const word = C.place(C.h('div', { style: { fontSize: (p.size || 130) + 'px', fontWeight: 900, color: '#fff', textShadow: `0 0 40px ${col}`, whiteSpace: 'nowrap', letterSpacing: '-3px' } }, st, p.word || 'KI-AGENTEN'), 540, 650);
+    C.fit(word, 900);
+    ctx.cue('whoosh', revealAt - 0.2); ctx.cue('impact', revealAt + 0.1, 0.8); ctx.cue('ping', revealAt + 0.1, 0.6);
+    const stampUp = addStamp(st, p, ctx, { y: 790, color: 'red', at: revealAt + 0.8 });
+    return (t) => {
+      stampUp(t);
+      items.forEach((it) => {
+        C.pop(it.chip, t, it.t, 0.38, { y: Math.sin(t * 2 + it.i) * 4 });
+        it.name.style.opacity = C.k(t, it.t, 0.3);
+        const kf = C.k(t, revealAt + it.i * 0.06, 0.3, 'inOut');
+        const sx = kf < 0.5 ? 1 - kf * 2 : (kf - 0.5) * 2;
+        it.bub.firstChild.textContent = kf < 0.5 ? '???' : p.bubble || p.word || 'KI-AGENTEN';
+        it.bub.style.fontSize = kf < 0.5 ? '34px' : '22px';
+        const kp = C.k(t, it.t + 0.12, 0.38, 'back');
+        C.tf(it.bub, { y: (1 - kp) * 30 + Math.sin(t * 2.4 + it.i) * 5, sx: Math.max(0.02, sx) * Math.max(0, kp), sy: Math.max(0, kp), o: C.k(t, it.t + 0.12, 0.15) });
+        it.bub.style.background = kf >= 0.5 ? col : '#fff';
+      });
+      const kw = C.k(t, revealAt + 0.1, 0.45, 'back');
+      C.tf(word, { s: C.lerp(1.8, 1, kw) * (1 + Math.sin(t * 3) * 0.012), o: C.k(t, revealAt + 0.1, 0.15) });
+      ctx.flash(t, revealAt + 0.1, col + '55');
+    };
+  };
+
   // ---------------------------------------------------------------- list ---
   // Numbered points sliding in on their beats ("3 reasons ...").
   S.list = (st, p, ctx) => {

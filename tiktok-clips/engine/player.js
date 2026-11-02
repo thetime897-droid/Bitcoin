@@ -11,6 +11,7 @@
   const KEY = params.get('key');
   document.body.classList.toggle('render', RENDER);
   document.body.classList.toggle('alpha', ALPHA);
+  document.body.classList.toggle('key', !!params.get('key'));
 
   // Shared SVG defs: glow filters and arrow heads used by several scenes.
   document.body.insertAdjacentHTML('afterbegin', `

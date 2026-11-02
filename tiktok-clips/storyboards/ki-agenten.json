@@ -1,0 +1,311 @@
+{
+ "name": "ki-agenten",
+ "fps": 30,
+ "theme": "dark",
+ "layout": "full",
+ "scenes": [
+  {
+   "id": "01",
+   "type": "echo",
+   "title": "Diese Woche",
+   "pill": "Alle 4 Big-Tech-Chefs",
+   "duration": 5,
+   "script": "0:00 · Alle vier Big-Tech-Chefs haben diese Woche dasselbe Wort gesagt.",
+   "params": {
+    "sources": [
+     "GOOGL",
+     "META",
+     "MSFT",
+     "AMZN"
+    ],
+    "word": "KI-AGENTEN",
+    "bubble": "AGENTEN",
+    "revealAt": 1.8,
+    "stamp": {
+     "text": "DASSELBE WORT",
+     "color": "red",
+     "at": 2.8,
+     "size": 56
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "number",
+   "title": "Letztes Mal",
+   "pill": "Micron · 2025",
+   "duration": 4,
+   "script": "0:03 · Letztes Mal hat sich danach eine Aktie vervierfacht.",
+   "params": {
+    "value": "4×",
+    "label": "MICRON-AKTIE",
+    "color": "green",
+    "size": 320,
+    "countDur": 0.8,
+    "stamp": {
+     "text": "SPEICHERCHIPS",
+     "color": "green",
+     "at": 1.5,
+     "size": 58
+    }
+   },
+   "sfx": [
+    {
+     "name": "cash",
+     "at": 0.9,
+     "gain": 0.8
+    }
+   ]
+  },
+  {
+   "id": "03",
+   "type": "list",
+   "title": "Was ist ein KI-Agent?",
+   "duration": 5,
+   "script": "0:07 · Das Wort: KI-Agenten. Eine KI, die nicht nur antwortet – sondern Flüge bucht, Code schreibt und für dich einkauft.",
+   "params": {
+    "items": [
+     {
+      "icon": "✈️",
+      "text": "Bucht Flüge",
+      "color": "cyan",
+      "at": 2.3
+     },
+     {
+      "icon": "💻",
+      "text": "Schreibt Code",
+      "color": "green",
+      "at": 2.9
+     },
+     {
+      "icon": "🛒",
+      "text": "Kauft für dich ein",
+      "color": "amber",
+      "at": 3.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "list",
+   "title": "Der Agenten-Boom",
+   "duration": 4.6,
+   "script": "0:14 · Microsoft zählt schon über 50 Millionen Agenten. Bei Meta haben in sechs Wochen über 10 Millionen Menschen ihren eigenen Agenten eingerichtet.",
+   "params": {
+    "items": [
+     {
+      "ticker": "MSFT",
+      "text": "Microsoft",
+      "value": "50 Mio. Agenten",
+      "color": "cyan",
+      "at": 0.3
+     },
+     {
+      "ticker": "META",
+      "text": "Meta Muse",
+      "value": "10 Mio. Nutzer",
+      "color": "green",
+      "at": 2.4
+     }
+    ]
+   },
+   "sfx": [
+    {
+     "name": "ping",
+     "at": 0.7
+    },
+    {
+     "name": "ping",
+     "at": 2.8
+    }
+   ]
+  },
+  {
+   "id": "05",
+   "type": "quote",
+   "duration": 5.6,
+   "script": "0:22 · Und jetzt der Teil, den kaum einer sieht: Agenten laufen vor allem auf normalen Prozessoren – CPUs, nicht auf Nvidias Grafikchips. Das sagt Amazon-Chef Andy Jassy selbst.",
+   "params": {
+    "author": "Andy Jassy",
+    "handle": "CEO, Amazon",
+    "initials": "AJ",
+    "size": 38,
+    "meta": "Earnings Call Q3 2026 · sinngemäß übersetzt",
+    "text": [
+     "Post-Training, Reinforcement Learning und *die Werkzeug-Nutzung von Agenten* laufen *überwiegend auf CPUs* – nicht auf KI-Beschleunigern."
+    ],
+    "highlightAt": [
+     1.4,
+     2.6
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "mystery",
+   "title": "Wohin fließt das Geld?",
+   "duration": 4.6,
+   "script": "0:31 · Mehr Agenten heißt: mehr CPUs. Und das Geld fließt in drei Ebenen.",
+   "params": {
+    "count": 3,
+    "reveal": [
+     {
+      "icon": "🖥️",
+      "text": "CPUs",
+      "color": "cyan",
+      "at": 1.8
+     },
+     {
+      "icon": "📐",
+      "text": "Chip-Design",
+      "color": "green",
+      "at": 2.3
+     },
+     {
+      "icon": "🛒",
+      "text": "Checkout",
+      "color": "amber",
+      "at": 2.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "flow",
+   "title": "Ebene 1: CPU-Hersteller",
+   "duration": 4,
+   "script": "0:35 · Ebene eins: die klassischen CPU-Hersteller – Intel und AMD.",
+   "params": {
+    "sources": [
+     "INTC",
+     "AMD"
+    ],
+    "target": "JEDER SERVER",
+    "color": "cyan"
+   }
+  },
+  {
+   "id": "08",
+   "type": "flow",
+   "title": "Ebene 2: Chip-Design",
+   "pill": "Bauplan von ARM",
+   "duration": 5.4,
+   "script": "0:38 · Ebene zwei: Amazon, Google und Microsoft bauen eigene Chips – fast alle auf der Bauanleitung von ARM. Und ARM kassiert bei jedem Chip mit.",
+   "params": {
+    "sources": [
+     "AMZN",
+     "GOOGL",
+     "MSFT"
+    ],
+    "target": "LIZENZGEBÜHR → ARM",
+    "color": "amber",
+    "stamp": {
+     "text": "ARM KASSIERT MIT",
+     "color": "amber",
+     "at": 3.6,
+     "size": 52,
+     "y": 900
+    }
+   },
+   "sfx": [
+    {
+     "name": "coins",
+     "at": 2.2,
+     "gain": 0.8
+    }
+   ]
+  },
+  {
+   "id": "09",
+   "type": "number",
+   "title": "Amazon",
+   "pill": "Eigene Chips · Graviton & Trainium",
+   "duration": 3.8,
+   "script": "0:46 · Amazons Bestellungen für eigene Chips sind um mehr als das Zwanzigfache gestiegen.",
+   "params": {
+    "value": "20×",
+    "label": "MEHR BESTELLUNGEN",
+    "color": "green",
+    "size": 320,
+    "countDur": 0.9
+   },
+   "sfx": [
+    {
+     "name": "riser",
+     "at": 0.0,
+     "gain": 0.5
+    }
+   ]
+  },
+  {
+   "id": "10",
+   "type": "statement",
+   "duration": 5.4,
+   "script": "0:50 · Ebene drei: Agenten geben Geld aus. Und Gewinner ist, wer die Kasse besitzt – wie Shopify, dessen Checkout jetzt in Metas Agenten steckt.",
+   "params": {
+    "text": "Gewinner ist, wer die *Kasse* besitzt.",
+    "icon": "🛒",
+    "color": "green",
+    "stamp": {
+     "text": "SHOPIFY × META",
+     "color": "green",
+     "at": 2.6,
+     "size": 58
+    }
+   },
+   "sfx": [
+    {
+     "name": "cash",
+     "at": 2.4
+    }
+   ]
+  },
+  {
+   "id": "11",
+   "type": "number",
+   "title": "Aber Vorsicht",
+   "pill": "Intel · an einem Tag",
+   "theme": "alarm",
+   "duration": 4.6,
+   "script": "0:58 · Aber Vorsicht: Intel ist trotzdem gerade fast 30 Prozent an einem Tag abgestürzt. Ein Trend allein macht noch keine gute Aktie.",
+   "params": {
+    "value": "-29%",
+    "label": "INTEL",
+    "color": "red",
+    "size": 300,
+    "countDur": 0.8,
+    "stamp": {
+     "text": "TREND ≠ GUTE AKTIE",
+     "color": "red",
+     "at": 2.4,
+     "size": 52
+    }
+   },
+   "sfx": [
+    {
+     "name": "downer",
+     "at": 0.15,
+     "gain": 0.8
+    }
+   ]
+  },
+  {
+   "id": "12",
+   "type": "cta",
+   "duration": 4,
+   "script": "1:05 · Welche Ebene ist für dich am spannendsten? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "brand": "PANDA_INVESTIERT",
+    "glyph": "🐼",
+    "stats": [
+     {
+      "value": "EBENE 1 · 2 · 3?",
+      "label": "Keine Anlageberatung"
+     }
+    ]
+   }
+  }
+ ]
+}
