@@ -8,6 +8,7 @@
 //   node render.cjs storyboards/beispiel.json --preview  -> out/<name>/preview.html (browser)
 //   node render.cjs storyboards/beispiel.json --concat   -> also _alle_szenen.mp4
 //   node render.cjs storyboards/beispiel.json --nosfx    -> clips without sound effects
+//   node render.cjs storyboards/beispiel.json --bluescreen -> flat blue background for keying (also --greenscreen, --key <hex>)
 //
 // Needs Node 18+, ffmpeg on PATH and Playwright (npm install in this folder).
 const fs = require('fs');
@@ -25,11 +26,14 @@ if (!sbPath) { console.error('Usage: node render.cjs <storyboard.json> [--alpha]
 const sb = JSON.parse(fs.readFileSync(sbPath, 'utf8'));
 const sbDir = path.dirname(path.resolve(sbPath));
 const name = sb.name || path.basename(sbPath, '.json');
-const outDir = path.resolve(opt('out', path.join(__dirname, 'out', name)));
+const keySuffix = flag('bluescreen') ? '-bluescreen' : flag('greenscreen') ? '-greenscreen' : opt('key') ? '-key' : '';
+const outDir = path.resolve(opt('out', path.join(__dirname, 'out', name + keySuffix)));
 fs.mkdirSync(outDir, { recursive: true });
 const engine = path.join(__dirname, 'engine');
 const fps = +(opt('fps', sb.fps || 30));
 const alpha = flag('alpha');
+// --bluescreen / --greenscreen / --key <hex>: flat chroma-key background.
+const key = flag('bluescreen') ? '0000ff' : flag('greenscreen') ? '00ff00' : opt('key', '');
 
 // Logo paths in the storyboard are relative to the storyboard file.
 const fixLogos = (o) => {
@@ -61,7 +65,7 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
   page.on('pageerror', (e) => console.error('  Seitenfehler:', e.message));
-  await page.goto(pathToFileURL(path.join(engine, 'player.html')).href + '?render=1' + (alpha ? '&alpha=1' : ''));
+  await page.goto(pathToFileURL(path.join(engine, 'player.html')).href + '?render=1' + (alpha ? '&alpha=1' : '') + (key ? '&key=' + key : ''));
   const files = [];
   for (const { s, i } of scenes) {
     const dur = await page.evaluate(([sb, i]) => window.Clip.load(sb, i), [sb, i]);

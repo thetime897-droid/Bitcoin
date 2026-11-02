@@ -26,6 +26,7 @@ node render.cjs storyboards/beispiel-ki-blase.json --concat
 
 | Option | Wirkung |
 |---|---|
+| `--bluescreen` / `--greenscreen` / `--key 0000ff` | Flacher Chroma-Key-Hintergrund statt Hintergrund (beim Papier-Look bleibt nur das Blatt). Ohne Schatten, Partikel und Farbblitze, damit es sauber keyt. Ausgabe nach `out/<name>-bluescreen/` |
 | `--alpha` | Transparenter Hintergrund als `.mov` (ProRes 4444) – nur falls du eine Grafik über eigenes Footage legen willst |
 | `--only 03,05` | Nur diese Szenen-IDs |
 | `--stills` | Nur ein Standbild (PNG) pro Szene – schnelle Kontrolle |

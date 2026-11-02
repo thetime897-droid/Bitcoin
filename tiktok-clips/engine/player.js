@@ -6,6 +6,9 @@
   const params = new URLSearchParams(location.search);
   const RENDER = params.has('render');
   const ALPHA = params.has('alpha');
+  // Chroma key: flat background colour (e.g. ?key=0000ff) and nothing that
+  // tints or shades it, so it keys out cleanly in CapCut & co.
+  const KEY = params.get('key');
   document.body.classList.toggle('render', RENDER);
   document.body.classList.toggle('alpha', ALPHA);
 
@@ -52,7 +55,8 @@
     flashEl = frame.querySelector('#flash');
     tintEl = frame.querySelector('#tint');
     Object.assign(tintEl.style, { position: 'absolute', inset: 0, opacity: 0, zIndex: 1, background: 'radial-gradient(ellipse 80% 55% at 50% 30%, rgba(150,10,10,.75) 0%, rgba(60,0,0,.5) 50%, rgba(0,0,0,0) 100%)' });
-    if (ALPHA) tintEl.style.display = 'none';
+    if (ALPHA || KEY) tintEl.style.display = 'none';
+    if (KEY) flashEl.style.display = 'none';
     const title = frame.querySelector('#title'), pill = frame.querySelector('#pill');
     title.textContent = sc.title || '';
     pill.textContent = sc.pill || '';
@@ -61,14 +65,15 @@
     if (!fn) throw new Error('Unknown scene type: ' + sc.type);
     cues = []; strokes = [];
     const paper = theme === 'paper';
-    if (paper) {
+    if (paper && !KEY) {
       frame.querySelector('#bg').innerHTML = `<svg width="1080" height="1920" style="position:absolute;inset:0"><defs>
         <filter id="wood" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.11" numOctaves="4" seed="7"/>
         <feColorMatrix values="0 0 0 0 0.45  0 0 0 0 0.24  0 0 0 0 0.07  1.4 0 0 0 -0.45"/></filter>
         <radialGradient id="vig" cx="50%" cy="45%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#2a1200" stop-opacity=".45"/></radialGradient></defs>
         <rect width="1080" height="1920" fill="#d0924c"/><rect width="1080" height="1920" filter="url(#wood)"/><rect width="1080" height="1920" fill="url(#vig)"/></svg>`;
-      frame.querySelector('#bg').after(C.h('div', { id: 'paper' }));
     }
+    if (paper) frame.querySelector('#bg').after(C.h('div', { id: 'paper', style: KEY ? { boxShadow: 'none', borderRadius: '0' } : {} }));
+    if (KEY) frame.querySelector('#bg').style.background = '#' + KEY.replace(/[^0-9a-f]/gi, '');
     const sceneUpdate = fn(frame.querySelector('#stage'), sc.params || {}, { ...ctx, dur, theme });
     // Clean edges: content sharpens in over the first 0.3 s and zooms/blurs out
     // over the last 0.4 s, so every clip can be cut in and out without a jump.
@@ -80,7 +85,7 @@
     // push-in with a gentle sway on the stage, even after every beat has landed.
     const dust = C.h('div', { id: 'dust', style: { position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' } });
     frame.querySelector('#bg').after(dust);
-    const motes = [...Array(ALPHA ? 0 : 34)].map((_, i) => ({
+    const motes = [...Array(ALPHA || KEY ? 0 : 34)].map((_, i) => ({
       x: C.rand(i * 3.1) * 1080, y: C.rand(i * 7.7) * 1920, r: 2 + C.rand(i * 5.3) * 5,
       v: 18 + C.rand(i * 9.1) * 40, ph: C.rand(i * 2.2) * 6,
       el: C.h('div', { style: { position: 'absolute', borderRadius: '50%', background: 'var(--accent)', filter: 'blur(1.5px)' } }, dust),
@@ -94,7 +99,7 @@
     if (paper) [paperEl, stageEl, chromeEl].forEach((el) => (el.style.transformOrigin = '540px 960px'));
     if (paper) { chromeEl.style.position = 'absolute'; chromeEl.style.height = '1920px'; stageEl.style.transformOrigin = '540px 430px'; }
     strokes.sort((a, b) => a.at - b.at);
-    const pen = strokes.length ? C.h('div', { id: 'pen', style: { position: 'absolute', left: 0, top: 0, width: '420px', height: '74px', zIndex: 20, transformOrigin: '0 50%', filter: 'drop-shadow(14px 22px 14px rgba(40,20,0,.35))' } }, frame,
+    const pen = strokes.length ? C.h('div', { id: 'pen', style: { position: 'absolute', left: 0, top: 0, width: '420px', height: '74px', zIndex: 20, transformOrigin: '0 50%', filter: KEY ? 'none' : 'drop-shadow(14px 22px 14px rgba(40,20,0,.35))' } }, frame,
       `<svg width="420" height="74" viewBox="0 0 420 74"><polygon points="0,37 28,20 28,54" fill="#c9c400"/><rect x="26" y="14" width="50" height="46" rx="6" fill="#e9e52a"/>
        <rect x="70" y="8" width="350" height="58" rx="26" fill="#f4f13a"/><rect x="70" y="8" width="350" height="18" rx="9" fill="#fffb8a" opacity=".7"/>
        <text x="190" y="47" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="30" fill="#2c2a10" opacity=".75">Highlight</text></svg>`) : null;
