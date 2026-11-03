@@ -11,11 +11,27 @@
   // White card pinned to the top; enters with a short drop and settles.
   T.card = (st, { y = 120, w = 984, pad = 46, minH = 0 } = {}) =>
     C.h('div', { class: 'trcard', style: { left: (1080 - w) / 2 + 'px', top: y + 'px', width: w + 'px', padding: pad + 'px', minHeight: minH + 'px' } }, st);
+  // Card drops in with a little overshoot, then its rows rise in one after
+  // another (70 ms apart) - the layered build editors do by hand in CapCut.
   T.enter = (card, t, at = 0.05) => {
     const k = C.k(t, at, 0.42, 'back');
     card.style.opacity = C.k(t, at, 0.18);
     card.style.transform = `translateY(${(1 - k) * -34}px) scale(${(0.95 + 0.05 * k) * (1 + Math.sin(t * 1.3) * 0.003)})`;
+    if (!card._kids) card._kids = [...card.children].filter((c) => !c.dataset.own);
+    card._kids.forEach((el, i) => {
+      const kc = C.k(t, at + 0.1 + i * 0.07, 0.45, 'expo');
+      el.style.opacity = kc;
+      el.style.translate = `0 ${(1 - kc) * 26}px`;
+    });
   };
+  // Sound design for a count-up: soft ticks that speed up while the digits
+  // roll, then one accent on landing - cash for money, a pop otherwise.
+  T.countSfx = (ctx, value, at, dur) => {
+    const n = Math.max(4, Math.min(9, Math.round(dur * 8)));
+    for (let i = 0; i < n; i++) ctx.cue('tick', at + dur * Math.pow(i / n, 1.6), 0.45);
+    ctx.cue(/[€$¥£]|mrd|mio|euro|dollar|yuan/i.test(String(value)) ? 'cash' : 'pop', at + dur, 0.6);
+  };
+  T.pillSfx = (ctx, n, at, step) => { for (let i = 0; i < n; i++) ctx.cue('tick', at + i * step + 0.05, 0.55); };
   // Small row above the headline: brand mark (or a ticker tile) + context.
   T.header = (card, brand = 'Trade Republic', context = '') => {
     const h = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '12px', fontSize: '28px', fontWeight: 800, color: INK, marginBottom: '14px' } }, card);
@@ -37,7 +53,7 @@
     if (!sp) return () => {};
     const col = C.color(sp.color || RD);
     const el = C.place(C.h('div', { style: { padding: '10px 24px', borderRadius: '16px', border: `4px solid ${col}`, background: '#fff', color: col, fontSize: (sp.size || 38) + 'px', fontWeight: 900, whiteSpace: 'nowrap', boxShadow: '0 8px 20px rgba(0,0,0,.18)' } }, st, (sp.icon ? sp.icon + ' ' : '') + sp.text), sp.x ?? 760, sp.y ?? 560);
-    ctx.cue('whoosh', sp.at ?? 1.5, 0.7);
+    ctx.cue('pop', (sp.at ?? 1.5) + 0.05, 0.7);
     return (t) => {
       const k = C.k(t, sp.at ?? 1.5, 0.35, 'back');
       C.tf(el, { s: Math.max(0, k) * (1 + Math.sin(t * 2.4) * 0.012), r: (sp.rotate ?? -6) + Math.sin(t * 1.7) * 0.6, o: C.k(t, sp.at ?? 1.5, 0.12) });
@@ -60,7 +76,9 @@
     }
     const pills = p.pills ? T.pills(card, p.pills, p.pillsDark !== false) : [];
     const stick = T.sticker(st, p.sticker, ctx);
-    ctx.cue('whoosh', 0);
+    ctx.cue('whoosh', 0, 0.8);
+    if (bigEl && countable(p.big) && (p.countDur ?? 0.8) > 0.05) T.countSfx(ctx, p.big, bigAt, p.countDur ?? 0.8);
+    T.pillSfx(ctx, pills.length, p.pillsAt ?? 0.9, 0.15);
     return (t) => {
       T.enter(card, t);
       if (bigEl && countable(p.big)) bigEl.textContent = C.count(p.big, C.k(t, bigAt, p.countDur ?? 0.8, 'out'));
@@ -84,8 +102,11 @@
     const pills = p.pills ? T.pills(card, p.pills) : [];
     const stick = T.sticker(st, p.sticker, ctx);
     const at = p.at ?? 0.35;
-    ctx.cue('whoosh', 0);
-    if (p.cashAt != null) ctx.cue('cash', p.cashAt);
+    ctx.cue('whoosh', 0, 0.8);
+    if (countable(p.value) && p.countUp !== false) T.countSfx(ctx, p.cashAt != null ? '' : p.value, at, p.countDur ?? 0.9);
+    else ctx.cue('pop', at, 0.6);
+    if (p.cashAt != null) ctx.cue('cash', p.cashAt, 0.6);
+    T.pillSfx(ctx, pills.length, p.pillsAt ?? 1.2, 0.18);
     return (t) => {
       T.enter(card, t);
       tile.style.transform = `scale(${Math.max(0, C.k(t, 0.15, 0.4, 'back'))}) rotate(${(1 - C.k(t, 0.15, 0.4)) * -20}deg)`;
@@ -106,6 +127,8 @@
     const arc = C.s('circle', { cx: 85, cy: 85, r: 70, fill: 'none', stroke: GL, 'stroke-width': 12, 'stroke-linecap': 'round', pathLength: 100, transform: 'rotate(-90 85 85)' }, sv);
     const num = C.s('text', { x: 85, y: 112, 'text-anchor': 'middle', 'font-size': 84, 'font-weight': 900, fill: G, 'font-family': 'Inter, sans-serif' }, sv);
     num.textContent = n;
+    ctx.cue('pop', 0.2, 0.6);
+    for (let i = 0; i < 4; i++) ctx.cue('tick', 0.3 + i * 0.16, 0.4);
     const txt = C.h('div', {}, row);
     C.h('div', { style: { fontSize: '30px', fontWeight: 700, color: GR } }, txt, `Nummer ${n} von ${of}`);
     const ttl = C.h('div', { style: { fontSize: '60px', fontWeight: 900, color: INK, lineHeight: 1.05, letterSpacing: '-1px' } }, txt);
@@ -133,6 +156,9 @@
       if (it.value) C.h('div', { style: { fontSize: '34px', fontWeight: 900, color: it.ok === false ? RD : G } }, r, it.value);
       const mark = C.h('div', { class: 'ctr', style: { width: '50px', height: '50px', borderRadius: '50%', background: it.ok === false ? RD : CHK, color: '#fff', fontSize: '28px', fontWeight: 900, flex: 'none' } }, r, it.ok === false ? '✕' : '✓');
       const at = it.at ?? 0.6 + i * 0.6;
+      r.dataset.own = 1;
+      ctx.cue('tick', at - 0.3, 0.5);
+      ctx.cue(it.ok === false ? 'error' : 'pop', at + 0.02, it.ok === false ? 0.35 : 0.55);
       return { r, mark, at, i };
     });
     ctx.cue('whoosh', 0);
@@ -159,7 +185,8 @@
     tx.innerHTML = T.rich(p.text, RD);
     if (p.sub) C.h('div', { style: { fontSize: '30px', fontWeight: 700, color: '#4b5058', marginTop: '22px', lineHeight: 1.3 } }, card, T.rich(p.sub, RD));
     const pills = p.pills ? T.pills(card, p.pills) : [];
-    ctx.cue('whoosh', 0);
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('downer', 0.25, 0.3);
+    T.pillSfx(ctx, pills.length, p.pillsAt ?? 1.2, 0.18);
     return (t) => {
       T.enter(card, t);
       const kt = C.k(t, 0.2, 0.4, 'back');
@@ -210,7 +237,8 @@
     (p.ranges || ['1T', '1W', '1M', '1J', 'Max']).forEach((r) => C.h('div', { style: { padding: '6px 18px', borderRadius: '12px', ...(r === (p.range || '1M') ? { color: col, background: up ? '#e3f6ec' : '#fde6e3' } : {}) } }, tabs, r));
     const stick = T.sticker(st, p.sticker, ctx);
     const drawAt = p.drawAt ?? 0.3, drawDur = p.drawDur ?? 1.4;
-    ctx.cue('whoosh', 0);
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('whoosh', drawAt + 0.1, 0.45); ctx.cue('pop', drawAt + drawDur, 0.5);
+    if (p.threshold) ctx.cue('whoosh-down', p.threshold.at ?? drawAt + drawDur + 0.3, 0.5);
     return (t) => {
       T.enter(card, t);
       const f = C.k(t, drawAt, drawDur, 'inOut') * (data.length - 1);
@@ -250,6 +278,8 @@
       return { it, val, bar, at: it.at ?? 0.5 + i * 0.35 };
     });
     const note = p.note ? C.h('div', { style: { fontSize: '24px', fontWeight: 600, color: GR, marginTop: '22px' } }, card, p.note) : null;
+    if (note) note.dataset.own = 1;
+    rows.forEach((rw) => { ctx.cue('tick', rw.at, 0.5); ctx.cue('pop', rw.at + 0.75, 0.35); });
     ctx.cue('whoosh', 0);
     return (t) => {
       T.enter(card, t);
@@ -259,6 +289,167 @@
         rw.val.textContent = C.count(rw.it.label || String(rw.it.value), k);
       });
       if (note) note.style.opacity = C.k(t, (rows[rows.length - 1]?.at ?? 0) + 0.6, 0.3);
+    };
+  };
+  // ------------------------------------------------------------ trVersus ---
+  // "Google vs Amazon": two logo columns, a black VS badge drops between them.
+  S.trVersus = (st, p, ctx) => {
+    const card = T.card(st, p.card);
+    if (p.title) C.h('div', { style: { fontSize: '52px', fontWeight: 900, color: INK, marginBottom: '26px', letterSpacing: '-1px' } }, card, T.rich(p.title, p.titleAccent ? C.color(p.titleAccent) : GL));
+    const row = C.h('div', { class: 'ctr', style: { justifyContent: 'space-around', position: 'relative' } }, card);
+    const sides = [p.left || {}, p.right || {}].map((sd, i) => {
+      const col = C.h('div', { class: 'ctr', style: { flexDirection: 'column', gap: '12px', width: '360px', padding: '22px 0', borderRadius: '28px', background: '#f6f7f8' } }, row);
+      C.chip(sd.brand || sd.name, 110, col);
+      C.h('div', { style: { fontSize: '46px', fontWeight: 900, color: INK } }, col, sd.name || C.brand(sd.brand).name);
+      if (sd.sub) C.h('div', { style: { fontSize: '26px', fontWeight: 700, color: GR, textAlign: 'center' } }, col, sd.sub);
+      if (sd.value) C.h('div', { style: { fontSize: '44px', fontWeight: 900, color: sd.tone === 'red' ? RD : G } }, col, sd.value);
+      return { col, at: p.at?.[i] ?? 0.35 + i * 0.5 };
+    });
+    const vs = C.h('div', { class: 'ctr', style: { position: 'absolute', left: '50%', top: '50%', width: '110px', height: '110px', margin: '-55px 0 0 -55px', borderRadius: '50%', background: INK, color: '#fff', fontSize: '42px', fontWeight: 900, boxShadow: '0 0 0 10px #fff' } }, row, 'VS');
+    const vsAt = p.vsAt ?? sides[1].at + 0.45;
+    sides.forEach((sd) => { sd.col.dataset.k = 1; ctx.cue('whoosh', sd.at, 0.5); ctx.cue('pop', sd.at + 0.2, 0.45); });
+    ctx.cue('whoosh', 0, 0.7); ctx.cue('impact', vsAt + 0.05, 0.3); ctx.cue('pop', vsAt + 0.05, 0.6);
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      sides.forEach((sd, i) => {
+        const k = C.k(t, sd.at, 0.5, 'expo');
+        sd.col.style.opacity = C.k(t, sd.at, 0.2);
+        sd.col.style.transform = `translateX(${(1 - k) * (i ? 120 : -120)}px) translateY(${Math.sin(t * 1.6 + i * 2) * 3}px)`;
+      });
+      vs.style.transform = `scale(${Math.max(0, C.k(t, vsAt, 0.4, 'back')) * (1 + Math.sin(t * 3) * 0.02)}) rotate(${(1 - C.k(t, vsAt, 0.4)) * -90}deg)`;
+      stick(t);
+    };
+  };
+
+  // ------------------------------------------------------------ trMetric ---
+  // Earnings-style card: title + logo top right, small grey label, big
+  // figure, sub label; an optional second figure (delta) lands later.
+  S.trMetric = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    const tone = p.tone === 'red' ? RD : G;
+    const top = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', alignItems: 'flex-start' } }, card);
+    const tl = C.h('div', {}, top);
+    C.h('div', { style: { fontSize: '40px', fontWeight: 900, color: INK } }, tl, T.rich(p.title));
+    if (p.label) C.h('div', { style: { fontSize: '28px', fontWeight: 700, color: GR, marginTop: '4px' } }, tl, p.label);
+    const logos = C.h('div', { class: 'ctr', style: { gap: '10px' } }, top);
+    (p.logos || (p.brand ? [p.brand] : [])).forEach((b) => C.chip(b, 70, logos));
+    const num = big(card, p.value || '', tone, p.size || 120);
+    num.style.margin = '10px 0 4px';
+    if (p.sub) C.h('div', { style: { fontSize: '30px', fontWeight: 700, color: '#4b5058' } }, card, T.rich(p.sub, tone));
+    let d2;
+    if (p.second) {
+      d2 = big(card, p.second.value, C.color(p.second.tone === 'red' ? RD : p.second.color || G), p.second.size || 96);
+      d2.style.marginTop = '8px'; d2.dataset.own = 1;
+    }
+    const pills = p.pills ? T.pills(card, p.pills) : [];
+    const at = p.at ?? 0.4, d2At = p.second?.at ?? at + 1.6;
+    ctx.cue('whoosh', 0, 0.8);
+    if (p.value) T.countSfx(ctx, p.value, at, p.countDur ?? 0.9);
+    if (d2) { ctx.cue('whoosh', d2At - 0.1, 0.4); T.countSfx(ctx, p.second.value, d2At, 0.6); }
+    T.pillSfx(ctx, pills.length, p.pillsAt ?? at + 1.4, 0.18);
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      if (p.value) num.textContent = countable(p.value) && p.countUp !== false ? C.count(p.value, C.k(t, at, p.countDur ?? 0.9, 'out')) : p.value;
+      num.style.opacity = C.k(t, at - 0.05, 0.15);
+      if (d2) {
+        const k = C.k(t, d2At, 0.4, 'back');
+        d2.style.opacity = C.k(t, d2At, 0.12);
+        d2.style.transform = `translateY(${(1 - Math.min(1, k)) * 30}px) scale(${0.8 + 0.2 * Math.max(0, k)})`;
+        d2.style.transformOrigin = '0 50%';
+        d2.textContent = C.count(p.second.value, C.k(t, d2At, 0.6, 'out'));
+      }
+      pills.forEach((el, i) => (el.style.transform = `scale(${Math.max(0, C.k(t, (p.pillsAt ?? at + 1.4) + i * 0.18, 0.32, 'back'))})`));
+      stick(t);
+    };
+  };
+
+  // --------------------------------------------------------------- trBuy ---
+  // Portfolio card: logo tile, name, black date pill, big green amount,
+  // one-line pitch and green tag pills ("Gekauft 30. Okt.").
+  S.trBuy = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '22px' } }, card);
+    C.chip(p.brand, 96, head);
+    const hn = C.h('div', {}, head);
+    C.h('div', { style: { fontSize: '46px', fontWeight: 900, color: INK, lineHeight: 1 } }, hn, p.name || C.brand(p.brand).name);
+    if (p.badge) C.h('div', { style: { display: 'inline-block', marginTop: '10px', padding: '6px 18px', borderRadius: '14px', background: INK, color: '#fff', fontSize: '24px', fontWeight: 800 } }, hn, p.badge);
+    const num = big(card, p.value || '', p.tone === 'red' ? RD : G, p.size || 130);
+    num.style.margin = '18px 0 6px';
+    if (p.sub) C.h('div', { style: { fontSize: '32px', fontWeight: 800, color: INK } }, card, T.rich(p.sub));
+    const row = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '12px', marginTop: '20px' } }, card);
+    const tags = (p.tags || []).map((tg, i) => C.h('div', { style: { padding: '8px 20px', borderRadius: '14px', background: i % 2 ? INK : '#ddf4e8', color: i % 2 ? '#fff' : G, fontSize: '26px', fontWeight: 800 } }, row, tg));
+    const at = p.at ?? 0.4, tagsAt = p.tagsAt ?? at + 1.3;
+    ctx.cue('whoosh', 0, 0.8);
+    T.countSfx(ctx, p.value, at, p.countDur ?? 0.9);
+    T.pillSfx(ctx, tags.length, tagsAt, 0.2);
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      num.textContent = countable(p.value) ? C.count(p.value, C.k(t, at, p.countDur ?? 0.9, 'out')) : p.value;
+      tags.forEach((el, i) => (el.style.transform = `scale(${Math.max(0, C.k(t, tagsAt + i * 0.2, 0.32, 'back'))})`));
+      stick(t);
+    };
+  };
+
+  // -------------------------------------------------------------- trPoll ---
+  // Comment-bait question with numbered red answers ticking in.
+  S.trPoll = (st, p, ctx) => {
+    const card = T.card(st, p.card);
+    const q = C.h('div', { style: { fontSize: '54px', fontWeight: 900, color: INK, lineHeight: 1.1, letterSpacing: '-1px', marginBottom: '26px' } }, card);
+    q.innerHTML = T.rich(p.question);
+    const opts = (p.options || []).map((o, i) => {
+      const r = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '18px', marginTop: i ? '16px' : 0, fontSize: '36px', fontWeight: 800, color: INK } }, card);
+      C.h('div', { class: 'ctr', style: { width: '48px', height: '48px', borderRadius: '50%', background: RD, color: '#fff', fontSize: '26px', fontWeight: 900, flex: 'none' } }, r, String(i + 1));
+      r.insertAdjacentHTML('beforeend', `<span>${o}</span>`);
+      r.dataset.own = 1;
+      const at = (p.at ?? 0.7) + i * (p.step ?? 0.35);
+      ctx.cue('tick', at, 0.6);
+      return { r, at };
+    });
+    let note;
+    if (p.note) { note = C.h('div', { style: { fontSize: '24px', fontWeight: 600, color: GR, marginTop: '24px' } }, card, p.note); note.dataset.own = 1; }
+    ctx.cue('whoosh', 0, 0.8);
+    return (t) => {
+      T.enter(card, t);
+      opts.forEach((o) => {
+        const k = C.k(t, o.at, 0.4, 'back');
+        o.r.style.opacity = C.k(t, o.at, 0.15);
+        o.r.style.transform = `translateX(${(1 - Math.min(1, k)) * -40}px)`;
+      });
+      if (note) note.style.opacity = C.k(t, (opts[opts.length - 1]?.at ?? 0.5) + 0.4, 0.3);
+    };
+  };
+
+  // -------------------------------------------------------------- trRule ---
+  // "Meine Faustregel": two outlined columns, the chosen one ticked green.
+  S.trRule = (st, p, ctx) => {
+    const card = T.card(st, p.card);
+    C.h('div', { style: { fontSize: '52px', fontWeight: 900, color: INK, marginBottom: '24px' } }, card, T.rich(p.title || 'Meine *Faustregel*'));
+    const row = C.h('div', { class: 'ctr', style: { gap: '22px', alignItems: 'stretch' } }, card);
+    const cols = [p.left || {}, p.right || {}].map((c, i) => {
+      const good = c.good !== false && i === 0 || c.good === true;
+      const col = good ? GL : RD;
+      const d = C.h('div', { style: { flex: 1, padding: '24px', borderRadius: '26px', border: `4px solid ${col}55`, background: good ? '#f2fbf6' : '#fff' } }, row);
+      C.h('div', { style: { fontSize: '28px', fontWeight: 700, color: GR } }, d, c.label || '');
+      C.h('div', { style: { fontSize: '42px', fontWeight: 900, color: col, lineHeight: 1.1, margin: '6px 0 14px' } }, d, c.title || '');
+      const res = C.h('div', { style: { fontSize: '26px', fontWeight: 800, color: good ? INK : GR } }, d, (good ? '✓ ' : '✕ ') + (c.result || ''));
+      const at = c.at ?? 0.5 + i * 0.9;
+      d.dataset.own = 1;
+      ctx.cue('whoosh', at, 0.4); ctx.cue(good ? 'pop' : 'tick', at + 0.45, 0.55);
+      return { d, res, at };
+    });
+    ctx.cue('whoosh', 0, 0.8);
+    return (t) => {
+      T.enter(card, t);
+      cols.forEach((c, i) => {
+        const k = C.k(t, c.at, 0.5, 'expo');
+        c.d.style.opacity = C.k(t, c.at, 0.2);
+        c.d.style.transform = `translateY(${(1 - k) * 40}px)`;
+        c.res.style.transform = `scale(${Math.max(0, C.k(t, c.at + 0.45, 0.35, 'back'))})`;
+        c.res.style.transformOrigin = '0 50%';
+      });
     };
   };
 })();

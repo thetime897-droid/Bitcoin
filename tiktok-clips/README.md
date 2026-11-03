@@ -200,6 +200,11 @@ Echte Logos: PNG mit `"logo": "logos/xyz.png"` am Ticker/Brand.
 | `trNumber` | „Nummer 2 von 3“ mit Fortschrittsring | `n`, `of`, `title` |
 | `trList` | „So geht's“-Zeilen mit grünem Haken / rotem Kreuz | `title`, `items[{text,sub,value,ok,at}]` |
 | `trWarn` | „Achtung“-Karte mit rotem Warndreieck | `tag`, `text`, `sub`, `pills[]` |
+| `trVersus` | „Google vs Amazon“: zwei Logo-Spalten, VS-Badge | `title`, `left/right{brand,name,sub,value,tone}`, `at[]`, `vsAt`, `sticker` |
+| `trMetric` | Kennzahl mit Logo(s) oben rechts, zweite Zahl folgt (z. B. „+25 %“) | `title`, `label`, `logos[]`, `value`, `sub`, `tone`, `second{value,at,tone,size}`, `pills` |
+| `trBuy` | Depot-Karte: Logo, Name, schwarze Datums-Pill, großer Betrag, Tags | `brand`, `name`, `badge`, `value`, `sub`, `tags[]` |
+| `trPoll` | Frage mit nummerierten roten Antworten (Kommentar-Köder) | `question`, `options[]`, `at`, `step`, `note` |
+| `trRule` | „Meine Faustregel“: zwei Spalten, eine grün ✓, eine rot ✕ | `title`, `left/right{label,title,result,good}` |
 | `trChart` | App-Chartkarte: Name, Preis zählt, Änderung, Linie, Zeitraum-Tabs | `ticker`, `name`, `price`, `priceFrom`, `change`, `range`, `data`, `color`, `threshold{value,label,at}`, `sticker` |
 
 Beispiel: `storyboards/jahresendrallye-tr.json`.

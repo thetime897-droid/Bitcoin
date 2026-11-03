@@ -9,6 +9,7 @@
 //   node render.cjs storyboards/beispiel.json --concat   -> also _alle_szenen.mp4
 //   node render.cjs storyboards/beispiel.json --nosfx    -> clips without sound effects
 //   node render.cjs storyboards/beispiel.json --tiktok   -> TikTok-overlay MP4s, cropped to the graphic on black
+//   node render.cjs storyboards/beispiel.json --tiktok --remix -> only re-mix the sound of existing clips
 //   node render.cjs storyboards/beispiel.json --bluescreen -> flat blue background for keying (also --greenscreen, --key <hex>)
 //
 // Needs Node 18+, ffmpeg on PATH and Playwright (npm install in this folder).
@@ -64,7 +65,11 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
 (async () => {
   const { chromium } = require('playwright');
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
+  // Frames are rendered at 2x (supersampling) for crisp text and lines; full-
+// frame clips are downscaled to 1080x1920 with Lanczos, TikTok overlay crops
+// keep the 2x pixels (cards ~2100 px wide) so they stay sharp when scaled.
+  const SS = +(opt('ss', '2'));
+  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: SS });
   page.on('pageerror', (e) => console.error('  Seitenfehler:', e.message));
   await page.goto(pathToFileURL(path.join(engine, 'player.html')).href + '?render=1' + (alpha ? '&alpha=1' : '') + (key ? '&key=' + key : ''));
   const files = [];
@@ -103,15 +108,29 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
       audio = ['-f', 'f32le', '-ar', String(SFX.SR), '-ac', '2', '-i', audioFile];
       s._audioFile = audioFile;
     }
+    // --remix: keep the rendered picture, only re-mix and swap the sound.
+    if (flag('remix')) {
+      for (const ext of ['.mp4', '.mov', '.webm']) {
+        const f = path.join(outDir, base + ext);
+        if (!fs.existsSync(f) || !audio.length) continue;
+        const tmp = f.replace(ext, '.remix' + ext);
+        const ac = ext === '.mov' ? ['-c:a', 'pcm_s16le'] : ext === '.webm' ? ['-c:a', 'libopus', '-b:a', '160k'] : ['-c:a', 'aac', '-b:a', '192k', '-ar', '48000'];
+        execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', f, ...audio, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', ...ac, '-shortest', ...(ext === '.mp4' ? ['-movflags', '+faststart'] : []), tmp]);
+        fs.renameSync(tmp, f);
+        console.log('♪', path.basename(f));
+      }
+      if (s._audioFile) fs.unlinkSync(s._audioFile);
+      continue;
+    }
     const aenc = audio.length ? ['-map', '0:v', '-map', '1:a', '-ac', '2', ...(alpha ? ['-c:a', 'pcm_s16le'] : ['-c:a', 'aac', '-b:a', '192k'])] : [];
     const enc = alpha
-      ? ['-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le', '-qscale:v', '13', '-vendor', 'apl0']
-      : ['-c:v', 'libx264', '-preset', 'medium', '-crf', '16', '-pix_fmt', 'yuv420p', '-movflags', '+faststart'];
+      ? ['-vf', 'scale=1080:1920:flags=lanczos', '-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le', '-qscale:v', '13', '-vendor', 'apl0']
+      : [...(flag('tiktok') ? [] : ['-vf', 'scale=1080:1920:flags=lanczos']), '-c:v', 'libx264', '-preset', 'slow', '-crf', flag('tiktok') ? '10' : '15', '-pix_fmt', 'yuv420p', '-movflags', '+faststart'];
     const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', alpha ? 'png' : 'mjpeg', '-i', '-', ...audio, ...enc, ...aenc, '-r', String(fps), file], { stdio: ['pipe', 'inherit', 'inherit'] });
     const frames = Math.round(dur * fps);
     for (let f = 0; f < frames; f++) {
       await page.evaluate((t) => window.Clip.seek(t), f / fps);
-      const buf = await page.screenshot(alpha ? { type: 'png', omitBackground: true } : { type: 'jpeg', quality: 95 });
+      const buf = await page.screenshot(alpha ? { type: 'png', omitBackground: true } : { type: 'jpeg', quality: 97 });
       if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
     }
     ff.stdin.end();
@@ -124,10 +143,11 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
       const m = [...log.matchAll(/crop=(\d+):(\d+):(\d+):(\d+)/g)].pop();
       if (m) {
         let [w, h, x, y] = m.slice(1).map(Number);
-        x = Math.max(0, x - 20); y = Math.max(0, y - 20);
-        w = Math.min(1080 - x, w + 40) & ~1; h = Math.min(1920 - y, h + 40) & ~1;
+        const W = 1080 * SS, H = 1920 * SS, m2 = 20 * SS;
+        x = Math.max(0, x - m2); y = Math.max(0, y - m2);
+        w = Math.min(W - x, w + 2 * m2) & ~1; h = Math.min(H - y, h + 2 * m2) & ~1;
         const tmp = file.replace(/\.mp4$/, '.crop.mp4');
-        execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', file, '-vf', `crop=${w}:${h}:${x}:${y}`, '-c:v', 'libx264', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-crf', '18', '-r', '30', '-c:a', 'aac', '-b:a', '160k', '-ar', '44100', '-ac', '2', '-movflags', '+faststart', tmp]);
+        execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', file, '-vf', `crop=${w}:${h}:${x}:${y}`, '-c:v', 'libx264', '-profile:v', 'high', '-level', '5.1', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-crf', '14', '-r', '30', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2', '-movflags', '+faststart', tmp]);
         fs.renameSync(tmp, file);
       }
     }

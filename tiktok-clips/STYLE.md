@@ -76,7 +76,25 @@ Beim Lesen des Skripts **jeden Satz** markieren und so zuordnen:
 - Titel max. ~22 Zeichen, GROSS, Deutsch.
 - Keine echten Markenlogos einbetten, außer der Nutzer legt PNGs bei (`"logo": "logos/meta.png"`). Standard sind Glyph-Kacheln in Markenfarbe.
 
-## 4. Sound
+## 4. Sound (Sound-Design wie im Profi-Schnitt)
+
+Grundregel: Sounds liegen **unter der Stimme** (Mix-Lautstärke 0.3, Spitzen ≈ −18 dB).
+Jeder Sound hat einen Grund – Bewegung, Zahl, Aufzählung oder Pointe.
+
+| Moment | Sound |
+|---|---|
+| Karte fliegt rein | leiser **Whoosh** (max. alle ~0,45 s einer, sonst wird es Brei) |
+| Zahl zählt hoch | **Tick-Tick-Tick**, das sich beschleunigt, dann Akzent beim Landen |
+| Geldbetrag landet (€, $, Mrd., Mio.) | leises **Kassenklingeln** statt Pop |
+| Aufzählung / Pills / Optionen | je ein kurzer **Tick** |
+| Haken ✓ / Sticker / Logo | kleiner **Pop** |
+| Kreuz ✕ / Warnung | dezenter Error- bzw. tiefer Abwärts-Ton |
+| VS-Badge | Pop + sehr leiser Impact |
+| Enthüllung nach Spannungsaufbau | **Riser**, dessen Ende genau auf den Reveal fällt (`riser` endet 1,1 s nach `at`) |
+| Chart zeichnet sich | weicher Whoosh-Sweep, Linie unter Schwelle → Whoosh-down |
+
+### Alte Regeln (weiter gültig)
+
 
 - **Jeder Beat hat einen Sound**: Reinfliegen = `whoosh`, Erscheinen = `pop`,
   Zahl zählt = `tick`, Stempel = `stamp`, Highlight = `ping`, Crash = `downer` + `impact`,
