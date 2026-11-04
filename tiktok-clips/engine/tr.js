@@ -181,10 +181,11 @@
     const row = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '28px' } }, card);
     const tile = C.h('div', { class: 'ctr', style: { width: '120px', height: '120px', borderRadius: '30px', background: '#fde6e3', flex: 'none' } }, row);
     tile.innerHTML = `<svg width="64" height="58" viewBox="0 0 64 58"><path d="M32 3 L61 54 H3 Z" fill="${RD}" stroke="${RD}" stroke-width="5" stroke-linejoin="round"/><rect x="29" y="20" width="6" height="18" rx="3" fill="#fff"/><circle cx="32" cy="45" r="3.6" fill="#fff"/></svg>`;
-    const tx = C.h('div', { style: { fontSize: '54px', fontWeight: 900, color: INK, lineHeight: 1.08, letterSpacing: '-1px' } }, row);
+    const tx = C.h('div', { style: { fontSize: (p.size || 54) + 'px', fontWeight: 900, color: INK, lineHeight: 1.08, letterSpacing: '-1px' } }, row);
     tx.innerHTML = T.rich(p.text, RD);
     if (p.sub) C.h('div', { style: { fontSize: '30px', fontWeight: 700, color: '#4b5058', marginTop: '22px', lineHeight: 1.3 } }, card, T.rich(p.sub, RD));
     const pills = p.pills ? T.pills(card, p.pills) : [];
+    const stick = T.sticker(st, p.sticker, ctx);
     ctx.cue('whoosh', 0, 0.8); ctx.cue('downer', 0.25, 0.3);
     T.pillSfx(ctx, pills.length, p.pillsAt ?? 1.2, 0.18);
     return (t) => {
@@ -192,6 +193,7 @@
       const kt = C.k(t, 0.2, 0.4, 'back');
       tile.style.transform = `scale(${Math.max(0, kt)}) rotate(${t > 0.6 && t < 1.1 ? Math.sin(t * 40) * 6 * (1.1 - t) * 2 : 0}deg)`;
       tag.style.transform = `scale(${Math.max(0, C.k(t, 0.1, 0.3, 'back'))})`;
+      stick(t);
       pills.forEach((el, i) => (el.style.transform = `scale(${Math.max(0, C.k(t, (p.pillsAt ?? 1.2) + i * 0.18, 0.32, 'back'))})`));
     };
   };

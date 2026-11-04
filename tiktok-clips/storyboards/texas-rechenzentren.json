@@ -1,0 +1,296 @@
+{
+ "name": "texas-rechenzentren",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "sfxGap": 0.45,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trWarn",
+   "duration": 5.0,
+   "script": "0:00 · Texas will KI-Rechenzentren stoppen. Ausgerechnet Texas – der Bundesstaat, der den KI-Boom bauen sollte.",
+   "params": {
+    "tag": "Eilmeldung · Texas",
+    "text": "Texas will *KI-Rechen-\nzentren stoppen*",
+    "sub": "Ausgerechnet der Bundesstaat, der den *KI-Boom* bauen sollte.",
+    "pills": [
+     "Baustopp gefordert",
+     "3. Nov. 2026"
+    ],
+    "pillsAt": 2.6,
+    "size": 66,
+    "sticker": {
+     "text": "STOPP",
+     "icon": "🛑",
+     "color": "#e5392f",
+     "at": 1.6,
+     "x": 830,
+     "y": 520,
+     "size": 56,
+     "rotate": -8
+    }
+   },
+   "sfx": [
+    {
+     "name": "riser",
+     "at": 0.5,
+     "gain": 0.3
+    }
+   ]
+  },
+  {
+   "id": "02",
+   "type": "trVersus",
+   "duration": 6.4,
+   "script": "0:05 · Der Grund: eine Wahl, die Geschichte schreibt. Im Trump-Land Texas gewinnt die Demokratin Gina Hinojosa – gegen den republikanischen Amtsinhaber Greg Abbott.",
+   "params": {
+    "title": "Trump-Land Texas *kippt*",
+    "left": {
+     "brand": {
+      "name": "Hinojosa",
+      "glyph": "D",
+      "color": "#1a5cc8"
+     },
+     "name": "Hinojosa",
+     "sub": "Demokratin",
+     "value": "52,8 %"
+    },
+    "right": {
+     "brand": {
+      "name": "Abbott",
+      "glyph": "R",
+      "color": "#c8102e"
+     },
+     "name": "Abbott",
+     "sub": "Republikaner",
+     "value": "45,7 %",
+     "tone": "red"
+    },
+    "at": [
+     2.6,
+     3.4
+    ],
+    "vsAt": 4.0,
+    "sticker": {
+     "text": "HISTORISCH",
+     "icon": "⚡",
+     "color": "#e5392f",
+     "at": 4.8,
+     "x": 800,
+     "y": 760,
+     "size": 42
+    }
+   },
+   "sfx": [
+    {
+     "name": "riser",
+     "at": 0.9,
+     "gain": 0.3
+    }
+   ]
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 5.0,
+   "script": "0:11 · Die erste demokratische Gouverneurin in Texas seit über 30 Jahren – und die erste Latina überhaupt in diesem Amt.",
+   "params": {
+    "brand": {
+     "name": "Texas",
+     "glyph": "TX",
+     "color": "#bf0a30"
+    },
+    "context": "Gouverneurswahl",
+    "label": "Erste Demokratin im Amt seit",
+    "icon": "🏛",
+    "value": "30+ Jahren",
+    "size": 140,
+    "at": 0.4,
+    "countDur": 1.0,
+    "sub": "Und: *erste Latina* als Gouverneurin",
+    "pills": [
+     "Abbott räumt Niederlage ein"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 7.6,
+   "script": "0:16 · Und ihr Versprechen trifft die KI-Branche direkt: ein sofortiger Stopp für neue Rechenzentren – bis klare Regeln für Strom, Wasser und Gemeinden stehen.",
+   "params": {
+    "title": "Ihr *Plan*",
+    "items": [
+     {
+      "text": "Sofort-Stopp für neue Rechenzentren",
+      "sub": "keine neuen Genehmigungen",
+      "ok": false,
+      "value": "Stopp",
+      "at": 2.4
+     },
+     {
+      "text": "Regeln für Strom",
+      "sub": "Netz & Strompreise schützen",
+      "at": 4.6
+     },
+     {
+      "text": "Regeln für Wasser & Gemeinden",
+      "sub": "erst dann geht es weiter",
+      "at": 5.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trStat",
+   "duration": 6.2,
+   "script": "0:24 · Warum das so wichtig ist? Rund 27 Prozent aller in den USA geplanten Rechenzentrums-Kapazität sollen in Texas entstehen. Mehr als ein Viertel.",
+   "params": {
+    "brand": {
+     "name": "Texas",
+     "glyph": "TX",
+     "color": "#bf0a30"
+    },
+    "context": "Anteil am US-Ausbau",
+    "label": "Geplante Rechenzentrums-Kapazität in Texas",
+    "icon": "⚡",
+    "value": "27 %",
+    "size": 180,
+    "at": 2.2,
+    "countDur": 1.2,
+    "sub": "Mehr als *jedes vierte* geplante Gigawatt",
+    "pills": [
+     "Quelle: Wells Fargo"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:30 · Die Börse hat sofort reagiert: Cipher Mining minus 17 Prozent, CoreWeave minus 7, SpaceX minus 6 – und auch Oracle gab nach.",
+   "params": {
+    "title": "Die Börse *reagiert*",
+    "items": [
+     {
+      "text": "Cipher Mining",
+      "value": "−17 %",
+      "ok": false,
+      "at": 2.0
+     },
+     {
+      "text": "CoreWeave",
+      "value": "−7 %",
+      "ok": false,
+      "at": 3.2
+     },
+     {
+      "text": "SpaceX",
+      "value": "−6 %",
+      "ok": false,
+      "at": 4.0
+     },
+     {
+      "text": "Oracle",
+      "sub": "Angaben schwanken",
+      "value": "−4 %",
+      "ok": false,
+      "at": 5.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 7.2,
+   "script": "0:37 · Und Texas ist nicht allein: New York hat große Rechenzentren für ein Jahr gestoppt, Arizona und Illinois streichen Steuervorteile. Die Stimmung dreht sich.",
+   "params": {
+    "title": "Texas ist *nicht allein*",
+    "items": [
+     {
+      "text": "New York",
+      "sub": "1 Jahr Stopp für große Rechenzentren",
+      "value": "Stopp",
+      "ok": false,
+      "at": 2.2
+     },
+     {
+      "text": "Arizona",
+      "sub": "Steuerbefreiung ausgesetzt",
+      "value": "Aus",
+      "ok": false,
+      "at": 3.8
+     },
+     {
+      "text": "Illinois",
+      "sub": "keine neuen Steuervorteile",
+      "value": "Aus",
+      "ok": false,
+      "at": 4.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 7.0,
+   "script": "0:44 · Aber Achtung: Noch ist das nur ein Wahlversprechen. Ob und wie schnell der Stopp kommt, entscheidet sich erst im neuen Jahr.",
+   "params": {
+    "tag": "Aber",
+    "text": "Noch nur ein\n*Wahlversprechen*",
+    "sub": "Ob und wie schnell der Stopp kommt, ist *noch offen*.",
+    "pills": [
+     "Amtsantritt im Januar",
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trRule",
+   "duration": 6.4,
+   "script": "0:51 · Für Anleger heißt das: Wer auf KI-Infrastruktur setzt, muss jetzt auch auf Politik und Standorte achten – nicht nur auf Chips.",
+   "params": {
+    "title": "Was heißt das für *Anleger*?",
+    "left": {
+     "label": "Ab jetzt wichtig",
+     "title": "Politik & Standort",
+     "result": "Wo stehen die Rechenzentren?",
+     "at": 2.6
+    },
+    "right": {
+     "label": "Reicht nicht mehr",
+     "title": "Nur auf Chips schauen",
+     "result": "Strom & Genehmigung zählen",
+     "good": false,
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.6,
+   "script": "0:58 · Stoppt Texas den KI-Boom wirklich? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "question": "Stoppt Texas den *KI-Boom* wirklich?",
+    "options": [
+     "Ja, das bremst die KI-Aktien",
+     "Nein, nur Wahlkampf",
+     "Die Firmen ziehen einfach weiter"
+    ],
+    "at": 0.9,
+    "step": 0.45,
+    "note": "Schreib's in die Kommentare · Keine Anlageberatung"
+   }
+  }
+ ]
+}
