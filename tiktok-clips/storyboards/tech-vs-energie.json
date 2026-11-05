@@ -1,0 +1,362 @@
+{
+ "name": "tech-vs-energie",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.45,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trChart",
+   "duration": 5.4,
+   "script": "0:00 · Die Tech-Börse ist gerade um bis zu 5 Prozent eingebrochen – offiziell Korrektur. Und trotzdem gab es Gewinner.",
+   "params": {
+    "ticker": "NDX",
+    "name": "Nasdaq Composite",
+    "price": "24.940",
+    "priceFrom": 26250,
+    "change": "−5 %",
+    "range": "1T",
+    "data": [
+     26250,
+     26240,
+     26222,
+     26182,
+     26209,
+     26157,
+     26151,
+     26181,
+     26136,
+     26134,
+     26139,
+     26090,
+     26072,
+     26085,
+     26074,
+     26088,
+     26050,
+     26019,
+     25977,
+     25978,
+     25964,
+     25954,
+     25919,
+     25898,
+     25837,
+     25790,
+     25789,
+     25796,
+     25717,
+     25688,
+     25666,
+     25591,
+     25526,
+     25522,
+     25462,
+     25447,
+     25400,
+     25400,
+     25363,
+     25296,
+     25237,
+     25237,
+     25224,
+     25162,
+     25176,
+     25100,
+     25095,
+     25081,
+     25054,
+     25024,
+     24953,
+     24954,
+     24917,
+     24925,
+     24855,
+     24802,
+     24752,
+     24709,
+     24940
+    ],
+    "drawAt": 0.3,
+    "drawDur": 1.6,
+    "sticker": {
+     "text": "KORREKTUR",
+     "icon": "📉",
+     "color": "#e5392f",
+     "at": 2.4,
+     "x": 800,
+     "y": 820,
+     "size": 52
+    }
+   },
+   "sfx": [
+    {
+     "name": "riser",
+     "at": 1.3,
+     "gain": 0.3
+    }
+   ]
+  },
+  {
+   "id": "02",
+   "type": "trVersus",
+   "duration": 6.2,
+   "script": "0:05 · Während Tech abstürzt, war Energie der stärkste Sektor des Tages. Das Geld wandert – aber nicht dahin, wo du denkst.",
+   "params": {
+    "title": "Tech gegen *Energie*",
+    "left": {
+     "brand": {
+      "name": "Tech",
+      "glyph": "💻",
+      "color": "#3b82f6"
+     },
+     "name": "Tech",
+     "sub": "Nasdaq, Chips",
+     "value": "bis −5 %",
+     "tone": "red"
+    },
+    "right": {
+     "brand": {
+      "name": "Energie",
+      "glyph": "🛢",
+      "color": "#18a565"
+     },
+     "name": "Energie",
+     "sub": "stärkster Sektor",
+     "value": "Tagessieger"
+    },
+    "at": [
+     1.0,
+     2.4
+    ],
+    "vsAt": 3.0,
+    "sticker": {
+     "text": "Rotation",
+     "icon": "🔄",
+     "color": "#18a565",
+     "at": 4.4,
+     "x": 780,
+     "y": 620,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 6.6,
+   "script": "0:11 · Am härtesten trifft es die Chips: Der Halbleiter-Index fällt rund 10 Prozent, Nvidia je nach Quelle bis zu 9, Qualcomm rund 9 Prozent.",
+   "params": {
+    "title": "Die *Verlierer*",
+    "items": [
+     {
+      "text": "Halbleiter-Index",
+      "sub": "Philadelphia SOX",
+      "value": "rund −10 %",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "Nvidia",
+      "sub": "je nach Quelle 5–9 %",
+      "value": "bis −9 %",
+      "ok": false,
+      "at": 2.8
+     },
+     {
+      "text": "Qualcomm",
+      "sub": "schwacher Smartphone-Ausblick",
+      "value": "rund −9 %",
+      "ok": false,
+      "at": 4.2
+     }
+    ],
+    "accent": "#e5392f"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 6.6,
+   "script": "0:18 · Der Auslöser: die US-Zwischenwahlen. Die Demokraten holen den Kongress – und der Markt fürchtet strengere Regeln für KI und Rechenzentren.",
+   "params": {
+    "brand": {
+     "name": "US-Midterms",
+     "glyph": "🇺🇸",
+     "color": "#1c3d6e"
+    },
+    "context": "Der Auslöser",
+    "text": "Demokraten holen den Kongress –\nAngst vor *KI-Regeln*",
+    "accent": "#e5392f",
+    "pills": [
+     "Rechenzentren",
+     "Strom",
+     "Regulierung"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:24 · Und jetzt die Falle: Die KI-Strom-Aktien sind trotz Energie-Rally mitgefallen. GE Vernova minus 10, Vistra minus 12, Constellation minus 7 Prozent.",
+   "params": {
+    "title": "Die Falle: *KI-Strom*",
+    "items": [
+     {
+      "text": "GE Vernova",
+      "sub": "Turbinen & Netz",
+      "value": "−10 %",
+      "ok": false,
+      "at": 2.6
+     },
+     {
+      "text": "Vistra",
+      "sub": "Kraftwerke für Rechenzentren",
+      "value": "−12 %",
+      "ok": false,
+      "at": 3.8
+     },
+     {
+      "text": "Constellation",
+      "sub": "Atomstrom für KI",
+      "value": "−7 %",
+      "ok": false,
+      "at": 5.0
+     }
+    ],
+    "accent": "#e5392f"
+   },
+   "sfx": [
+    {
+     "name": "riser",
+     "at": 0.6,
+     "gain": 0.25
+    }
+   ]
+  },
+  {
+   "id": "06",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:32 · Der Unterschied: Klassische Energie verdient an Öl und Gas. KI-Strom-Aktien hängen direkt am Rechenzentrums-Boom – und fallen mit ihm.",
+   "params": {
+    "title": "Energie ist nicht gleich *Energie*",
+    "left": {
+     "label": "Klassische Energie",
+     "title": "Öl & Gas",
+     "result": "unabhängig vom KI-Boom",
+     "at": 1.6
+    },
+    "right": {
+     "label": "KI-Strom-Aktien",
+     "title": "Hängen an Tech",
+     "result": "fallen mit den Rechenzentren",
+     "good": false,
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:38 · Und das ist kein Einzeltag: Schon im Oktober verlor die Nasdaq 5 Prozent, der S&P 500 nur knapp 1. Gewonnen haben Versorger, Basiskonsum und Gesundheit.",
+   "params": {
+    "title": "Schon im *Oktober*",
+    "label": "Nasdaq im Monat",
+    "logos": [
+     "NDX",
+     "SPX"
+    ],
+    "value": "−5 %",
+    "tone": "red",
+    "sub": "S&P 500 nur *−0,9 %*",
+    "at": 1.6,
+    "countDur": 0.8,
+    "second": {
+     "value": "Defensive gewinnen",
+     "size": 60,
+     "at": 4.0
+    },
+    "pills": [
+     "Versorger",
+     "Basiskonsum",
+     "Gesundheit"
+    ],
+    "pillsAt": 4.8
+   }
+  },
+  {
+   "id": "08",
+   "type": "trStat",
+   "duration": 6.2,
+   "script": "0:45 · Langfristig bleibt das Strom-Thema aber riesig: Laut Internationaler Energieagentur wächst der Strombedarf durch KI viermal schneller als der Rest.",
+   "params": {
+    "brand": {
+     "name": "IEA",
+     "glyph": "IEA",
+     "color": "#0072bc"
+    },
+    "context": "Langfristig",
+    "label": "KI-Strombedarf wächst schneller als der Rest",
+    "icon": "⚡",
+    "value": "4×",
+    "size": 190,
+    "at": 2.6,
+    "countDur": 0.8,
+    "sub": "Prognose für das *nächste Jahrzehnt*"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trList",
+   "duration": 6.4,
+   "script": "0:51 · Die nächsten Tests: Vistra und Constellation legen Zahlen vor. Dann sehen wir, ob die Rechenzentrums-Kunden wirklich zögern.",
+   "params": {
+    "title": "Darauf *achten*",
+    "items": [
+     {
+      "text": "Vistra-Zahlen",
+      "sub": "diese Woche",
+      "value": "Test 1",
+      "at": 1.4
+     },
+     {
+      "text": "Constellation-Zahlen",
+      "sub": "als Nächstes",
+      "value": "Test 2",
+      "at": 2.6
+     },
+     {
+      "text": "Zögern die Kunden?",
+      "sub": "Rechenzentrums-Aufträge",
+      "value": "?",
+      "at": 4.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.4,
+   "script": "0:57 · Kaufst du jetzt den Tech-Dip – oder setzt du auf Energie? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "question": "Tech-Dip kaufen oder *Energie*?",
+    "options": [
+     "Tech-Dip kaufen",
+     "Energie & Strom",
+     "Erst mal abwarten"
+    ],
+    "at": 0.9,
+    "step": 0.45,
+    "note": "Schreib's in die Kommentare · Keine Anlageberatung"
+   }
+  }
+ ]
+}

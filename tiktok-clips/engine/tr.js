@@ -146,7 +146,7 @@
   S.trList = (st, p, ctx) => {
     const card = T.card(st, p.card);
     if (p.brand) T.header(card, p.brand, p.context);
-    if (p.title) C.h('div', { style: { fontSize: '50px', fontWeight: 900, color: INK, marginBottom: '22px' } }, card, T.rich(p.title));
+    if (p.title) C.h('div', { style: { fontSize: '50px', fontWeight: 900, color: INK, marginBottom: '22px' } }, card, T.rich(p.title, p.accent ? C.color(p.accent) : GL));
     const rows = (p.items || []).map((it, i) => {
       const r = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '20px', padding: '20px 24px', borderRadius: '20px', background: '#f2f3f5', marginTop: i ? '14px' : 0 } }, card);
       C.h('div', { class: 'ctr', style: { width: '44px', height: '44px', borderRadius: '50%', background: INK, color: '#fff', fontSize: '24px', fontWeight: 900, flex: 'none' } }, r, String(i + 1));
