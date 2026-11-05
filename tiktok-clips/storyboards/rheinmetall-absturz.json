@@ -1,0 +1,346 @@
+{
+ "name": "rheinmetall-absturz",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "sfxGap": 0.45,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trChart",
+   "duration": 5.4,
+   "script": "0:00 · Rheinmetall meldet Rekordzahlen – und die Aktie stürzt trotzdem rund 15 Prozent ab.",
+   "params": {
+    "ticker": {
+     "name": "Rheinmetall",
+     "glyph": "RHM",
+     "color": "#1a1a1a"
+    },
+    "name": "Rheinmetall AG",
+    "price": "818,70 €",
+    "priceFrom": 1005,
+    "change": "−15 %",
+    "range": "1T",
+    "data": [
+     1005,
+     1006.0,
+     1007.9,
+     1010.3,
+     1013.9,
+     1015.8,
+     1019.3,
+     1015.4,
+     1015.1,
+     1018.7,
+     1020.0,
+     1023.2,
+     1020.1,
+     1019.8,
+     1017.7,
+     1018.1,
+     1018.7,
+     1014.7,
+     1012.4,
+     1010.7,
+     1014.0,
+     1016.2,
+     1013.4,
+     1015.8,
+     1012.9,
+     1013.8,
+     1010.8,
+     1006.8,
+     1009.8,
+     1007.4,
+     1005.1,
+     1009.0,
+     1012.0,
+     1010.3,
+     1014.0,
+     1014.4,
+     1015.8,
+     1013.4,
+     1017.0,
+     1018.5,
+     1022.3,
+     1003.2,
+     991.6,
+     979.3,
+     969.5,
+     960.1,
+     951.7,
+     940.6,
+     926.3,
+     918.8,
+     904.0,
+     893.1,
+     882.6,
+     866.9,
+     818.7
+    ],
+    "drawAt": 0.3,
+    "drawDur": 1.6,
+    "sticker": {
+     "text": "Trotz Rekordzahlen?!",
+     "icon": "⚠",
+     "color": "#e5392f",
+     "at": 2.6,
+     "x": 760,
+     "y": 820,
+     "size": 50
+    }
+   },
+   "sfx": [
+    {
+     "name": "riser",
+     "at": 1.5,
+     "gain": 0.3
+    }
+   ]
+  },
+  {
+   "id": "02",
+   "type": "trMetric",
+   "duration": 6.2,
+   "script": "0:05 · Dabei war das Quartal stark: 3,15 Milliarden Euro Umsatz, plus 32 Prozent. Der operative Gewinn sogar plus 62 Prozent.",
+   "params": {
+    "title": "Rheinmetall *Q3*",
+    "label": "Umsatz · plus zum Vorjahr",
+    "logos": [
+     {
+      "name": "Rheinmetall",
+      "glyph": "RHM",
+      "color": "#1a1a1a"
+     }
+    ],
+    "value": "3,15 Mrd. €",
+    "sub": "*+32 %* zum Vorjahr",
+    "at": 0.9,
+    "countDur": 1.0,
+    "second": {
+     "value": "+62 % Gewinn",
+     "size": 84,
+     "at": 3.6
+    },
+    "pills": [
+     "553 Mio. € operativ",
+     "Marge 17,5 %"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "03",
+   "type": "trHeadline",
+   "duration": 3.6,
+   "script": "0:11 · Warum also der Absturz? Drei große Probleme.",
+   "params": {
+    "brand": {
+     "name": "Rheinmetall",
+     "glyph": "RHM",
+     "color": "#1a1a1a"
+    },
+    "context": "Der Absturz",
+    "text": "Warum dann *−15 %*?",
+    "big": "3 Probleme",
+    "bigColor": "#e5392f",
+    "bigAt": 1.4,
+    "countDur": 0.5,
+    "accent": "#e5392f"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trNumber",
+   "duration": 2.2,
+   "script": "0:15 · Erstens:",
+   "params": {
+    "n": 1,
+    "of": 3,
+    "title": "Prognose\n*gekappt*"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 6.8,
+   "script": "0:17 · Rheinmetall erwartet für 2026 nur noch rund 13,2 Milliarden Euro Umsatz – statt bis zu 14,2. Und auch die Marge sinkt.",
+   "params": {
+    "title": "Umsatz-Prognose *2026*",
+    "label": "neu",
+    "logos": [
+     {
+      "name": "Rheinmetall",
+      "glyph": "RHM",
+      "color": "#1a1a1a"
+     }
+    ],
+    "value": "13,2 Mrd. €",
+    "tone": "red",
+    "sub": "statt *13,7–14,2 Mrd. €*",
+    "at": 0.8,
+    "countDur": 1.1,
+    "second": {
+     "value": "Marge: 18,5 % statt 19 %",
+     "size": 50,
+     "tone": "red",
+     "at": 4.6
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trNumber",
+   "duration": 2.2,
+   "script": "0:24 · Zweitens:",
+   "params": {
+    "n": 2,
+    "of": 3,
+    "title": "Projekte\n*verzögert*"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:26 · Große Projekte verzögern sich: der Radpanzer Boxer und Abrufe bei Artilleriemunition. Dazu bringt die Kooperation mit Destinus weniger als geplant.",
+   "params": {
+    "title": "Was *hakt*",
+    "items": [
+     {
+      "text": "Boxer-Radpanzer",
+      "sub": "Projekt verzögert sich",
+      "value": "später",
+      "ok": false,
+      "at": 1.6
+     },
+     {
+      "text": "Artilleriemunition",
+      "sub": "Abrufe verschieben sich",
+      "value": "später",
+      "ok": false,
+      "at": 3.2
+     },
+     {
+      "text": "Destinus-Kooperation",
+      "sub": "weniger Umsatz als geplant",
+      "value": "weniger",
+      "ok": false,
+      "at": 5.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trNumber",
+   "duration": 2.2,
+   "script": "0:33 · Drittens – und das wiegt am schwersten:",
+   "params": {
+    "n": 3,
+    "of": 3,
+    "title": "Das\n*Vertrauen*"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trStat",
+   "duration": 6.0,
+   "script": "0:35 · Laut JPMorgan ist das schon die fünfte Umsatz- oder Gewinnwarnung in rund elf Monaten.",
+   "params": {
+    "brand": {
+     "name": "JPMorgan",
+     "glyph": "JPM",
+     "color": "#5b4636"
+    },
+    "context": "Analyse",
+    "label": "Umsatz- oder Gewinnwarnungen",
+    "tone": "red",
+    "icon": "!",
+    "value": "5",
+    "size": 180,
+    "at": 1.6,
+    "countDur": 0.8,
+    "sub": "in nur rund *11 Monaten*",
+    "pills": [
+     "Prognose schon im August gesenkt"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "10",
+   "type": "trStat",
+   "duration": 6.4,
+   "script": "0:41 · Vom Rekordhoch bei gut 2.000 Euro hat die Aktie damit fast 60 Prozent verloren. Seit Jahresbeginn fast die Hälfte.",
+   "params": {
+    "brand": {
+     "name": "Rheinmetall",
+     "glyph": "RHM",
+     "color": "#1a1a1a"
+    },
+    "context": "vom Rekordhoch",
+    "label": "Minus seit dem Rekordhoch von 2.008 €",
+    "tone": "red",
+    "icon": "↘",
+    "value": "−60 %",
+    "size": 170,
+    "at": 1.0,
+    "countDur": 1.2,
+    "sub": "Seit Jahresbeginn: *−48 %*",
+    "pills": [
+     "Tiefster Stand seit Februar 2025"
+    ],
+    "pillsAt": 4.2
+   }
+  },
+  {
+   "id": "11",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:47 · Und die Analysten? JPMorgan senkt das Kursziel von 1.350 auf 1.150 Euro – bleibt aber neutral. Das wären immer noch rund 40 Prozent Luft nach oben.",
+   "params": {
+    "title": "Neues *Kursziel*",
+    "label": "JPMorgan · Neutral",
+    "logos": [
+     {
+      "name": "JPMorgan",
+      "glyph": "JPM",
+      "color": "#5b4636"
+     }
+    ],
+    "value": "1.150 €",
+    "sub": "vorher *1.350 €*",
+    "at": 1.8,
+    "countDur": 1.0,
+    "second": {
+     "value": "+40 % Luft?",
+     "size": 84,
+     "at": 4.6
+    },
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 5.4
+   }
+  },
+  {
+   "id": "12",
+   "type": "trPoll",
+   "duration": 6.0,
+   "script": "0:54 · Ist das jetzt die Chance – oder fällt Rheinmetall weiter? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "question": "Rheinmetall bei 818 € – *Chance* oder Falle?",
+    "options": [
+     "Ich kaufe nach",
+     "Ich warte ab",
+     "Finger weg"
+    ],
+    "at": 0.9,
+    "step": 0.45,
+    "note": "Schreib's in die Kommentare · Keine Anlageberatung"
+   }
+  }
+ ]
+}

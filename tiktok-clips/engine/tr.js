@@ -67,7 +67,7 @@
     const card = T.card(st, p.card);
     if (p.brand !== false) T.header(card, p.brand ?? 'Trade Republic', p.context);
     const hl = C.h('div', { style: { fontSize: (p.size || 56) + 'px', fontWeight: 900, color: INK, lineHeight: 1.12, letterSpacing: '-1px' } }, card);
-    hl.innerHTML = T.rich(p.text);
+    hl.innerHTML = T.rich(p.text, p.accent ? C.color(p.accent) : GL);
     let bigEl, bigAt = p.bigAt ?? 0.4;
     if (p.big) {
       const row = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '22px', marginTop: '18px' } }, card);
