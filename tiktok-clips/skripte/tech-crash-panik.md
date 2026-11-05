@@ -1,26 +1,26 @@
 # FACELESS SHORT: PANIK AN DER WALL STREET – DER TECH-CRASH IST DA
 
-*Ca. 62 s, Broker-App-Karten, ohne Ausblendung, ohne Riser im ersten Clip, Whooshes nochmals +10 %. Grundlage: wallstreet-online „Panik an der Wall Street: Tech-Crash ist da“ (05.11.2026) + CNBC, Forbes, Benzinga, 24/7 Wall St.*
+*Ca. 56 s, Broker-App-Karten, ohne Ausblendung, ohne Riser im ersten Clip, Whooshes nochmals +10 %. Grundlage: wallstreet-online „Panik an der Wall Street: Tech-Crash ist da“ (05.11.2026) + CNBC, Forbes, Benzinga, 24/7 Wall St.*
 
 ## Hook & Retention
 
-- **Hook (0–5 s):** „Nasdaq minus 5 Prozent, Dow minus 1.700 Punkte – die Panik ist da. Und ausgerechnet die KI-Gewinner trifft es am härtesten.“ Visuell: Nasdaq-Chart stürzt ab, Sticker „🚨 PANIK“.
-- **Re-Hooks:** „Am schlimmsten …“ · „Das Verrückte: Rekordgewinn – und trotzdem minus“ · „selbst Nvidia“ · „Der Grund ist Politik“ · „Aber Achtung“.
+- **Hook (0–4 s):** „Panik an der Wall Street. In wenigen Stunden ist die komplette Rallye nach der Wahl ausgelöscht.“ Visuell: rote Eilmeldung, Sticker „🚨 TECH-CRASH“ knallt rein.
+- **Danach die Zahlen (0:04):** Nasdaq −5 %, Dow −1.700 – jede Zahl kommt nur einmal vor.
+- **Re-Hooks:** „Am schlimmsten …“ · „Das Verrückte“ · „Selbst Nvidia“ · „Der Grund ist Politik“ · „Aber Achtung“.
 
 ## Sprechertext
 
 | Zeit | Karte | Text |
 |---|---|---|
-| 0:00 | `01-trChart` | Nasdaq minus 5 Prozent, Dow minus 1.700 Punkte – die Panik ist da. Und ausgerechnet die KI-Gewinner trifft es am härtesten. |
-| 0:05 | `02-trStat` | Der Dow verliert 1.700 Punkte – die komplette Rallye nach der Wahl ist an einem Tag ausradiert. |
+| 0:00 | `01-trWarn` | Panik an der Wall Street. In wenigen Stunden ist die komplette Rallye nach der Wahl ausgelöscht. |
+| 0:04 | `02-trChart` | Die Nasdaq stürzt um 5 Prozent ab, der Dow verliert 1.700 Punkte. Und es trifft ausgerechnet die KI-Gewinner. |
 | 0:10 | `03-trList` | Am schlimmsten erwischt es die Speicherchips: Sandisk bis zu minus 20 Prozent, Micron fast minus 16, SK Hynix in Seoul minus 9. |
-| 0:17 | `04-trHeadline` | Das Verrückte: SK Hynix hat gerade einen Rekordgewinn gemeldet – und die Aktie fällt trotzdem. Südkoreas Leitindex Kospi verliert 5,3 Prozent. |
+| 0:17 | `04-trHeadline` | Das Verrückte: SK Hynix hat gerade einen Rekordgewinn gemeldet – und fällt trotzdem. Südkoreas Leitindex Kospi verliert 5,3 Prozent. |
 | 0:23 | `05-trMetric` | Qualcomm verliert rund 10 Prozent – der Umsatzausblick war stark, aber die Gewinnprognose lag unter den Erwartungen. |
-| 0:29 | `06-trStat` | Und selbst Nvidia rutscht im Tagesverlauf um 6 bis 9 Prozent ab. |
-| 0:34 | `07-trMetric` | Der gesamte Halbleiter-Index bricht rund 10 Prozent ein – an einem einzigen Tag. |
-| 0:40 | `08-trList` | Der Grund ist Politik: Die Demokraten holen den Kongress, Texas will neue Rechenzentren stoppen – und eine Abgeordnete fordert sogar eine Pause bei fortgeschrittener KI. |
-| 0:48 | `09-trWarn` | Aber Achtung: Die Zahlen der Firmen sind stark. Verkauft wird gerade die Angst – nicht das Geschäft. Ob das ein Dip oder der Anfang von mehr ist, weiß niemand. |
-| 0:55 | `10-trPoll` | Und du – verkaufst du in Panik oder kaufst du den Dip? Schreib's in die Kommentare. Keine Anlageberatung. |
+| 0:29 | `06-trMetric` | Selbst Nvidia rutscht um bis zu 9 Prozent ab – und der gesamte Chip-Index verliert rund 10 Prozent. An einem einzigen Tag. |
+| 0:35 | `07-trList` | Der Grund ist Politik: Die Demokraten holen den Kongress, Texas will neue Rechenzentren stoppen – und eine Abgeordnete fordert sogar eine Pause bei fortgeschrittener KI. |
+| 0:43 | `08-trWarn` | Aber Achtung: Die Geschäftszahlen sind stark. Verkauft wird gerade die Angst – nicht das Geschäft. Ob das schon der Boden ist oder erst der Anfang, weiß niemand. |
+| 0:50 | `09-trPoll` | Und du – verkaufst du in Panik oder kaufst du jetzt nach? Schreib's in die Kommentare. Keine Anlageberatung. |
 
 ## Faktencheck (Intraday-Werte vom 05.11.2026, schwanken je nach Uhrzeit)
 
@@ -45,4 +45,4 @@
 
 **Hook-Text:** PANIK: Der Tech-Crash ist da 🚨
 **Hashtags:** #crash #nasdaq #nvidia #micron #qualcomm #skhynix #aktien #börse #pandainvestiert
-**Pinned Comment:** Panik verkaufen oder Dip kaufen? 👇
+**Pinned Comment:** Panik verkaufen oder nachkaufen? 👇
