@@ -1,0 +1,265 @@
+{
+ "name": "micron-taiwan",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.45,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trWarn",
+   "duration": 5.4,
+   "script": "0:00 · Micron stoppt den Bau einer Chip-Fabrik für bis zu 4,5 Milliarden Dollar. Mitten im KI-Boom.",
+   "params": {
+    "tag": "Eilmeldung · Micron",
+    "text": "Micron stoppt\n*4,5-Mrd.-$-Fabrik*",
+    "size": 64,
+    "sub": "Mitten im *KI-Boom* – und der Grund ist überraschend.",
+    "pills": [
+     "Taiwan",
+     "Baustopp"
+    ],
+    "pillsAt": 2.8,
+    "sticker": {
+     "text": "BAUSTOPP",
+     "icon": "🚧",
+     "color": "#e5392f",
+     "at": 1.8,
+     "x": 820,
+     "y": 540,
+     "size": 52
+    }
+   },
+   "sfx": [
+    {
+     "name": "riser",
+     "at": 0.7,
+     "gain": 0.3
+    }
+   ]
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 4.6,
+   "script": "0:05 · Und der Grund ist kein fehlendes Geld – sondern ein Streit darüber, wer die KI-Milliarden bekommt.",
+   "params": {
+    "brand": {
+     "name": "Micron",
+     "glyph": "MU",
+     "color": "#1d58a8"
+    },
+    "context": "Der Grund",
+    "text": "Kein Geldmangel –\nein *Streit um KI-Milliarden*",
+    "pills": [
+     "Lohnstreit",
+     "Gewerkschaft"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "03",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:10 · Es geht um das Werk Fab 11E im taiwanischen Taoyuan. Budget: 3 bis 4,5 Milliarden Dollar, Produktionsstart war für 2028 geplant.",
+   "params": {
+    "title": "Fab *11E*",
+    "label": "Taoyuan, Taiwan · Budget",
+    "logos": [
+     {
+      "name": "Micron",
+      "glyph": "MU",
+      "color": "#1d58a8"
+     }
+    ],
+    "value": "4,5 Mrd. $",
+    "sub": "Budget *3–4,5 Mrd. $* inkl. ASML-Maschinen",
+    "at": 1.8,
+    "countDur": 1.0,
+    "second": {
+     "value": "Start geplant: 2028",
+     "size": 56,
+     "at": 4.2,
+     "color": "#111317"
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStat",
+   "duration": 6.6,
+   "script": "0:16 · Die Gewerkschaft in Taoyuan fordert: 15 Prozent des operativen Gewinns sollen an die Mitarbeiter gehen – komplett in bar, nicht in Aktien.",
+   "params": {
+    "brand": {
+     "name": "Gewerkschaft Taoyuan",
+     "glyph": "✊",
+     "color": "#e5392f"
+    },
+    "context": "Forderung",
+    "label": "vom operativen Gewinn an die Mitarbeiter",
+    "icon": "%",
+    "value": "15 %",
+    "size": 180,
+    "at": 2.0,
+    "countDur": 1.0,
+    "sub": "*komplett in bar* – nicht in Aktien",
+    "pills": [
+     "Wie bei Samsung & SK Hynix"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trVersus",
+   "duration": 6.6,
+   "script": "0:23 · Das Absurde: Mit der größeren Gewerkschaft in Taichung gibt es seit Oktober einen Vertrag. Taoyuan will den kippen – Taiwans Arbeitsministerin sagt aber: Der Vertrag gilt.",
+   "params": {
+    "title": "Gewerkschaft gegen *Gewerkschaft*",
+    "left": {
+     "brand": {
+      "name": "Taichung",
+      "glyph": "TC",
+      "color": "#18a565"
+     },
+     "name": "Taichung",
+     "sub": "Vertrag seit Oktober",
+     "value": "✓ Deal"
+    },
+    "right": {
+     "brand": {
+      "name": "Taoyuan",
+      "glyph": "TY",
+      "color": "#e5392f"
+     },
+     "name": "Taoyuan",
+     "sub": "will neu verhandeln",
+     "value": "✕ Streik?",
+     "tone": "red"
+    },
+    "at": [
+     1.6,
+     3.2
+    ],
+    "vsAt": 3.8,
+    "sticker": {
+     "text": "Vertrag gilt laut Ministerium",
+     "icon": "⚖",
+     "color": "#111317",
+     "at": 5.0,
+     "x": 760,
+     "y": 600,
+     "size": 34
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trStat",
+   "duration": 5.4,
+   "script": "0:30 · Und das ist kein kleines Projekt: Die Fabrik macht rund 16 Prozent von Microns Investitionen eines ganzen Jahres aus.",
+   "params": {
+    "brand": {
+     "name": "Micron",
+     "glyph": "MU",
+     "color": "#1d58a8"
+    },
+    "context": "Größenordnung",
+    "label": "Anteil an einem Jahr Investitionen (Capex)",
+    "icon": "🏭",
+    "value": "~16 %",
+    "size": 170,
+    "at": 1.6,
+    "countDur": 1.0,
+    "sub": "*eine einzige* Fabrik"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 7.6,
+   "script": "0:35 · Warum das wichtig ist: Micron baut Speicherchips, die in Nvidias KI-Beschleunigern und in Rechenzentren stecken. Fehlt Kapazität, wird es eng – und teuer.",
+   "params": {
+    "title": "Warum das *wichtig* ist",
+    "items": [
+     {
+      "text": "Speicherchips für KI",
+      "sub": "stecken in Nvidia-Beschleunigern",
+      "at": 2.0
+     },
+     {
+      "text": "Rechenzentren brauchen mehr",
+      "sub": "Nachfrage wächst weiter",
+      "at": 3.6
+     },
+     {
+      "text": "Weniger neue Kapazität",
+      "sub": "Speicher bleibt knapp & teuer",
+      "ok": false,
+      "value": "knapp",
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 6.8,
+   "script": "0:43 · Aber Achtung: Micron selbst sagt nur, der Betrieb in Taiwan läuft normal. Ob das Werk nur pausiert oder ganz gestrichen wird, ist offen.",
+   "params": {
+    "tag": "Noch offen",
+    "text": "Pause – oder\n*ganz gestrichen*?",
+    "sub": "Micron: Betrieb in Taiwan läuft *normal*. Zum Baustopp gibt es keinen Kommentar.",
+    "pills": [
+     "Quelle: Bloomberg",
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 4.0
+   }
+  },
+  {
+   "id": "09",
+   "type": "trRule",
+   "duration": 6.4,
+   "script": "0:50 · Für Anleger heißt das: Der KI-Boom hat einen neuen Engpass – nicht nur Strom und Chips, sondern auch die Menschen, die sie bauen.",
+   "params": {
+    "title": "Der neue *Engpass*",
+    "left": {
+     "label": "Bisher im Fokus",
+     "title": "Strom & Chips",
+     "result": "Rechenzentren, GPUs",
+     "good": false,
+     "at": 2.4
+    },
+    "right": {
+     "label": "Jetzt neu",
+     "title": "Fachkräfte & Löhne",
+     "result": "wer bekommt die KI-Gewinne?",
+     "good": true,
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.6,
+   "script": "0:56 · Wer hat recht – Micron oder die Mitarbeiter? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "question": "Wer hat recht – *Micron* oder die Mitarbeiter?",
+    "options": [
+     "Micron",
+     "Die Mitarbeiter",
+     "Beide müssen nachgeben"
+    ],
+    "at": 0.9,
+    "step": 0.45,
+    "note": "Schreib's in die Kommentare · Keine Anlageberatung"
+   }
+  }
+ ]
+}

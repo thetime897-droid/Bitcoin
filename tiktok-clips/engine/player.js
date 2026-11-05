@@ -88,8 +88,9 @@
     // Clean edges: content sharpens in over the first 0.3 s and zooms/blurs out
     // over the last 0.4 s, so every clip can be cut in and out without a jump.
     // The background stays put. "exit": false on a scene keeps the last frame.
-    const exitAt = sc.exit === false ? Infinity : dur - 0.4;
-    if (sc.exit !== false) cues.push({ name: 'whoosh', at: exitAt - 0.05, gain: 0.35 });
+    const noExit = (sc.exit ?? sb.exit) === false;
+    const exitAt = noExit ? Infinity : dur - 0.4;
+    if (!noExit) cues.push({ name: 'whoosh', at: exitAt - 0.05, gain: 0.35 });
     // Pro look on a key colour: a dark rounded screen carries the graphics, so
     // their glow lands on dark instead of bleeding into the key. It stays put
     // while the content enters and leaves.

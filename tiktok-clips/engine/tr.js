@@ -343,6 +343,7 @@
     if (p.second) {
       d2 = big(card, p.second.value, C.color(p.second.tone === 'red' ? RD : p.second.color || G), p.second.size || 96);
       d2.style.marginTop = '8px'; d2.dataset.own = 1;
+      if ((p.second.size || 96) < 80) d2.style.letterSpacing = '-1px';
     }
     const pills = p.pills ? T.pills(card, p.pills) : [];
     const at = p.at ?? 0.4, d2At = p.second?.at ?? at + 1.6;
