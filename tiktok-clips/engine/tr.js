@@ -332,7 +332,7 @@
     const tone = p.tone === 'red' ? RD : G;
     const top = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', alignItems: 'flex-start' } }, card);
     const tl = C.h('div', {}, top);
-    C.h('div', { style: { fontSize: '40px', fontWeight: 900, color: INK } }, tl, T.rich(p.title));
+    C.h('div', { style: { fontSize: '40px', fontWeight: 900, color: INK } }, tl, T.rich(p.title, p.accent ? C.color(p.accent) : GL));
     if (p.label) C.h('div', { style: { fontSize: '28px', fontWeight: 700, color: GR, marginTop: '4px' } }, tl, p.label);
     const logos = C.h('div', { class: 'ctr', style: { gap: '10px' } }, top);
     (p.logos || (p.brand ? [p.brand] : [])).forEach((b) => C.chip(b, 70, logos));

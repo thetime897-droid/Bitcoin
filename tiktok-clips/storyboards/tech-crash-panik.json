@@ -1,0 +1,313 @@
+{
+ "name": "tech-crash-panik",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.45,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trChart",
+   "duration": 5.2,
+   "script": "0:00 · Nasdaq minus 5 Prozent, Dow minus 1.700 Punkte – die Panik ist da. Und ausgerechnet die KI-Gewinner trifft es am härtesten.",
+   "params": {
+    "ticker": "NDX",
+    "name": "Nasdaq Composite",
+    "price": "24.930",
+    "priceFrom": 26240,
+    "change": "−5 %",
+    "range": "1T",
+    "data": [
+     26240,
+     26202,
+     26173,
+     26169,
+     26193,
+     26166,
+     26137,
+     26119,
+     26149,
+     26124,
+     26152,
+     26174,
+     26147,
+     26157,
+     26158,
+     26106,
+     26147,
+     25996,
+     25954,
+     26042,
+     25941,
+     25884,
+     25872,
+     25846,
+     25893,
+     25768,
+     25740,
+     25759,
+     25726,
+     25750,
+     25708,
+     25618,
+     25571,
+     25625,
+     25617,
+     25467,
+     25530,
+     25520,
+     25466,
+     25384,
+     25431,
+     25396,
+     25302,
+     25332,
+     25253,
+     25204,
+     25215,
+     25189,
+     25171,
+     25177,
+     25175,
+     25165,
+     25142,
+     25118,
+     25067,
+     24981,
+     24940,
+     24971,
+     24930
+    ],
+    "drawAt": 0.2,
+    "drawDur": 1.5,
+    "sticker": {
+     "text": "PANIK",
+     "icon": "🚨",
+     "color": "#e5392f",
+     "at": 2.0,
+     "x": 810,
+     "y": 820,
+     "size": 60
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trStat",
+   "duration": 5.4,
+   "script": "0:05 · Der Dow verliert 1.700 Punkte – die komplette Rallye nach der Wahl ist an einem Tag ausradiert.",
+   "params": {
+    "brand": {
+     "name": "Dow Jones",
+     "glyph": "DJ",
+     "color": "#0b3d91"
+    },
+    "context": "5. November",
+    "label": "Punkte an einem Tag",
+    "tone": "red",
+    "icon": "↘",
+    "value": "−1.700",
+    "size": 170,
+    "at": 1.0,
+    "countDur": 1.0,
+    "sub": "Wahl-Rallye *komplett ausradiert*"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 7.2,
+   "script": "0:10 · Am schlimmsten erwischt es die Speicherchips: Sandisk bis zu minus 20 Prozent, Micron fast minus 16, SK Hynix in Seoul minus 9.",
+   "params": {
+    "title": "Der *Speicher-Crash*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Sandisk",
+      "sub": "Speicher & SSDs",
+      "value": "bis −20 %",
+      "ok": false,
+      "at": 1.8
+     },
+     {
+      "text": "Micron",
+      "sub": "Speicher für Nvidia",
+      "value": "fast −16 %",
+      "ok": false,
+      "at": 3.2
+     },
+     {
+      "text": "SK Hynix",
+      "sub": "Börse Seoul",
+      "value": "−9 %",
+      "ok": false,
+      "at": 4.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 6.0,
+   "script": "0:17 · Das Verrückte: SK Hynix hat gerade einen Rekordgewinn gemeldet – und die Aktie fällt trotzdem. Südkoreas Leitindex Kospi verliert 5,3 Prozent.",
+   "params": {
+    "brand": {
+     "name": "SK Hynix",
+     "glyph": "SK",
+     "color": "#e4002b"
+    },
+    "context": "Das Verrückte",
+    "text": "Rekordgewinn gemeldet –\nAktie trotzdem *−9 %*",
+    "accent": "#e5392f",
+    "pills": [
+     "Kospi −5,3 %",
+     "Nvidia-Zulieferer"
+    ],
+    "pillsAt": 3.6,
+    "sticker": {
+     "text": "Trotz Rekord?!",
+     "icon": "😳",
+     "color": "#e5392f",
+     "at": 2.0,
+     "x": 800,
+     "y": 520,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:23 · Qualcomm verliert rund 10 Prozent – der Umsatzausblick war stark, aber die Gewinnprognose lag unter den Erwartungen.",
+   "params": {
+    "title": "Qualcomm",
+    "label": "Aktie heute",
+    "logos": [
+     "QCOM"
+    ],
+    "value": "−10 %",
+    "tone": "red",
+    "sub": "Gewinnprognose *unter Erwartungen*",
+    "at": 1.0,
+    "countDur": 0.8,
+    "second": {
+     "value": "Umsatz-Ausblick stark",
+     "size": 56,
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trStat",
+   "duration": 5.4,
+   "script": "0:29 · Und selbst Nvidia rutscht im Tagesverlauf um 6 bis 9 Prozent ab.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Der KI-König",
+    "label": "Nvidia im Tagesverlauf",
+    "tone": "red",
+    "icon": "↘",
+    "value": "bis −9 %",
+    "size": 150,
+    "at": 1.2,
+    "countDur": 0.9,
+    "sub": "je nach Zeitpunkt *6–9 %*"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 5.6,
+   "script": "0:34 · Der gesamte Halbleiter-Index bricht rund 10 Prozent ein – an einem einzigen Tag.",
+   "params": {
+    "title": "Der ganze *Sektor*",
+    "label": "Philadelphia Halbleiter-Index",
+    "logos": [
+     {
+      "name": "Halbleiter",
+      "glyph": "SOX",
+      "color": "#111317"
+     }
+    ],
+    "value": "−10 %",
+    "tone": "red",
+    "sub": "an *einem einzigen Tag*",
+    "at": 1.4,
+    "countDur": 0.9,
+    "accent": "#e5392f"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trList",
+   "duration": 8.0,
+   "script": "0:40 · Der Grund ist Politik: Die Demokraten holen den Kongress, Texas will neue Rechenzentren stoppen – und eine Abgeordnete fordert sogar eine Pause bei fortgeschrittener KI.",
+   "params": {
+    "title": "Der Auslöser: *Politik*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Demokraten holen den Kongress",
+      "sub": "strengere Regeln befürchtet",
+      "ok": false,
+      "value": "!",
+      "at": 1.8
+     },
+     {
+      "text": "Texas will Rechenzentren stoppen",
+      "sub": "27 % des geplanten US-Ausbaus",
+      "ok": false,
+      "value": "Stopp",
+      "at": 3.6
+     },
+     {
+      "text": "Ruf nach KI-Pause",
+      "sub": "Abgeordnete Yassamin Ansari",
+      "ok": false,
+      "value": "Pause?",
+      "at": 5.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.8,
+   "script": "0:48 · Aber Achtung: Die Zahlen der Firmen sind stark. Verkauft wird gerade die Angst – nicht das Geschäft. Ob das ein Dip oder der Anfang von mehr ist, weiß niemand.",
+   "params": {
+    "tag": "Aber",
+    "text": "Verkauft wird die *Angst* –\nnicht das Geschäft",
+    "size": 50,
+    "sub": "Rekordgewinne, starke Umsätze – aber *politisches Risiko*.",
+    "pills": [
+     "Dip oder Anfang?",
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 4.0
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.6,
+   "script": "0:55 · Und du – verkaufst du in Panik oder kaufst du den Dip? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "question": "Panik verkaufen oder *Dip kaufen*?",
+    "options": [
+     "Ich kaufe den Dip",
+     "Ich verkaufe",
+     "Ich halte einfach"
+    ],
+    "at": 0.9,
+    "step": 0.45,
+    "note": "Schreib's in die Kommentare · Keine Anlageberatung"
+   }
+  }
+ ]
+}
