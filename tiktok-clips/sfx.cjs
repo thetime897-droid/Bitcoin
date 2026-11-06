@@ -144,7 +144,7 @@ const SYNTH = {
   },
 };
 const GAIN = {
-  whoosh: 0.94, 'whoosh-down': 0.94, pop: 0.55, ping: 0.55, ding: 0.6, tick: 0.8, blip: 0.5,
+  whoosh: 1.22, 'whoosh-down': 1.22, pop: 0.55, ping: 0.55, ding: 0.6, tick: 0.8, blip: 0.5,
   cash: 0.9, coins: 0.5, stamp: 0.8, impact: 0.75, riser: 0.45, downer: 0.55, error: 0.5,
   success: 0.55, alert: 0.45, crack: 0.45, lock: 0.55, shine: 0.5, marker: 0.4, paper: 0.35,
 };

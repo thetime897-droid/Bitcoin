@@ -177,7 +177,9 @@
   // -------------------------------------------------------------- trWarn ---
   S.trWarn = (st, p, ctx) => {
     const card = T.card(st, p.card);
-    const tag = C.h('div', { style: { display: 'inline-block', padding: '8px 18px', borderRadius: '12px', background: '#fde6e3', color: RD, fontSize: '26px', fontWeight: 800, marginBottom: '22px' } }, card, p.tag || 'Achtung');
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 18px', borderRadius: '12px', background: '#fde6e3', color: RD, fontSize: '26px', fontWeight: 800, marginBottom: '22px' } }, card);
+    const dot = p.live ? C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: RD } }, tag) : null;
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'Achtung'}</span>`);
     const row = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '28px' } }, card);
     const tile = C.h('div', { class: 'ctr', style: { width: '120px', height: '120px', borderRadius: '30px', background: '#fde6e3', flex: 'none' } }, row);
     tile.innerHTML = `<svg width="64" height="58" viewBox="0 0 64 58"><path d="M32 3 L61 54 H3 Z" fill="${RD}" stroke="${RD}" stroke-width="5" stroke-linejoin="round"/><rect x="29" y="20" width="6" height="18" rx="3" fill="#fff"/><circle cx="32" cy="45" r="3.6" fill="#fff"/></svg>`;
@@ -193,6 +195,7 @@
       const kt = C.k(t, 0.2, 0.4, 'back');
       tile.style.transform = `scale(${Math.max(0, kt)}) rotate(${t > 0.6 && t < 1.1 ? Math.sin(t * 40) * 6 * (1.1 - t) * 2 : 0}deg)`;
       tag.style.transform = `scale(${Math.max(0, C.k(t, 0.1, 0.3, 'back'))})`;
+      if (dot) { const ph = (t * 1.4) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(229,57,47,${0.45 * (1 - ph)})`; dot.style.opacity = 0.6 + 0.4 * Math.abs(Math.sin(t * 3)); }
       stick(t);
       pills.forEach((el, i) => (el.style.transform = `scale(${Math.max(0, C.k(t, (p.pillsAt ?? 1.2) + i * 0.18, 0.32, 'back'))})`));
     };
@@ -453,6 +456,36 @@
         c.res.style.transform = `scale(${Math.max(0, C.k(t, c.at + 0.45, 0.35, 'back'))})`;
         c.res.style.transformOrigin = '0 50%';
       });
+    };
+  };
+  // -------------------------------------------------------------- trPost ---
+  // Social video statement: avatar, name, verified tick, quote, a video
+  // thumbnail with play button and a live time stamp. Neutral card, no
+  // platform logo - the platform is only named in the meta line.
+  S.trPost = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '18px' } }, card);
+    C.chip(p.avatar || { name: p.name, glyph: (p.name || '?').split(/\s+/).map((w) => w[0]).join('').slice(0, 2), color: '#1c3d6e' }, 84, head);
+    const hn = C.h('div', {}, head);
+    C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '10px', fontSize: '38px', fontWeight: 900, color: INK } }, hn, `${p.name || ''}<span style="display:inline-flex;width:34px;height:34px;border-radius:50%;background:#1d9bf0;color:#fff;font-size:22px;align-items:center;justify-content:center">✓</span>`);
+    C.h('div', { style: { fontSize: '26px', fontWeight: 600, color: GR } }, hn, p.role || '');
+    const q = C.h('div', { style: { fontSize: '40px', fontWeight: 800, color: INK, lineHeight: 1.25, margin: '24px 0 20px' } }, card);
+    q.innerHTML = T.rich(p.quote, p.accent ? C.color(p.accent) : GL);
+    const vid = C.h('div', { class: 'ctr', style: { position: 'relative', height: '250px', borderRadius: '26px', background: 'linear-gradient(135deg,#1b2430,#0d1218)', overflow: 'hidden' } }, card);
+    C.h('div', { style: { position: 'absolute', left: '22px', top: '18px', padding: '6px 14px', borderRadius: '10px', background: 'rgba(255,255,255,.12)', color: '#fff', fontSize: '22px', fontWeight: 800 } }, vid, p.videoLabel || 'Video-Statement');
+    const play = C.h('div', { class: 'ctr', style: { width: '104px', height: '104px', borderRadius: '50%', background: 'rgba(255,255,255,.95)', color: INK, fontSize: '44px', paddingLeft: '8px' } }, vid, '▶');
+    const bar = C.h('div', { style: { position: 'absolute', left: '22px', right: '22px', bottom: '20px', height: '8px', borderRadius: '4px', background: 'rgba(255,255,255,.2)' } }, vid);
+    const prog = C.h('div', { style: { height: '100%', width: '0%', borderRadius: '4px', background: RD } }, bar);
+    const meta = C.h('div', { style: { fontSize: '24px', fontWeight: 600, color: GR, marginTop: '16px' } }, card, p.meta || '');
+    const stick = T.sticker(st, p.sticker, ctx);
+    const qAt = p.quoteAt ?? 0.6;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('pop', 0.35, 0.5); ctx.cue('tick', p.playAt ?? 1.6, 0.6);
+    return (t) => {
+      T.enter(card, t);
+      play.style.transform = `scale(${Math.max(0, C.k(t, 0.5, 0.4, 'back')) * (1 + Math.sin(t * 3) * 0.03)})`;
+      prog.style.width = Math.min(100, Math.max(0, (t - (p.playAt ?? 1.6)) * 9)) + '%';
+      q.style.clipPath = `inset(0 ${100 - C.k(t, qAt, 0.9, 'inOut') * 100}% 0 0)`;
+      stick(t);
     };
   };
 })();

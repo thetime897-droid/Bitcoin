@@ -10,34 +10,36 @@
   {
    "id": "01",
    "type": "trWarn",
-   "duration": 5.0,
-   "script": "0:00 · Über Nacht kommen 3 Millionen Menschen nicht mehr an ihr Geld. Ihre Bank ist einfach weg.",
+   "duration": 5.4,
+   "script": "0:00 · Eine Bank bricht zusammen – 3 Millionen Menschen kommen nicht mehr an ihr Geld. Und jetzt ist sogar der Präsident zurückgetreten.",
    "params": {
     "tag": "Eilmeldung · Paraguay",
-    "text": "*3 Millionen* Kunden\nkommen nicht an ihr Geld",
-    "size": 64,
-    "sub": "Über Nacht: Bank *geschlossen*.",
+    "text": "Bank-Kollaps reißt den\n*Präsidenten* mit",
+    "size": 60,
+    "sub": "*3 Millionen* Kunden kommen nicht an ihr Geld.",
     "pills": [
+     "Paraguay",
      "Ueno Bank",
-     "Nov. 2026"
+     "Rücktritt"
     ],
-    "pillsAt": 2.8,
+    "pillsAt": 3.0,
     "sticker": {
-     "text": "BANK GESCHLOSSEN",
-     "icon": "🏦",
+     "text": "PRÄSIDENT WEG",
+     "icon": "🚨",
      "color": "#e5392f",
-     "at": 1.4,
-     "x": 780,
+     "at": 1.6,
+     "x": 790,
      "y": 560,
      "size": 52
-    }
+    },
+    "live": true
    }
   },
   {
    "id": "02",
    "type": "trList",
    "duration": 6.6,
-   "script": "0:05 · In Paraguay hat die Zentralbank die Digitalbank Ueno übernommen. App offline, Karten gesperrt, Filialen dicht – niemand kann abheben oder überweisen.",
+   "script": "0:05 · Was ist passiert? In Paraguay hat die Zentralbank die Digitalbank Ueno übernommen. App offline, Karten gesperrt, Filialen dicht.",
    "params": {
     "title": "Ueno: *alles gesperrt*",
     "accent": "#e5392f",
@@ -67,7 +69,7 @@
    "id": "03",
    "type": "trStat",
    "duration": 5.8,
-   "script": "0:12 · Und das ist keine kleine Bank: Laut Berichten hat rund die Hälfte aller Erwachsenen in Paraguay ein Konto bei Ueno.",
+   "script": "0:11 · Und das ist keine kleine Bank: Laut Berichten hat rund die Hälfte aller Erwachsenen im Land ein Konto bei Ueno.",
    "params": {
     "brand": {
      "name": "Ueno Bank",
@@ -86,32 +88,9 @@
   },
   {
    "id": "04",
-   "type": "trMetric",
-   "duration": 5.6,
-   "script": "0:18 · Der Grund: Das Eigenkapital war so dünn, dass die Bank unter die Hälfte des gesetzlichen Minimums fiel.",
-   "params": {
-    "title": "Der *Grund*",
-    "accent": "#e5392f",
-    "label": "Solvenzquote",
-    "logos": [
-     {
-      "name": "Ueno Bank",
-      "glyph": "u",
-      "color": "#00a39a"
-     }
-    ],
-    "value": "< 50 %",
-    "tone": "red",
-    "sub": "des *gesetzlichen Minimums*",
-    "at": 1.6,
-    "countDur": 0.8
-   }
-  },
-  {
-   "id": "05",
    "type": "trList",
    "duration": 6.6,
-   "script": "0:24 · Und die Warnung kam lange vorher: Schon im Juni hat die Zentralbank Ueno wegen zu vieler Kredite an Firmen der eigenen Eigentümer verwarnt.",
+   "script": "0:17 · Die Warnung kam lange vorher: Schon im Juni hat die Zentralbank Ueno wegen zu vieler Kredite an Firmen der eigenen Eigentümer verwarnt.",
    "params": {
     "title": "Die *Warnung*",
     "accent": "#e5392f",
@@ -141,10 +120,10 @@
    }
   },
   {
-   "id": "06",
+   "id": "05",
    "type": "trMetric",
    "duration": 6.4,
-   "script": "0:31 · Besonders brisant: Rund 800 Millionen Dollar staatliche Gelder lagen bei Ueno – auch Geld aus der Renten- und Gesundheitskasse.",
+   "script": "0:24 · Besonders brisant: Rund 800 Millionen Dollar staatliche Gelder lagen bei Ueno – auch Geld aus der Renten- und Gesundheitskasse.",
    "params": {
     "title": "Staatsgeld *betroffen*",
     "accent": "#e5392f",
@@ -170,17 +149,17 @@
    }
   },
   {
-   "id": "07",
+   "id": "06",
    "type": "trList",
    "duration": 7.4,
-   "script": "0:37 · Jetzt wird es politisch: Die Bank hat Verbindungen zu Präsident Santiago Peña. Acht Festnahmen angeordnet, Vermögen eingefroren, der Zentralbank-Chef tritt zurück.",
+   "script": "0:30 · Und dann wird es politisch: Ueno gehört zur Vázquez-Gruppe – an der Präsident Santiago Peña beteiligt war. Acht Festnahmen angeordnet, der Zentralbank-Chef tritt zurück.",
    "params": {
     "title": "Jetzt wird's *politisch*",
     "accent": "#e5392f",
     "items": [
      {
-      "text": "Nähe zu Präsident Peña",
-      "sub": "Ermittler prüfen Vorwürfe",
+      "text": "Peña war Partner der Vázquez-Gruppe",
+      "sub": "zu der Ueno gehört",
       "value": "!",
       "ok": false,
       "at": 2.6
@@ -203,10 +182,72 @@
    }
   },
   {
+   "id": "07",
+   "type": "trPost",
+   "duration": 7.0,
+   "script": "0:37 · Und jetzt der Hammer: Peña tritt zurück – per Video auf X. Sein Satz: Er wolle sich beim Volk entschuldigen, falls er es enttäuscht habe.",
+   "params": {
+    "name": "Santiago Peña",
+    "role": "Präsident von Paraguay",
+    "avatar": {
+     "name": "Peña",
+     "glyph": "SP",
+     "color": "#d52b1e"
+    },
+    "quote": "„Ich möchte mich beim Volk *entschuldigen*, falls ich es irgendwann *enttäuscht* habe.“",
+    "quoteAt": 2.6,
+    "playAt": 1.6,
+    "videoLabel": "Rücktritt per Video",
+    "meta": "Video auf X · 5. November 2026 · sinngemäß übersetzt",
+    "sticker": {
+     "text": "RÜCKTRITT",
+     "icon": "⚡",
+     "color": "#e5392f",
+     "at": 1.2,
+     "x": 820,
+     "y": 200,
+     "size": 44,
+     "rotate": 8
+    },
+    "accent": "#e5392f"
+   }
+  },
+  {
    "id": "08",
+   "type": "trList",
+   "duration": 7.2,
+   "script": "0:44 · Was jetzt? Vizepräsident Pedro Alliana soll übernehmen – sobald der Kongress den Rücktritt annimmt. Gegen Peña laufen drei Strafverfahren, und Gegner sagen: Er ist noch im Amt und muss sich verantworten.",
+   "params": {
+    "title": "Wie geht es *weiter*?",
+    "items": [
+     {
+      "text": "Pedro Alliana übernimmt",
+      "sub": "sobald der Kongress zustimmt",
+      "value": "Vize",
+      "at": 2.2
+     },
+     {
+      "text": "3 Strafverfahren",
+      "sub": "gegen Peña & Ex-Beamte",
+      "value": "3",
+      "ok": false,
+      "at": 4.0
+     },
+     {
+      "text": "Opposition",
+      "sub": "„Er ist noch Präsident“",
+      "value": "Streit",
+      "ok": false,
+      "at": 5.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "09",
    "type": "trStat",
-   "duration": 6.6,
-   "script": "0:44 · Die gute Nachricht: Ein Einlagen-Fonds deckt rund 97 Prozent der Kunden komplett ab. Die ersten Auszahlungen sollen jetzt starten.",
+   "duration": 6.8,
+   "script": "0:51 · Für die Kunden die gute Nachricht: Rund 97 Prozent sind über einen Einlagen-Fonds komplett abgesichert. Wer mehr auf dem Konto hatte, muss aber bangen.",
    "params": {
     "brand": {
      "name": "Zentralbank",
@@ -221,26 +262,18 @@
     "at": 2.0,
     "countDur": 1.0,
     "sub": "erste Auszahlung bis *10 Mio. ₲* pro Kunde",
-    "cashAt": 3.2
-   }
-  },
-  {
-   "id": "09",
-   "type": "trWarn",
-   "duration": 5.4,
-   "script": "0:51 · Aber wer mehr als die Garantie auf dem Konto hatte, muss um sein Geld bangen.",
-   "params": {
-    "tag": "Aber",
-    "text": "Über der Garantie:\n*Geld in Gefahr*",
-    "size": 56,
-    "sub": "Keine Zusage für Beträge *über dem Limit*."
+    "cashAt": 3.2,
+    "pills": [
+     "Über dem Limit: Risiko"
+    ],
+    "pillsAt": 4.6
    }
   },
   {
    "id": "10",
    "type": "trRule",
    "duration": 6.2,
-   "script": "0:56 · Die Lehre für dich: Kenn deine Einlagensicherung – in der EU sind das 100.000 Euro pro Bank – und leg nicht alles auf eine einzige Bank.",
+   "script": "0:58 · Die Lehre für dich: Kenn deine Einlagensicherung – in der EU sind das 100.000 Euro pro Bank – und leg nicht alles auf eine einzige Bank.",
    "params": {
     "title": "Die *Lehre* für dich",
     "left": {
@@ -262,13 +295,13 @@
    "id": "11",
    "type": "trPoll",
    "duration": 5.4,
-   "script": "1:02 · Wie viele Banken nutzt du? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "script": "1:04 · Hättest du gedacht, dass eine Bank einen Präsidenten stürzen kann? Schreib's in die Kommentare. Keine Anlageberatung.",
    "params": {
-    "question": "Wie viele *Banken* nutzt du?",
+    "question": "Eine Bank stürzt einen *Präsidenten* – hättest du das gedacht?",
     "options": [
-     "Nur eine",
-     "Zwei bis drei",
-     "Mehr als drei"
+     "Niemals",
+     "Ja, war klar",
+     "Kommt öfter vor als man denkt"
     ],
     "at": 0.9,
     "step": 0.45,
