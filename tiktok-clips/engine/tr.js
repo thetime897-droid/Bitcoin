@@ -310,8 +310,9 @@
     const row = C.h('div', { class: 'ctr', style: { justifyContent: 'space-around', position: 'relative' } }, card);
     const sides = [p.left || {}, p.right || {}].map((sd, i) => {
       const col = C.h('div', { class: 'ctr', style: { flexDirection: 'column', gap: '12px', width: '360px', padding: '22px 0', borderRadius: '28px', background: '#f6f7f8' } }, row);
-      C.chip(sd.brand || sd.name, 110, col);
-      C.h('div', { style: { fontSize: '46px', fontWeight: 900, color: INK } }, col, sd.name || C.brand(sd.brand).name);
+      if (sd.brands) { const lr = C.h('div', { class: 'ctr', style: { gap: '10px' } }, col); sd.brands.forEach((b) => C.chip(b, sd.chip || 92, lr)); }
+      else C.chip(sd.brand || sd.name, 110, col);
+      C.h('div', { style: { fontSize: (sd.nameSize || 46) + 'px', fontWeight: 900, color: INK, textAlign: 'center' } }, col, sd.name || C.brand(sd.brand).name);
       if (sd.sub) C.h('div', { style: { fontSize: '26px', fontWeight: 700, color: GR, textAlign: 'center' } }, col, sd.sub);
       if (sd.value) C.h('div', { style: { fontSize: '44px', fontWeight: 900, color: sd.tone === 'red' ? RD : G } }, col, sd.value);
       return { col, at: p.at?.[i] ?? 0.35 + i * 0.5 };
@@ -491,6 +492,249 @@
       play.style.transform = `scale(${Math.max(0, C.k(t, 0.5, 0.4, 'back')) * (1 + Math.sin(t * 3) * 0.03)})`;
       prog.style.width = Math.min(100, Math.max(0, (t - (p.playAt ?? 1.6)) * 9)) + '%';
       q.style.clipPath = `inset(0 ${100 - C.k(t, qAt, 0.9, 'inOut') * 100}% 0 0)`;
+      stick(t);
+    };
+  };
+
+  // ---------------------------------------------------------- tr icons ---
+  const BL = '#2f6bff';
+  T.icon = (name, col = G, size = 120) => {
+    const w = size, h = size;
+    if (name === 'tower') return `<svg width="${w}" height="${h}" viewBox="0 0 100 120"><path d="M50 26 L28 116 M50 26 L72 116 M36 86 H64 M40 62 H60 M31 104 L60 74 M69 104 L40 74" stroke="${INK}" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="20" r="8" fill="${col}"/><path d="M33 8 A24 24 0 0 0 33 32 M67 8 A24 24 0 0 1 67 32" stroke="${col}" stroke-width="5" fill="none" stroke-linecap="round"/></svg>`;
+    if (name === 'sat') return `<svg width="${w}" height="${h}" viewBox="0 0 120 100"><rect x="4" y="32" width="34" height="28" rx="3" fill="${col}"/><rect x="82" y="32" width="34" height="28" rx="3" fill="${col}"/><path d="M15 32 V60 M27 32 V60 M93 32 V60 M105 32 V60 M4 46 H38 M82 46 H116" stroke="#fff" stroke-width="2.5"/><line x1="38" y1="46" x2="82" y2="46" stroke="${INK}" stroke-width="5"/><rect x="46" y="28" width="28" height="36" rx="7" fill="${INK}"/><path d="M60 64 V78" stroke="${INK}" stroke-width="5"/><path d="M48 86 A14 10 0 0 0 72 86" stroke="${INK}" stroke-width="5" fill="none"/></svg>`;
+    if (name === 'phone') return `<svg width="${w * 0.6}" height="${h}" viewBox="0 0 60 100"><rect x="4" y="3" width="52" height="94" rx="11" fill="#f6f7f8" stroke="${INK}" stroke-width="5"/>${[0, 1, 2, 3].map((i) => `<rect x="${13 + i * 9.5}" y="${70 - i * 12}" width="7" height="${16 + i * 12}" rx="2" fill="${col}"/>`).join('')}</svg>`;
+    return '';
+  };
+  // Stamp label ("KEIN NETZ", "NICHT FERTIG") placed on the card.
+  const stampEl = (parent, text, col, x, y, size = 46) => {
+    const el = C.h('div', { style: { position: 'absolute', left: x + 'px', top: y + 'px', padding: '8px 24px', borderRadius: '14px', border: `5px solid ${col}`, background: '#fff', color: col, fontSize: size + 'px', fontWeight: 900, whiteSpace: 'nowrap', letterSpacing: '1px' } }, parent, text);
+    el.dataset.own = 1; el.style.opacity = 0;
+    return el;
+  };
+
+  // ------------------------------------------------------------ trSignal ---
+  // Funkmast + Handy: the phone drifts out of range, bars die one by one,
+  // "KEIN NETZ" stamps in. Optional: a satellite flies in, beams down and
+  // the bars come back (Starlink-style rescue).
+  S.trSignal = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    if (p.brand) T.header(card, p.brand, p.context);
+    const ttl = C.h('div', { style: { fontSize: (p.size || 52) + 'px', fontWeight: 900, color: INK, lineHeight: 1.1, letterSpacing: '-1px' } }, card);
+    ttl.innerHTML = T.rich(p.title || 'Außer *Reichweite*', p.accent ? C.color(p.accent) : RD);
+    const W = 904, H = 470;
+    const box = C.h('div', { style: { position: 'relative', width: W + 'px', height: H + 'px', marginTop: '10px' } }, card);
+    const sv = C.svg(box, W, H); sv.style.position = 'absolute';
+    // tower
+    const tw = C.s('g', { transform: 'translate(120 120)' }, sv);
+    tw.innerHTML = `<path d="M90 50 L44 330 M90 50 L136 330 M62 240 H118 M70 160 H110 M52 290 L112 200 M128 290 L68 200" stroke="${INK}" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="90" cy="40" r="15" fill="${G}" class="tip"/>`;
+    const tip = tw.querySelector('.tip');
+    const arcs = [0, 1, 2].map(() => C.s('circle', { cx: 210, cy: 160, r: 30, fill: 'none', stroke: G, 'stroke-width': 5 }, sv));
+    // phone
+    const ph = C.s('g', {}, sv);
+    ph.innerHTML = `<rect x="0" y="0" width="170" height="300" rx="30" fill="#f6f7f8" stroke="${INK}" stroke-width="9"/><rect x="62" y="16" width="46" height="10" rx="5" fill="${INK}"/>`;
+    const bars = [0, 1, 2, 3].map((i) => C.s('rect', { x: 34 + i * 28, y: 240 - (40 + i * 34), width: 20, height: 40 + i * 34, rx: 5, fill: G }, ph));
+    // satellite + beam
+    const beam = C.s('polygon', { points: '0,0 0,0 0,0', fill: GL, opacity: 0 }, sv);
+    const sat = C.s('g', { style: p.satellite ? '' : 'display:none' }, sv);
+    sat.innerHTML = `<g transform="translate(-60 -50)">${T.icon('sat', BL, 120).replace(/<\/?svg[^>]*>/g, '')}</g>`;
+    sat.firstChild.setAttribute('transform', 'translate(-75 -62) scale(1.25)');
+    const lost = stampEl(box, p.lostText || 'KEIN NETZ', RD, 520, 330, 48);
+    const okEl = p.satellite ? stampEl(box, p.okText || 'Netz per Satellit', G, 470, 330, 42) : null;
+    const dropAt = p.dropAt ?? 0.7, stepB = 0.2, lostAt = dropAt + 4 * stepB + 0.05;
+    const satAt = p.satAt ?? lostAt + 0.7, fillAt = satAt + 0.55;
+    ctx.cue('whoosh', 0, 0.8);
+    ctx.cue('whoosh-down', dropAt - 0.05, 0.4);
+    for (let i = 0; i < 4; i++) ctx.cue('tick', dropAt + i * stepB, 0.55);
+    ctx.cue('stamp', lostAt, 0.7); ctx.cue('error', lostAt + 0.02, 0.3);
+    if (p.satellite) {
+      ctx.cue('whoosh', satAt - 0.1, 0.6); ctx.cue('shine', fillAt - 0.15, 0.4);
+      for (let i = 0; i < 4; i++) ctx.cue('tick', fillAt + i * 0.14, 0.55);
+      ctx.cue('success', fillAt + 0.65, 0.45);
+    }
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      const away = C.k(t, dropAt - 0.3, 1.0, 'inOut');
+      const px = 560 + away * 120, py = 150;
+      ph.setAttribute('transform', `translate(${px} ${py + Math.sin(t * 2) * 3})`);
+      const sOn = p.satellite ? C.k(t, satAt, 0.6, 'expo') : 0;
+      let lvl = 4 - Math.min(4, Math.max(0, Math.floor((t - dropAt) / stepB + 1)));
+      if (t < dropAt) lvl = 4;
+      let fill = 0;
+      if (p.satellite && t >= fillAt) fill = Math.min(4, Math.floor((t - fillAt) / 0.14) + 1);
+      bars.forEach((b, i) => {
+        const on = fill ? i < fill : i < lvl;
+        b.setAttribute('fill', on ? (fill ? BL : G) : '#d5d8dc');
+      });
+      const live = 1 - C.k(t, dropAt, 0.8);
+      tip.setAttribute('fill', live > 0.3 ? G : RD);
+      arcs.forEach((a, i) => {
+        const ph2 = ((t * 0.9 + i / 3) % 1);
+        const reach = 30 + ph2 * (120 + live * 260);
+        a.setAttribute('r', reach);
+        a.setAttribute('stroke', live > 0.3 ? G : '#c5c9cf');
+        a.style.opacity = (1 - ph2) * (0.25 + 0.65 * live);
+      });
+      const kL = C.k(t, lostAt, 0.35, 'back');
+      const lostOut = p.satellite ? C.k(t, fillAt + 0.3, 0.25) : 0;
+      lost.style.opacity = C.k(t, lostAt, 0.1) * (1 - lostOut);
+      lost.style.transform = `scale(${Math.max(0, kL) * (1 + 0.6 * (1 - Math.min(1, kL)))}) rotate(-8deg)`;
+      if (p.satellite) {
+        const sx = C.lerp(1000, 470, sOn), sy = C.lerp(-80, 70, sOn);
+        sat.setAttribute('transform', `translate(${sx} ${sy + Math.sin(t * 2.2) * 4}) rotate(${(1 - sOn) * 25})`);
+        sat.style.opacity = C.k(t, satAt, 0.15);
+        const kb = C.k(t, fillAt - 0.25, 0.35);
+        beam.setAttribute('points', `${sx - 10},${sy + 40} ${sx + 10},${sy + 40} ${px + 170},${py + 10} ${px},${py + 10}`);
+        beam.setAttribute('opacity', kb * (0.22 + Math.sin(t * 6) * 0.05));
+        beam.setAttribute('fill', BL);
+        const kO = C.k(t, fillAt + 0.6, 0.35, 'back');
+        okEl.style.opacity = C.k(t, fillAt + 0.6, 0.12);
+        okEl.style.transform = `scale(${Math.max(0, kO)}) rotate(-5deg)`;
+      }
+      stick(t);
+    };
+  };
+
+  // ------------------------------------------------------------ trStrike ---
+  // "Nur Satelliten-Internet" gets a red strike, the new label slides in.
+  S.trStrike = (st, p, ctx) => {
+    const card = T.card(st, p.card);
+    if (p.brand) T.header(card, p.brand, p.context);
+    C.h('div', { style: { fontSize: (p.size || 64) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', marginBottom: '22px' } }, card, T.rich(p.title, p.accent ? C.color(p.accent) : BL));
+    const oldRow = C.h('div', { style: { position: 'relative', display: 'inline-block', padding: '14px 28px', borderRadius: '18px', background: '#eef0f2', color: INK, fontSize: '40px', fontWeight: 800 } }, card, p.old || '');
+    const line = C.h('div', { style: { position: 'absolute', left: '-8px', top: '50%', height: '8px', marginTop: '-4px', width: '0%', borderRadius: '4px', background: RD } }, oldRow);
+    const nw = C.h('div', { style: { marginTop: '24px', padding: '22px 30px', borderRadius: '24px', border: `5px solid ${GL}`, background: '#f2fbf6', color: G, fontSize: (p.newSize || 50) + 'px', fontWeight: 900, letterSpacing: '-1px', lineHeight: 1.1 } }, card, T.rich(p.new || '', INK));
+    nw.dataset.own = 1;
+    if (p.sub) { const sb = C.h('div', { style: { fontSize: '30px', fontWeight: 700, color: '#4b5058', marginTop: '20px' } }, card, T.rich(p.sub)); sb.dataset.own = 1; sb.className = 'trsub'; }
+    const subEl = card.querySelector('.trsub');
+    const pills = p.pills ? T.pills(card, p.pills) : [];
+    pills.forEach((x) => (x.parentNode.dataset.own = 1));
+    const strikeAt = p.strikeAt ?? 0.8, newAt = p.newAt ?? strikeAt + 0.6, pillsAt = p.pillsAt ?? newAt + 0.7;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('marker', strikeAt, 0.6); ctx.cue('error', strikeAt + 0.25, 0.25);
+    ctx.cue('whoosh', newAt - 0.1, 0.55); ctx.cue('pop', newAt + 0.2, 0.6);
+    T.pillSfx(ctx, pills.length, pillsAt, 0.18);
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      line.style.width = C.k(t, strikeAt, 0.4, 'inOut') * 106 + '%';
+      oldRow.style.opacity = 1 - 0.5 * C.k(t, strikeAt + 0.4, 0.3);
+      oldRow.style.transform = `rotate(${C.k(t, strikeAt + 0.3, 0.3, 'back') * -2}deg)`;
+      const k = C.k(t, newAt, 0.5, 'back');
+      nw.style.opacity = C.k(t, newAt, 0.15);
+      nw.style.transform = `translateX(${(1 - Math.min(1, k)) * 80}px) scale(${0.9 + 0.1 * Math.max(0, k)})`;
+      if (subEl) subEl.style.opacity = C.k(t, newAt + 0.4, 0.3);
+      if (pills.length) pills[0].parentNode.style.opacity = C.k(t, pillsAt - 0.1, 0.1);
+      pills.forEach((el, i) => (el.style.transform = `scale(${Math.max(0, C.k(t, pillsAt + i * 0.18, 0.32, 'back'))})`));
+      stick(t);
+    };
+  };
+
+  // -------------------------------------------------------------- trDots ---
+  // Grid of red dots ("Funklöcher") that flip to blue/green in a wave.
+  S.trDots = (st, p, ctx) => {
+    const card = T.card(st, p.card);
+    C.h('div', { style: { fontSize: (p.size || 58) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', marginBottom: '26px' } }, card, T.rich(p.title || '*Funklöcher*', RD));
+    const cols = p.cols || 9, rows = p.rows || 5, D = 64, gap = 30;
+    const grid = C.h('div', { style: { display: 'grid', gridTemplateColumns: `repeat(${cols}, ${D}px)`, gap: gap + 'px', justifyContent: 'center' } }, card);
+    const to = C.color(p.to || BL);
+    const dots = [];
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const d = C.h('div', { style: { width: D + 'px', height: D + 'px', borderRadius: '50%', background: RD } }, grid);
+      dots.push({ d, at: (p.flipAt ?? 1.0) + (c / cols) * 0.9 + C.rand(r * 31 + c) * 0.35 });
+    }
+    const cap = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', marginTop: '28px', fontSize: '34px', fontWeight: 900 } }, card);
+    const capL = C.h('span', { style: { color: RD } }, cap, p.before || 'Kein Netz');
+    const capR = C.h('span', { style: { color: to } }, cap, p.after || 'Netz');
+    const flipAt = p.flipAt ?? 1.0;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('alert', 0.4, 0.25);
+    ctx.cue('whoosh', flipAt - 0.1, 0.5);
+    for (let i = 0; i < 8; i++) ctx.cue('tick', flipAt + i * 0.16, 0.45);
+    ctx.cue('success', flipAt + 1.35, 0.5);
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      dots.forEach((o, i) => {
+        const k = C.k(t, o.at, 0.25, 'back');
+        const on = t >= o.at;
+        o.d.style.background = on ? to : RD;
+        const pulse = on ? 0 : Math.sin(t * 5 + i) * 0.06;
+        o.d.style.transform = `scale(${(on ? 0.6 + 0.4 * Math.max(0, k) : 1) + pulse})`;
+        o.d.style.opacity = on ? 1 : 0.85;
+      });
+      const kC = C.k(t, flipAt + 1.2, 0.3);
+      capL.style.opacity = 1 - 0.6 * kC;
+      capL.style.textDecoration = kC > 0.5 ? 'line-through' : 'none';
+      capR.style.opacity = 0.25 + 0.75 * kC;
+      capR.style.transform = `scale(${1 + 0.15 * Math.sin(Math.PI * Math.min(1, kC))})`;
+      stick(t);
+    };
+  };
+
+  // -------------------------------------------------------------- trYear ---
+  // Rollout card: small label, big year that rolls (2026 -> 2027), progress
+  // bar that only gets part of the way, then a "NICHT FERTIG" stamp.
+  S.trYear = (st, p, ctx) => {
+    const card = T.card(st, p.card);
+    C.h('div', { style: { fontSize: (p.size || 58) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', textAlign: 'center' } }, card, T.rich(p.title || 'Der *Rollout*', BL));
+    if (p.label) C.h('div', { style: { fontSize: '30px', fontWeight: 800, color: GR, letterSpacing: '8px', textAlign: 'center', marginTop: '14px' } }, card, p.label);
+    const win = C.h('div', { style: { position: 'relative', height: '190px', overflow: 'hidden', marginTop: '6px' } }, card);
+    const mk = (txt) => C.h('div', { style: { position: 'absolute', left: 0, right: 0, textAlign: 'center', fontSize: '180px', fontWeight: 900, color: BL, lineHeight: '190px', letterSpacing: '-4px' } }, win, txt);
+    const y1 = mk(String(p.from ?? 2026)), y2 = mk(String(p.to ?? 2027));
+    const track = C.h('div', { style: { position: 'relative', height: '16px', borderRadius: '8px', marginTop: '18px', backgroundImage: `repeating-linear-gradient(90deg, #c5c9cf 0 14px, transparent 14px 26px)`, backgroundSize: '100% 4px', backgroundRepeat: 'no-repeat', backgroundPosition: '0 50%' } }, card);
+    const bar = C.h('div', { style: { height: '100%', width: '0%', borderRadius: '8px', background: BL } }, track);
+    if (p.sub) C.h('div', { style: { fontSize: '30px', fontWeight: 700, color: '#4b5058', marginTop: '24px', textAlign: 'center', lineHeight: 1.3 } }, card, T.rich(p.sub, BL));
+    const rollAt = p.rollAt ?? 0.8, barAt = p.barAt ?? rollAt + 0.4;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('tick', 0.45, 0.5);
+    ctx.cue('whoosh', rollAt - 0.05, 0.45); ctx.cue('pop', rollAt + 0.3, 0.6);
+    for (let i = 0; i < 5; i++) ctx.cue('tick', barAt + i * 0.17, 0.4);
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      const k = C.k(t, rollAt, 0.45, 'back');
+      y1.style.transform = `translateY(${-Math.min(1.2, k) * 190}px)`;
+      y2.style.transform = `translateY(${(1 - k) * 190}px)`;
+      bar.style.width = C.k(t, barAt, 0.9, 'out') * (p.progress ?? 0.3) * 100 + '%';
+      stick(t);
+    };
+  };
+
+  // ------------------------------------------------------------ trHybrid ---
+  // "Stadt = 5G-Mast  +  Nirgendwo = Satellit" -> result pill.
+  S.trHybrid = (st, p, ctx) => {
+    const card = T.card(st, p.card);
+    if (p.title) C.h('div', { style: { fontSize: '54px', fontWeight: 900, color: INK, letterSpacing: '-1px', marginBottom: '26px' } }, card, T.rich(p.title, p.accent ? C.color(p.accent) : BL));
+    const row = C.h('div', { class: 'ctr', style: { gap: '18px', alignItems: 'stretch', position: 'relative' } }, card);
+    const items = (p.items || []).map((it, i) => {
+      const d = C.h('div', { class: 'ctr', style: { flex: 1, flexDirection: 'column', gap: '10px', padding: '26px 16px', borderRadius: '28px', background: '#f6f7f8' } }, row);
+      const ic = C.h('div', { class: 'ctr', style: { height: '150px' } }, d); ic.innerHTML = T.icon(it.icon, C.color(it.color || (i ? BL : G)), 140);
+      C.h('div', { style: { fontSize: '28px', fontWeight: 700, color: GR } }, d, it.label || '');
+      C.h('div', { style: { fontSize: '44px', fontWeight: 900, color: INK, textAlign: 'center', lineHeight: 1.05 } }, d, T.rich(it.title || ''));
+      const at = it.at ?? 0.45 + i * 0.8;
+      ctx.cue('whoosh', at - 0.05, 0.5); ctx.cue('pop', at + 0.25, 0.5);
+      return { d, ic, at, i };
+    });
+    const plus = C.h('div', { class: 'ctr', style: { position: 'absolute', left: '50%', top: '50%', width: '84px', height: '84px', margin: '-42px 0 0 -42px', borderRadius: '50%', background: INK, color: '#fff', fontSize: '52px', fontWeight: 900, boxShadow: '0 0 0 9px #fff' } }, row, '+');
+    const plusAt = p.plusAt ?? (items[1]?.at ?? 1) + 0.4;
+    ctx.cue('impact', plusAt + 0.05, 0.25); ctx.cue('pop', plusAt + 0.05, 0.55);
+    let res;
+    const resAt = p.resultAt ?? plusAt + 0.6;
+    if (p.result) {
+      res = C.h('div', { style: { marginTop: '24px', padding: '18px 26px', borderRadius: '20px', background: INK, color: '#fff', fontSize: '36px', fontWeight: 900, textAlign: 'center' } }, card, T.rich(p.result, '#5fe39a'));
+      res.dataset.own = 1;
+      ctx.cue('whoosh', resAt - 0.1, 0.45); ctx.cue('ding', resAt + 0.2, 0.45);
+    }
+    ctx.cue('whoosh', 0, 0.8);
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      items.forEach((o) => {
+        const k = C.k(t, o.at, 0.5, 'expo');
+        o.d.style.opacity = C.k(t, o.at, 0.2);
+        o.d.style.transform = `translateY(${(1 - k) * 50}px)`;
+        o.ic.style.transform = `translateY(${Math.sin(t * 2 + o.i * 2) * 5}px) scale(${Math.max(0, C.k(t, o.at + 0.1, 0.45, 'back'))})`;
+      });
+      plus.style.transform = `scale(${Math.max(0, C.k(t, plusAt, 0.4, 'back'))}) rotate(${(1 - C.k(t, plusAt, 0.4)) * 180}deg)`;
+      if (res) { const k = C.k(t, resAt, 0.45, 'back'); res.style.opacity = C.k(t, resAt, 0.15); res.style.transform = `scale(${0.85 + 0.15 * Math.max(0, k)})`; }
       stick(t);
     };
   };

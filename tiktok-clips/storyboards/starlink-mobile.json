@@ -1,0 +1,266 @@
+{
+ "name": "starlink-mobile",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trSignal",
+   "duration": 6.4,
+   "script": "0:00 · Nie wieder Funkloch. Elon Musk baut gerade sein eigenes Handynetz – und Qualcomm liefert jetzt die Technik dafür.",
+   "params": {
+    "brand": "STARLINK",
+    "context": "Starlink Mobile",
+    "title": "Nie wieder *Funkloch?*",
+    "accent": "#2f6bff",
+    "satellite": true,
+    "dropAt": 0.5,
+    "satAt": 2.1,
+    "okText": "Netz aus dem All"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trStrike",
+   "duration": 5.8,
+   "script": "0:06 · Starlink ist bald nicht mehr nur Satelliten-Internet – SpaceX will daraus einen echten Mobilfunkanbieter machen.",
+   "params": {
+    "brand": "SPACEX",
+    "context": "Neuer Plan",
+    "title": "*Starlink* Mobile",
+    "old": "Nur Satelliten-Internet",
+    "new": "Vollwertiger *Mobilfunkanbieter*",
+    "strikeAt": 1.2,
+    "newAt": 2.6,
+    "pills": [
+     "🇺🇸 USA",
+     "5G + Satellit"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "03",
+   "type": "trVersus",
+   "duration": 6.2,
+   "script": "0:12 · Damit greift Musk direkt Verizon, AT&T und T-Mobile an – und T-Mobile US gehört mehrheitlich unserer Deutschen Telekom.",
+   "params": {
+    "title": "Neuer *Gegner*",
+    "titleAccent": "#2f6bff",
+    "left": {
+     "brand": "STARLINK",
+     "name": "Starlink Mobile",
+     "nameSize": 40
+    },
+    "right": {
+     "brands": [
+      "VZ",
+      "ATT",
+      "TMUS"
+     ],
+     "chip": 88,
+     "name": "Die großen Drei",
+     "nameSize": 40
+    },
+    "at": [
+     0.4,
+     1.3
+    ],
+    "vsAt": 2.0,
+    "sticker": {
+     "text": "Mehrheit: Telekom",
+     "icon": "🇩🇪",
+     "color": "#e20074",
+     "at": 3.6,
+     "x": 780,
+     "y": 505,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStat",
+   "duration": 7.0,
+   "script": "0:18 · Schon 2025 hat SpaceX für rund 17 Milliarden Dollar Funkfrequenzen von EchoStar gekauft – die US-Mobilfunkaktien sind danach laut Berichten deutlich gefallen.",
+   "params": {
+    "brand": "SPACEX",
+    "context": "Frequenz-Deal 2025",
+    "label": "Kaufpreis für EchoStar-Frequenzen",
+    "icon": "$",
+    "value": "~17 Mrd. $",
+    "size": 150,
+    "at": 0.9,
+    "countDur": 1.1,
+    "sub": "US-Mobilfunkaktien danach *deutlich im Minus*",
+    "subAccent": "#e5392f",
+    "pills": [
+     "Verizon ▼",
+     "AT&T ▼",
+     "T-Mobile ▼"
+    ],
+    "pillsAt": 4.2
+   }
+  },
+  {
+   "id": "05",
+   "type": "trSignal",
+   "duration": 5.4,
+   "script": "0:25 · Und das Problem kennt jeder: Du bist zu weit weg vom Mast – und zack, kein Netz.",
+   "params": {
+    "title": "Außer *Reichweite*",
+    "dropAt": 1.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trHybrid",
+   "duration": 6.6,
+   "script": "0:31 · Der Clou: Musks Netz ist hybrid. In der Stadt funken eigene 5G-Masten – und im Nirgendwo übernehmen Satelliten aus dem All.",
+   "params": {
+    "title": "Der Clou: *hybrid*",
+    "items": [
+     {
+      "icon": "tower",
+      "label": "In der Stadt",
+      "title": "5G-Mast",
+      "at": 1.4
+     },
+     {
+      "icon": "sat",
+      "label": "Im Nirgendwo",
+      "title": "Satellit",
+      "at": 3.6
+     }
+    ],
+    "plusAt": 4.3,
+    "result": "= *ein* Netz, überall",
+    "resultAt": 5.0
+   }
+  },
+  {
+   "id": "07",
+   "type": "trDots",
+   "duration": 3.4,
+   "script": "0:37 · Das Ziel: Funklöcher sollen verschwinden.",
+   "params": {
+    "title": "*Funklöcher*",
+    "flipAt": 0.9,
+    "before": "Kein Netz",
+    "after": "Netz ✓"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trMetric",
+   "duration": 6.2,
+   "script": "0:41 · Und genau dafür hat SpaceX am 4. November Qualcomm ausgewählt: Dragonwing-Technik für Zehntausende 5G-Standorte.",
+   "params": {
+    "title": "Qualcomm *Dragonwing*",
+    "accent": "#2f6bff",
+    "label": "Ausgewählt am 4. Nov. 2026",
+    "logos": [
+     "QCOM",
+     "SPACEX"
+    ],
+    "value": "Zehntausende",
+    "size": 104,
+    "at": 2.4,
+    "sub": "geplante *5G-Standorte*",
+    "pills": [
+     "64×64 Massive MIMO",
+     "QRU100 + QDU100"
+    ],
+    "pillsAt": 4.0
+   }
+  },
+  {
+   "id": "09",
+   "type": "trMetric",
+   "duration": 5.8,
+   "script": "0:47 · Qualcomm-Chef Cristiano Amon spricht von enormem Potenzial – richtig Umsatz erwartet er aber erst im Geschäftsjahr 2028.",
+   "params": {
+    "title": "Qualcomm-CEO *Amon*",
+    "accent": "#2f6bff",
+    "label": "„Enormes Potenzial“ – Umsatz erst ab",
+    "logos": [
+     "QCOM"
+    ],
+    "value": "GJ 2028",
+    "countUp": false,
+    "tone": "gold",
+    "size": 130,
+    "at": 2.6,
+    "sticker": {
+     "text": "Geduld gefragt",
+     "icon": "⏳",
+     "color": "#b8860b",
+     "at": 3.8,
+     "x": 780,
+     "y": 400,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trYear",
+   "duration": 5.4,
+   "script": "0:53 · Aber Achtung: Der Ausbau startet erst 2027 – und ist dann noch lange nicht fertig.",
+   "params": {
+    "title": "Der *Rollout*",
+    "label": "AUSBAU-START",
+    "to": 2027,
+    "rollAt": 1.4,
+    "progress": 0.3,
+    "sub": "Zehntausende Standorte – *nicht* über Nacht",
+    "sticker": {
+     "text": "NICHT FERTIG",
+     "color": "#b8860b",
+     "at": 2.8,
+     "x": 540,
+     "y": 628,
+     "size": 48
+    },
+    "from": 2026
+   }
+  },
+  {
+   "id": "11",
+   "type": "trWarn",
+   "duration": 6.6,
+   "script": "0:58 · Heute ist Starlink Mobile vor allem ein Satelliten-Backup über T-Mobile. Ob Musk den Großen wirklich Kunden abnimmt, ist offen.",
+   "params": {
+    "tag": "Realitäts-Check",
+    "live": true,
+    "text": "Heute vor allem *Satelliten-Backup*",
+    "size": 52,
+    "sub": "In den USA über T-Mobile · Ob Kunden wechseln: *offen*",
+    "pills": [
+     "Ausbau ab 2027",
+     "Frequenzen: Abschluss erst 2027"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "12",
+   "type": "trPoll",
+   "duration": 5.4,
+   "script": "1:05 · Würdest du für ein Handynetz von Elon Musk deinen Anbieter wechseln? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Würdest du zu *Starlink Mobile* wechseln?",
+    "options": [
+     "Sofort",
+     "Erst mal abwarten",
+     "Niemals"
+    ],
+    "note": "Keine Anlageberatung · Starlink Mobile vorerst nur in den USA"
+   }
+  }
+ ]
+}

@@ -200,11 +200,16 @@ Echte Logos: PNG mit `"logo": "logos/xyz.png"` am Ticker/Brand.
 | `trNumber` | „Nummer 2 von 3“ mit Fortschrittsring | `n`, `of`, `title` |
 | `trList` | „So geht's“-Zeilen mit grünem Haken / rotem Kreuz | `title`, `items[{text,sub,value,ok,at}]` |
 | `trWarn` | „Achtung“-Karte mit rotem Warndreieck | `tag`, `text`, `sub`, `pills[]` |
-| `trVersus` | „Google vs Amazon“: zwei Logo-Spalten, VS-Badge | `title`, `left/right{brand,name,sub,value,tone}`, `at[]`, `vsAt`, `sticker` |
+| `trVersus` | „Google vs Amazon“: zwei Logo-Spalten, VS-Badge | `title`, `left/right{brand oder brands[],name,sub,value,tone}`, `at[]`, `vsAt`, `sticker` |
 | `trMetric` | Kennzahl mit Logo(s) oben rechts, zweite Zahl folgt (z. B. „+25 %“) | `title`, `label`, `logos[]`, `value`, `sub`, `tone`, `second{value,at,tone,size}`, `pills` |
 | `trBuy` | Depot-Karte: Logo, Name, schwarze Datums-Pill, großer Betrag, Tags | `brand`, `name`, `badge`, `value`, `sub`, `tags[]` |
 | `trPoll` | Frage mit nummerierten roten Antworten (Kommentar-Köder) | `question`, `options[]`, `at`, `step`, `note` |
 | `trRule` | „Meine Faustregel“: zwei Spalten, eine grün ✓, eine rot ✕ | `title`, `left/right{label,title,result,good}` |
+| `trSignal` | Funkmast + Handy: Balken sterben, Stempel „KEIN NETZ“; mit `satellite: true` fliegt ein Satellit rein und die Balken laufen wieder voll | `title`, `dropAt`, `satellite`, `satAt`, `lostText`, `okText` |
+| `trStrike` | Altes Label wird rot durchgestrichen, neues grünes Label schiebt sich rein | `title`, `old`, `new`, `strikeAt`, `newAt`, `pills[]` |
+| `trDots` | Punkte-Raster („Funklöcher“) kippt in einer Welle von Rot auf Blau | `title`, `flipAt`, `before`, `after`, `to` |
+| `trYear` | Jahres-Zähler (2026 → 2027) mit Teil-Fortschrittsbalken, Sticker z. B. „NICHT FERTIG“ | `title`, `label`, `from`, `to`, `progress`, `sticker` |
+| `trHybrid` | Zwei Icon-Kacheln (`tower`, `sat`, `phone`) mit „+“ und Ergebnis-Zeile | `title`, `items[{icon,label,title}]`, `result` |
 | `trChart` | App-Chartkarte: Name, Preis zählt, Änderung, Linie, Zeitraum-Tabs | `ticker`, `name`, `price`, `priceFrom`, `change`, `range`, `data`, `color`, `threshold{value,label,at}`, `sticker` |
 
 Beispiel: `storyboards/jahresendrallye-tr.json`.
