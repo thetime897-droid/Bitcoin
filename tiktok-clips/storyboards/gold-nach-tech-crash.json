@@ -1,0 +1,381 @@
+{
+ "name": "gold-nach-tech-crash",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.45,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trChart",
+   "duration": 5.6,
+   "script": "0:00 · Tech crasht – und das Geld flieht ins Gold. Gold springt auf über 4.100 Dollar. Aber genau hier könnte eine Falle warten.",
+   "params": {
+    "ticker": {
+     "name": "Gold",
+     "glyph": "Au",
+     "color": "#d4a017"
+    },
+    "name": "Gold · Dollar je Unze · 1 Woche",
+    "price": "4.122 $",
+    "priceFrom": 3995,
+    "change": "+1,9 %",
+    "color": "#d4a017",
+    "range": "1W",
+    "data": [
+     4082.9,
+     4075.0,
+     4070.8,
+     4073.2,
+     4062.9,
+     4063.1,
+     4060.6,
+     4056.1,
+     4046.6,
+     4046.3,
+     4040.0,
+     4038.4,
+     4025.4,
+     4030.3,
+     4018.5,
+     4020.5,
+     4013.4,
+     4012.4,
+     4002.0,
+     4001.6,
+     3997.7,
+     4002.7,
+     3998.7,
+     3993.8,
+     3992.0,
+     3993.5,
+     3997.1,
+     4003.1,
+     4004.4,
+     4009.5,
+     4005.9,
+     4019.3,
+     4026.7,
+     4030.3,
+     4036.4,
+     4043.4,
+     4042.1,
+     4049.6,
+     4049.9,
+     4060.7,
+     4062.4,
+     4062.2,
+     4069.5,
+     4079.4,
+     4083.8,
+     4086.3,
+     4101.0,
+     4099.0,
+     4113.4,
+     4121.3,
+     4125.8,
+     4134.4,
+     4137.0,
+     4140.5,
+     4149.7,
+     4147.7,
+     4143.3,
+     4134.9,
+     4135.8,
+     4122.1,
+     4122.0,
+     4113.8,
+     4113.3,
+     4115.8,
+     4103.6,
+     4108.4,
+     4104.0,
+     4100.2,
+     4092.3,
+     4094.7,
+     4095.2,
+     4087.7,
+     4122
+    ],
+    "drawAt": 0.3,
+    "drawDur": 1.8,
+    "sticker": {
+     "text": "Bullenfalle?",
+     "icon": "⚠",
+     "color": "#b8860b",
+     "at": 3.0,
+     "x": 790,
+     "y": 820,
+     "size": 50
+    }
+   },
+   "sfx": [
+    {
+     "name": "shine",
+     "at": 2.0,
+     "gain": 0.4
+    }
+   ]
+  },
+  {
+   "id": "02",
+   "type": "trVersus",
+   "duration": 6.2,
+   "script": "0:05 · Während die Nasdaq um 5 Prozent einbricht, legt Gold zu – auf Kurs für die stärkste Woche seit August.",
+   "params": {
+    "title": "Tech gegen *Gold*",
+    "titleAccent": "#b8860b",
+    "left": {
+     "brand": "NDX",
+     "name": "Nasdaq",
+     "sub": "Tech-Ausverkauf",
+     "value": "−5 %",
+     "tone": "red"
+    },
+    "right": {
+     "brand": {
+      "name": "Gold",
+      "glyph": "Au",
+      "color": "#d4a017"
+     },
+     "name": "Gold",
+     "sub": "stärkste Woche seit Aug.",
+     "value": "im Plus"
+    },
+    "at": [
+     1.0,
+     2.4
+    ],
+    "vsAt": 3.0,
+    "sticker": {
+     "text": "Flucht ins Gold",
+     "icon": "🛡",
+     "color": "#b8860b",
+     "at": 4.4,
+     "x": 780,
+     "y": 640,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 6.6,
+   "script": "0:11 · Warum gerade jetzt? Der Ölpreis ist gefallen, der Dollar wird schwächer – und an den Börsen herrscht Unsicherheit.",
+   "params": {
+    "title": "Warum Gold *jetzt* steigt",
+    "accent": "#b8860b",
+    "items": [
+     {
+      "text": "Ölpreis gefallen",
+      "sub": "weniger Inflationsdruck",
+      "value": "↓",
+      "at": 2.0
+     },
+     {
+      "text": "Dollar schwächer",
+      "sub": "Gold wird günstiger für alle anderen",
+      "value": "↓",
+      "at": 3.4
+     },
+     {
+      "text": "Unsicherheit an den Börsen",
+      "sub": "Tech-Ausverkauf",
+      "value": "!",
+      "at": 4.8
+     }
+    ]
+   },
+   "sfx": [
+    {
+     "name": "coins",
+     "at": 5.2,
+     "gain": 0.4
+    }
+   ]
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:18 · Kurz war Gold schon bei 4.150 Dollar. Die entscheidende Marke liegt aber bei 4.200 – erst darüber wird die Rallye glaubwürdig.",
+   "params": {
+    "title": "Die *Schlüsselmarke*",
+    "accent": "#b8860b",
+    "label": "Widerstand",
+    "logos": [
+     {
+      "name": "Gold",
+      "glyph": "Au",
+      "color": "#d4a017"
+     }
+    ],
+    "value": "4.200 $",
+    "tone": "gold",
+    "sub": "kurz erreicht: *4.150 $*",
+    "at": 2.4,
+    "countDur": 1.0,
+    "second": {
+     "value": "Noch 2 % entfernt",
+     "size": 60,
+     "color": "#111317",
+     "at": 4.4
+    }
+   },
+   "sfx": [
+    {
+     "name": "shine",
+     "at": 3.3,
+     "gain": 0.4
+    }
+   ]
+  },
+  {
+   "id": "05",
+   "type": "trRule",
+   "duration": 6.8,
+   "script": "0:24 · Das ist die Frage: Bricht Gold über 4.200 Dollar, ist das der Startschuss für die nächste Rallye. Scheitert es dort, war es eine Bullenfalle – und es geht wieder runter.",
+   "params": {
+    "title": "Startschuss oder *Bullenfalle*?",
+    "left": {
+     "label": "Über 4.200 $",
+     "title": "Startschuss",
+     "result": "neue Rallye möglich",
+     "at": 2.2
+    },
+    "right": {
+     "label": "Scheitern an 4.200 $",
+     "title": "Bullenfalle",
+     "result": "Rücksetzer droht",
+     "good": false,
+     "at": 4.2
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:31 · Und die Banken? Die kanadische CIBC hat ihr Ziel fürs vierte Quartal von 6.500 auf 4.500 Dollar gekappt – fast ein Drittel weniger.",
+   "params": {
+    "title": "CIBC *kappt*",
+    "accent": "#e5392f",
+    "label": "Gold-Ziel Q4 2026",
+    "logos": [
+     {
+      "name": "CIBC",
+      "glyph": "CIBC",
+      "color": "#c41f3e"
+     }
+    ],
+    "value": "4.500 $",
+    "tone": "red",
+    "sub": "vorher *6.500 $*",
+    "at": 2.0,
+    "countDur": 1.0,
+    "second": {
+     "value": "−31 %",
+     "size": 84,
+     "tone": "red",
+     "at": 4.0
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:38 · UBS bleibt optimistisch: Erst ein Rücksetzer auf 4.000, dann 4.600 bis Dezember – und 5.400 Dollar bis September 2027.",
+   "params": {
+    "title": "Der UBS-*Fahrplan*",
+    "accent": "#b8860b",
+    "items": [
+     {
+      "text": "Kurzfristig",
+      "sub": "Rücksetzer möglich",
+      "value": "4.000 $",
+      "ok": false,
+      "at": 2.0
+     },
+     {
+      "text": "Dezember 2026",
+      "sub": "Ziel",
+      "value": "4.600 $",
+      "at": 3.6
+     },
+     {
+      "text": "September 2027",
+      "sub": "Ziel",
+      "value": "5.400 $",
+      "at": 5.0
+     }
+    ]
+   },
+   "sfx": [
+    {
+     "name": "shine",
+     "at": 5.3,
+     "gain": 0.4
+    }
+   ]
+  },
+  {
+   "id": "08",
+   "type": "trStat",
+   "duration": 5.8,
+   "script": "0:45 · Das wären von heute aus noch rund 30 Prozent Luft nach oben.",
+   "params": {
+    "brand": {
+     "name": "Gold",
+     "glyph": "Au",
+     "color": "#d4a017"
+    },
+    "context": "UBS-Ziel Sept. 2027",
+    "label": "Abstand zum heutigen Kurs",
+    "tone": "gold",
+    "icon": "↗",
+    "value": "+31 %",
+    "size": 180,
+    "at": 1.4,
+    "countDur": 1.0,
+    "sub": "von ca. *4.120 $* auf *5.400 $*"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.2,
+   "script": "0:51 · Aber Achtung: Hohe Zinsen, Inflation und ein starker Dollar bleiben Gegenwind für Gold.",
+   "params": {
+    "tag": "Gegenwind",
+    "text": "Was Gold\n*bremsen* kann",
+    "size": 56,
+    "sub": "*Hohe Zinsen*, *Inflation* und ein *starker Dollar*.",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.6,
+   "script": "0:57 · Und du – nach dem Tech-Crash jetzt in Gold? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "question": "Nach dem Tech-Crash: *Gold* kaufen?",
+    "options": [
+     "Ja, jetzt rein",
+     "Erst über 4.200 $",
+     "Ich bleibe bei Aktien"
+    ],
+    "at": 0.9,
+    "step": 0.45,
+    "note": "Schreib's in die Kommentare · Keine Anlageberatung"
+   }
+  }
+ ]
+}

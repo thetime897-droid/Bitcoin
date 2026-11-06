@@ -6,6 +6,11 @@
   const G = '#0d7d4d', GL = '#18a565', CHK = '#2fbf68', RD = '#e5392f', INK = '#111317', GR = '#8b9099';
   const T = (C.tr = {});
 
+  // Tone colours: green (default), red, gold - gold gets a darker ink for
+  // contrast on white and a warm tint for tiles.
+  const GD = '#b8860b', GDL = '#fbf1d6';
+  T.tone = (t) => (t === 'red' ? RD : t === 'gold' ? GD : G);
+  T.tint = (t) => (t === 'red' ? '#fde6e3' : t === 'gold' ? GDL : '#ddf4e8');
   T.rich = (text, col = GL) => String(text || '').replace(/\*([^*]+)\*/g, `<span style="color:${col}">$1</span>`).replace(/\n/g, '<br>');
 
   // White card pinned to the top; enters with a short drop and settles.
@@ -90,18 +95,19 @@
   // -------------------------------------------------------------- trStat ---
   S.trStat = (st, p, ctx) => {
     const red = p.tone === 'red';
-    const col = red ? RD : G;
+    const col = T.tone(p.tone);
     const card = T.card(st, p.card);
     if (p.brand) T.header(card, p.brand, p.context);
     if (p.label) C.h('div', { style: { fontSize: '30px', fontWeight: 800, color: INK, marginBottom: '20px' } }, card, p.label);
     const row = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '28px' } }, card);
-    const tile = C.h('div', { class: 'ctr', style: { width: '128px', height: '128px', borderRadius: '30px', background: red ? '#fde6e3' : '#ddf4e8', flex: 'none' } }, row);
+    const tile = C.h('div', { class: 'ctr', style: { width: '128px', height: '128px', borderRadius: '30px', background: T.tint(p.tone), flex: 'none' } }, row);
     C.h('div', { class: 'ctr', style: { width: '64px', height: '64px', borderRadius: '50%', background: col, color: '#fff', fontSize: p.icon && p.icon.length > 1 ? '30px' : '38px', fontWeight: 900 } }, tile, p.icon || '%');
     const num = big(row, p.value || '', col, p.size || 170);
     if (p.sub) C.h('div', { style: { fontSize: '32px', fontWeight: 700, color: '#4b5058', marginTop: '22px' } }, card, T.rich(p.sub, p.subAccent ? C.color(p.subAccent) : col));
     const pills = p.pills ? T.pills(card, p.pills) : [];
     const stick = T.sticker(st, p.sticker, ctx);
     const at = p.at ?? 0.35;
+    if (p.tone === 'gold') ctx.cue('shine', at + (p.countDur ?? 0.9) - 0.1, 0.45);
     ctx.cue('whoosh', 0, 0.8);
     if (countable(p.value) && p.countUp !== false) T.countSfx(ctx, p.cashAt != null ? '' : p.value, at, p.countDur ?? 0.9);
     else ctx.cue('pop', at, 0.6);
@@ -332,7 +338,7 @@
   // figure, sub label; an optional second figure (delta) lands later.
   S.trMetric = (st, p, ctx) => {
     const card = T.card(st, { pad: 40, ...p.card });
-    const tone = p.tone === 'red' ? RD : G;
+    const tone = T.tone(p.tone);
     const top = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', alignItems: 'flex-start' } }, card);
     const tl = C.h('div', {}, top);
     C.h('div', { style: { fontSize: '40px', fontWeight: 900, color: INK } }, tl, T.rich(p.title, p.accent ? C.color(p.accent) : GL));
@@ -381,7 +387,7 @@
     const hn = C.h('div', {}, head);
     C.h('div', { style: { fontSize: '46px', fontWeight: 900, color: INK, lineHeight: 1 } }, hn, p.name || C.brand(p.brand).name);
     if (p.badge) C.h('div', { style: { display: 'inline-block', marginTop: '10px', padding: '6px 18px', borderRadius: '14px', background: INK, color: '#fff', fontSize: '24px', fontWeight: 800 } }, hn, p.badge);
-    const num = big(card, p.value || '', p.tone === 'red' ? RD : G, p.size || 130);
+    const num = big(card, p.value || '', T.tone(p.tone), p.size || 130);
     num.style.margin = '18px 0 6px';
     if (p.sub) C.h('div', { style: { fontSize: '32px', fontWeight: 800, color: INK } }, card, T.rich(p.sub));
     const row = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '12px', marginTop: '20px' } }, card);
