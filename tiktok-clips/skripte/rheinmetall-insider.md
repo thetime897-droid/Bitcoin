@@ -5,7 +5,7 @@
 ## Storytelling & Hook
 
 - **Hook (0–6 s):** Der Insiderkauf ganz groß. Eine Directors'-Dealings-Karte mit Rheinmetall-Logo und Armin Papperger, die Zahl **502.484 €** zählt mit Kassen-Sound hoch, grüner Stempel **KAUF**, Kacheln 585 Aktien / Ø 858,95 € / 05.11.2026, Sticker „📉 mitten im Crash“. Der Satz endet mit einer offenen Frage („Was steckt dahinter?“).
-- **Fallhöhe (0:06–0:30):** Chart-Crash −18,5 % mit Stempel „GEWINNWARNUNG“ → gesenkte Prognose → Grund Boxer/Arminius → „schon die 5. Warnung in 11 Monaten“.
+- **Fallhöhe (0:06–0:30):** Chart-Crash −18,5 % mit Stempel „GEWINNWARNUNG“ → bisheriger Plan (grün, `02b`) → gesenkte Prognose (rot, `03`) → Grund Boxer/Arminius → „schon die 5. Warnung in 11 Monaten“.
 - **Re-Hook (0:30):** „Und genau da schlägt der Chef zu“, dazu die Rechnung des Kaufs.
 - **Twist (0:36):** Chart mit roter Linie beim Kaufkurs: der Chef liegt schon im Minus.
 - **Einordnung:** Analysten-Kursziele → Rekord-Auftragsbestand als Gegengewicht → −60 % vom Hoch → „Signal oder Symbol?“ → Kommentar-Frage.
@@ -16,7 +16,8 @@
 |---|---|---|
 | 0:00 | `01-trInsider` | Der Rheinmetall-Chef kauft eigene Aktien für über eine halbe Million Euro – mitten im Crash. Was steckt dahinter? |
 | 0:06 | `02-trChart` | Denn einen Tag vorher kam die Gewinnwarnung – und die Aktie ist zeitweise um 18,5 Prozent eingebrochen. Bis knapp unter 819 Euro. |
-| 0:12 | `03-trMetric` | Statt 13,7 bis 14,2 Milliarden Euro Umsatz erwartet Rheinmetall für 2026 jetzt nur noch rund 13,2 Milliarden. Und auch die Marge sinkt – auf rund 18,5 Prozent. |
+| 0:12 | `02b-trMetric` | Eigentlich wollte Rheinmetall 2026 zwischen 13,7 und 14,2 Milliarden Euro umsetzen – bei rund 19 Prozent Marge. |
+| 0:17 | `03-trMetric` | Jetzt sind es nur noch rund 13,2 Milliarden – und auch die Marge sinkt auf rund 18,5 Prozent. |
 | 0:19 | `04-trWarn` | Der Grund: Der Boxer-Auftrag „Arminius“ – die Modernisierung der Bundeswehr-Radpanzer – verzögert sich. Dieses Jahr kommt dafür kein Auftrag mehr rein. |
 | 0:25 | `05-trStat` | Und JPMorgan zählt mit: Das ist schon die fünfte Umsatz- oder Gewinnwarnung in elf Monaten. |
 | 0:30 | `06-trBuy` | Und genau da schlägt der Chef zu: 585 Aktien, im Schnitt zu 858,95 Euro – zusammen gut 502.000 Euro. |

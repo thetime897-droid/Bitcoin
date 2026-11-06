@@ -131,10 +131,37 @@
    }
   },
   {
+   "id": "02b",
+   "type": "trMetric",
+   "duration": 4.8,
+   "script": "0:12 · Eigentlich wollte Rheinmetall 2026 zwischen 13,7 und 14,2 Milliarden Euro umsetzen – bei rund 19 Prozent Marge.",
+   "params": {
+    "title": "Bisheriger *Plan* für 2026",
+    "label": "Umsatzprognose – vor der Warnung",
+    "logos": [
+     "RHM"
+    ],
+    "value": "13,7–14,2 Mrd. €",
+    "countUp": false,
+    "size": 104,
+    "at": 0.7,
+    "second": {
+     "value": "Marge ~19 %",
+     "size": 72,
+     "at": 2.3
+    },
+    "pills": [
+     "Umsatz-Ziel",
+     "Marge-Ziel"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
    "id": "03",
    "type": "trMetric",
    "duration": 6.4,
-   "script": "0:12 · Statt 13,7 bis 14,2 Milliarden Euro Umsatz erwartet Rheinmetall für 2026 jetzt nur noch rund 13,2 Milliarden. Und auch die Marge sinkt – auf rund 18,5 Prozent.",
+   "script": "0:17 · Jetzt sind es nur noch rund 13,2 Milliarden – und auch die Marge sinkt auf rund 18,5 Prozent.",
    "params": {
     "title": "Prognose 2026 *gesenkt*",
     "accent": "#e5392f",
