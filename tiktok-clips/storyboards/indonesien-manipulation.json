@@ -1,0 +1,416 @@
+{
+ "name": "indonesien-manipulation",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trChart",
+   "duration": 6.0,
+   "script": "0:00 · Diese Aktie ist in wenigen Wochen um 5.000 Prozent gestiegen. Klingt nach Jackpot? Laut Berichten war das gezielte Manipulation.",
+   "params": {
+    "ticker": {
+     "name": "???",
+     "glyph": "?",
+     "color": "#e5392f"
+    },
+    "name": "Name? Kommt gleich …",
+    "price": "+5.000 %",
+    "priceFrom": 0,
+    "change": "in ~7 Wochen",
+    "range": "1M",
+    "data": [
+     100,
+     101.04721787195368,
+     101.58374299365988,
+     105.26004712931156,
+     108.20905932866744,
+     107.85240985578913,
+     111.2839287303569,
+     121.50728158413405,
+     122.36518003079443,
+     127.78625621294654,
+     140.28898514603466,
+     143.1016856555931,
+     154.3354333242148,
+     159.85755735391194,
+     171.27102383277364,
+     176.8995590052022,
+     194.25697930910627,
+     210.56205585168775,
+     221.08435256700358,
+     240.5887721189609,
+     257.961421031141,
+     268.3203742319145,
+     302.5902837655652,
+     324.71188031415056,
+     346.5758559645935,
+     371.0201516383149,
+     425.4951051944388,
+     454.2773501561228,
+     504.8034658497754,
+     559.110413735093,
+     608.699817837881,
+     678.6537145648786,
+     725.8364092719653,
+     822.1249264431398,
+     891.4632125472303,
+     1018.4173883750921,
+     1128.3310532374105,
+     1198.8984519897845,
+     1340.600690571734,
+     1505.5599199464882,
+     1762.352505829094,
+     1915.125685571896,
+     2175.80042472624,
+     2400.540260165344,
+     2739.218481450508,
+     3069.583698398585,
+     3463.327572484858,
+     3977.769468903543,
+     4511.749355263663,
+     5100
+    ],
+    "height": 520,
+    "drawAt": 0.2,
+    "drawDur": 2.0,
+    "sticker": {
+     "text": "MANIPULIERT?",
+     "icon": "🚨",
+     "color": "#e5392f",
+     "at": 3.2,
+     "x": 560,
+     "y": 520,
+     "size": 56
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trStat",
+   "duration": 4.6,
+   "script": "0:06 · Und genau das hat jetzt einen kompletten Aktienmarkt zum Einsturz gebracht: minus 40 Prozent.",
+   "params": {
+    "label": "Ein ganzer Aktienmarkt",
+    "tone": "red",
+    "icon": "▼",
+    "value": "−40 %",
+    "size": 190,
+    "at": 0.9,
+    "countDur": 1.0,
+    "sub": "*Stärkster Absturz* unter den großen Börsen der Welt",
+    "sticker": {
+     "text": "welches Land?",
+     "icon": "🤫",
+     "color": "#111317",
+     "at": 2.6,
+     "x": 790,
+     "y": 500,
+     "size": 42
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trChart",
+   "duration": 5.6,
+   "script": "0:10 · Wir reden von Indonesien. Am 16. Oktober bricht der Leitindex um 11,6 Prozent ein – der schlimmste Tag seit der Asienkrise 1998.",
+   "params": {
+    "ticker": "IDX",
+    "name": "Indonesien · Leitindex IDX Composite",
+    "price": "−11,6 %",
+    "countPrice": false,
+    "change": "-11,6 % an einem Tag",
+    "range": "1M",
+    "data": [
+     7014.558570930797,
+     7039.3156480960015,
+     7038.512045311741,
+     7054.2791715895055,
+     7033.701883373002,
+     6998.047969757686,
+     7058.851002649301,
+     7072.170635784725,
+     7072.375678760979,
+     7050.528600277946,
+     7067.105361613936,
+     7031.889998694048,
+     7086.528634421868,
+     7070.882588188103,
+     7052.796596958897,
+     7040.076846171618,
+     7108.315399073815,
+     7124.184481193726,
+     7057.081447448778,
+     7119.0476257006,
+     7092.836946187673,
+     7077.061229956224,
+     7093.511299745525,
+     7136.503350982188,
+     7149.8213619702565,
+     7088.535204890363,
+     7139.162602282545,
+     7098.595219479683,
+     7157.4752381958815,
+     7131.476331681521,
+     7150,
+     6320,
+     6150,
+     5800,
+     5650,
+     5695.708636869683,
+     5707.6762908212,
+     5650.6504448377655,
+     5709.821073445093,
+     5627.160406417161,
+     5599.23648456465,
+     5661.971537055592,
+     5593.765331461038,
+     5613.68618277141,
+     5638.952336274039,
+     5600
+    ],
+    "height": 500,
+    "drawAt": 0.6,
+    "drawDur": 1.8,
+    "sticker": {
+     "text": "schlimmster Tag seit 1998",
+     "icon": "🇮🇩",
+     "color": "#e5392f",
+     "at": 3.0,
+     "x": 400,
+     "y": 560,
+     "size": 42
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStrike",
+   "duration": 6.4,
+   "script": "0:16 · Auslöser: MSCI – der Indexanbieter hinter unzähligen ETFs. Er prüft, Indonesien als Schwellenland herabzustufen.",
+   "params": {
+    "brand": "MSCI",
+    "context": "Prüfung läuft",
+    "title": "Indonesien bei *MSCI*",
+    "old": "Emerging Market",
+    "new": "*Herabstufung* droht",
+    "strikeAt": 2.8,
+    "newAt": 3.5,
+    "sub": "Entscheidung laut Berichten bis *Juni 2027*",
+    "pills": [
+     "ETFs betroffen",
+     "Milliarden in Gefahr"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 8.4,
+   "script": "0:22 · Der Grund hat sogar einen Namen: der „MSCI-Trade“. Kaum Aktien im freien Handel, Broker pumpen Kurs und Umsatz hoch – bis die Aktie in den Index rutscht und ETFs kaufen müssen.",
+   "params": {
+    "title": "Der *„MSCI-Trade“*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Kaum Aktien im freien Handel",
+      "sub": "sehr geringer Streubesitz",
+      "at": 3.0,
+      "mark": "→",
+      "markColor": "#e5392f"
+     },
+     {
+      "text": "Broker pumpen Kurs & Umsatz",
+      "sub": "laut Berichten koordiniert",
+      "at": 4.4,
+      "mark": "→",
+      "markColor": "#e5392f"
+     },
+     {
+      "text": "Aktie rutscht in den Index",
+      "sub": "Börsenwert & Umsatz reichen plötzlich",
+      "at": 6.0,
+      "mark": "→",
+      "markColor": "#e5392f"
+     },
+     {
+      "text": "ETFs *müssen* kaufen",
+      "sub": "… zu Mondpreisen",
+      "ok": false,
+      "at": 7.2,
+      "mark": "!"
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trHeadline",
+   "duration": 6.6,
+   "script": "0:31 · Und wer profitiert? Laut Bericht vor allem Firmen aus den Imperien der reichsten Milliardäre des Landes. Eine persönliche Beteiligung ist aber nicht nachgewiesen.",
+   "params": {
+    "brand": false,
+    "text": "Profiteure: Firmen *reicher Milliardäre*",
+    "size": 64,
+    "pills": [
+     "Prajogo Pangestu",
+     "Sinar-Mas-Gruppe"
+    ],
+    "pillsAt": 2.6,
+    "sticker": {
+     "text": "Beteiligung nicht nachgewiesen",
+     "icon": "⚖️",
+     "color": "#8b9099",
+     "at": 4.6,
+     "x": 700,
+     "y": 470,
+     "size": 34
+    },
+    "accent": "#e5392f"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trBars",
+   "duration": 6.4,
+   "script": "0:38 · Die Finanzaufsicht verhängt Rekordstrafen: rund 117 Millionen Dollar – die größte gegen eine Tochter der Sinar-Mas-Gruppe, dazu zwei Firmen aus Pangestus Umfeld.",
+   "params": {
+    "title": "Rekord-*Strafen*: ~117 Mio. $",
+    "items": [
+     {
+      "name": "Dian Swastatika Sentosa",
+      "brand": {
+       "name": "DSSA",
+       "glyph": "DS",
+       "color": "#c8102e"
+      },
+      "value": 1500,
+      "label": "1,5 Bio. Rupiah",
+      "at": 1.6
+     },
+     {
+      "name": "Barito Renewables",
+      "brand": {
+       "name": "BREN",
+       "glyph": "BR",
+       "color": "#0a7d4d"
+      },
+      "value": 500,
+      "label": "500 Mrd. Rupiah",
+      "at": 3.6
+     },
+     {
+      "name": "Petrindo Jaya Kreasi",
+      "brand": {
+       "name": "CUAN",
+       "glyph": "PJ",
+       "color": "#1d58a8"
+      },
+      "value": 100,
+      "label": "100 Mrd. Rupiah",
+      "at": 4.2
+     }
+    ],
+    "note": "Verhängt von der Finanzaufsicht OJK · insgesamt 2,1 Bio. Rupiah"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trMetric",
+   "duration": 5.4,
+   "script": "0:44 · Und der Crash trifft die Milliardäre selbst: Pangestu und vier weitere Tycoons haben laut Berichten rund 57 Milliarden Dollar verloren.",
+   "params": {
+    "title": "Milliardäre *verlieren*",
+    "accent": "#e5392f",
+    "label": "Pangestu + 4 Tycoons seit der MSCI-Warnung",
+    "value": "−57 Mrd. $",
+    "tone": "red",
+    "size": 140,
+    "at": 1.6,
+    "second": {
+     "value": "Pangestu: fast −70 %",
+     "size": 60,
+     "tone": "red",
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trMetric",
+   "duration": 6.8,
+   "script": "0:50 · Die Rupiah fällt über 18.000 pro Dollar. Und Goldman Sachs warnt: Bei einer Herabstufung könnten bis zu 13 Milliarden Dollar abfließen.",
+   "params": {
+    "title": "Drohende *Abflüsse*",
+    "accent": "#e5392f",
+    "label": "bei MSCI-Herabstufung – Schätzung Goldman Sachs",
+    "logos": [
+     "GS",
+     "MSCI"
+    ],
+    "value": "bis 13 Mrd. $",
+    "tone": "red",
+    "size": 130,
+    "at": 3.0,
+    "pills": [
+     "Rupiah > 18.000 pro $",
+     "Auslandsgeld flieht"
+    ],
+    "pillsAt": 0.9
+   }
+  },
+  {
+   "id": "10",
+   "type": "trStat",
+   "duration": 5.0,
+   "script": "0:57 · Jetzt zieht Indonesien die Notbremse: Der Mindest-Streubesitz wird von 7,5 auf 15 Prozent verdoppelt.",
+   "params": {
+    "label": "Neuer Mindest-Streubesitz",
+    "icon": "%",
+    "value": "15 %",
+    "size": 190,
+    "at": 1.6,
+    "countDur": 1.0,
+    "sub": "vorher *7,5 %* – Umsetzung in 1 bis 3 Jahren",
+    "pills": [
+     "Strengere Offenlegung",
+     "Verdachts-Konten sperren"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "11",
+   "type": "trWarn",
+   "duration": 5.4,
+   "script": "1:02 · Die Lehre: Steigt eine Aktie in Wochen um tausende Prozent, frag dich, wer da eigentlich kauft – und wer verkauft.",
+   "params": {
+    "tag": "Merk dir das",
+    "text": "*+5.000 %* in Wochen? Frag, wer *verkauft*.",
+    "size": 54,
+    "sub": "Hype ohne Streubesitz = *Gefahr*"
+   }
+  },
+  {
+   "id": "12",
+   "type": "trPoll",
+   "duration": 5.4,
+   "script": "1:07 · Steckt Indonesien vielleicht auch in deinem Schwellenländer-ETF? Schau nach – und schreib's in die Kommentare.",
+   "params": {
+    "question": "Steckt *Indonesien* in deinem ETF?",
+    "options": [
+     "Ja, im EM-ETF",
+     "Keine Ahnung",
+     "Nein"
+    ],
+    "note": "Keine Anlageberatung · Stand: Anfang November 2026"
+   }
+  }
+ ]
+}

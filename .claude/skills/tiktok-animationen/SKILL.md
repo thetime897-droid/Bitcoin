@@ -72,3 +72,11 @@ Ausblendung fällt.
 Fehlt ein Szenentyp für eine gute Idee im Skript, neuen Typ in
 `tiktok-clips/engine/scenes.js` im gleichen Stil ergänzen (zeitbasiertes
 `update(t)`, keine CSS-Transitions) und in README/STYLE eintragen.
+
+## Hook & Reveal (Standard für jedes Skript)
+
+- Satz 1 + Clip 1 = die stärkste, konkreteste Info (Zahl, Skandal, Insider) –
+  sofort visuell (große Zahl, Chart, Stempel), ohne die Auflösung zu verraten.
+- Danach schrittweise aufdecken: Was passiert? → Wo/Wer? → Wie genau? → Folgen →
+  Was heißt das für dich? Alle 10–15 s ein Re-Hook („Und jetzt wird's krass …“).
+- Ende: konkrete Kommentar-Frage + „Keine Anlageberatung“.

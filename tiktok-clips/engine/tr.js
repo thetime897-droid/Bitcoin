@@ -157,10 +157,10 @@
       const r = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '20px', padding: '20px 24px', borderRadius: '20px', background: '#f2f3f5', marginTop: i ? '14px' : 0 } }, card);
       C.h('div', { class: 'ctr', style: { width: '44px', height: '44px', borderRadius: '50%', background: INK, color: '#fff', fontSize: '24px', fontWeight: 900, flex: 'none' } }, r, String(i + 1));
       const tx = C.h('div', { style: { flex: 1 } }, r);
-      C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: INK } }, tx, T.rich(it.text));
+      C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: INK } }, tx, T.rich(it.text, p.accent ? C.color(p.accent) : GL));
       if (it.sub) C.h('div', { style: { fontSize: '24px', fontWeight: 600, color: GR, marginTop: '4px' } }, tx, it.sub);
       if (it.value) C.h('div', { style: { fontSize: '34px', fontWeight: 900, color: it.ok === false ? RD : G } }, r, it.value);
-      const mark = C.h('div', { class: 'ctr', style: { width: '50px', height: '50px', borderRadius: '50%', background: it.ok === false ? RD : CHK, color: '#fff', fontSize: '28px', fontWeight: 900, flex: 'none' } }, r, it.ok === false ? '✕' : '✓');
+      const mark = C.h('div', { class: 'ctr', style: { width: '50px', height: '50px', borderRadius: '50%', background: it.mark ? C.color(it.markColor || INK) : it.ok === false ? RD : CHK, color: '#fff', fontSize: '28px', fontWeight: 900, flex: 'none' } }, r, it.mark || (it.ok === false ? '✕' : '✓'));
       const at = it.at ?? 0.6 + i * 0.6;
       r.dataset.own = 1;
       ctx.cue('whoosh', at - 0.38, 0.32); ctx.cue('tick', at - 0.3, 0.5);
