@@ -1,32 +1,33 @@
 # FACELESS SHORT: MUSK BAUT SEIN EIGENES HANDYNETZ
 
-*Ca. 68–70 s, Broker-App-Karten, ohne Ausblendung. Neu: Einblendungen nach dem Vorbild des Referenzvideos (Signal bricht ab → „KEIN NETZ“, Durchstreichen „Nur Satelliten-Internet“, Funkloch-Raster, das von Rot auf Blau kippt, Stadt-Mast + Satellit, Jahres-Zähler 2026 → 2027 mit Stempel „NICHT FERTIG“). Jede Karte startet mit einem Whoosh, wenn etwas nachrückt, kommt ein kleiner Whoosh bzw. Tick dazu.*
+*Ca. 70 s, Broker-App-Karten, ohne Ausblendung. Neu: Einblendungen nach dem Vorbild des Referenzvideos (Signal bricht ab → „KEIN NETZ“, Durchstreichen „Nur Satelliten-Internet“, Funkloch-Raster, das von Rot auf Blau kippt, Stadt-Mast + Satellit, Jahres-Zähler 2026 → 2027 mit Stempel „NICHT FERTIG“). Jede Karte startet mit einem Whoosh, wenn etwas nachrückt, kommt ein kleiner Whoosh bzw. Tick dazu.*
 
 ## Storytelling & Hook
 
-- **Hook (0–6 s):** Ein Versprechen, das jeder will: „Nie wieder Funkloch.“ Visuell: Das Handy driftet vom Mast weg, die Balken sterben einzeln, Stempel **KEIN NETZ**. Dann fliegt ein Satellit ins Bild, beamt runter, die Balken laufen voll: **„Netz aus dem All“**. Das Problem und die Lösung stecken in 6 Sekunden.
+- **Hook (0–4 s):** Ein Versprechen, das jeder will: „Nie wieder Funkloch.“ Visuell: Das Handy driftet vom Mast weg, die Balken sterben einzeln, Stempel **KEIN NETZ**. Dann fliegt ein Satellit ins Bild, beamt runter, die Balken laufen voll: **„Netz aus dem All“**. Das Problem und die Lösung stecken in 4 Sekunden.
+- **Hook-Verstärker (0:04, `01b`):** „Qualcomm und SpaceX machen offiziell gemeinsame Sache“. Die beiden Logo-Kacheln fahren zusammen, ×-Badge, Datum 4. Nov. 2026, Sticker „🤝 Deal!“. Damit weiß der Zuschauer sofort, dass das echte News sind und keine Zukunftsfantasie.
 - **Eskalation:** Starlink wird ein echter Anbieter → greift die großen Drei an → **Deutschland-Bezug: T-Mobile US gehört mehrheitlich der Telekom** → 17-Mrd.-Deal hat die US-Aktien schon einmal gedrückt.
 - **Erklärteil (Re-Hook „Der Clou“):** Funkloch-Problem → hybrides Netz → Funklöcher verschwinden.
-- **Börsen-Twist:** Qualcomm ist der Zulieferer (Dragonwing, Zehntausende Standorte). Das Geld kommt aber erst im GJ 2028.
+- **Börsen-Twist (Payoff zu `01b`):** Qualcomm ist der Zulieferer (Dragonwing, Zehntausende Standorte). Das Geld kommt aber erst im GJ 2028.
 - **Realitäts-Check:** Ausbau startet erst 2027, heute vor allem Satelliten-Backup → offene Frage → Kommentar-Frage.
 
 ## Sprechertext
 
 | Zeit | Karte | Text |
 |---|---|---|
-| 0:00 | `01-trSignal` | Nie wieder Funkloch. Elon Musk baut gerade sein eigenes Handynetz – und Qualcomm liefert jetzt die Technik dafür. |
-| 0:03 | `01b-trPartner` | *(über „… und Qualcomm liefert jetzt die Technik dafür.“ legen)* Qualcomm × SpaceX: offizielle Partnerschaft für das Starlink-Mobile-5G-Netz, 4. Nov. 2026 |
-| 0:06 | `02-trStrike` | Starlink ist bald nicht mehr nur Satelliten-Internet – SpaceX will daraus einen echten Mobilfunkanbieter machen. |
-| 0:12 | `03-trVersus` | Damit greift Musk direkt Verizon, AT&T und T-Mobile an – und T-Mobile US gehört mehrheitlich unserer Deutschen Telekom. |
-| 0:18 | `04-trStat` | Schon 2025 hat SpaceX für rund 17 Milliarden Dollar Funkfrequenzen von EchoStar gekauft – die US-Mobilfunkaktien sind danach laut Berichten deutlich gefallen. |
-| 0:25 | `05-trSignal` | Und das Problem kennt jeder: Du bist zu weit weg vom Mast – und zack, kein Netz. |
-| 0:31 | `06-trHybrid` | Der Clou: Musks Netz ist hybrid. In der Stadt funken eigene 5G-Masten – und im Nirgendwo übernehmen Satelliten aus dem All. |
-| 0:37 | `07-trDots` | Das Ziel: Funklöcher sollen verschwinden. |
-| 0:41 | `08-trMetric` | Und genau dafür hat SpaceX am 4. November Qualcomm ausgewählt: Dragonwing-Technik für Zehntausende 5G-Standorte. |
-| 0:47 | `09-trMetric` | Qualcomm-Chef Cristiano Amon spricht von enormem Potenzial – richtig Umsatz erwartet er aber erst im Geschäftsjahr 2028. |
-| 0:53 | `10-trYear` | Aber Achtung: Der Ausbau startet erst 2027 – und ist dann noch lange nicht fertig. |
-| 0:58 | `11-trWarn` | Heute ist Starlink Mobile vor allem ein Satelliten-Backup über T-Mobile. Ob Musk den Großen wirklich Kunden abnimmt, ist offen. |
-| 1:05 | `12-trPoll` | Würdest du für ein Handynetz von Elon Musk deinen Anbieter wechseln? Schreib's in die Kommentare. *(Einblendung: Keine Anlageberatung)* |
+| 0:00 | `01-trSignal` | Nie wieder Funkloch. Elon Musk baut gerade sein eigenes Handynetz. |
+| 0:04 | `01b-trPartner` | Und dafür hat er sich jetzt einen Chip-Riesen geholt: Qualcomm und SpaceX machen offiziell gemeinsame Sache. |
+| 0:10 | `02-trStrike` | Denn Starlink soll bald mehr sein als Satelliten-Internet – SpaceX will daraus einen echten Mobilfunkanbieter machen. |
+| 0:16 | `03-trVersus` | Damit greift Musk direkt Verizon, AT&T und T-Mobile an – und T-Mobile US gehört mehrheitlich unserer Deutschen Telekom. |
+| 0:22 | `04-trStat` | Schon 2025 hat SpaceX für rund 17 Milliarden Dollar Funkfrequenzen von EchoStar gekauft – die US-Mobilfunkaktien sind danach laut Berichten deutlich gefallen. |
+| 0:29 | `05-trSignal` | Das Problem kennt jeder: zu weit weg vom Mast – und zack, kein Netz. |
+| 0:33 | `06-trHybrid` | Der Clou: Musks Netz ist hybrid. In der Stadt funken eigene 5G-Masten – und im Nirgendwo übernehmen Satelliten aus dem All. |
+| 0:40 | `07-trDots` | Das Ziel: Funklöcher sollen verschwinden. |
+| 0:43 | `08-trMetric` | Und hier kommt Qualcomm ins Spiel: Seine Dragonwing-Technik soll in Zehntausenden 5G-Standorten stecken. |
+| 0:49 | `09-trMetric` | Qualcomm-Chef Cristiano Amon spricht von enormem Potenzial – richtig Umsatz erwartet er aber erst im Geschäftsjahr 2028. |
+| 0:55 | `10-trYear` | Aber Achtung: Der Ausbau startet erst 2027 – und ist dann noch lange nicht fertig. |
+| 1:00 | `11-trWarn` | Heute ist Starlink Mobile vor allem ein Satelliten-Backup über T-Mobile. Ob Musk den Großen wirklich Kunden abnimmt, ist offen. |
+| 1:07 | `12-trPoll` | Würdest du für ein Handynetz von Elon Musk deinen Anbieter wechseln? Schreib's in die Kommentare. *(Einblendung: Keine Anlageberatung)* |
 
 ## Einblendungen (aus dem Referenzvideo übernommen, im Broker-Stil)
 

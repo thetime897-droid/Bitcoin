@@ -10,8 +10,8 @@
   {
    "id": "01",
    "type": "trSignal",
-   "duration": 6.4,
-   "script": "0:00 · Nie wieder Funkloch. Elon Musk baut gerade sein eigenes Handynetz – und Qualcomm liefert jetzt die Technik dafür.",
+   "duration": 4.4,
+   "script": "0:00 · Nie wieder Funkloch. Elon Musk baut gerade sein eigenes Handynetz.",
    "params": {
     "brand": "STARLINK",
     "context": "Starlink Mobile",
@@ -26,8 +26,8 @@
   {
    "id": "01b",
    "type": "trPartner",
-   "duration": 4.2,
-   "script": "0:03 · (unter „… und Qualcomm liefert jetzt die Technik dafür.“) – Partnerschaft Qualcomm × SpaceX",
+   "duration": 5.4,
+   "script": "0:04 · Und dafür hat er sich jetzt einen Chip-Riesen geholt: Qualcomm und SpaceX machen offiziell gemeinsame Sache.",
    "params": {
     "tag": "Offizielle Partnerschaft",
     "title": "Musks Handynetz: *Partner gefunden*",
@@ -73,7 +73,7 @@
    "id": "02",
    "type": "trStrike",
    "duration": 5.8,
-   "script": "0:06 · Starlink ist bald nicht mehr nur Satelliten-Internet – SpaceX will daraus einen echten Mobilfunkanbieter machen.",
+   "script": "0:10 · Denn Starlink soll bald mehr sein als Satelliten-Internet – SpaceX will daraus einen echten Mobilfunkanbieter machen.",
    "params": {
     "brand": "SPACEX",
     "context": "Neuer Plan",
@@ -93,7 +93,7 @@
    "id": "03",
    "type": "trVersus",
    "duration": 6.2,
-   "script": "0:12 · Damit greift Musk direkt Verizon, AT&T und T-Mobile an – und T-Mobile US gehört mehrheitlich unserer Deutschen Telekom.",
+   "script": "0:16 · Damit greift Musk direkt Verizon, AT&T und T-Mobile an – und T-Mobile US gehört mehrheitlich unserer Deutschen Telekom.",
    "params": {
     "title": "Neuer *Gegner*",
     "titleAccent": "#2f6bff",
@@ -132,7 +132,7 @@
    "id": "04",
    "type": "trStat",
    "duration": 7.0,
-   "script": "0:18 · Schon 2025 hat SpaceX für rund 17 Milliarden Dollar Funkfrequenzen von EchoStar gekauft – die US-Mobilfunkaktien sind danach laut Berichten deutlich gefallen.",
+   "script": "0:22 · Schon 2025 hat SpaceX für rund 17 Milliarden Dollar Funkfrequenzen von EchoStar gekauft – die US-Mobilfunkaktien sind danach laut Berichten deutlich gefallen.",
    "params": {
     "brand": "SPACEX",
     "context": "Frequenz-Deal 2025",
@@ -155,8 +155,8 @@
   {
    "id": "05",
    "type": "trSignal",
-   "duration": 5.4,
-   "script": "0:25 · Und das Problem kennt jeder: Du bist zu weit weg vom Mast – und zack, kein Netz.",
+   "duration": 4.6,
+   "script": "0:29 · Das Problem kennt jeder: zu weit weg vom Mast – und zack, kein Netz.",
    "params": {
     "title": "Außer *Reichweite*",
     "dropAt": 1.6
@@ -166,7 +166,7 @@
    "id": "06",
    "type": "trHybrid",
    "duration": 6.6,
-   "script": "0:31 · Der Clou: Musks Netz ist hybrid. In der Stadt funken eigene 5G-Masten – und im Nirgendwo übernehmen Satelliten aus dem All.",
+   "script": "0:33 · Der Clou: Musks Netz ist hybrid. In der Stadt funken eigene 5G-Masten – und im Nirgendwo übernehmen Satelliten aus dem All.",
    "params": {
     "title": "Der Clou: *hybrid*",
     "items": [
@@ -192,7 +192,7 @@
    "id": "07",
    "type": "trDots",
    "duration": 3.4,
-   "script": "0:37 · Das Ziel: Funklöcher sollen verschwinden.",
+   "script": "0:40 · Das Ziel: Funklöcher sollen verschwinden.",
    "params": {
     "title": "*Funklöcher*",
     "flipAt": 0.9,
@@ -203,8 +203,8 @@
   {
    "id": "08",
    "type": "trMetric",
-   "duration": 6.2,
-   "script": "0:41 · Und genau dafür hat SpaceX am 4. November Qualcomm ausgewählt: Dragonwing-Technik für Zehntausende 5G-Standorte.",
+   "duration": 5.4,
+   "script": "0:43 · Und hier kommt Qualcomm ins Spiel: Seine Dragonwing-Technik soll in Zehntausenden 5G-Standorten stecken.",
    "params": {
     "title": "Qualcomm *Dragonwing*",
     "accent": "#2f6bff",
@@ -228,7 +228,7 @@
    "id": "09",
    "type": "trMetric",
    "duration": 5.8,
-   "script": "0:47 · Qualcomm-Chef Cristiano Amon spricht von enormem Potenzial – richtig Umsatz erwartet er aber erst im Geschäftsjahr 2028.",
+   "script": "0:49 · Qualcomm-Chef Cristiano Amon spricht von enormem Potenzial – richtig Umsatz erwartet er aber erst im Geschäftsjahr 2028.",
    "params": {
     "title": "Qualcomm-CEO *Amon*",
     "accent": "#2f6bff",
@@ -256,7 +256,7 @@
    "id": "10",
    "type": "trYear",
    "duration": 5.4,
-   "script": "0:53 · Aber Achtung: Der Ausbau startet erst 2027 – und ist dann noch lange nicht fertig.",
+   "script": "0:55 · Aber Achtung: Der Ausbau startet erst 2027 – und ist dann noch lange nicht fertig.",
    "params": {
     "title": "Der *Rollout*",
     "label": "AUSBAU-START",
@@ -279,7 +279,7 @@
    "id": "11",
    "type": "trWarn",
    "duration": 6.6,
-   "script": "0:58 · Heute ist Starlink Mobile vor allem ein Satelliten-Backup über T-Mobile. Ob Musk den Großen wirklich Kunden abnimmt, ist offen.",
+   "script": "1:00 · Heute ist Starlink Mobile vor allem ein Satelliten-Backup über T-Mobile. Ob Musk den Großen wirklich Kunden abnimmt, ist offen.",
    "params": {
     "tag": "Realitäts-Check",
     "live": true,
@@ -297,7 +297,7 @@
    "id": "12",
    "type": "trPoll",
    "duration": 5.4,
-   "script": "1:05 · Würdest du für ein Handynetz von Elon Musk deinen Anbieter wechseln? Schreib's in die Kommentare.",
+   "script": "1:07 · Würdest du für ein Handynetz von Elon Musk deinen Anbieter wechseln? Schreib's in die Kommentare.",
    "params": {
     "question": "Würdest du zu *Starlink Mobile* wechseln?",
     "options": [
