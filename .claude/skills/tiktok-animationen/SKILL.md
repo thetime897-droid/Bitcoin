@@ -34,6 +34,10 @@ Trade-Republic-Creatorn. Immer „Keine Anlageberatung“ in Skript und letzter 
 Ausgabe immer: `--tiktok` (H.264, auf die Karte zugeschnitten – die TikTok-App kann keine
 Transparenz) plus `--alpha` (WebM für CapCut). Beides nach `exports/<name>-…/` kopieren.
 
+**Aktien hervorheben:** Wird eine Aktie genannt, bekommt sie einen eigenen Clip mit großem Logo
+und Prozent-Pill. Für den freischwebenden Neon-Overlay-Stil siehe `STYLE.md` Abschnitt 8
+(Referenzbilder in `tiktok-clips/referenzen/`).
+
 **Export:** Für Einblendungen über eigenes Material immer `--alpha` (transparente
 .mov + .webm) statt Bluescreen. Papier- und Profi-Look dürfen gemischt werden.
 

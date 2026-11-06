@@ -129,3 +129,30 @@ Phone-Transkript). Für informative Erklärvideos Standard. Sounds nur Whoosh + 
   Layout `top` existiert nur noch technisch – **nicht verwenden**.
 - Jede Szene = **eigener Clip**, harte Schnitte im Editor (wie im Original).
 - Untertitel **nicht** in die Clips rendern – die kommen aus CapCut/Editor.
+
+
+## 8. Referenz für spätere Videos: Neon-Overlay-Stil (noch nicht gebaut)
+
+Vorlage: `referenzen/neon-overlay-nasdaq-crash.png`, `referenzen/neon-overlay-freibetrag.png`
+(zwei Videos vom Nutzer, Nov. 2026). Kein weißes Kartenfeld – die Elemente schweben
+**frei über der Trade-Republic-Bildschirmaufnahme**, die abgedunkelt im Hintergrund läuft.
+
+Typische Bausteine, die wir nachbauen sollen, wenn ein Video es braucht:
+
+- **Schlagzeile in schmaler, fetter Großschrift** (condensed, wie Bebas/Oswald), weiß mit
+  rotem oder grünem Neon-Glühen: „NASDAQ 100 CRASHT FAST −6 %“, „BESONDERS HART“.
+- **Aktie hervorheben:** großes weißes App-Icon-Logo (abgerundet) + rote/grüne Prozent-Pill
+  darunter („−17 %“), daneben ein zweites Logo – **immer nutzen, wenn eine Aktie genannt wird**.
+- **Logo-Reihen / gefächerte Karten** (Nvidia, AMD, Micron, Intel, Qualcomm) für ganze Sektoren.
+- **Nummerierte Grund-Badges** oben links („① Midterms“, „② Auf Pump“, „4 Gründe“) und
+  eine Recap-Liste aller Gründe am Ende.
+- **Neon-Linien-Icons im Dreier-Set** (Strom ⚡, Wasser 💧, Land 🏠) und schräge Stempel
+  („REGELN · KOSTEN ↑“, „ABGESTRAFT“, „gebaut auf Kredit“).
+- **Symbol-Grafiken:** Fed-Siegel + Kalenderblatt („DEZ ↑“ mit Wahrscheinlichkeits-Pill),
+  Waage („Ausgaben KI“ vs. „Einnahmen“), Schalter EIN/AUS, Münzreihe, Schild mit Person,
+  Bankgebäude mit rotem ✕, Tastenfeld-Schritte, Countdown-Kreis („30 S“), Kalender „31 Dez“.
+- **Riesige Neon-Zahlen** in Grün („1.000 €“, „250 €“) oder Rot („−260 € STEUER“).
+
+Wenn der Nutzer diesen Stil anfragt (oder ein Video über eine einzelne Aktie / Steuern / Einstellungen
+macht): als eigenes Theme (`"theme": "neon"`) bauen – transparenter Hintergrund, Export `--tiktok` und
+`--alpha`, Sound wie bei den Broker-Karten (Whoosh, Pop, Tick, Kasse).
