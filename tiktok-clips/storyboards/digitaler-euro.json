@@ -1,0 +1,282 @@
+{
+ "name": "digitaler-euro",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trWallet",
+   "duration": 5.4,
+   "script": "0:00 · Stell dir vor, dein Geld wird eingefroren – per Knopfdruck. Genau davor haben gerade viele Angst. Beim digitalen Euro.",
+   "params": {
+    "balance": "2.480,00 €",
+    "at": 0.25,
+    "countDur": 0.7,
+    "rows": [
+     {
+      "icon": "🥐",
+      "text": "Bäckerei",
+      "value": "−3,20 €"
+     },
+     {
+      "icon": "⛽",
+      "text": "Tankstelle",
+      "value": "−58,40 €"
+     },
+     {
+      "icon": "💼",
+      "text": "Gehalt",
+      "value": "+2.140,00 €"
+     }
+    ],
+    "rowsAt": 0.9,
+    "rowStep": 0.3,
+    "lockAt": 2.2,
+    "lockText": "EINGEFROREN?",
+    "from": 1000
+   }
+  },
+  {
+   "id": "02",
+   "type": "trYear",
+   "duration": 5.0,
+   "script": "0:05 · Denn der digitale Euro kommt wirklich. Die EZB plant die erste Ausgabe für 2029.",
+   "params": {
+    "title": "Der *digitale Euro*",
+    "label": "ERSTE AUSGABE GEPLANT",
+    "from": 2026,
+    "to": 2029,
+    "rollAt": 1.6,
+    "progress": 0.35,
+    "sub": "Pilotphase ab *2027* – wenn das Gesetz steht",
+    "sticker": {
+     "text": "kommt wirklich",
+     "icon": "🇪🇺",
+     "color": "#2f6bff",
+     "at": 2.8,
+     "x": 560,
+     "y": 628,
+     "size": 44
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trBars",
+   "duration": 5.4,
+   "script": "0:10 · Das EU-Parlament hat im Juli zugestimmt: 416 Ja- gegen 169 Nein-Stimmen. Jetzt wird das Gesetz final verhandelt.",
+   "params": {
+    "title": "EU-Parlament: *Ja* zum digitalen Euro",
+    "items": [
+     {
+      "name": "Ja",
+      "brand": {
+       "name": "JA",
+       "glyph": "✓",
+       "color": "#0d7d4d"
+      },
+      "value": 416,
+      "label": "416",
+      "at": 1.4
+     },
+     {
+      "name": "Nein",
+      "brand": {
+       "name": "NEIN",
+       "glyph": "✕",
+       "color": "#e5392f"
+      },
+      "value": 169,
+      "label": "169",
+      "at": 1.9
+     },
+     {
+      "name": "Enthaltung",
+      "brand": {
+       "name": "E",
+       "glyph": "–",
+       "color": "#8b9099"
+      },
+      "value": 22,
+      "label": "22",
+      "at": 2.3
+     }
+    ],
+    "note": "Abstimmung im Juli 2026 · jetzt Verhandlungen mit Rat & Kommission"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:16 · Und die Ängste sind groß: Der Staat sieht jede Zahlung. Geld wird programmiert – mit Ablaufdatum. Und Konten werden per Knopfdruck gesperrt.",
+   "params": {
+    "title": "Die größten *Ängste*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Totale Überwachung",
+      "sub": "„Der Staat sieht jede Zahlung“",
+      "mark": "?",
+      "markColor": "#e5392f",
+      "at": 1.6
+     },
+     {
+      "text": "Geld mit Ablaufdatum",
+      "sub": "„Programmiertes Geld“",
+      "mark": "?",
+      "markColor": "#e5392f",
+      "at": 3.4
+     },
+     {
+      "text": "Konto per Knopfdruck gesperrt",
+      "sub": "„Wer nicht spurt, zahlt nicht“",
+      "mark": "?",
+      "markColor": "#e5392f",
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 3.8,
+   "script": "0:23 · Aber was ist wirklich geplant? Faktencheck.",
+   "params": {
+    "brand": false,
+    "text": "Was ist *wirklich* geplant?",
+    "accent": "#2f6bff",
+    "size": 72,
+    "sticker": {
+     "text": "FAKTENCHECK",
+     "icon": "🔍",
+     "color": "#2f6bff",
+     "at": 1.4,
+     "x": 700,
+     "y": 330,
+     "size": 48
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trStrike",
+   "duration": 5.6,
+   "script": "0:27 · Geld mit Ablaufdatum? Die EZB sagt klar: Der digitale Euro wird kein programmierbares Geld.",
+   "params": {
+    "brand": "EZB",
+    "context": "Europäische Zentralbank",
+    "title": "Programmiertes *Geld*?",
+    "old": "Geld mit Ablaufdatum",
+    "new": "*Kein* programmierbares Geld",
+    "strikeAt": 1.6,
+    "newAt": 2.6,
+    "sub": "So die EZB zum digitalen Euro",
+    "pills": [
+     "Kein Ablaufdatum",
+     "Keine Zinsen"
+    ],
+    "pillsAt": 3.8
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 5.4,
+   "script": "0:32 · Unbegrenzt halten kannst du ihn aber nicht: Im Gespräch ist eine Obergrenze von rund 3.000 Euro pro Person.",
+   "params": {
+    "title": "Die *Haltegrenze*",
+    "accent": "#2f6bff",
+    "label": "pro Person – im Gespräch, noch nicht final",
+    "logos": [
+     "EZB"
+    ],
+    "value": "~3.000 €",
+    "size": 140,
+    "at": 1.8,
+    "sub": "Mehr landet *automatisch* auf deinem Bankkonto",
+    "pills": [
+     "Schutz für Banken"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 5.8,
+   "script": "0:38 · Offline sollen Zahlungen fast so privat sein wie Bargeld. Online sieht deine Bank die Zahlung – so wie heute auch.",
+   "params": {
+    "title": "Wer sieht *deine Zahlung*?",
+    "left": {
+     "label": "Offline",
+     "title": "fast wie Bargeld",
+     "result": "nur du & Empfänger",
+     "good": true,
+     "at": 0.9
+    },
+    "right": {
+     "label": "Online",
+     "title": "wie heute",
+     "result": "deine Bank sieht sie",
+     "good": false,
+     "at": 3.0
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trHeadline",
+   "duration": 4.8,
+   "script": "0:44 · Und Bargeld? Bleibt gesetzliches Zahlungsmittel – die EU will das sogar extra gesetzlich absichern.",
+   "params": {
+    "brand": false,
+    "text": "💶 Bargeld *bleibt*",
+    "size": 80,
+    "pills": [
+     "Gesetzliches Zahlungsmittel",
+     "Extra Bargeld-Gesetz geplant"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "10",
+   "type": "trWarn",
+   "duration": 5.8,
+   "script": "0:49 · Trotzdem bleibt ein Aber: Haltegrenze und Datenschutz legt am Ende die Politik fest – und Gesetze können sich ändern.",
+   "params": {
+    "tag": "Das Aber",
+    "live": true,
+    "text": "Gesetze können sich *ändern*",
+    "size": 56,
+    "sub": "Haltegrenze & Datenschutz entscheidet am Ende die *Politik*",
+    "pills": [
+     "Trilog läuft",
+     "Start frühestens 2029"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:55 · Würdest du den digitalen Euro nutzen – oder bleibst du bei Bargeld? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Nutzt du den *digitalen Euro*?",
+    "options": [
+     "Ja, klar",
+     "Nur offline",
+     "Niemals – Bargeld!"
+    ],
+    "note": "Keine Anlageberatung · Stand: November 2026"
+   }
+  }
+ ]
+}

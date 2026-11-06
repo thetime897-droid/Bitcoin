@@ -845,4 +845,61 @@
       stick(t);
     };
   };
+
+  // ------------------------------------------------------------ trWallet ---
+  // Phone-wallet card: EU-star badge, balance counts up, payments slide in,
+  // then everything greys out, a red lock drops in and a stamp hits
+  // ("EINGEFROREN?") with a shake.
+  T.euStars = (size = 64) => {
+    const st = [...Array(12)].map((_, i) => { const a = (i / 12) * Math.PI * 2; return `<text x="${50 + Math.sin(a) * 32}" y="${50 - Math.cos(a) * 32 + 5}" text-anchor="middle" font-size="15" fill="#ffcc00">★</text>`; }).join('');
+    return `<svg width="${size}" height="${size}" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#003399"/>${st}<text x="50" y="62" text-anchor="middle" font-size="34" font-weight="900" fill="#fff" font-family="Inter, sans-serif">€</text></svg>`;
+  };
+  S.trWallet = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    const inner = C.h('div', {}, card);
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '18px' } }, inner);
+    C.h('div', {}, head).innerHTML = T.euStars(84);
+    const hn = C.h('div', {}, head);
+    C.h('div', { style: { fontSize: '40px', fontWeight: 900, color: INK } }, hn, p.title || 'Digitaler Euro');
+    C.h('div', { style: { fontSize: '26px', fontWeight: 700, color: GR } }, hn, p.subtitle || 'Wallet');
+    C.h('div', { style: { fontSize: '30px', fontWeight: 800, color: GR, marginTop: '28px' } }, inner, p.label || 'Guthaben');
+    const num = big(inner, p.balance || '0 €', INK, p.size || 150);
+    const rows = (p.rows || []).map((r, i) => {
+      const el = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', padding: '18px 22px', borderRadius: '18px', background: '#f2f3f5', marginTop: i ? '12px' : '24px', fontSize: '32px', fontWeight: 800, color: INK } }, inner);
+      el.innerHTML = `<span>${r.icon ? r.icon + ' ' : ''}${r.text}</span><span style="color:${r.value && String(r.value).trim().startsWith('+') ? G : INK}">${r.value || ''}</span>`;
+      return { el, at: (p.rowsAt ?? 1.3) + i * (p.rowStep ?? 0.35) };
+    });
+    const lock = C.h('div', { class: 'ctr', style: { position: 'absolute', left: '50%', top: '42%', width: '170px', height: '170px', margin: '-85px 0 0 -85px', borderRadius: '50%', background: RD, boxShadow: '0 0 0 14px rgba(229,57,47,.18)', opacity: 0 } }, card);
+    lock.innerHTML = `<svg width="90" height="100" viewBox="0 0 90 100"><path d="M22 44 V30 a23 23 0 0 1 46 0 V44" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" class="shackle"/><rect x="8" y="42" width="74" height="54" rx="12" fill="#fff"/><circle cx="45" cy="64" r="8" fill="${RD}"/><rect x="41" y="66" width="8" height="16" rx="3" fill="${RD}"/></svg>`;
+    lock.dataset.own = 1;
+    const shackle = lock.querySelector('.shackle');
+    const stamp = stampEl(card, p.lockText || 'EINGEFROREN?', RD, 0, 0, 62);
+    stamp.style.left = '50%'; stamp.style.top = '68%';
+    const at = p.at ?? 0.4, lockAt = p.lockAt ?? 3.0, stampAt = lockAt + 0.45;
+    ctx.cue('whoosh', 0, 0.8);
+    T.countSfx(ctx, p.balance, at, p.countDur ?? 0.8);
+    if (rows.length) ctx.cue('whoosh', rows[0].at - 0.1, 0.35);
+    rows.forEach((r) => ctx.cue('tick', r.at + 0.05, 0.5));
+    ctx.cue('whoosh-down', lockAt - 0.1, 0.55); ctx.cue('lock', lockAt + 0.3, 0.8);
+    ctx.cue('stamp', stampAt, 0.8); ctx.cue('error', stampAt + 0.05, 0.35);
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      num.textContent = countable(p.balance) ? C.count(p.balance, C.k(t, at, p.countDur ?? 0.8, 'out'), p.from) : p.balance;
+      rows.forEach((r) => { const k = C.k(t, r.at, 0.4, 'expo'); r.el.style.opacity = C.k(t, r.at, 0.12); r.el.style.transform = `translateX(${(1 - k) * 60}px)`; });
+      const kG = C.k(t, lockAt, 0.4);
+      inner.style.filter = `grayscale(${kG}) blur(${kG * 3}px)`;
+      inner.style.opacity = 1 - 0.45 * kG;
+      const kL = C.k(t, lockAt, 0.45, 'back');
+      lock.style.opacity = C.k(t, lockAt, 0.12);
+      const shake = t > stampAt && t < stampAt + 0.4 ? Math.sin(t * 70) * 10 * (stampAt + 0.4 - t) / 0.4 : 0;
+      lock.style.transform = `translateY(${(1 - Math.min(1, kL)) * -120}px) scale(${Math.max(0, kL)}) rotate(${shake}deg)`;
+      shackle.setAttribute('transform', `translate(0 ${C.k(t, lockAt + 0.25, 0.15) * 8 - 8 + 8})`);
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.7 * (1 - Math.min(1, kS)))}) rotate(-8deg)`;
+      card.style.translate = shake ? `${shake * 0.8}px 0` : '0 0';
+      stick(t);
+    };
+  };
 })();

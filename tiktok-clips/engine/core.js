@@ -81,6 +81,13 @@
 
   // Interpolates a number inside a display string: "$64.6B" at k=.5 -> "$32.3B".
   C.count = (str, k, from = 0) => {
+    // German thousands + decimals ("2.480,00"): count as a real number.
+    const g = String(str).match(/^(.*?)(\d{1,3}(?:\.\d{3})+),(\d{1,2})(.*)$/);
+    if (g) {
+      const val = parseFloat(g[2].replace(/\./g, '') + '.' + g[3]);
+      const v = C.lerp(from, val, k).toFixed(g[3].length).split('.');
+      return g[1] + v[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',' + v[1] + g[4];
+    }
     const m = String(str).match(/^(.*?)(\d[\d,]*(?:\.\d+)?)(.*)$/);
     if (!m) return String(str);
     // German decimals ("53,4") count as decimals, not thousands separators.
@@ -127,6 +134,7 @@
     INTC: { name: 'INTEL', color: '#0071c5', glyph: 'i' },
     ARM: { name: 'ARM', color: '#0091bd', glyph: 'arm' },
     QCOM: { name: 'QUALCOMM', color: '#3253dc', glyph: 'Q' },
+    EZB: { name: 'EZB', color: '#003399', glyph: '€' },
     MSCI: { name: 'MSCI', color: '#002f6c', glyph: 'MSCI' },
     GS: { name: 'GOLDMAN SACHS', color: '#5b8ccf', glyph: 'GS' },
     IDX: { name: 'IDX COMPOSITE', color: '#c8102e', glyph: 'IDX' },
