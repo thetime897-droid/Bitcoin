@@ -1,0 +1,279 @@
+{
+ "name": "paraguay-bank",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.45,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trWarn",
+   "duration": 5.0,
+   "script": "0:00 · Über Nacht kommen 3 Millionen Menschen nicht mehr an ihr Geld. Ihre Bank ist einfach weg.",
+   "params": {
+    "tag": "Eilmeldung · Paraguay",
+    "text": "*3 Millionen* Kunden\nkommen nicht an ihr Geld",
+    "size": 64,
+    "sub": "Über Nacht: Bank *geschlossen*.",
+    "pills": [
+     "Ueno Bank",
+     "Nov. 2026"
+    ],
+    "pillsAt": 2.8,
+    "sticker": {
+     "text": "BANK GESCHLOSSEN",
+     "icon": "🏦",
+     "color": "#e5392f",
+     "at": 1.4,
+     "x": 780,
+     "y": 560,
+     "size": 52
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trList",
+   "duration": 6.6,
+   "script": "0:05 · In Paraguay hat die Zentralbank die Digitalbank Ueno übernommen. App offline, Karten gesperrt, Filialen dicht – niemand kann abheben oder überweisen.",
+   "params": {
+    "title": "Ueno: *alles gesperrt*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "App",
+      "value": "offline",
+      "ok": false,
+      "at": 2.8
+     },
+     {
+      "text": "Karten",
+      "value": "gesperrt",
+      "ok": false,
+      "at": 3.6
+     },
+     {
+      "text": "Filialen",
+      "value": "zu",
+      "ok": false,
+      "at": 4.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 5.8,
+   "script": "0:12 · Und das ist keine kleine Bank: Laut Berichten hat rund die Hälfte aller Erwachsenen in Paraguay ein Konto bei Ueno.",
+   "params": {
+    "brand": {
+     "name": "Ueno Bank",
+     "glyph": "u",
+     "color": "#00a39a"
+    },
+    "context": "Paraguay",
+    "label": "Erwachsene mit Ueno-Konto (laut Berichten)",
+    "icon": "👥",
+    "value": "~50 %",
+    "size": 180,
+    "at": 1.8,
+    "countDur": 1.0,
+    "sub": "rund *3 Millionen Kunden*"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 5.6,
+   "script": "0:18 · Der Grund: Das Eigenkapital war so dünn, dass die Bank unter die Hälfte des gesetzlichen Minimums fiel.",
+   "params": {
+    "title": "Der *Grund*",
+    "accent": "#e5392f",
+    "label": "Solvenzquote",
+    "logos": [
+     {
+      "name": "Ueno Bank",
+      "glyph": "u",
+      "color": "#00a39a"
+     }
+    ],
+    "value": "< 50 %",
+    "tone": "red",
+    "sub": "des *gesetzlichen Minimums*",
+    "at": 1.6,
+    "countDur": 0.8
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 6.6,
+   "script": "0:24 · Und die Warnung kam lange vorher: Schon im Juni hat die Zentralbank Ueno wegen zu vieler Kredite an Firmen der eigenen Eigentümer verwarnt.",
+   "params": {
+    "title": "Die *Warnung*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Juni 2026",
+      "sub": "Zentralbank warnt Ueno",
+      "value": "⚠",
+      "at": 2.2,
+      "ok": false
+     },
+     {
+      "text": "Kredite an Eigentümer-Firmen",
+      "sub": "zu hoch, zu riskant",
+      "value": "!",
+      "ok": false,
+      "at": 3.8
+     },
+     {
+      "text": "November",
+      "sub": "Bank wird übernommen",
+      "value": "Aus",
+      "ok": false,
+      "at": 5.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:31 · Besonders brisant: Rund 800 Millionen Dollar staatliche Gelder lagen bei Ueno – auch Geld aus der Renten- und Gesundheitskasse.",
+   "params": {
+    "title": "Staatsgeld *betroffen*",
+    "accent": "#e5392f",
+    "label": "öffentliche Einlagen bei Ueno",
+    "logos": [
+     {
+      "name": "Zentralbank",
+      "glyph": "BCP",
+      "color": "#1c3d6e"
+     }
+    ],
+    "value": "~800 Mio. $",
+    "tone": "red",
+    "sub": "rund *ein Viertel* aller Einlagen",
+    "at": 1.6,
+    "countDur": 1.0,
+    "second": {
+     "value": "Renten- & Gesundheitskasse",
+     "size": 50,
+     "tone": "red",
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:37 · Jetzt wird es politisch: Die Bank hat Verbindungen zu Präsident Santiago Peña. Acht Festnahmen angeordnet, Vermögen eingefroren, der Zentralbank-Chef tritt zurück.",
+   "params": {
+    "title": "Jetzt wird's *politisch*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Nähe zu Präsident Peña",
+      "sub": "Ermittler prüfen Vorwürfe",
+      "value": "!",
+      "ok": false,
+      "at": 2.6
+     },
+     {
+      "text": "8 Festnahmen angeordnet",
+      "sub": "Vermögen eingefroren",
+      "value": "8",
+      "ok": false,
+      "at": 4.0
+     },
+     {
+      "text": "Zentralbank-Chef",
+      "sub": "Rücktritt eingereicht",
+      "value": "weg",
+      "ok": false,
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trStat",
+   "duration": 6.6,
+   "script": "0:44 · Die gute Nachricht: Ein Einlagen-Fonds deckt rund 97 Prozent der Kunden komplett ab. Die ersten Auszahlungen sollen jetzt starten.",
+   "params": {
+    "brand": {
+     "name": "Zentralbank",
+     "glyph": "BCP",
+     "color": "#1c3d6e"
+    },
+    "context": "Die gute Nachricht",
+    "label": "Kunden, die voll abgesichert sein sollen",
+    "icon": "✓",
+    "value": "97 %",
+    "size": 180,
+    "at": 2.0,
+    "countDur": 1.0,
+    "sub": "erste Auszahlung bis *10 Mio. ₲* pro Kunde",
+    "cashAt": 3.2
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 5.4,
+   "script": "0:51 · Aber wer mehr als die Garantie auf dem Konto hatte, muss um sein Geld bangen.",
+   "params": {
+    "tag": "Aber",
+    "text": "Über der Garantie:\n*Geld in Gefahr*",
+    "size": 56,
+    "sub": "Keine Zusage für Beträge *über dem Limit*."
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.2,
+   "script": "0:56 · Die Lehre für dich: Kenn deine Einlagensicherung – in der EU sind das 100.000 Euro pro Bank – und leg nicht alles auf eine einzige Bank.",
+   "params": {
+    "title": "Die *Lehre* für dich",
+    "left": {
+     "label": "Einlagensicherung EU",
+     "title": "100.000 € pro Bank",
+     "result": "pro Person abgesichert",
+     "at": 2.2
+    },
+    "right": {
+     "label": "Fehler",
+     "title": "Alles bei einer Bank",
+     "result": "Klumpenrisiko",
+     "good": false,
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.4,
+   "script": "1:02 · Wie viele Banken nutzt du? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "question": "Wie viele *Banken* nutzt du?",
+    "options": [
+     "Nur eine",
+     "Zwei bis drei",
+     "Mehr als drei"
+    ],
+    "at": 0.9,
+    "step": 0.45,
+    "note": "Schreib's in die Kommentare · Keine Anlageberatung"
+   }
+  }
+ ]
+}

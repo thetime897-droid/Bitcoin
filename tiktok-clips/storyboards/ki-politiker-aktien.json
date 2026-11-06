@@ -1,0 +1,267 @@
+{
+ "name": "ki-politiker-aktien",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.45,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trWarn",
+   "duration": 5.0,
+   "script": "0:00 · Sie wollen KI regulieren – und kassieren gleichzeitig mit KI-Aktien ab. Folgen wir dem Geld.",
+   "params": {
+    "tag": "Follow the Money",
+    "text": "Sie wollen KI *regulieren* –\nund besitzen *KI-Aktien*",
+    "size": 64,
+    "sub": "Was Abgeordnete in ihren Depots haben.",
+    "pills": [
+     "US-Kongress",
+     "Offenlegungen"
+    ],
+    "pillsAt": 2.8,
+    "sticker": {
+     "text": "Follow the Money",
+     "icon": "💰",
+     "color": "#e5392f",
+     "at": 1.6,
+     "x": 790,
+     "y": 560,
+     "size": 52
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trList",
+   "duration": 6.2,
+   "script": "0:05 · Seit der Wahl crashen die KI-Aktien – weil die Demokraten KI und Rechenzentren stärker regulieren wollen.",
+   "params": {
+    "title": "Seit der Wahl: *KI-Crash*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Nvidia",
+      "value": "bis −9 %",
+      "ok": false,
+      "at": 1.6
+     },
+     {
+      "text": "Chip-Index",
+      "value": "−10 %",
+      "ok": false,
+      "at": 2.6
+     },
+     {
+      "text": "CoreWeave",
+      "value": "−7 %",
+      "ok": false,
+      "at": 3.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 6.4,
+   "script": "0:11 · Aber jetzt kommt's: 43 demokratische Abgeordnete haben selbst Geld in KI-Firmen stecken. Insgesamt sind es 117 Kongressmitglieder.",
+   "params": {
+    "brand": {
+     "name": "Demokraten",
+     "glyph": "D",
+     "color": "#1a5cc8"
+    },
+    "context": "Analyse von Sludge",
+    "label": "Demokratische Abgeordnete mit KI-Aktien",
+    "icon": "🏛",
+    "value": "43",
+    "size": 190,
+    "at": 1.2,
+    "countDur": 1.0,
+    "sub": "Insgesamt *117* Kongressmitglieder – auch *62 Republikaner*",
+    "pills": [
+     "Stand: Sept. 2026"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:17 · Zum Beispiel Josh Gottheimer – einer der Köpfe der KI-Kommission der Demokraten. Sein Haushalt hält bis zu 38 Millionen Dollar in KI-Aktien.",
+   "params": {
+    "title": "Josh *Gottheimer*",
+    "label": "Demokrat · KI-Kommission",
+    "logos": [
+     {
+      "name": "Gottheimer",
+      "glyph": "JG",
+      "color": "#1a5cc8"
+     }
+    ],
+    "value": "bis 38 Mio. $",
+    "sub": "KI-Aktien im Haushalt (*8,5–38 Mio. $*)",
+    "at": 2.4,
+    "countDur": 1.0,
+    "pills": [
+     "formt die KI-Politik mit"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 5.6,
+   "script": "0:24 · Das größte KI-Depot von allen: Nancy Pelosi. Bis zu 135 Millionen Dollar im Haushalt.",
+   "params": {
+    "title": "Nancy *Pelosi*",
+    "label": "größtes KI-Depot im Kongress",
+    "logos": [
+     {
+      "name": "Pelosi",
+      "glyph": "NP",
+      "color": "#1a5cc8"
+     }
+    ],
+    "value": "bis 135 Mio. $",
+    "sub": "Haushalt, laut *Offenlegungen*",
+    "at": 1.6,
+    "countDur": 1.1,
+    "sticker": {
+     "text": "Platz 1",
+     "icon": "🏆",
+     "color": "#18a565",
+     "at": 3.2,
+     "x": 820,
+     "y": 470,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trRule",
+   "duration": 6.8,
+   "script": "0:29 · Und Ron Wyden will Rechenzentren sogar extra besteuern – während seine Frau laut Berichten je über eine Million Dollar in Nvidia, Alphabet und Apple hält.",
+   "params": {
+    "title": "Ron *Wyden*",
+    "left": {
+     "label": "Politisch",
+     "title": "Steuer auf Rechenzentren",
+     "result": "Entwurf vorgelegt",
+     "at": 2.0
+    },
+    "right": {
+     "label": "Privat (Ehefrau)",
+     "title": ">1 Mio. $ je Aktie",
+     "result": "Nvidia, Alphabet, Apple",
+     "good": false,
+     "at": 4.0
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trStat",
+   "duration": 5.8,
+   "script": "0:36 · Warum dich das betrifft? 62 Prozent der Amerikaner besitzen Aktien – die meisten über ihre Altersvorsorge.",
+   "params": {
+    "brand": {
+     "name": "Gallup",
+     "glyph": "G",
+     "color": "#111317"
+    },
+    "context": "Umfrage 2025",
+    "label": "Amerikaner mit Aktien",
+    "icon": "👥",
+    "value": "62 %",
+    "size": 180,
+    "at": 1.6,
+    "countDur": 1.0,
+    "sub": "oft über die *Altersvorsorge* (401k)"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trStat",
+   "duration": 5.6,
+   "script": "0:42 · Und KI-Technik trug zuletzt rund ein Viertel zum US-Wirtschaftswachstum bei.",
+   "params": {
+    "brand": {
+     "name": "USA",
+     "glyph": "US",
+     "color": "#1c3d6e"
+    },
+    "context": "Wachstum",
+    "label": "Anteil von KI-Hardware am US-Wachstum",
+    "icon": "📈",
+    "value": "~25 %",
+    "size": 180,
+    "at": 1.4,
+    "countDur": 1.0,
+    "sub": "Server, Chips, *Netzwerk*"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 5.8,
+   "script": "0:47 · Heißt: Ein echter KI-Crash würde nicht nur Tech-Fans treffen – sondern Rentenkonten und die ganze Wirtschaft.",
+   "params": {
+    "tag": "Das Risiko",
+    "text": "Ein KI-Crash\ntrifft *alle*",
+    "size": 58,
+    "sub": "*Rentenkonten* und das *Wirtschaftswachstum*.",
+    "pills": [
+     "401(k)",
+     "Wachstum"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.0,
+   "script": "0:53 · Deshalb glaube ich: Reguliert wird – aber zerstört wird die Branche nicht. Dafür hängt zu viel Geld dran. Auch ihr eigenes.",
+   "params": {
+    "title": "Regulieren ≠ *zerstören*",
+    "left": {
+     "label": "Wahrscheinlich",
+     "title": "Strengere Regeln",
+     "result": "langsamerer Ausbau",
+     "at": 1.6
+    },
+    "right": {
+     "label": "Unwahrscheinlich",
+     "title": "Branche zerstören",
+     "result": "zu viel Geld hängt dran",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.6,
+   "script": "0:59 · Würdest du eine Branche hart regulieren, an der du selbst Millionen verdienst? Schreib's in die Kommentare. Keine Anlageberatung.",
+   "params": {
+    "question": "Regulieren sie eine Branche, an der sie *selbst verdienen*?",
+    "options": [
+     "Nie im Leben",
+     "Ja, trotzdem",
+     "Nur ein bisschen"
+    ],
+    "at": 0.9,
+    "step": 0.45,
+    "note": "Schreib's in die Kommentare · Keine Anlageberatung"
+   }
+  }
+ ]
+}
