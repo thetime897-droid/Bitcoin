@@ -127,6 +127,7 @@
     INTC: { name: 'INTEL', color: '#0071c5', glyph: 'i' },
     ARM: { name: 'ARM', color: '#0091bd', glyph: 'arm' },
     QCOM: { name: 'QUALCOMM', color: '#3253dc', glyph: 'Q' },
+    RHM: { name: 'RHEINMETALL', color: '#00447c', glyph: 'R' },
     SPACEX: { name: 'SPACEX', color: '#111317', glyph: 'X' },
     STARLINK: { name: 'STARLINK', color: '#111317', glyph: '✦' },
     VZ: { name: 'VERIZON', color: '#cd040b', glyph: '✓' },

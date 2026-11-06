@@ -211,6 +211,7 @@ Echte Logos: PNG mit `"logo": "logos/xyz.png"` am Ticker/Brand.
 | `trYear` | Jahres-Zähler (2026 → 2027) mit Teil-Fortschrittsbalken, Sticker z. B. „NICHT FERTIG“ | `title`, `label`, `from`, `to`, `progress`, `sticker` |
 | `trHybrid` | Zwei Icon-Kacheln (`tower`, `sat`, `phone`) mit „+“ und Ergebnis-Zeile | `title`, `items[{icon,label,title}]`, `result` |
 | `trPartner` | Partnerschaft „A × B“: zwei Logo-Kacheln mit Schriftzug fahren zusammen, ×-Badge, Zweck-Zeile, Datum-Pills | `tag`, `title`, `left/right{brand,word,wordColor,sub,logo}`, `xAt`, `line`, `pills[]`, `sticker` |
+| `trInsider` | Directors' Dealings: Live-Tag, Person + Firmen-Chip, Betrag zählt hoch, 3 Fakten-Kacheln, Stempel „KAUF“ | `tag`, `name`, `role`, `brand`, `label`, `value`, `facts[{label,value}]`, `stamp`, `sticker` |
 | `trChart` | App-Chartkarte: Name, Preis zählt, Änderung, Linie, Zeitraum-Tabs | `ticker`, `name`, `price`, `priceFrom`, `change`, `range`, `data`, `color`, `threshold{value,label,at}`, `sticker` |
 
 Beispiel: `storyboards/jahresendrallye-tr.json`.

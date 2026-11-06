@@ -1,0 +1,418 @@
+{
+ "name": "rheinmetall-insider",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trInsider",
+   "duration": 6.4,
+   "script": "0:00 · Der Rheinmetall-Chef kauft eigene Aktien für über eine halbe Million Euro – mitten im Crash. Was steckt dahinter?",
+   "params": {
+    "tag": "Insider-Kauf · Directors' Dealings",
+    "name": "Armin Papperger",
+    "role": "CEO Rheinmetall",
+    "label": "Eigene Aktien gekauft für",
+    "value": "502.484 €",
+    "size": 168,
+    "at": 0.3,
+    "countDur": 1.1,
+    "facts": [
+     {
+      "label": "Aktien",
+      "value": "585"
+     },
+     {
+      "label": "Ø-Kurs",
+      "value": "858,95 €"
+     },
+     {
+      "label": "Datum",
+      "value": "05.11.2026",
+      "size": 38
+     }
+    ],
+    "factsAt": 2.5,
+    "sticker": {
+     "text": "mitten im Crash",
+     "icon": "📉",
+     "color": "#e5392f",
+     "at": 3.6,
+     "x": 790,
+     "y": 770,
+     "size": 44
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 6.4,
+   "script": "0:06 · Denn einen Tag vorher kam die Gewinnwarnung – und die Aktie ist zeitweise um 18,5 Prozent eingebrochen. Bis knapp unter 819 Euro.",
+   "params": {
+    "ticker": "RHM",
+    "name": "Rheinmetall · Gewinnwarnung",
+    "price": "~819 €",
+    "priceFrom": 950,
+    "change": "-18,5 % (zeitweise)",
+    "range": "1W",
+    "data": [
+     946.2383276483316,
+     944.6623378930913,
+     949.8170370380908,
+     944.1859013282138,
+     948.9742046584515,
+     947.4261199383566,
+     944.503066170824,
+     949.1512804088173,
+     944.6057258151891,
+     948.7210722212392,
+     945.2370157742077,
+     945.5994378257463,
+     949.091345737579,
+     953.2685212467204,
+     946.3918657653427,
+     947.5400819537624,
+     951.7358706855944,
+     955.0924740399547,
+     951.5402602554057,
+     949.8898816695847,
+     955.8394741328523,
+     946.6965960369469,
+     954.9692999751021,
+     949.4345544017783,
+     948.1348585258821,
+     948.0240762269375,
+     949,
+     930,
+     890,
+     850,
+     825,
+     819,
+     832,
+     845,
+     852,
+     858,
+     850,
+     842,
+     840.2,
+     836.4678545928155,
+     838.2432965872459,
+     830.874382467963,
+     831.7956584521569,
+     829.9684506085524,
+     825.5506089132344,
+     824.6676700113908,
+     818.5023117997866,
+     816.1910950740155,
+     815.076241131126,
+     816.5860569283115,
+     812.2778813024981,
+     809.0846059344428,
+     808.9702091937754,
+     806
+    ],
+    "height": 520,
+    "drawAt": 0.4,
+    "drawDur": 1.8,
+    "sticker": {
+     "text": "GEWINNWARNUNG",
+     "icon": "⚠️",
+     "color": "#e5392f",
+     "at": 2.6,
+     "x": 560,
+     "y": 430,
+     "size": 46
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:12 · Statt 13,7 bis 14,2 Milliarden Euro Umsatz erwartet Rheinmetall für 2026 jetzt nur noch rund 13,2 Milliarden. Und auch die Marge sinkt – auf rund 18,5 Prozent.",
+   "params": {
+    "title": "Prognose 2026 *gesenkt*",
+    "accent": "#e5392f",
+    "label": "Umsatz – vorher 13,7–14,2 Mrd. €",
+    "logos": [
+     "RHM"
+    ],
+    "value": "~13,2 Mrd. €",
+    "tone": "red",
+    "size": 120,
+    "at": 0.8,
+    "second": {
+     "value": "Marge ~18,5 % statt 19 %",
+     "size": 60,
+     "tone": "red",
+     "at": 3.6
+    },
+    "pills": [
+     "Umsatz ▼",
+     "Marge ▼"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "04",
+   "type": "trWarn",
+   "duration": 6.0,
+   "script": "0:19 · Der Grund: Der Boxer-Auftrag „Arminius“ – die Modernisierung der Bundeswehr-Radpanzer – verzögert sich. Dieses Jahr kommt dafür kein Auftrag mehr rein.",
+   "params": {
+    "tag": "Der Grund",
+    "live": true,
+    "text": "Boxer-Auftrag *verzögert*",
+    "size": 58,
+    "sub": "Projekt „Arminius“: Modernisierung der Bundeswehr-Radpanzer · *kein Auftragseingang 2026*",
+    "pills": [
+     "Bundeswehr",
+     "Boxer",
+     "2026: 0 €"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "05",
+   "type": "trStat",
+   "duration": 4.8,
+   "script": "0:25 · Und JPMorgan zählt mit: Das ist schon die fünfte Umsatz- oder Gewinnwarnung in elf Monaten.",
+   "params": {
+    "label": "Umsatz- oder Gewinnwarnungen in 11 Monaten",
+    "tone": "red",
+    "icon": "!",
+    "value": "5",
+    "size": 200,
+    "at": 0.9,
+    "countDur": 1.0,
+    "sub": "laut *JPMorgan*-Analyst David Perry",
+    "sticker": {
+     "text": "schon wieder?!",
+     "icon": "😬",
+     "color": "#e5392f",
+     "at": 2.4,
+     "x": 760,
+     "y": 330,
+     "size": 44
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trBuy",
+   "duration": 5.6,
+   "script": "0:30 · Und genau da schlägt der Chef zu: 585 Aktien, im Schnitt zu 858,95 Euro – zusammen gut 502.000 Euro.",
+   "params": {
+    "brand": "RHM",
+    "name": "Armin Papperger",
+    "badge": "CEO · Kauf am 05.11.2026",
+    "value": "585 Aktien",
+    "tone": "green",
+    "size": 130,
+    "at": 0.8,
+    "sub": "× Ø *858,95 €* = *502.484 €*",
+    "tags": [
+     "Directors' Dealings",
+     "Gekauft",
+     "Mitten im Abverkauf"
+    ],
+    "tagsAt": 2.8
+   }
+  },
+  {
+   "id": "07",
+   "type": "trChart",
+   "duration": 5.6,
+   "script": "0:36 · Aber: Am Freitag rutscht die Aktie weiter auf rund 806 Euro. Heißt: Papperger liegt mit seinem Kauf schon im Minus.",
+   "params": {
+    "ticker": "RHM",
+    "name": "Rheinmetall · seit dem Chef-Kauf",
+    "price": "~806 €",
+    "priceFrom": 950,
+    "change": "-6 % unter Kaufkurs",
+    "range": "1W",
+    "data": [
+     949.5318437637078,
+     947.8865588575258,
+     952.7215725930027,
+     951.6566110039623,
+     946.996520662777,
+     950.1886815470311,
+     949.5852983714478,
+     952.9735971779564,
+     951.4055640055033,
+     946.8793776489018,
+     953.6906373638147,
+     944.9584355603274,
+     947.847894884519,
+     951.1269648512081,
+     944.9642897910495,
+     948.2229643380914,
+     943.6142947926966,
+     949.793269676455,
+     949,
+     915,
+     870,
+     830,
+     819,
+     835,
+     850,
+     859,
+     856,
+     848,
+     842,
+     840.2,
+     838.1165669297025,
+     834.7092075222191,
+     835.2538224946471,
+     828.8849801027848,
+     830.0623629301892,
+     827.3799590168402,
+     825.38916163426,
+     822.5246426504114,
+     823.7197422441003,
+     822.6824487608635,
+     817.0427866993572,
+     816.6882176437974,
+     809.9853554207778,
+     813.2369361704353,
+     810.9270308362213,
+     811.819767515733,
+     806
+    ],
+    "height": 480,
+    "drawAt": 0.3,
+    "drawDur": 1.6,
+    "threshold": {
+     "value": 858.95,
+     "label": "Chef-Kauf Ø 858,95 €",
+     "at": 2.3
+    },
+    "sticker": {
+     "text": "Chef im Minus",
+     "icon": "📉",
+     "color": "#e5392f",
+     "at": 3.4,
+     "x": 740,
+     "y": 330,
+     "size": 42
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:41 · Und die Analysten? UBS senkt das Kursziel von 1.360 auf 1.100 Euro, JPMorgan auf 1.150 – und Bernstein stuft sogar ab, Ziel 1.000 Euro.",
+   "params": {
+    "title": "Neue *Kursziele*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "UBS",
+      "sub": "vorher 1.360 € · bleibt bei „Kaufen“",
+      "value": "1.100 €",
+      "at": 1.0
+     },
+     {
+      "text": "JPMorgan",
+      "sub": "vorher 1.350 € · „Neutral“",
+      "value": "1.150 €",
+      "at": 2.6
+     },
+     {
+      "text": "Bernstein",
+      "sub": "vorher 1.200 € · abgestuft",
+      "value": "1.000 €",
+      "ok": false,
+      "at": 4.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "09",
+   "type": "trStat",
+   "duration": 5.4,
+   "script": "0:48 · Gleichzeitig sitzt Rheinmetall auf einem Rekord-Auftragsbestand: 80,5 Milliarden Euro, Stand Ende Juni.",
+   "params": {
+    "brand": "RHM",
+    "context": "Backlog 30.06.2026",
+    "label": "Auftragsbestand",
+    "icon": "€",
+    "value": "80,5 Mrd. €",
+    "size": 150,
+    "at": 0.8,
+    "countDur": 1.2,
+    "sub": "Ein Jahr vorher: *56 Mrd. €*",
+    "pills": [
+     "+44 % in 12 Monaten"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
+   "id": "10",
+   "type": "trMetric",
+   "duration": 5.4,
+   "script": "0:54 · Trotzdem: Vom Rekordhoch bei rund 2.000 Euro ist die Aktie inzwischen fast 60 Prozent entfernt.",
+   "params": {
+    "title": "Abstand zum *Rekordhoch*",
+    "accent": "#e5392f",
+    "label": "Rekordhoch ~2.000 € → jetzt ~806 €",
+    "logos": [
+     "RHM"
+    ],
+    "value": "−60 %",
+    "tone": "red",
+    "size": 150,
+    "at": 0.9,
+    "sub": "*fast* 60 % unter dem Hoch"
+   }
+  },
+  {
+   "id": "11",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:59 · Also: Signal oder Symbol? Der Chef zeigt Vertrauen – aber nach fünf Warnungen in elf Monaten muss Rheinmetall jetzt erst mal liefern.",
+   "params": {
+    "title": "Signal oder *Symbol*?",
+    "left": {
+     "label": "Pro",
+     "title": "Chef kauft selbst",
+     "result": "Vertrauens-Signal",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Contra",
+     "title": "5 Warnungen in 11 Monaten",
+     "result": "Erst mal liefern",
+     "good": false,
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "12",
+   "type": "trPoll",
+   "duration": 5.4,
+   "script": "1:06 · Würdest du jetzt wie Papperger nachkaufen – oder abwarten? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Kaufst du wie *Papperger* nach?",
+    "options": [
+     "Ja, wie der Chef",
+     "Erst mal abwarten",
+     "Finger weg"
+    ],
+    "note": "Keine Anlageberatung · Insiderkäufe sind keine Kaufempfehlung"
+   }
+  }
+ ]
+}

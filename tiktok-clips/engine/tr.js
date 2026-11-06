@@ -222,7 +222,7 @@
     const pr = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '16px' } }, hn);
     const price = C.h('div', { style: { fontSize: '62px', fontWeight: 900, color: INK, letterSpacing: '-1px' } }, pr, p.price || '');
     const chg = C.h('div', { style: { fontSize: '30px', fontWeight: 800, color: up ? CHK : RD } }, pr, (up ? '▲ ' : '▼ ') + String(p.change || '').replace(/^[-−+▲▼\s]+/, ''));
-    const W = 904, H = 400, X0 = 6, X1 = W - 6, Y0 = 30, Y1 = H - 20;
+    const W = 904, H = p.height || 400, X0 = 6, X1 = W - 6, Y0 = 30, Y1 = H - 20;
     const sv = C.svg(card, W, H); Object.assign(sv.style, { position: 'relative', display: 'block', marginTop: '18px' });
     const data = Array.isArray(p.data) ? p.data : C.walk(p.data || { from: 100, to: 94, points: 70, vol: 0.01, seed: 2 });
     let lo = Math.min(...data), hi = Math.max(...data);
@@ -790,6 +790,58 @@
       if (line) { line.style.opacity = C.k(t, lineAt, 0.15); line.style.transform = `translateY(${(1 - C.k(t, lineAt, 0.4, 'expo')) * 24}px)`; }
       if (pills.length) pills[0].parentNode.style.opacity = C.k(t, pillsAt - 0.1, 0.1);
       pills.forEach((el, i) => (el.style.transform = `scale(${Math.max(0, C.k(t, pillsAt + i * 0.18, 0.32, 'back'))})`));
+      stick(t);
+    };
+  };
+
+  // ----------------------------------------------------------- trInsider ---
+  // Directors' Dealings: live tag, person + company chip, big amount that
+  // counts up, three fact tiles, green "KAUF" stamp.
+  S.trInsider = (st, p, ctx) => {
+    const card = T.card(st, { pad: 44, ...p.card });
+    const tone = T.tone(p.tone);
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 18px', borderRadius: '12px', background: T.tint(p.tone), color: tone, fontSize: '28px', fontWeight: 800, marginBottom: '22px' } }, card);
+    const dot = C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: tone } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'Insider-Kauf'}</span>`);
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '20px' } }, card);
+    C.chip(p.brand || 'RHM', 104, head);
+    const hn = C.h('div', {}, head);
+    C.h('div', { style: { fontSize: '46px', fontWeight: 900, color: INK, lineHeight: 1.05 } }, hn, p.name || '');
+    C.h('div', { style: { fontSize: '28px', fontWeight: 700, color: GR, marginTop: '4px' } }, hn, p.role || '');
+    if (p.label) C.h('div', { style: { fontSize: '30px', fontWeight: 800, color: '#4b5058', marginTop: '28px' } }, card, p.label);
+    const num = big(card, p.value || '', tone, p.size || 160);
+    num.style.marginTop = '4px';
+    const grid = C.h('div', { class: 'ctr', style: { gap: '14px', marginTop: '26px', alignItems: 'stretch' } }, card);
+    grid.dataset.own = 1;
+    const tiles = (p.facts || []).map((f, i) => {
+      const d = C.h('div', { style: { flex: 1, padding: '18px 20px', borderRadius: '22px', background: '#f2f3f5' } }, grid);
+      C.h('div', { style: { fontSize: '24px', fontWeight: 700, color: GR } }, d, f.label);
+      C.h('div', { style: { fontSize: (f.size || 44) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', whiteSpace: 'nowrap' } }, d, f.value);
+      return { d, at: (p.factsAt ?? 2.0) + i * 0.22 };
+    });
+    const stamp = stampEl(card, p.stamp || 'KAUF', tone, 700, 40, 52);
+    const at = p.at ?? 0.6, stampAt = p.stampAt ?? at + (p.countDur ?? 1.1) + 0.1;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('pop', 0.3, 0.45);
+    T.countSfx(ctx, p.value, at, p.countDur ?? 1.1);
+    ctx.cue('stamp', stampAt, 0.7);
+    if (tiles.length) ctx.cue('whoosh', tiles[0].at - 0.08, 0.4);
+    tiles.forEach((tl) => ctx.cue('tick', tl.at + 0.05, 0.55));
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      const ph = (t * 1.4) % 1;
+      dot.style.boxShadow = `0 0 0 ${ph * 12}px ${tone}${Math.round(0x70 * (1 - ph)).toString(16).padStart(2, '0')}`;
+      num.textContent = countable(p.value) ? C.count(p.value, C.k(t, at, p.countDur ?? 1.1, 'out')) : p.value;
+      num.style.transform = `scale(${1 + 0.06 * Math.sin(Math.PI * C.k(t, at + (p.countDur ?? 1.1) - 0.05, 0.3))})`;
+      num.style.transformOrigin = '0 50%';
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `scale(${Math.max(0, kS) * (1 + 0.7 * (1 - Math.min(1, kS)))}) rotate(-10deg)`;
+      tiles.forEach((tl) => {
+        const k = C.k(t, tl.at, 0.45, 'back');
+        tl.d.style.opacity = C.k(t, tl.at, 0.12);
+        tl.d.style.transform = `translateY(${(1 - Math.min(1, k)) * 30}px) scale(${0.9 + 0.1 * Math.max(0, k)})`;
+      });
       stick(t);
     };
   };
