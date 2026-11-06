@@ -1,0 +1,267 @@
+{
+ "name": "freistellungsauftrag",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trStat",
+   "duration": 5.4,
+   "script": "0:00 · Du machst 1.000 Euro Gewinn – und Trade Republic zieht dir rund 260 Euro Steuern ab. Obwohl du keinen Cent zahlen müsstest.",
+   "params": {
+    "brand": "Trade Republic",
+    "context": "Steuern",
+    "label": "Abzug auf 1.000 € Gewinn",
+    "tone": "red",
+    "icon": "€",
+    "value": "−264 €",
+    "size": 180,
+    "at": 1.2,
+    "countDur": 1.0,
+    "sub": "*25 %* Abgeltungsteuer *+ Soli*",
+    "sticker": {
+     "text": "obwohl steuerfrei?!",
+     "icon": "😳",
+     "color": "#e5392f",
+     "at": 3.0,
+     "x": 790,
+     "y": 580,
+     "size": 46
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 5.0,
+   "script": "0:05 · Schuld ist eine einzige Einstellung, die bei den meisten fehlt. Und du hast sie in 30 Sekunden erledigt – ich zeig dir wie.",
+   "params": {
+    "context": "Einstellungen",
+    "text": "Diese *eine Einstellung*\nfehlt bei den meisten",
+    "pills": [
+     "30 Sekunden",
+     "Bis 1.000 € steuerfrei"
+    ],
+    "pillsAt": 2.4,
+    "sticker": {
+     "text": "AUS",
+     "icon": "⛔",
+     "color": "#e5392f",
+     "at": 1.2,
+     "x": 860,
+     "y": 200,
+     "size": 42,
+     "rotate": 8
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 6.2,
+   "script": "0:10 · Jeder in Deutschland darf pro Jahr 1.000 Euro Kapitalerträge steuerfrei kassieren. Verheiratet sogar 2.000 Euro zusammen.",
+   "params": {
+    "brand": {
+     "name": "Sparerpauschbetrag",
+     "glyph": "€",
+     "color": "#18a565"
+    },
+    "context": "pro Jahr",
+    "label": "Steuerfrei pro Person",
+    "icon": "🛡",
+    "value": "1.000 €",
+    "size": 180,
+    "at": 1.2,
+    "countDur": 1.0,
+    "sub": "Verheiratet: *2.000 €* zusammen",
+    "pills": [
+     "Sparerpauschbetrag"
+    ],
+    "pillsAt": 4.0
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 6.2,
+   "script": "0:16 · Und da zählt alles rein: Kursgewinne aus Aktien und ETFs, Dividenden – und deine Zinsen.",
+   "params": {
+    "title": "Was *alles* zählt",
+    "items": [
+     {
+      "text": "Kursgewinne",
+      "sub": "Aktien & ETFs",
+      "at": 1.6
+     },
+     {
+      "text": "Dividenden",
+      "sub": "Ausschüttungen",
+      "at": 2.6
+     },
+     {
+      "text": "Zinsen",
+      "sub": "Tagesgeld, Cash-Konto",
+      "at": 3.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:22 · Rechne mal: 10.000 Euro auf dem Konto bei 2,5 Prozent Zinsen – das sind 250 Euro im Jahr. Schon ein Viertel deines Freibetrags. Nur durch Zinsen.",
+   "params": {
+    "title": "Rechne *mal*",
+    "label": "10.000 € × 2,5 % Zinsen",
+    "logos": [
+     "Trade Republic"
+    ],
+    "value": "250 €",
+    "sub": "pro Jahr – *¼ deines Freibetrags*",
+    "at": 2.4,
+    "countDur": 1.0,
+    "second": {
+     "value": "nur durch Zinsen",
+     "size": 56,
+     "at": 4.6,
+     "color": "#111317"
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:28 · Das Problem: Trade Republic weiß nichts von deinem Freibetrag. Ohne Auftrag gehen sofort rund 26 Prozent Steuer weg – auf jeden Euro Gewinn.",
+   "params": {
+    "tag": "Das Problem",
+    "text": "Trade Republic weiß\n*nichts* von deinem Freibetrag",
+    "size": 50,
+    "sub": "Ohne Auftrag: sofort *~26 %* Steuer auf jeden Euro.",
+    "pills": [
+     "25 % + Soli",
+     "ggf. + Kirchensteuer"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 7.6,
+   "script": "0:35 · So geht's: Profil öffnen, auf Steuern, dann Freistellungsauftrag. Betrag eingeben, bestätigen – fertig.",
+   "params": {
+    "title": "So *geht's*",
+    "items": [
+     {
+      "text": "Profil öffnen",
+      "sub": "oben rechts",
+      "at": 1.2
+     },
+     {
+      "text": "Steuern",
+      "sub": "im Menü",
+      "at": 2.4
+     },
+     {
+      "text": "Freistellungsauftrag",
+      "sub": "antippen",
+      "at": 3.6
+     },
+     {
+      "text": "Betrag eingeben & bestätigen",
+      "sub": "z. B. 1.000 €",
+      "at": 5.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:43 · Aber Vorsicht bei mehreren Banken: Die 1.000 Euro gelten insgesamt – nicht pro Bank. Hast du Tagesgeld woanders, teilst du auf. Zum Beispiel 800 hier, 200 dort.",
+   "params": {
+    "title": "Mehrere *Banken*?",
+    "left": {
+     "label": "Richtig",
+     "title": "Aufteilen",
+     "result": "z. B. 800 € + 200 €",
+     "at": 2.2
+    },
+    "right": {
+     "label": "Falsch",
+     "title": "1.000 € pro Bank",
+     "result": "gilt nur einmal insgesamt",
+     "good": false,
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trMetric",
+   "duration": 6.2,
+   "script": "0:50 · Und ein Extra-Tipp, den kaum einer kennt: Hast du thesaurierende ETFs, wird jedes Jahr im Januar die Vorabpauschale fällig – und auch die läuft über deinen Freibetrag.",
+   "params": {
+    "title": "Extra-*Tipp*",
+    "label": "Thesaurierende ETFs",
+    "logos": [
+     "Trade Republic"
+    ],
+    "value": "Januar",
+    "sub": "*Vorabpauschale* nutzt deinen Freibetrag",
+    "at": 2.6,
+    "countUp": false,
+    "pills": [
+     "Freibetrag nicht leer lassen"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "10",
+   "type": "trStat",
+   "duration": 5.8,
+   "script": "0:56 · Schon zu viel gezahlt? Kein Drama – das Geld ist nicht weg. Über die Steuererklärung holst du es zurück.",
+   "params": {
+    "brand": {
+     "name": "Steuererklärung",
+     "glyph": "📄",
+     "color": "#18a565"
+    },
+    "context": "Anlage KAP",
+    "label": "Zu viel gezahlte Steuer",
+    "icon": "↩",
+    "value": "zurück",
+    "size": 150,
+    "at": 1.4,
+    "countUp": false,
+    "sub": "Geld ist *nicht weg*",
+    "cashAt": 2.2
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.6,
+   "script": "1:02 · Check's am besten noch vor dem 31. Dezember. Hast du deinen Freistellungsauftrag schon? Schreib's in die Kommentare. Keine Steuerberatung.",
+   "params": {
+    "question": "Freistellungsauftrag schon *eingestellt*?",
+    "options": [
+     "Ja, schon erledigt",
+     "Mach ich jetzt",
+     "Was ist das?"
+    ],
+    "at": 0.9,
+    "step": 0.45,
+    "note": "Vor dem 31.12. checken · Keine Steuer- oder Anlageberatung"
+   }
+  }
+ ]
+}

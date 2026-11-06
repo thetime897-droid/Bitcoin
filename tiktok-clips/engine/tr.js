@@ -36,7 +36,7 @@
     for (let i = 0; i < n; i++) ctx.cue('tick', at + dur * Math.pow(i / n, 1.6), 0.45);
     ctx.cue(/[€$¥£]|mrd|mio|euro|dollar|yuan/i.test(String(value)) ? 'cash' : 'pop', at + dur, 0.6);
   };
-  T.pillSfx = (ctx, n, at, step) => { for (let i = 0; i < n; i++) ctx.cue('tick', at + i * step + 0.05, 0.55); };
+  T.pillSfx = (ctx, n, at, step) => { if (n) ctx.cue('whoosh', at - 0.08, 0.3); for (let i = 0; i < n; i++) ctx.cue('tick', at + i * step + 0.05, 0.55); };
   // Small row above the headline: brand mark (or a ticker tile) + context.
   T.header = (card, brand = 'Trade Republic', context = '') => {
     const h = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '12px', fontSize: '28px', fontWeight: 800, color: INK, marginBottom: '14px' } }, card);
@@ -163,7 +163,7 @@
       const mark = C.h('div', { class: 'ctr', style: { width: '50px', height: '50px', borderRadius: '50%', background: it.ok === false ? RD : CHK, color: '#fff', fontSize: '28px', fontWeight: 900, flex: 'none' } }, r, it.ok === false ? '✕' : '✓');
       const at = it.at ?? 0.6 + i * 0.6;
       r.dataset.own = 1;
-      ctx.cue('tick', at - 0.3, 0.5);
+      ctx.cue('whoosh', at - 0.38, 0.32); ctx.cue('tick', at - 0.3, 0.5);
       ctx.cue(it.ok === false ? 'error' : 'pop', at + 0.02, it.ok === false ? 0.35 : 0.55);
       return { r, mark, at, i };
     });
