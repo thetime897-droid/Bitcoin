@@ -15,6 +15,7 @@
 | Zeit | Karte | Text |
 |---|---|---|
 | 0:00 | `01-trSignal` | Nie wieder Funkloch. Elon Musk baut gerade sein eigenes Handynetz – und Qualcomm liefert jetzt die Technik dafür. |
+| 0:03 | `01b-trPartner` | *(über „… und Qualcomm liefert jetzt die Technik dafür.“ legen)* Qualcomm × SpaceX: offizielle Partnerschaft für das Starlink-Mobile-5G-Netz, 4. Nov. 2026 |
 | 0:06 | `02-trStrike` | Starlink ist bald nicht mehr nur Satelliten-Internet – SpaceX will daraus einen echten Mobilfunkanbieter machen. |
 | 0:12 | `03-trVersus` | Damit greift Musk direkt Verizon, AT&T und T-Mobile an – und T-Mobile US gehört mehrheitlich unserer Deutschen Telekom. |
 | 0:18 | `04-trStat` | Schon 2025 hat SpaceX für rund 17 Milliarden Dollar Funkfrequenzen von EchoStar gekauft – die US-Mobilfunkaktien sind danach laut Berichten deutlich gefallen. |

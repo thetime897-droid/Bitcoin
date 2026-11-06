@@ -24,6 +24,52 @@
    }
   },
   {
+   "id": "01b",
+   "type": "trPartner",
+   "duration": 4.2,
+   "script": "0:03 · (unter „… und Qualcomm liefert jetzt die Technik dafür.“) – Partnerschaft Qualcomm × SpaceX",
+   "params": {
+    "tag": "Offizielle Partnerschaft",
+    "title": "Musks Handynetz: *Partner gefunden*",
+    "left": {
+     "brand": "QCOM",
+     "word": "Qualcomm",
+     "wordColor": "#3253dc",
+     "sub": "Chip-Technik"
+    },
+    "right": {
+     "brand": "SPACEX",
+     "word": "SPACEX",
+     "wordColor": "#111317",
+     "spacing": "6px",
+     "wordSize": 50,
+     "sub": "Starlink Mobile"
+    },
+    "at": [
+     0.35,
+     0.75
+    ],
+    "xAt": 1.25,
+    "line": "Gemeinsam für das *Starlink-Mobile-5G-Netz*",
+    "lineAt": 1.9,
+    "pills": [
+     "4. Nov. 2026",
+     "Dragonwing-Chips",
+     "🇺🇸 USA"
+    ],
+    "pillsAt": 2.6,
+    "sticker": {
+     "text": "Deal!",
+     "icon": "🤝",
+     "color": "#2f6bff",
+     "at": 3.2,
+     "x": 915,
+     "y": 740,
+     "size": 38
+    }
+   }
+  },
+  {
    "id": "02",
    "type": "trStrike",
    "duration": 5.8,

@@ -738,4 +738,59 @@
       stick(t);
     };
   };
+
+  // ----------------------------------------------------------- trPartner ---
+  // "Qualcomm × SpaceX": two logo tiles (chip + wordmark) slide in from the
+  // sides, an × badge slams between them, a line connects them, then the
+  // purpose line and date pills land. Wordmarks are typeset, not logo files
+  // (pass `logo` on a side to use a real image).
+  S.trPartner = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 18px', borderRadius: '12px', background: '#e6eeff', color: BL, fontSize: '26px', fontWeight: 800, marginBottom: '18px' } }, card);
+    const dot = C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: BL } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'Offizielle Partnerschaft'}</span>`);
+    if (p.title) C.h('div', { style: { fontSize: (p.size || 56) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', lineHeight: 1.1, marginBottom: '26px' } }, card, T.rich(p.title, p.accent ? C.color(p.accent) : BL));
+    const row = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', position: 'relative', height: '250px' } }, card);
+    const link = C.h('div', { style: { position: 'absolute', left: '200px', right: '200px', top: '50%', height: '6px', marginTop: '-3px', borderRadius: '3px', background: `linear-gradient(90deg, ${C.brand(p.left?.brand).color}, ${C.brand(p.right?.brand).color})`, transformOrigin: '50% 50%' } }, row);
+    const sides = [p.left || {}, p.right || {}].map((sd, i) => {
+      const b = C.brand(sd.brand);
+      const col = C.h('div', { class: 'ctr', style: { flexDirection: 'column', gap: '14px', width: '400px', height: '250px', borderRadius: '30px', background: '#f6f7f8', border: `4px solid ${b.color}22`, position: 'relative', zIndex: 1 } }, row);
+      C.chip(sd.logo ? { ...b, logo: sd.logo } : sd.brand, 110, col);
+      const wm = C.h('div', { style: { fontSize: (sd.wordSize || 54) + 'px', fontWeight: 900, color: sd.wordColor || b.color, letterSpacing: sd.spacing ?? '-1px', lineHeight: 1 } }, col, sd.word || b.name);
+      if (sd.sub) C.h('div', { style: { fontSize: '24px', fontWeight: 700, color: GR } }, col, sd.sub);
+      return { col, wm, at: p.at?.[i] ?? 0.3 + i * 0.35 };
+    });
+    const x = C.h('div', { class: 'ctr', style: { position: 'absolute', left: '50%', top: '50%', width: '104px', height: '104px', margin: '-52px 0 0 -52px', borderRadius: '50%', background: INK, color: '#fff', fontSize: '60px', fontWeight: 900, boxShadow: '0 0 0 10px #fff', zIndex: 2 } }, row, p.joiner || '×');
+    const xAt = p.xAt ?? sides[1].at + 0.45;
+    let line;
+    if (p.line) { line = C.h('div', { style: { fontSize: '40px', fontWeight: 900, color: INK, marginTop: '26px', lineHeight: 1.15 } }, card, T.rich(p.line, p.accent ? C.color(p.accent) : BL)); line.dataset.own = 1; }
+    const pills = p.pills ? T.pills(card, p.pills) : [];
+    if (pills.length) pills[0].parentNode.dataset.own = 1;
+    const lineAt = p.lineAt ?? xAt + 0.5, pillsAt = p.pillsAt ?? lineAt + 0.6;
+    ctx.cue('whoosh', 0, 0.8);
+    sides.forEach((sd) => { ctx.cue('whoosh', sd.at - 0.05, 0.55); ctx.cue('pop', sd.at + 0.25, 0.5); });
+    ctx.cue('impact', xAt + 0.05, 0.35); ctx.cue('pop', xAt + 0.05, 0.6); ctx.cue('shine', xAt + 0.25, 0.4);
+    if (line) { ctx.cue('whoosh', lineAt - 0.1, 0.45); ctx.cue('tick', lineAt + 0.1, 0.5); }
+    T.pillSfx(ctx, pills.length, pillsAt, 0.18);
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      const ph = (t * 1.3) % 1;
+      dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(47,107,255,${0.45 * (1 - ph)})`;
+      sides.forEach((sd, i) => {
+        const k = C.k(t, sd.at, 0.55, 'expo');
+        sd.col.style.opacity = C.k(t, sd.at, 0.15);
+        sd.col.style.transform = `translateX(${(1 - k) * (i ? 260 : -260)}px) translateY(${Math.sin(t * 1.6 + i * 2) * 3}px)`;
+        sd.wm.style.clipPath = `inset(0 ${100 - C.k(t, sd.at + 0.2, 0.45, 'inOut') * 100}% 0 0)`;
+      });
+      link.style.transform = `scaleX(${C.k(t, xAt - 0.1, 0.4, 'out')})`;
+      const kx = C.k(t, xAt, 0.4, 'back');
+      x.style.transform = `scale(${Math.max(0, kx) * (1 + Math.sin(t * 3) * 0.02)}) rotate(${(1 - C.k(t, xAt, 0.4)) * -180}deg)`;
+      x.style.boxShadow = `0 0 0 10px #fff, 0 0 0 ${10 + C.k(t, xAt + 0.1, 0.6) * 30}px rgba(47,107,255,${0.35 * (1 - C.k(t, xAt + 0.1, 0.6))})`;
+      if (line) { line.style.opacity = C.k(t, lineAt, 0.15); line.style.transform = `translateY(${(1 - C.k(t, lineAt, 0.4, 'expo')) * 24}px)`; }
+      if (pills.length) pills[0].parentNode.style.opacity = C.k(t, pillsAt - 0.1, 0.1);
+      pills.forEach((el, i) => (el.style.transform = `scale(${Math.max(0, C.k(t, pillsAt + i * 0.18, 0.32, 'back'))})`));
+      stick(t);
+    };
+  };
 })();
