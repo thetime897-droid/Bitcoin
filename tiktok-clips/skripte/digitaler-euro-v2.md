@@ -23,7 +23,8 @@
 | 0:31 | `07-trRule` | Offline sollen Zahlungen fast so privat sein wie Bargeld. Online sieht deine Bank die Zahlung – wie heute auch. |
 | 0:37 | `08-trHeadline` | Und Bargeld? Bleibt gesetzliches Zahlungsmittel – die EU will das sogar extra absichern. |
 | 0:41 | `09-trWarn` | Aber: Die genaue Grenze und den Datenschutz entscheidet am Ende die Politik – und Gesetze können sich ändern. |
-| 0:47 | `10-trPoll` | Würdest du den digitalen Euro nutzen – oder bleibst du bei Bargeld? Schreib's in die Kommentare. *(Einblendung: Keine Anlageberatung)* |
+| 0:47 | `09b-trList` | Meine Meinung: Ich will mein Bargeld behalten – ohne dass Gesetze das später still und leise ändern. Und private Käufe ohne niedrige Limits. |
+| 0:55 | `10-trPoll` | Würdest du den digitalen Euro nutzen – oder bleibst du bei Bargeld? Schreib's in die Kommentare. *(Einblendung: Keine Anlageberatung)* |
 
 ## Hook-Text (On-Screen, erste Sekunde)
 

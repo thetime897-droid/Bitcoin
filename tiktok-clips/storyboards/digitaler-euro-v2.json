@@ -248,10 +248,37 @@
    }
   },
   {
+   "id": "09b",
+   "type": "trList",
+   "duration": 8.0,
+   "script": "0:47 · Meine Meinung: Ich will mein Bargeld behalten – ohne dass Gesetze das später still und leise ändern. Und private Käufe ohne niedrige Limits.",
+   "params": {
+    "title": "Meine *Meinung*",
+    "items": [
+     {
+      "text": "💶 Bargeld *behalten*",
+      "sub": "Euro in bar – heute und in Zukunft",
+      "at": 1.4
+     },
+     {
+      "text": "Keine Änderung *durch die Hintertür*",
+      "sub": "Kein stilles Umschreiben der Gesetze",
+      "at": 3.6
+     },
+     {
+      "text": "Private Käufe *ohne niedrige Limits*",
+      "sub": "Mein Geld, meine Entscheidung",
+      "at": 6.0
+     }
+    ],
+    "card": {}
+   }
+  },
+  {
    "id": "10",
    "type": "trPoll",
    "duration": 4.8,
-   "script": "0:47 · Würdest du den digitalen Euro nutzen – oder bleibst du bei Bargeld? Schreib's in die Kommentare.",
+   "script": "0:55 · Würdest du den digitalen Euro nutzen – oder bleibst du bei Bargeld? Schreib's in die Kommentare.",
    "params": {
     "question": "Nutzt du den *digitalen Euro*?",
     "options": [
