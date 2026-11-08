@@ -869,7 +869,7 @@
       el.innerHTML = `<span>${r.icon ? r.icon + ' ' : ''}${r.text}</span><span style="color:${r.value && String(r.value).trim().startsWith('+') ? G : INK}">${r.value || ''}</span>`;
       return { el, at: (p.rowsAt ?? 1.3) + i * (p.rowStep ?? 0.35) };
     });
-    const lock = C.h('div', { class: 'ctr', style: { position: 'absolute', left: '50%', top: '42%', width: '170px', height: '170px', margin: '-85px 0 0 -85px', borderRadius: '50%', background: RD, boxShadow: '0 0 0 14px rgba(229,57,47,.18)', opacity: 0 } }, card);
+    const lock = C.h('div', { class: 'ctr', style: { position: 'absolute', left: p.lockX || '50%', top: p.lockY || '42%', width: '170px', height: '170px', margin: '-85px 0 0 -85px', borderRadius: '50%', background: RD, boxShadow: '0 0 0 14px rgba(229,57,47,.18)', opacity: 0 } }, card);
     lock.innerHTML = `<svg width="90" height="100" viewBox="0 0 90 100"><path d="M22 44 V30 a23 23 0 0 1 46 0 V44" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" class="shackle"/><rect x="8" y="42" width="74" height="54" rx="12" fill="#fff"/><circle cx="45" cy="64" r="8" fill="${RD}"/><rect x="41" y="66" width="8" height="16" rx="3" fill="${RD}"/></svg>`;
     lock.dataset.own = 1;
     const shackle = lock.querySelector('.shackle');
