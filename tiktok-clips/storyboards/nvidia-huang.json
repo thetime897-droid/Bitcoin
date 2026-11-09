@@ -10,12 +10,12 @@
   {
    "id": "01",
    "type": "trWarn",
-   "duration": 6.0,
-   "script": "0:00 · Nvidia-Chef Jensen Huang gesteht eine Affäre – und laut Berichten halten US-Behörden die Frau für eine chinesische Geheimdienstquelle.",
+   "duration": 7.0,
+   "script": "0:00 · Das passiert jetzt bei Nvidia: Chef Jensen Huang gesteht eine Affäre – und laut Berichten halten US-Behörden die Frau für eine chinesische Geheimdienstquelle.",
    "params": {
     "brand": "NVDA",
     "context": "Breaking",
-    "tag": "BREAKING",
+    "tag": "DAS PASSIERT JETZT",
     "live": true,
     "text": "Nvidia-Chef gesteht *Affäre*",
     "size": 60,
@@ -24,12 +24,12 @@
      "New York Times",
      "Financial Times"
     ],
-    "pillsAt": 3.6,
+    "pillsAt": 4.6,
     "sticker": {
      "text": "Spionage-Verdacht",
      "icon": "🕵️",
      "color": "#e5392f",
-     "at": 2.4,
+     "at": 3.4,
      "x": 760,
      "y": 200,
      "size": 44
@@ -40,7 +40,7 @@
    "id": "02",
    "type": "trChart",
    "duration": 5.6,
-   "script": "0:06 · Die Aktie kassiert einen Doppelschlag: erst minus 9,3 Prozent im Tech-Ausverkauf – dann vorbörslich nochmal rund 5 Prozent.",
+   "script": "0:07 · Die Aktie kassiert einen Doppelschlag: erst minus 9,3 Prozent im Tech-Ausverkauf – dann vorbörslich nochmal rund 5 Prozent.",
    "params": {
     "ticker": "NVDA",
     "name": "Nvidia · Doppelschlag",
@@ -105,7 +105,7 @@
    "id": "03",
    "type": "trStat",
    "duration": 5.0,
-   "script": "0:12 · Und das Timing ist brutal: In 8 Tagen, am 17. November, legt Nvidia Zahlen vor.",
+   "script": "0:13 · Und das Timing ist brutal: In 8 Tagen, am 17. November, legt Nvidia Zahlen vor.",
    "params": {
     "brand": "NVDA",
     "context": "Quartalszahlen",
@@ -123,7 +123,7 @@
    "id": "04",
    "type": "trMetric",
    "duration": 5.4,
-   "script": "0:17 · Erwartet werden rund 109 Milliarden Dollar Umsatz und 2,47 Dollar Gewinn je Aktie.",
+   "script": "0:18 · Erwartet werden rund 109 Milliarden Dollar Umsatz und 2,47 Dollar Gewinn je Aktie.",
    "params": {
     "title": "Was die Börse *erwartet*",
     "label": "Umsatz im Quartal (Analysten-Schätzung)",
@@ -145,7 +145,7 @@
    "id": "05",
    "type": "trList",
    "duration": 7.0,
-   "script": "0:22 · Was jetzt passiert: Nvidias Verwaltungsrat startet eine unabhängige Untersuchung. Und Republikaner wollen, dass Huang am 18. November vor dem Kongress aussagt.",
+   "script": "0:23 · Was jetzt passiert: Nvidias Verwaltungsrat startet eine unabhängige Untersuchung. Und Republikaner wollen, dass Huang am 18. November vor dem Kongress aussagt.",
    "params": {
     "title": "Was jetzt *passiert*",
     "accent": "#e5392f",
@@ -171,7 +171,7 @@
    "id": "06",
    "type": "trRule",
    "duration": 6.0,
-   "script": "0:29 · Rückendeckung gibt's trotzdem: Der Verwaltungsrat sieht keine Hinweise, dass Geschäftsgeheimnisse betroffen sind. Und Trump nennt Huang einen ehrenwerten Mann.",
+   "script": "0:30 · Rückendeckung gibt's trotzdem: Der Verwaltungsrat sieht keine Hinweise, dass Geschäftsgeheimnisse betroffen sind. Und Trump nennt Huang einen ehrenwerten Mann.",
    "params": {
     "title": "Die *Rückendeckung*",
     "left": {
@@ -194,7 +194,7 @@
    "id": "07",
    "type": "trHeadline",
    "duration": 5.0,
-   "script": "0:35 · Analyst Dan Ives spricht trotzdem von einem blauen Auge für Huang – und das drückt erstmal auf die Aktie.",
+   "script": "0:36 · Analyst Dan Ives spricht trotzdem von einem blauen Auge für Huang – und das drückt erstmal auf die Aktie.",
    "params": {
     "brand": false,
     "text": "„Ein *blaues Auge* für Jensen“",
@@ -211,7 +211,7 @@
    "id": "08",
    "type": "trWarn",
    "duration": 5.6,
-   "script": "0:40 · Heißt: Am 17. schaut die Börse nicht nur auf die Zahlen – sondern auch darauf, ob Huang Chef bleibt.",
+   "script": "0:41 · Heißt: Am 17. schaut die Börse nicht nur auf die Zahlen – sondern auch darauf, ob Huang Chef bleibt.",
    "params": {
     "tag": "Die große Frage",
     "live": true,
@@ -224,7 +224,7 @@
    "id": "09",
    "type": "trPoll",
    "duration": 5.0,
-   "script": "0:46 · Was meinst du: Kaufchance vor den Zahlen – oder Finger weg? Schreib's in die Kommentare.",
+   "script": "0:47 · Was meinst du: Kaufchance vor den Zahlen – oder Finger weg? Schreib's in die Kommentare.",
    "params": {
     "question": "Nvidia jetzt: *Kaufchance*?",
     "options": [

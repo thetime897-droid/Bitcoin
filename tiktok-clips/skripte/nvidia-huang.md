@@ -4,7 +4,7 @@
 
 ## Storytelling: Hook → aufdecken
 
-- **Hook (0:00):** Breaking-Karte mit Nvidia-Logo und pulsierendem Live-Punkt. „Nvidia-Chef gesteht Affäre“, Sticker „🕵️ Spionage-Verdacht“, Quellen-Pills NYT/FT.
+- **Hook (0:00):** Breaking-Karte „DAS PASSIERT JETZT“ mit Nvidia-Logo und pulsierendem Live-Punkt. „Nvidia-Chef gesteht Affäre“, Sticker „🕵️ Spionage-Verdacht“, Quellen-Pills NYT/FT.
 - **Folge (0:06):** Chart mit Doppelschlag (−9,3 %, dann −5 % vorbörslich).
 - **Spannung (0:12):** Countdown „8 Tage“ bis zu den Zahlen → was erwartet wird.
 - **Eskalation (0:22):** Untersuchung + geforderte Kongress-Aussage *einen Tag nach den Zahlen*.
@@ -15,15 +15,15 @@
 
 | Zeit | Karte | Text |
 |---|---|---|
-| 0:00 | `01-trWarn` | Nvidia-Chef Jensen Huang gesteht eine Affäre – und laut Berichten halten US-Behörden die Frau für eine chinesische Geheimdienstquelle. |
-| 0:06 | `02-trChart` | Die Aktie kassiert einen Doppelschlag: erst minus 9,3 Prozent im Tech-Ausverkauf – dann vorbörslich nochmal rund 5 Prozent. |
-| 0:12 | `03-trStat` | Und das Timing ist brutal: In 8 Tagen, am 17. November, legt Nvidia Zahlen vor. |
-| 0:17 | `04-trMetric` | Erwartet werden rund 109 Milliarden Dollar Umsatz und 2,47 Dollar Gewinn je Aktie. |
-| 0:22 | `05-trList` | Was jetzt passiert: Nvidias Verwaltungsrat startet eine unabhängige Untersuchung. Und Republikaner wollen, dass Huang am 18. November vor dem Kongress aussagt. |
-| 0:29 | `06-trRule` | Rückendeckung gibt's trotzdem: Der Verwaltungsrat sieht keine Hinweise, dass Geschäftsgeheimnisse betroffen sind. Und Trump nennt Huang einen ehrenwerten Mann. |
-| 0:35 | `07-trHeadline` | Analyst Dan Ives spricht trotzdem von einem blauen Auge für Huang – und das drückt erstmal auf die Aktie. |
-| 0:40 | `08-trWarn` | Heißt: Am 17. schaut die Börse nicht nur auf die Zahlen – sondern auch darauf, ob Huang Chef bleibt. |
-| 0:46 | `09-trPoll` | Was meinst du: Kaufchance vor den Zahlen – oder Finger weg? Schreib's in die Kommentare. *(Einblendung: Keine Anlageberatung)* |
+| 0:00 | `01-trWarn` | Das passiert jetzt bei Nvidia: Chef Jensen Huang gesteht eine Affäre – und laut Berichten halten US-Behörden die Frau für eine chinesische Geheimdienstquelle. |
+| 0:07 | `02-trChart` | Die Aktie kassiert einen Doppelschlag: erst minus 9,3 Prozent im Tech-Ausverkauf – dann vorbörslich nochmal rund 5 Prozent. |
+| 0:13 | `03-trStat` | Und das Timing ist brutal: In 8 Tagen, am 17. November, legt Nvidia Zahlen vor. |
+| 0:18 | `04-trMetric` | Erwartet werden rund 109 Milliarden Dollar Umsatz und 2,47 Dollar Gewinn je Aktie. |
+| 0:23 | `05-trList` | Was jetzt passiert: Nvidias Verwaltungsrat startet eine unabhängige Untersuchung. Und Republikaner wollen, dass Huang am 18. November vor dem Kongress aussagt. |
+| 0:30 | `06-trRule` | Rückendeckung gibt's trotzdem: Der Verwaltungsrat sieht keine Hinweise, dass Geschäftsgeheimnisse betroffen sind. Und Trump nennt Huang einen ehrenwerten Mann. |
+| 0:36 | `07-trHeadline` | Analyst Dan Ives spricht trotzdem von einem blauen Auge für Huang – und das drückt erstmal auf die Aktie. |
+| 0:41 | `08-trWarn` | Heißt: Am 17. schaut die Börse nicht nur auf die Zahlen – sondern auch darauf, ob Huang Chef bleibt. |
+| 0:47 | `09-trPoll` | Was meinst du: Kaufchance vor den Zahlen – oder Finger weg? Schreib's in die Kommentare. *(Einblendung: Keine Anlageberatung)* |
 
 ## Faktencheck
 
