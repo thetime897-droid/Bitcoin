@@ -903,4 +903,63 @@
       stick(t);
     };
   };
+
+  // ------------------------------------------------------------ trVanish ---
+  // Broker watchlist: the target row glitches, gets struck through, collapses
+  // ("VERSCHWINDET?" stamp) and an optional replacement row slides into its
+  // place (TSLA -> SPCX).
+  S.trVanish = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    C.h('div', { style: { fontSize: '30px', fontWeight: 800, color: GR, marginBottom: '6px' } }, card, p.label || 'Meine Watchlist');
+    if (p.title) C.h('div', { style: { fontSize: (p.size || 58) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', lineHeight: 1.08, marginBottom: '22px' } }, card, T.rich(p.title, p.accent ? C.color(p.accent) : RD));
+    const list = C.h('div', { style: { position: 'relative' } }, card);
+    const mkRow = (r, parent) => {
+      const el = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '20px', padding: '18px 22px', borderRadius: '22px', background: '#f2f3f5', marginTop: '12px', position: 'relative', overflow: 'hidden' } }, parent);
+      C.chip(r.brand, 84, el);
+      const tx = C.h('div', { style: { flex: 1 } }, el);
+      const nm = C.h('div', { style: { fontSize: '40px', fontWeight: 900, color: INK } }, tx, r.name || C.brand(r.brand).name);
+      C.h('div', { style: { fontSize: '24px', fontWeight: 700, color: GR } }, tx, r.sub || '');
+      const pill = C.h('div', { style: { padding: '8px 18px', borderRadius: '14px', background: '#ddf4e8', color: G, fontSize: '26px', fontWeight: 800, whiteSpace: 'nowrap' } }, el, r.status || 'handelbar');
+      const strike = C.h('div', { style: { position: 'absolute', left: '14px', top: '50%', height: '7px', marginTop: '-3px', width: '0%', borderRadius: '4px', background: RD } }, el);
+      return { el, nm, pill, strike };
+    };
+    const rows = (p.rows || []).map((r) => ({ ...mkRow(r, list), r }));
+    const tgt = rows[p.target ?? 0];
+    let rep;
+    if (p.replace) { rep = mkRow(p.replace, list); rep.el.style.position = 'absolute'; rep.el.style.left = 0; rep.el.style.right = 0; rep.el.style.marginTop = 0; rep.el.style.border = `4px solid ${BL}`; rep.el.style.background = '#eef3ff'; rep.pill.style.background = '#e6eeff'; rep.pill.style.color = BL; }
+    const stamp = stampEl(card, p.stamp || 'VERSCHWINDET?', RD, 0, 0, 60);
+    const at = p.at ?? 0.5, glitchAt = p.glitchAt ?? 1.3, goneAt = glitchAt + 0.9, repAt = p.replaceAt ?? goneAt + 0.9;
+    ctx.cue('whoosh', 0, 0.8);
+    rows.forEach((_, i) => ctx.cue('tick', at + i * 0.15, 0.45));
+    ctx.cue('alert', glitchAt, 0.35); ctx.cue('crack', glitchAt + 0.25, 0.4); ctx.cue('marker', glitchAt + 0.45, 0.5);
+    ctx.cue('whoosh-down', goneAt - 0.1, 0.55); ctx.cue('stamp', goneAt + 0.15, 0.85); ctx.cue('error', goneAt + 0.2, 0.3);
+    if (rep) { ctx.cue('whoosh', repAt - 0.1, 0.55); ctx.cue('pop', repAt + 0.25, 0.6); }
+    const stick = T.sticker(st, p.sticker, ctx);
+    return (t) => {
+      T.enter(card, t);
+      rows.forEach((rw, i) => { const k = C.k(t, at + i * 0.15, 0.4, 'expo'); rw.el.style.opacity = C.k(t, at + i * 0.15, 0.12) * (rw === tgt ? 1 : 1 - 0.45 * C.k(t, glitchAt, 0.3)); rw.el.style.transform = `translateX(${(1 - k) * 50}px)`; });
+      // glitch: jitter + RGB split, status flips red
+      const g = t > glitchAt && t < goneAt ? 1 : 0;
+      const j = g ? (C.rand(Math.floor(t * 30)) - 0.5) * 18 : 0;
+      tgt.el.style.translate = `${j}px 0`;
+      tgt.nm.style.textShadow = g ? `${-j * 0.4}px 0 rgba(229,57,47,.8), ${j * 0.4}px 0 rgba(47,107,255,.8)` : 'none';
+      if (t > glitchAt + 0.2) { tgt.pill.textContent = p.lostStatus || 'Delisting?'; tgt.pill.style.background = '#fde6e3'; tgt.pill.style.color = RD; }
+      tgt.strike.style.width = C.k(t, glitchAt + 0.45, 0.35, 'inOut') * 92 + '%';
+      const kG = C.k(t, goneAt, 0.45, 'inOut');
+      tgt.el.style.opacity = 1 - 0.85 * kG;
+      tgt.el.style.filter = `grayscale(${kG}) blur(${kG * 2}px)`;
+      tgt.el.style.transform = `scale(${1 - 0.06 * kG})`;
+      const kS = C.k(t, goneAt + 0.15, 0.35, 'back');
+      stamp.style.left = '50%'; stamp.style.top = (tgt.el.offsetTop + list.offsetTop + tgt.el.offsetHeight / 2) + 'px';
+      stamp.style.opacity = C.k(t, goneAt + 0.15, 0.1) * (rep ? 1 - C.k(t, repAt - 0.05, 0.25) : 1);
+      stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.7 * (1 - Math.min(1, kS)))}) rotate(-8deg)`;
+      if (rep) {
+        rep.el.style.top = tgt.el.offsetTop + 'px';
+        const kR = C.k(t, repAt, 0.5, 'back');
+        rep.el.style.opacity = C.k(t, repAt, 0.15);
+        rep.el.style.transform = `translateY(${(1 - Math.min(1, kR)) * 70}px) scale(${0.9 + 0.1 * Math.max(0, kR)})`;
+      }
+      stick(t);
+    };
+  };
 })();

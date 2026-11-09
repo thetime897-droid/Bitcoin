@@ -1,0 +1,290 @@
+{
+ "name": "tesla-spacex-fusion",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trVanish",
+   "duration": 5.4,
+   "script": "0:00 · Tesla könnte bald komplett von der Börse verschwinden.",
+   "params": {
+    "title": "Tesla bald *weg*?",
+    "rows": [
+     {
+      "brand": "TSLA",
+      "name": "Tesla",
+      "sub": "TSLA · Nasdaq"
+     },
+     {
+      "brand": "AAPL",
+      "name": "Apple",
+      "sub": "AAPL · Nasdaq"
+     },
+     {
+      "brand": "NVDA",
+      "name": "Nvidia",
+      "sub": "NVDA · Nasdaq"
+     }
+    ],
+    "at": 0.2,
+    "glitchAt": 0.9,
+    "replace": {
+     "brand": "SPACEX",
+     "name": "SpaceX",
+     "sub": "SPCX · Nasdaq",
+     "status": "übernimmt?"
+    },
+    "replaceAt": 3.0,
+    "stamp": "VERSCHWINDET?"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trWarn",
+   "duration": 4.4,
+   "script": "0:05 · Und wenn du Tesla-Aktien hast, musst du diese News jetzt kennen.",
+   "params": {
+    "brand": "TSLA",
+    "context": "Tesla-Aktionäre",
+    "tag": "WICHTIG",
+    "live": true,
+    "text": "Diese News musst du *jetzt* kennen",
+    "size": 64,
+    "pills": [
+     "Tesla",
+     "SpaceX",
+     "Fusion?"
+    ],
+    "pillsAt": 1.8,
+    "sticker": {
+     "text": "Tesla-Aktionäre aufgepasst",
+     "icon": "⚠️",
+     "color": "#e5392f",
+     "at": 2.6,
+     "x": 680,
+     "y": 520,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trPartner",
+   "duration": 6.2,
+   "script": "0:09 · Elon Musk hat bestätigt: Tesla und SpaceX prüfen einen Zusammenschluss. Beide Firmen haben dafür Sonderausschüsse eingesetzt.",
+   "params": {
+    "tag": "Von Musk bestätigt",
+    "title": "Fusion wird *geprüft*",
+    "left": {
+     "brand": "TSLA",
+     "word": "TESLA",
+     "wordColor": "#e31937",
+     "spacing": "4px",
+     "sub": "TSLA"
+    },
+    "right": {
+     "brand": "SPACEX",
+     "word": "SPACEX",
+     "wordColor": "#111317",
+     "spacing": "6px",
+     "wordSize": 50,
+     "sub": "SPCX"
+    },
+    "at": [
+     0.6,
+     1.0
+    ],
+    "xAt": 1.5,
+    "line": "Sonderausschüsse *beider Firmen* beraten",
+    "lineAt": 3.6,
+    "pills": [
+     "Musk nicht im Ausschuss",
+     "Noch kein Deal"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStat",
+   "duration": 5.0,
+   "script": "0:16 · Zusammen wären sie rund 3,5 Billionen Dollar wert – eines der fünf wertvollsten Unternehmen der Welt.",
+   "params": {
+    "label": "Tesla + SpaceX zusammen",
+    "icon": "$",
+    "value": "~3,5 Bio. $",
+    "size": 150,
+    "at": 0.6,
+    "countDur": 1.0,
+    "sub": "*Top 5* der wertvollsten Firmen der Welt",
+    "sticker": {
+     "text": "Mega-Konzern",
+     "icon": "🚀",
+     "color": "#2f6bff",
+     "at": 2.6,
+     "x": 800,
+     "y": 470,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 7.6,
+   "script": "0:21 · Das wahrscheinlichste Szenario laut Barclays: SpaceX übernimmt Tesla per Aktientausch. Du bekommst SpaceX-Aktien – und das Kürzel TSLA verschwindet vom Kurszettel.",
+   "params": {
+    "title": "So *könnte* es laufen",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "SpaceX *übernimmt* Tesla",
+      "sub": "Szenario laut Barclays",
+      "at": 2.2,
+      "mark": "→",
+      "markColor": "#2f6bff"
+     },
+     {
+      "text": "Aktientausch statt Geld",
+      "sub": "du bekommst SpaceX-Aktien",
+      "at": 4.3,
+      "mark": "→",
+      "markColor": "#2f6bff"
+     },
+     {
+      "text": "*TSLA* verschwindet",
+      "sub": "vom Kurszettel – du hältst SPCX",
+      "ok": false,
+      "at": 6.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trBars",
+   "duration": 6.6,
+   "script": "0:29 · Die große Frage: Was bekommst du für deine Tesla-Aktie? JPMorgan rechnet mit 30 bis 35 Prozent Aufschlag, RBC mit 20 bis 30 – andere mit gar keinem.",
+   "params": {
+    "title": "Möglicher *Aufschlag* für Tesla",
+    "items": [
+     {
+      "name": "JPMorgan",
+      "brand": {
+       "name": "JPM",
+       "glyph": "JPM",
+       "color": "#5c4a3d"
+      },
+      "value": 35,
+      "label": "30–35 %",
+      "at": 2.6
+     },
+     {
+      "name": "RBC",
+      "brand": {
+       "name": "RBC",
+       "glyph": "RBC",
+       "color": "#005daa"
+      },
+      "value": 30,
+      "label": "20–30 %",
+      "at": 4.2
+     },
+     {
+      "name": "Andere Analysten",
+      "brand": {
+       "name": "?",
+       "glyph": "?",
+       "color": "#8b9099"
+      },
+      "value": 1,
+      "label": "kaum / keiner",
+      "at": 5.4,
+      "color": "#e5392f"
+     }
+    ],
+    "max": 40,
+    "note": "Analysten-Szenarien – noch keine Konditionen vereinbart"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trStat",
+   "duration": 5.8,
+   "script": "0:36 · Und es könnte schnell gehen: Barclays erwartet eine Ankündigung noch vor der Tesla-Hauptversammlung am 6. Dezember.",
+   "params": {
+    "brand": "TSLA",
+    "context": "Hauptversammlung",
+    "label": "Ankündigung möglicherweise vor dem",
+    "tone": "gold",
+    "icon": "📅",
+    "value": "6. Dez.",
+    "countUp": false,
+    "size": 170,
+    "at": 1.2,
+    "sub": "Wedbush: *80 %* Fusions-Chance in 12 Monaten",
+    "subAccent": "#b8860b",
+    "pills": [
+     "Erwartung von Barclays"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 5.8,
+   "script": "0:42 · Aber: Die Mehrheit aller Tesla-Aktien muss zustimmen. Selbst Musk nennt das eine ziemlich hohe Hürde.",
+   "params": {
+    "tag": "Die Hürde",
+    "live": true,
+    "text": "Über *50 %* aller Tesla-Aktien müssen zustimmen",
+    "size": 52,
+    "sub": "Musk selbst: eine *„ziemlich hohe Hürde“*"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trRule",
+   "duration": 6.4,
+   "script": "0:48 · Und Kritiker warnen: Tesla-Aktionäre könnten übervorteilt werden – denn Musk hätte danach laut Analysen rund 56 Prozent der Stimmrechte.",
+   "params": {
+    "title": "Chance oder *Falle*?",
+    "left": {
+     "label": "Pro",
+     "title": "Aufschlag möglich",
+     "result": "bis zu ~35 % (Szenario)",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Contra",
+     "title": "Musk-Kontrolle",
+     "result": "~56 % der Stimmrechte",
+     "good": false,
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:55 · Würdest du deine Tesla-Aktien gegen SpaceX tauschen? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Tesla gegen *SpaceX* tauschen?",
+    "options": [
+     "Ja, sofort",
+     "Nur mit Aufschlag",
+     "Nein, ich verkaufe vorher"
+    ],
+    "note": "Keine Anlageberatung · Fusion nur geprüft, nichts beschlossen"
+   }
+  }
+ ]
+}
