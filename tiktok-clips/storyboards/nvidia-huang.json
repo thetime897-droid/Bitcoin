@@ -1,0 +1,239 @@
+{
+ "name": "nvidia-huang",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trWarn",
+   "duration": 6.0,
+   "script": "0:00 · Nvidia-Chef Jensen Huang gesteht eine Affäre – und laut Berichten halten US-Behörden die Frau für eine chinesische Geheimdienstquelle.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Breaking",
+    "tag": "BREAKING",
+    "live": true,
+    "text": "Nvidia-Chef gesteht *Affäre*",
+    "size": 60,
+    "sub": "Die Frau gilt laut US-Behörden als mutmaßliche *chinesische Geheimdienstquelle*",
+    "pills": [
+     "New York Times",
+     "Financial Times"
+    ],
+    "pillsAt": 3.6,
+    "sticker": {
+     "text": "Spionage-Verdacht",
+     "icon": "🕵️",
+     "color": "#e5392f",
+     "at": 2.4,
+     "x": 760,
+     "y": 200,
+     "size": 44
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 5.6,
+   "script": "0:06 · Die Aktie kassiert einen Doppelschlag: erst minus 9,3 Prozent im Tech-Ausverkauf – dann vorbörslich nochmal rund 5 Prozent.",
+   "params": {
+    "ticker": "NVDA",
+    "name": "Nvidia · Doppelschlag",
+    "price": "≈ −14 %",
+    "countPrice": false,
+    "change": "-9,3 % und dann −5 % vorbörslich",
+    "range": "1W",
+    "data": [
+     99.92380728561571,
+     100.09563581772879,
+     100.67873693443796,
+     99.94504011215963,
+     100.01254603689964,
+     100.13981572615984,
+     99.4954565501678,
+     100.01905382246689,
+     100.20781235234688,
+     100.46876299603193,
+     99.35059752996675,
+     99.68544202019925,
+     99.34507285998694,
+     100.49543125498748,
+     100.30950157206598,
+     99.26700853819176,
+     100.77150947327804,
+     100.7436124498009,
+     99,
+     96,
+     93,
+     91.5,
+     90.7,
+     90.88470704024061,
+     90.83867524549429,
+     90.2889929141682,
+     90.11800088433952,
+     90.73405751940457,
+     90.17146132620263,
+     90.32824991535752,
+     90.39033161639826,
+     90.13609910706975,
+     90.65672135346794,
+     90.5,
+     88,
+     86.5,
+     86.2
+    ],
+    "height": 480,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "sticker": {
+     "text": "Doppelschlag",
+     "icon": "🥊",
+     "color": "#e5392f",
+     "at": 3.2,
+     "x": 760,
+     "y": 330,
+     "size": 44
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 5.0,
+   "script": "0:12 · Und das Timing ist brutal: In 8 Tagen, am 17. November, legt Nvidia Zahlen vor.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Quartalszahlen",
+    "label": "bis zu den Zahlen",
+    "tone": "gold",
+    "icon": "⏳",
+    "value": "8 Tage",
+    "size": 180,
+    "at": 0.9,
+    "countDur": 0.8,
+    "sub": "*17. November* – nach US-Börsenschluss"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 5.4,
+   "script": "0:17 · Erwartet werden rund 109 Milliarden Dollar Umsatz und 2,47 Dollar Gewinn je Aktie.",
+   "params": {
+    "title": "Was die Börse *erwartet*",
+    "label": "Umsatz im Quartal (Analysten-Schätzung)",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "~109 Mrd. $",
+    "size": 130,
+    "at": 0.8,
+    "second": {
+     "value": "Gewinn je Aktie: 2,47 $",
+     "size": 60,
+     "color": "#111317",
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:22 · Was jetzt passiert: Nvidias Verwaltungsrat startet eine unabhängige Untersuchung. Und Republikaner wollen, dass Huang am 18. November vor dem Kongress aussagt.",
+   "params": {
+    "title": "Was jetzt *passiert*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Unabhängige *Untersuchung*",
+      "sub": "gestartet vom Nvidia-Verwaltungsrat",
+      "mark": "1",
+      "markColor": "#e5392f",
+      "at": 1.8
+     },
+     {
+      "text": "Aussage vor dem *Kongress*?",
+      "sub": "18. November – einen Tag nach den Zahlen",
+      "mark": "!",
+      "markColor": "#e5392f",
+      "at": 4.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trRule",
+   "duration": 6.0,
+   "script": "0:29 · Rückendeckung gibt's trotzdem: Der Verwaltungsrat sieht keine Hinweise, dass Geschäftsgeheimnisse betroffen sind. Und Trump nennt Huang einen ehrenwerten Mann.",
+   "params": {
+    "title": "Die *Rückendeckung*",
+    "left": {
+     "label": "Verwaltungsrat",
+     "title": "Vertrauen in Huang",
+     "result": "keine Hinweise auf Geheimnis-Abfluss",
+     "good": true,
+     "at": 1.0
+    },
+    "right": {
+     "label": "Donald Trump",
+     "title": "„ehrenwerter Mann“",
+     "result": "Rückendeckung aus Washington",
+     "good": true,
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trHeadline",
+   "duration": 5.0,
+   "script": "0:35 · Analyst Dan Ives spricht trotzdem von einem blauen Auge für Huang – und das drückt erstmal auf die Aktie.",
+   "params": {
+    "brand": false,
+    "text": "„Ein *blaues Auge* für Jensen“",
+    "accent": "#e5392f",
+    "size": 66,
+    "pills": [
+     "Analyst Dan Ives",
+     "Belastung für die Aktie"
+    ],
+    "pillsAt": 2.4
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 5.6,
+   "script": "0:40 · Heißt: Am 17. schaut die Börse nicht nur auf die Zahlen – sondern auch darauf, ob Huang Chef bleibt.",
+   "params": {
+    "tag": "Die große Frage",
+    "live": true,
+    "text": "Zahlen top – aber bleibt *Huang*?",
+    "size": 58,
+    "sub": "Untersuchung offen · Anhörung gefordert · Zahlen am *17.11.*"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:46 · Was meinst du: Kaufchance vor den Zahlen – oder Finger weg? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Nvidia jetzt: *Kaufchance*?",
+    "options": [
+     "Ja, nachkaufen",
+     "Erst die Zahlen abwarten",
+     "Finger weg"
+    ],
+    "note": "Keine Anlageberatung · Vorwürfe laut Medienberichten, Untersuchung läuft"
+   }
+  }
+ ]
+}

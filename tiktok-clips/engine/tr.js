@@ -183,6 +183,7 @@
   // -------------------------------------------------------------- trWarn ---
   S.trWarn = (st, p, ctx) => {
     const card = T.card(st, p.card);
+    if (p.brand) T.header(card, p.brand, p.context);
     const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '8px 18px', borderRadius: '12px', background: '#fde6e3', color: RD, fontSize: '26px', fontWeight: 800, marginBottom: '22px' } }, card);
     const dot = p.live ? C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: RD } }, tag) : null;
     tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'Achtung'}</span>`);

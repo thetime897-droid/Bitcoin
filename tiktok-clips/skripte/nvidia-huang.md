@@ -1,0 +1,61 @@
+# FACELESS SHORT: NVIDIA-CHEF, AFFÄRE & SPIONAGE-VERDACHT – 8 TAGE VOR DEN ZAHLEN
+
+*Ca. 55–58 s gesprochen, Broker-App-Karten, ohne Ausblendung. Whooshes auf dem neuen Pegel (+20 %), übrige Effekte unverändert.*
+
+## Storytelling: Hook → aufdecken
+
+- **Hook (0:00):** Breaking-Karte mit Nvidia-Logo und pulsierendem Live-Punkt. „Nvidia-Chef gesteht Affäre“, Sticker „🕵️ Spionage-Verdacht“, Quellen-Pills NYT/FT.
+- **Folge (0:06):** Chart mit Doppelschlag (−9,3 %, dann −5 % vorbörslich).
+- **Spannung (0:12):** Countdown „8 Tage“ bis zu den Zahlen → was erwartet wird.
+- **Eskalation (0:22):** Untersuchung + geforderte Kongress-Aussage *einen Tag nach den Zahlen*.
+- **Gegengewicht (0:29):** Rückendeckung vom Verwaltungsrat und von Trump → „blaues Auge“ (Dan Ives).
+- **Offene Frage (0:40):** „Zahlen top – aber bleibt Huang?“ → Kommentar-Frage.
+
+## Sprechertext
+
+| Zeit | Karte | Text |
+|---|---|---|
+| 0:00 | `01-trWarn` | Nvidia-Chef Jensen Huang gesteht eine Affäre – und laut Berichten halten US-Behörden die Frau für eine chinesische Geheimdienstquelle. |
+| 0:06 | `02-trChart` | Die Aktie kassiert einen Doppelschlag: erst minus 9,3 Prozent im Tech-Ausverkauf – dann vorbörslich nochmal rund 5 Prozent. |
+| 0:12 | `03-trStat` | Und das Timing ist brutal: In 8 Tagen, am 17. November, legt Nvidia Zahlen vor. |
+| 0:17 | `04-trMetric` | Erwartet werden rund 109 Milliarden Dollar Umsatz und 2,47 Dollar Gewinn je Aktie. |
+| 0:22 | `05-trList` | Was jetzt passiert: Nvidias Verwaltungsrat startet eine unabhängige Untersuchung. Und Republikaner wollen, dass Huang am 18. November vor dem Kongress aussagt. |
+| 0:29 | `06-trRule` | Rückendeckung gibt's trotzdem: Der Verwaltungsrat sieht keine Hinweise, dass Geschäftsgeheimnisse betroffen sind. Und Trump nennt Huang einen ehrenwerten Mann. |
+| 0:35 | `07-trHeadline` | Analyst Dan Ives spricht trotzdem von einem blauen Auge für Huang – und das drückt erstmal auf die Aktie. |
+| 0:40 | `08-trWarn` | Heißt: Am 17. schaut die Börse nicht nur auf die Zahlen – sondern auch darauf, ob Huang Chef bleibt. |
+| 0:46 | `09-trPoll` | Was meinst du: Kaufchance vor den Zahlen – oder Finger weg? Schreib's in die Kommentare. *(Einblendung: Keine Anlageberatung)* |
+
+## Faktencheck
+
+- **Affäre:** Jensen Huang hat eine Affäre eingeräumt und sich bei Familie, Unternehmen und Investoren entschuldigt. ✔
+- **Spionage-Vorwurf:** Laut New York Times / Financial Times halten US-Behörden die Frau für eine Quelle des chinesischen Geheimdiensts. Das ist **ein Vorwurf aus Medienberichten, nicht bewiesen**. Deshalb steht es im Skript als „laut Berichten“ und „mutmaßlich“. Den Namen der Frau nennen wir bewusst nicht. ⚠
+- **Nvidia:** Der Verwaltungsrat hat eine unabhängige Untersuchung gestartet. Er sieht derzeit keinen Grund zur Annahme, dass Geschäftsgeheimnisse oder die nationale Sicherheit betroffen sind, und hat weiter Vertrauen in Huang. ✔
+- **Kurs:** Zuvor −9,3 % im Tech-Ausverkauf, dann vorbörslich rund −5 %. Je nach Quelle 4–6 %, deshalb „rund 5 %“. Die ≈ −14 % auf der Karte sind beide Rückgänge zusammengerechnet. ✔
+- **Zahlen:** Am 17. November nach US-Börsenschluss. Analysten erwarten ca. 109 Mrd. $ Umsatz und 2,47 $ Gewinn je Aktie. ✔
+- **Kongress:** Republikanische Abgeordnete fordern eine Aussage Huangs am 18. November. ✔
+- **Trump:** nannte Huang laut Ariva einen „ehrenwerten Mann“. ✔
+- **Dan Ives:** „black-eye moment for Jensen“, das die Aktie vorerst belaste (CNBC). ✔
+
+## Hook-Text (On-Screen, erste Sekunde)
+
+**NVIDIA-CHEF: AFFÄRE MIT MUTMASSLICHER SPIONIN?**
+
+## Caption & Hashtags
+
+Affäre, Spionage-Verdacht, Kongress – und in 8 Tagen kommen die Zahlen. 🕵️ Keine Anlageberatung.
+
+#nvidia #jensenhuang #aktien #börse #ki #tech #nasdaq #quartalszahlen #investieren #finanzen
+
+## Pinned Comment
+
+„Am 17.11. kommen die Zahlen, am 18.11. soll Huang vor den Kongress. Kaufen, halten oder raus? 👇 (Keine Anlageberatung)“
+
+## Quellen
+
+- [ARIVA – 8 Tage bis zu den Zahlen: Kann Nvidia den Sturm um CEO Huang überstehen?](https://www.ariva.de/news/8-tage-bis-zu-den-zahlen-kann-nvidia-den-sturm-um-ceo-huang-rsf-12200029)
+- [CNBC – Nvidia stock falls 5% as scrutiny turns to Jensen Huang's relationship with alleged Chinese spy](https://www.cnbc.com/2026/11/09/nvidia-jensen-huang-chinese-spy-investigation.html)
+- [CNBC – Nasdaq defies Nvidia impact as Huang faces espionage affair probe](https://www.cnbc.com/2026/11/09/nasdaq-defies-nvidia-impact-huang-faces-espionage-affair-probe.html)
+- [Bloomberg – Nvidia Shares Drop After CEO Huang's Affair Triggers Board Probe](https://www.bloomberg.com/news/articles/2026-11-09/nvidia-shares-dip-on-robinhood-as-huang-affair-spurs-board-probe)
+- [Al Jazeera – Why is Nvidia's Jensen Huang at the centre of a US-China spy scandal?](https://www.aljazeera.com/news/2026/11/9/why-is-nvidias-jensen-huang-at-the-centre-of-a-us-china-spy-scandal)
+- [wallstreet-online – China-Spionageverdacht: Nvidia untersucht Affäre um CEO Huang](https://www.wallstreet-online.de/nachricht/21661263-china-spionageverdacht-nvidia-untersucht-affaere-ceo-huang-aktie-bricht)
+- [t-online – Aktien-Einbruch nach Affären-Geständnis von CEO Jensen Huang](https://www.t-online.de/finanzen/aktuelles/wirtschaft/id_101518958/nvidia-aktien-einbruch-nach-affaeren-gestaendnis-von-ceo-jensen-huang-.html)
