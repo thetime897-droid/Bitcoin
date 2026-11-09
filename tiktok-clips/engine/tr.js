@@ -284,9 +284,9 @@
       const col = C.h('div', { style: { flex: 1 } }, r);
       const top = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', fontSize: '32px', fontWeight: 800, color: INK } }, col);
       C.h('span', {}, top, it.name);
-      const val = C.h('span', { style: { color: G, fontWeight: 900 } }, top, '');
+      const val = C.h('span', { style: { color: it.color ? C.color(it.color) : G, fontWeight: 900 } }, top, '');
       const track = C.h('div', { style: { height: '18px', borderRadius: '9px', background: '#eef0f2', marginTop: '10px', overflow: 'hidden' } }, col);
-      const bar = C.h('div', { style: { height: '100%', width: '0%', borderRadius: '9px', background: i === 0 ? GL : '#7fd3a6' } }, track);
+      const bar = C.h('div', { style: { height: '100%', width: '0%', borderRadius: '9px', background: it.barColor ? C.color(it.barColor) : i === 0 ? GL : '#7fd3a6' } }, track);
       return { it, val, bar, at: it.at ?? 0.5 + i * 0.35 };
     });
     const note = p.note ? C.h('div', { style: { fontSize: '24px', fontWeight: 600, color: GR, marginTop: '22px' } }, card, p.note) : null;

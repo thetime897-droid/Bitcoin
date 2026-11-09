@@ -142,10 +142,82 @@
    }
   },
   {
+   "id": "04b",
+   "type": "trBars",
+   "duration": 8.6,
+   "script": "0:23 · Und langfristig? Im Geschäftsjahr 2024 waren es 61 Milliarden Dollar Umsatz, zuletzt schon 216. Jetzt erwarten Analysten rund 400 Milliarden – und Nvidia selbst sagt danach nochmal plus 70 Prozent voraus.",
+   "params": {
+    "title": "Nvidia-Umsatz: *die nächsten Jahre*",
+    "items": [
+     {
+      "name": "GJ 2024",
+      "brand": {
+       "name": "24",
+       "glyph": "24",
+       "color": "#0d7d4d"
+      },
+      "value": 60.9,
+      "label": "60,9 Mrd. $",
+      "at": 1.2
+     },
+     {
+      "name": "GJ 2025 · +114 %",
+      "brand": {
+       "name": "25",
+       "glyph": "25",
+       "color": "#0d7d4d"
+      },
+      "value": 130.5,
+      "label": "130,5 Mrd. $",
+      "at": 1.8
+     },
+     {
+      "name": "GJ 2026 · +65 %",
+      "brand": {
+       "name": "26",
+       "glyph": "26",
+       "color": "#0d7d4d"
+      },
+      "value": 215.9,
+      "label": "215,9 Mrd. $",
+      "at": 2.6
+     },
+     {
+      "name": "GJ 2027e · ~+85 %",
+      "brand": {
+       "name": "27",
+       "glyph": "27",
+       "color": "#b8860b"
+      },
+      "value": 400,
+      "label": "~400 Mrd. $",
+      "at": 4.0,
+      "color": "#b8860b",
+      "barColor": "repeating-linear-gradient(90deg,#e8c25a 0 18px,#f3dc93 18px 26px)"
+     },
+     {
+      "name": "GJ 2028e · ~+70 %",
+      "brand": {
+       "name": "28",
+       "glyph": "28",
+       "color": "#b8860b"
+      },
+      "value": 680,
+      "label": "~680 Mrd. $",
+      "at": 6.2,
+      "color": "#b8860b",
+      "barColor": "repeating-linear-gradient(90deg,#e8c25a 0 18px,#f3dc93 18px 26px)"
+     }
+    ],
+    "max": 700,
+    "note": "GJ endet jeweils Ende Januar · e = Schätzung: GJ 2027 Analysten-Konsens, GJ 2028 laut Nvidia-Prognose (~+70 %)"
+   }
+  },
+  {
    "id": "05",
    "type": "trList",
    "duration": 7.0,
-   "script": "0:23 · Was jetzt passiert: Nvidias Verwaltungsrat startet eine unabhängige Untersuchung. Und Republikaner wollen, dass Huang am 18. November vor dem Kongress aussagt.",
+   "script": "0:32 · Was jetzt passiert: Nvidias Verwaltungsrat startet eine unabhängige Untersuchung. Und Republikaner wollen, dass Huang am 18. November vor dem Kongress aussagt.",
    "params": {
     "title": "Was jetzt *passiert*",
     "accent": "#e5392f",
@@ -171,7 +243,7 @@
    "id": "06",
    "type": "trRule",
    "duration": 6.0,
-   "script": "0:30 · Rückendeckung gibt's trotzdem: Der Verwaltungsrat sieht keine Hinweise, dass Geschäftsgeheimnisse betroffen sind. Und Trump nennt Huang einen ehrenwerten Mann.",
+   "script": "0:39 · Rückendeckung gibt's trotzdem: Der Verwaltungsrat sieht keine Hinweise, dass Geschäftsgeheimnisse betroffen sind. Und Trump nennt Huang einen ehrenwerten Mann.",
    "params": {
     "title": "Die *Rückendeckung*",
     "left": {
@@ -194,7 +266,7 @@
    "id": "07",
    "type": "trHeadline",
    "duration": 5.0,
-   "script": "0:36 · Analyst Dan Ives spricht trotzdem von einem blauen Auge für Huang – und das drückt erstmal auf die Aktie.",
+   "script": "0:45 · Analyst Dan Ives spricht trotzdem von einem blauen Auge für Huang – und das drückt erstmal auf die Aktie.",
    "params": {
     "brand": false,
     "text": "„Ein *blaues Auge* für Jensen“",
@@ -211,7 +283,7 @@
    "id": "08",
    "type": "trWarn",
    "duration": 5.6,
-   "script": "0:41 · Heißt: Am 17. schaut die Börse nicht nur auf die Zahlen – sondern auch darauf, ob Huang Chef bleibt.",
+   "script": "0:50 · Heißt: Am 17. schaut die Börse nicht nur auf die Zahlen – sondern auch darauf, ob Huang Chef bleibt.",
    "params": {
     "tag": "Die große Frage",
     "live": true,
@@ -224,7 +296,7 @@
    "id": "09",
    "type": "trPoll",
    "duration": 5.0,
-   "script": "0:47 · Was meinst du: Kaufchance vor den Zahlen – oder Finger weg? Schreib's in die Kommentare.",
+   "script": "0:56 · Was meinst du: Kaufchance vor den Zahlen – oder Finger weg? Schreib's in die Kommentare.",
    "params": {
     "question": "Nvidia jetzt: *Kaufchance*?",
     "options": [
