@@ -1,0 +1,240 @@
+{
+ "name": "anthropic-ipo",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trStrike",
+   "duration": 6.0,
+   "script": "0:00 · Der größte KI-Börsengang aller Zeiten kommt – und plötzlich mit Rabatt: Statt 2 Billionen Dollar ist Anthropic nur noch rund eine wert.",
+   "params": {
+    "brand": "ANT",
+    "context": "Börsengang",
+    "title": "Anthropic *IPO*",
+    "accent": "#c96442",
+    "size": 72,
+    "old": "Bewertung: bis zu 2 Bio. $",
+    "new": "Jetzt: *~1 Bio. $*",
+    "newSize": 64,
+    "strikeAt": 2.6,
+    "newAt": 3.4,
+    "pills": [
+     "Claude-Macher",
+     "Nasdaq"
+    ],
+    "pillsAt": 4.6,
+    "sticker": {
+     "text": "RABATT?",
+     "icon": "🏷️",
+     "color": "#e5392f",
+     "at": 4.2,
+     "x": 790,
+     "y": 300,
+     "size": 52
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trBuy",
+   "duration": 6.0,
+   "script": "0:06 · Und du kannst dabei sein: Die Aktie soll zwischen 70 und 78 Dollar kosten. Kürzel: ANT, an der Nasdaq.",
+   "params": {
+    "brand": "ANT",
+    "name": "Anthropic",
+    "badge": "Nasdaq · Kürzel ANT",
+    "value": "70–78 $",
+    "countDur": 0.01,
+    "at": 1.6,
+    "size": 150,
+    "sub": "Preisspanne *je Aktie*",
+    "tags": [
+     "825 Mio. Aktien",
+     "Roadshow läuft",
+     "Für Privatanleger"
+    ],
+    "tagsAt": 3.2
+   }
+  },
+  {
+   "id": "03",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:12 · Damit will Anthropic bis zu 64 Milliarden Dollar einsammeln – plus 26 Milliarden aus einer Privatplatzierung.",
+   "params": {
+    "title": "Das will Anthropic *einsammeln*",
+    "accent": "#c96442",
+    "label": "Erlös aus dem Börsengang",
+    "logos": [
+     "ANT"
+    ],
+    "value": "bis 64,4 Mrd. $",
+    "size": 116,
+    "at": 1.2,
+    "second": {
+     "value": "+ 26 Mrd. $ privat",
+     "size": 68,
+     "color": "#111317",
+     "at": 3.6
+    },
+    "pills": [
+     "Zusammen ~90 Mrd. $"
+    ],
+    "pillsAt": 5.0
+   }
+  },
+  {
+   "id": "04",
+   "type": "trBars",
+   "duration": 8.0,
+   "script": "0:19 · Aber warum Rabatt? Spekuliert wurde über bis zu 2 Billionen. Jetzt sind es rund 1,02 Billionen auf Basis der ausstehenden Aktien – kaum mehr als die 965 Milliarden aus der letzten privaten Runde.",
+   "params": {
+    "title": "Die *Bewertung* schrumpft",
+    "items": [
+     {
+      "name": "Spekuliert",
+      "brand": {
+       "name": "?",
+       "glyph": "?",
+       "color": "#8b9099"
+      },
+      "value": 2000,
+      "label": "bis 2 Bio. $",
+      "at": 2.0,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "IPO · voll verwässert",
+      "brand": "ANT",
+      "value": 1400,
+      "label": "~1,4 Bio. $",
+      "at": 3.6,
+      "color": "#b8860b",
+      "barColor": "#e8c25a"
+     },
+     {
+      "name": "IPO · ausstehende Aktien",
+      "brand": "ANT",
+      "value": 1020,
+      "label": "~1,02 Bio. $",
+      "at": 4.6
+     },
+     {
+      "name": "Letzte private Runde (Mai)",
+      "brand": {
+       "name": "P",
+       "glyph": "P",
+       "color": "#111317"
+      },
+      "value": 965,
+      "label": "965 Mrd. $",
+      "at": 6.2
+     }
+    ],
+    "note": "Bewertung am oberen Ende der Preisspanne · Berechnung laut Reuters"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trWarn",
+   "duration": 6.0,
+   "script": "0:27 · Der Grund: Nach dem Tech-Ausverkauf letzte Woche ist die Stimmung angeschlagen. Der Börsengang gilt als Stimmungstest für den ganzen KI-Markt.",
+   "params": {
+    "tag": "Der Grund",
+    "live": true,
+    "text": "*Stimmungstest* für den KI-Markt",
+    "size": 58,
+    "sub": "Nach dem *Tech-Ausverkauf* der letzten Woche",
+    "pills": [
+     "Nur SpaceX war je größer"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trHeadline",
+   "duration": 5.4,
+   "script": "0:33 · Trotzdem steigen Schwergewichte ein: Google, Nvidia und AMD sind als Ankerinvestoren dabei.",
+   "params": {
+    "brand": "ANT",
+    "context": "Privatplatzierung · 26 Mrd. $",
+    "text": "Anker-Investoren *an Bord*",
+    "accent": "#0d7d4d",
+    "size": 64,
+    "pills": [
+     "Google",
+     "Nvidia",
+     "AMD"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:38 · Und in Deutschland kannst du die Aktie zeichnen – unter anderem über Trade Republic, Scalable Capital, Revolut und die Deutsche Bank.",
+   "params": {
+    "title": "Hier kannst du *zeichnen*",
+    "items": [
+     {
+      "text": "Trade Republic",
+      "at": 3.0
+     },
+     {
+      "text": "Scalable Capital",
+      "at": 4.0
+     },
+     {
+      "text": "Revolut",
+      "at": 4.9
+     },
+     {
+      "text": "Deutsche Bank",
+      "at": 5.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:46 · Aber Vorsicht: Der Handelsstart wird für nächste Woche erwartet – bestätigt ist kein Termin. Und der endgültige Preis steht noch nicht fest.",
+   "params": {
+    "tag": "Vorsicht",
+    "live": true,
+    "text": "Preis & Termin *noch offen*",
+    "size": 60,
+    "sub": "Handelsstart *voraussichtlich* nächste Woche · Konditionen können sich ändern",
+    "pills": [
+     "Kein Termin bestätigt",
+     "Hohe Bewertung = hohes Risiko"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:52 · Zeichnest du die Anthropic-Aktie – oder wartest du den ersten Handelstag ab? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Zeichnest du *Anthropic*?",
+    "options": [
+     "Ja, ich zeichne",
+     "Erst nach dem Start",
+     "Nein, zu teuer"
+    ],
+    "note": "Keine Anlageberatung · Angaben laut Prospekt-Entwurf, Stand 10.11.2026"
+   }
+  }
+ ]
+}
