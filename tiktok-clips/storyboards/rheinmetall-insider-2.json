@@ -279,10 +279,48 @@
    }
   },
   {
+   "id": "07b",
+   "type": "trList",
+   "duration": 8.2,
+   "script": "0:42 · Warum? Friedenspläne sind für Rüstungsaktien oft Gegenwind: Anleger rechnen mit weniger Aufträgen – und verkaufen. Zusammen mit der Gewinnwarnung ging es so in wenigen Tagen 21 Prozent runter.",
+   "params": {
+    "brand": "RHM",
+    "context": "Rüstungsaktien",
+    "title": "🕊️ Frieden = *Gegenwind*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Friedenspläne* kommen auf",
+      "sub": "z. B. Signale aus Washington",
+      "mark": "🕊",
+      "markColor": "#2f6bff",
+      "at": 1.6
+     },
+     {
+      "text": "Weniger *Aufträge* erwartet",
+      "sub": "die Wachstums-Fantasie sinkt",
+      "mark": "→",
+      "markColor": "#e5392f",
+      "at": 3.6
+     },
+     {
+      "text": "Anleger *verkaufen*",
+      "sub": "mit Gewinnwarnung: −21 % in wenigen Tagen",
+      "value": "−21 %",
+      "ok": false,
+      "mark": "▼",
+      "markColor": "#e5392f",
+      "at": 5.8
+     }
+    ],
+    "card": {}
+   }
+  },
+  {
    "id": "08",
    "type": "trRule",
    "duration": 6.0,
-   "script": "0:43 · Also: Zwei Käufe in zwei Tagen sind ein klares Signal. Eine Garantie für die Wende sind sie aber nicht.",
+   "script": "0:51 · Also: Zwei Käufe in zwei Tagen sind ein klares Signal. Eine Garantie für die Wende sind sie aber nicht.",
    "params": {
     "title": "Signal oder *Wende*?",
     "left": {
@@ -305,7 +343,7 @@
    "id": "09",
    "type": "trPoll",
    "duration": 4.8,
-   "script": "0:49 · Kommt jetzt die Wende bei Rheinmetall? Schreib's in die Kommentare.",
+   "script": "0:57 · Kommt jetzt die Wende bei Rheinmetall? Schreib's in die Kommentare.",
    "params": {
     "question": "Kommt jetzt die *Wende*?",
     "options": [

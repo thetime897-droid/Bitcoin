@@ -18,8 +18,9 @@
 | 0:25 | `05-trMetric` | Damit liegt Papperger mit seinen neuen Käufen schon rund 6 Prozent im Plus. |
 | 0:30 | `06-trMetric` | Aber: Ende September hatte er schon zu rund 950 Euro gekauft – da liegt er immer noch hinten. |
 | 0:36 | `07-trWarn` | Und Vorsicht: Die Prognose wurde gerade auf 13,2 Milliarden Euro Umsatz gesenkt – und Friedenssignale können Rüstungsaktien weiter belasten. |
-| 0:43 | `08-trRule` | Also: Zwei Käufe in zwei Tagen sind ein klares Signal. Eine Garantie für die Wende sind sie aber nicht. |
-| 0:49 | `09-trPoll` | Kommt jetzt die Wende bei Rheinmetall? Schreib's in die Kommentare. *(Einblendung: Keine Anlageberatung)* |
+| 0:42 | `07b-trList` | Warum? Friedenspläne sind für Rüstungsaktien oft Gegenwind: Anleger rechnen mit weniger Aufträgen – und verkaufen. Zusammen mit der Gewinnwarnung ging es so in wenigen Tagen 21 Prozent runter. |
+| 0:51 | `08-trRule` | Also: Zwei Käufe in zwei Tagen sind ein klares Signal. Eine Garantie für die Wende sind sie aber nicht. |
+| 0:57 | `09-trPoll` | Kommt jetzt die Wende bei Rheinmetall? Schreib's in die Kommentare. *(Einblendung: Keine Anlageberatung)* |
 
 ## Faktencheck
 
@@ -30,6 +31,7 @@
 - **Absturz:** Nach der Gewinnwarnung und Friedenssignalen aus Washington rund −21 % in wenigen Tagen, Jahrestief 798 €. ✔
 - **Erholung:** Montag +2,48 %, Dienstag +4,2 %, auf 892,10 € (ca. +6,8 % in 2 Tagen). Gegenüber Pappergers Ø 842,66 € sind das ca. +5,9 %. ✔ (Kursstand Dienstag, schwankt)
 - **Frühere Käufe:** Papperger und eine dem Aufsichtsrat nahestehende Stiftung kauften Ende September / Anfang Oktober bei rund 950–955 €. Bei 892 € sind das ca. −6 %. ✔
+- **Frieden als Gegenwind (`07b`):** Friedenssignale dämpfen erfahrungsgemäß die Erwartung an neue Rüstungsaufträge und belasten deshalb oft die Kurse von Rüstungsaktien. Laut Berichten (u. a. stock-world, investor-verlag) haben Friedenssignale aus Washington zusammen mit der Gewinnwarnung den Rückgang von rund 21 % ausgelöst. ✔ (Markt-Logik, keine Garantie)
 - **Prognose:** Umsatz 2026 jetzt ca. 13,2 Mrd. € (vorher 13,7–14,2 Mrd. €). ✔
 
 ## Hook-Text
