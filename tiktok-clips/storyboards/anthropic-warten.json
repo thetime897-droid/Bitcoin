@@ -1,0 +1,296 @@
+{
+ "name": "anthropic-warten",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trStat",
+   "duration": 6.0,
+   "script": "0:00 · Solltest du die Anthropic-Aktie direkt zum Börsenstart kaufen? Die Geschichte großer Börsengänge sagt: Vorsicht – im ersten Jahr ging es oft brutal runter.",
+   "params": {
+    "brand": "ANT",
+    "context": "Börsengang",
+    "label": "So tief fielen große IPO-Aktien im 1. Jahr",
+    "tone": "red",
+    "icon": "▼",
+    "value": "bis −87 %",
+    "size": 150,
+    "at": 1.6,
+    "countDur": 0.9,
+    "sub": "Am ersten Tag kaufen? *Vorsicht.*",
+    "pills": [
+     "Anthropic",
+     "Börsenstart"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "02",
+   "type": "trBuy",
+   "duration": 6.4,
+   "script": "0:06 · Kurz zur Lage: Anthropic, die Firma hinter Claude, will für 70 bis 78 Dollar je Aktie an die Nasdaq. Handelsstart laut CNBC-Quellen: der 19. November.",
+   "params": {
+    "brand": "ANT",
+    "name": "Anthropic",
+    "badge": "Nasdaq · Kürzel ANT",
+    "value": "70–78 $",
+    "countDur": 0.01,
+    "at": 2.6,
+    "size": 150,
+    "sub": "Handelsstart laut Quellen: *19. November*",
+    "tags": [
+     "Die Firma hinter Claude",
+     "Preisspanne"
+    ],
+    "tagsAt": 4.2
+   }
+  },
+  {
+   "id": "03",
+   "type": "trMetric",
+   "duration": 5.6,
+   "script": "0:12 · Die Bewertung: rund eine Billion Dollar – und das trotz gewaltiger Verluste.",
+   "params": {
+    "title": "Die *Bewertung*",
+    "accent": "#c96442",
+    "label": "auf Basis der ausstehenden Aktien",
+    "logos": [
+     "ANT"
+    ],
+    "value": "~1 Bio. $",
+    "size": 150,
+    "at": 0.8,
+    "sub": "voll verwässert sogar *~1,4 Bio. $*",
+    "pills": [
+     "trotz Verlusten"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 7.4,
+   "script": "0:18 · In den ersten neun Monaten steht ein Verlust von 104 Milliarden Dollar in den Büchern. Der Großteil ist zwar ein Bilanzeffekt – und der Umsatz explodiert auf 33 Milliarden.",
+   "params": {
+    "title": "Verlust in *9 Monaten*",
+    "accent": "#e5392f",
+    "label": "Jan.–Sept. 2026 · laut Börsenprospekt",
+    "logos": [
+     "ANT"
+    ],
+    "value": "−104 Mrd. $",
+    "tone": "red",
+    "size": 130,
+    "at": 1.4,
+    "second": {
+     "value": "Umsatz: 33,2 Mrd. $",
+     "size": 64,
+     "at": 5.2
+    },
+    "pills": [
+     "Großteil: Bilanzeffekt"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 5.6,
+   "script": "0:25 · Trotzdem wollen Schwergewichte wie Google, Nvidia und AMD zum Börsengang für 26 Milliarden Dollar Aktien kaufen.",
+   "params": {
+    "brand": "ANT",
+    "context": "Privatplatzierung",
+    "text": "Die Großen kaufen für *26 Mrd. $*",
+    "size": 54,
+    "accent": "#0d7d4d",
+    "pills": [
+     "Google",
+     "Nvidia",
+     "AMD"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "06",
+   "type": "trBars",
+   "duration": 8.6,
+   "script": "0:31 · Aber schau dir andere gehypte Börsengänge an: Robinhood verlor im ersten Jahr zeitweise 87 Prozent. Roblox 71, Coinbase 59, Facebook 54 – und SpaceX dieses Jahr rund 46.",
+   "params": {
+    "title": "Max. Kursverlust im *1. Börsenjahr*",
+    "items": [
+     {
+      "name": "Robinhood",
+      "brand": {
+       "name": "HOOD",
+       "glyph": "RH",
+       "color": "#00c805"
+      },
+      "value": 87,
+      "label": "−87 %",
+      "at": 2.6,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     },
+     {
+      "name": "Roblox",
+      "brand": {
+       "name": "RBLX",
+       "glyph": "RB",
+       "color": "#111317"
+      },
+      "value": 71,
+      "label": "−71 %",
+      "at": 4.2,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Coinbase",
+      "brand": "COIN",
+      "value": 59,
+      "label": "−59 %",
+      "at": 5.0,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Facebook",
+      "brand": "META",
+      "value": 54,
+      "label": "−54 %",
+      "at": 5.8,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "SpaceX",
+      "brand": "SPACEX",
+      "value": 46,
+      "label": "−46 %",
+      "at": 6.8,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     }
+    ],
+    "max": 100,
+    "note": "Ungefähre Werte, jeweils vom Hoch gemessen"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trChart",
+   "duration": 7.0,
+   "script": "0:39 · Bestes Beispiel Facebook: Börsengang 2012 zu 38 Dollar – gut drei Monate später nur noch 17,55. Wer gewartet hat, bekam die Aktie zum halben Preis.",
+   "params": {
+    "ticker": "META",
+    "name": "Facebook · nach dem Börsengang 2012",
+    "price": "17,55 $",
+    "priceFrom": 38,
+    "change": "-54 % in gut 3 Monaten",
+    "range": "1J",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     37.940811772504034,
+     37.1306324235654,
+     36.08832972668979,
+     36.586498959978144,
+     34.54362941986313,
+     34.6711179947502,
+     34.71693634605749,
+     32.545466364929396,
+     32.69768684272092,
+     32.109970076830514,
+     30.37361237787266,
+     30.282235287911785,
+     30.166264706128747,
+     29.013637656810047,
+     28.805117663447977,
+     27.082882890873925,
+     26.580819523946452,
+     25.877516044764825,
+     26.010030482670373,
+     26.178127658259672,
+     25.14468553141746,
+     24.938735147576818,
+     23.813863751764238,
+     23.893752347079086,
+     22.362671100127166,
+     22.16588492637825,
+     22.278777602008596,
+     21.861130163586086,
+     20.921755395006954,
+     20.26771238306597,
+     20.12673357122674,
+     19.74989013013648,
+     19.501184415084566,
+     19.70951070072647,
+     18.779483221089848,
+     19.146399731079278,
+     18.819373188400178,
+     17.674789356111084,
+     17.55
+    ],
+    "height": 420,
+    "drawAt": 1.4,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 38,
+     "label": "Ausgabepreis 38 $",
+     "at": 0.9
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 7.0,
+   "script": "0:46 · Heißt: Der Hype am ersten Tag bröckelt oft. Wer ein paar Monate wartet, kauft häufig günstiger – eine Garantie ist das aber nicht, manche Aktien laufen einfach davon.",
+   "params": {
+    "title": "Sofort kaufen oder *warten*?",
+    "left": {
+     "label": "Abwarten",
+     "title": "oft günstiger",
+     "result": "Hype bröckelt häufig",
+     "good": true,
+     "at": 1.0
+    },
+    "right": {
+     "label": "Sofort kaufen",
+     "title": "voller Hype-Preis",
+     "result": "hohes Rückschlag-Risiko",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:53 · Kaufst du Anthropic am ersten Tag – oder wartest du ab? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Anthropic: *Tag 1* oder warten?",
+    "options": [
+     "Sofort am ersten Tag",
+     "Ein paar Monate warten",
+     "Gar nicht"
+    ],
+    "note": "Keine Anlageberatung · Vergangene Kursverläufe sind keine Garantie"
+   }
+  }
+ ]
+}

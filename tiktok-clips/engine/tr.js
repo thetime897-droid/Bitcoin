@@ -19,21 +19,24 @@
   // Card drops in with a little overshoot, then its rows rise in one after
   // another (70 ms apart) - the layered build editors do by hand in CapCut.
   T.enter = (card, t, at = 0.05) => {
-    const k = C.k(t, at, 0.42, 'back');
-    card.style.opacity = C.k(t, at, 0.18);
-    card.style.transform = `translateY(${(1 - k) * -34}px) scale(${(0.95 + 0.05 * k) * (1 + Math.sin(t * 1.3) * 0.003)})`;
+    // In key/TikTok exports the card must stay inside its final bounds (no
+    // drop from above), so the crop has no black band: scale + fade only.
+    const flat = document.body.classList.contains('key');
+    const k = C.k(t, at, 0.55, 'expo');
+    card.style.opacity = C.k(t, at, 0.22);
+    card.style.transform = `translateY(${flat ? 0 : (1 - k) * -34}px) scale(${0.93 + 0.07 * k})`;
     if (!card._kids) card._kids = [...card.children].filter((c) => !c.dataset.own);
     card._kids.forEach((el, i) => {
-      const kc = C.k(t, at + 0.1 + i * 0.07, 0.45, 'expo');
-      el.style.opacity = kc;
-      el.style.translate = `0 ${(1 - kc) * 26}px`;
+      const kc = C.k(t, at + 0.12 + i * 0.08, 0.55, 'expo');
+      el.style.opacity = C.k(t, at + 0.12 + i * 0.08, 0.3);
+      el.style.translate = `0 ${(1 - kc) * 22}px`;
     });
   };
   // Sound design for a count-up: soft ticks that speed up while the digits
   // roll, then one accent on landing - cash for money, a pop otherwise.
   T.countSfx = (ctx, value, at, dur) => {
-    const n = Math.max(4, Math.min(9, Math.round(dur * 8)));
-    for (let i = 0; i < n; i++) ctx.cue('tick', at + dur * Math.pow(i / n, 1.6), 0.45);
+    const n = Math.max(3, Math.min(6, Math.round(dur * 5)));
+    for (let i = 0; i < n; i++) ctx.cue('tick', at + dur * Math.pow(i / n, 1.6), 0.38);
     ctx.cue(/[€$¥£]|mrd|mio|euro|dollar|yuan/i.test(String(value)) ? 'cash' : 'pop', at + dur, 0.6);
   };
   T.pillSfx = (ctx, n, at, step) => { if (n) ctx.cue('whoosh', at - 0.08, 0.3); for (let i = 0; i < n; i++) ctx.cue('tick', at + i * step + 0.05, 0.55); };

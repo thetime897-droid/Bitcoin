@@ -1,0 +1,290 @@
+{
+ "name": "crash-reserve-vix",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trChart",
+   "duration": 5.6,
+   "script": "0:00 · Mit diesem System hast du in jedem Crash Geld zum Nachkaufen – ohne zu raten, wann der Boden da ist.",
+   "params": {
+    "ticker": "SPX",
+    "name": "Aktienmarkt im Crash",
+    "price": "−20 %",
+    "countPrice": false,
+    "change": "-20 % – alle in Panik",
+    "range": "1M",
+    "data": [
+     99.87881640229975,
+     100.07504507009543,
+     99.69014982558836,
+     100.17472535175258,
+     100.73974395928828,
+     100.02871293796112,
+     100.59684564176108,
+     100.2045657741355,
+     100.74536696472022,
+     101.14530344942358,
+     100.53638652709785,
+     100.42491922695793,
+     100.41690503646774,
+     100.0556772163862,
+     98.32445077971462,
+     97.41877118648715,
+     96.99543830866085,
+     96.58929684666876,
+     94.88815039468071,
+     93.85738875023299,
+     93.22194806057092,
+     91.47446847797451,
+     91.3776802437944,
+     89.85108830856937,
+     89.67422135734124,
+     89.35832145263196,
+     87.03667712533468,
+     86.9630971513179,
+     86.12765698300589,
+     84.89166537295415,
+     84.34697266283824,
+     84.53136068798854,
+     83.84755712480163,
+     82.10810274960393,
+     82.12156191529961,
+     81.72860734378823,
+     80
+    ],
+    "height": 400,
+    "drawAt": 0.2,
+    "drawDur": 2.0,
+    "sticker": {
+     "text": "NACHKAUFEN",
+     "icon": "✅",
+     "color": "#0d7d4d",
+     "at": 2.6,
+     "x": 560,
+     "y": 520,
+     "size": 54
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trWarn",
+   "duration": 5.4,
+   "script": "0:05 · Das Problem kennt jeder: Die Kurse sind im Keller – aber dein Geld steckt schon komplett im Depot.",
+   "params": {
+    "tag": "Das Problem",
+    "live": true,
+    "text": "Crash da – *Geld alle*",
+    "size": 64,
+    "sub": "Voll investiert = im Ausverkauf *nichts* zum Nachlegen"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:11 · Normaler Sparplan: Du hast 12.000 Euro im Jahr, geteilt durch zwölf – also 1.000 Euro pro Monat. Alles investiert, keine Reserve.",
+   "params": {
+    "title": "Normaler *Sparplan*",
+    "label": "12.000 € ÷ 12 Monate",
+    "value": "1.000 €",
+    "size": 150,
+    "at": 2.6,
+    "sub": "pro Monat – *keine* Reserve",
+    "pills": [
+     "Alles investiert"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStrike",
+   "duration": 7.0,
+   "script": "0:17 · Die Änderung: Du legst 20 Prozent zur Seite – 2.400 Euro. Und investierst den Rest: 800 Euro pro Monat.",
+   "params": {
+    "title": "Der *Trick*",
+    "accent": "#2f6bff",
+    "old": "1.000 € pro Monat",
+    "new": "*800 €* pro Monat",
+    "newSize": 60,
+    "strikeAt": 1.2,
+    "newAt": 4.4,
+    "sub": "*20 %* = 2.400 € als Crash-Reserve",
+    "pills": [
+     "9.600 € ÷ 12"
+    ],
+    "pillsAt": 5.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 5.8,
+   "script": "0:24 · Die Reserve parkst du auf dem Tagesgeld. Da bringt sie Zinsen – und wartet auf den nächsten Ausverkauf.",
+   "params": {
+    "title": "Deine *Crash-Reserve*",
+    "accent": "#b8860b",
+    "label": "auf dem Tagesgeld · mit Zinsen",
+    "value": "2.400 €",
+    "tone": "gold",
+    "size": 150,
+    "at": 0.8,
+    "sub": "wartet auf den *Ausverkauf*",
+    "pills": [
+     "Jederzeit verfügbar"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
+   "id": "06",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:30 · Und wann greifst du zu? Das sagt dir der VIX – das Angstbarometer der Börse. Niedrig heißt: Markt ruhig. Hoch heißt: Panik.",
+   "params": {
+    "title": "Der *VIX* = Angstbarometer",
+    "left": {
+     "label": "VIX niedrig",
+     "title": "Markt ruhig",
+     "result": "normal weitersparen",
+     "good": true,
+     "at": 2.8
+    },
+    "right": {
+     "label": "VIX hoch",
+     "title": "Panik",
+     "result": "Aktien im Ausverkauf",
+     "good": false,
+     "at": 4.6
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:36 · Die Regel: Steigt der VIX auf 30, investierst du 800 Euro extra. Bei 40 – das ist echte Crash-Panik – legst du 1.600 Euro nach.",
+   "params": {
+    "title": "Die *Nachkauf-Regel*",
+    "items": [
+     {
+      "text": "VIX über *30*",
+      "sub": "starke Angst am Markt",
+      "value": "+800 €",
+      "mark": "⚡",
+      "markColor": "#b8860b",
+      "at": 1.8
+     },
+     {
+      "text": "VIX über *40*",
+      "sub": "Crash-Panik",
+      "value": "+1.600 €",
+      "mark": "⚡",
+      "markColor": "#e5392f",
+      "at": 4.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trBars",
+   "duration": 7.0,
+   "script": "0:44 · Und solche Momente gibt es immer wieder: Finanzkrise 2008, Corona 2020, der Zoll-Crash 2025 – jedes Mal schoss der VIX weit über 40.",
+   "params": {
+    "title": "VIX-Spitzen in *Krisen*",
+    "items": [
+     {
+      "name": "Corona 2020",
+      "brand": {
+       "name": "20",
+       "glyph": "20",
+       "color": "#e5392f"
+      },
+      "value": 83,
+      "label": "~83",
+      "at": 2.2,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     },
+     {
+      "name": "Finanzkrise 2008",
+      "brand": {
+       "name": "08",
+       "glyph": "08",
+       "color": "#e5392f"
+      },
+      "value": 81,
+      "label": "~81",
+      "at": 1.4,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Zoll-Crash 2025",
+      "brand": {
+       "name": "25",
+       "glyph": "25",
+       "color": "#e5392f"
+      },
+      "value": 52,
+      "label": "~52",
+      "at": 3.2,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Bärenmarkt 2022",
+      "brand": {
+       "name": "22",
+       "glyph": "22",
+       "color": "#b8860b"
+      },
+      "value": 36,
+      "label": "~36",
+      "at": 4.6,
+      "color": "#b8860b",
+      "barColor": "#e8c25a"
+     }
+    ],
+    "max": 90,
+    "note": "Höchste Schlusskurse, gerundet · normal: unter 20"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:51 · Aber ehrlich: Ein hoher VIX heißt nicht, dass der Tiefpunkt erreicht ist. Kurse können weiter fallen – und in ruhigen Jahren liegt die Reserve nur rum.",
+   "params": {
+    "tag": "Ehrlich gesagt",
+    "live": true,
+    "text": "*Kein* Tiefpunkt-Garant",
+    "size": 62,
+    "sub": "Kurse können weiter fallen · in ruhigen Jahren bringt die Reserve *weniger Rendite*"
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:57 · Hast du eine Crash-Reserve – oder bist du immer voll investiert? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Hast du eine *Crash-Reserve*?",
+    "options": [
+     "Ja, liegt bereit",
+     "Nein, voll investiert",
+     "Mach ich jetzt"
+    ],
+    "note": "Keine Anlageberatung · Beispielrechnung mit 12.000 € pro Jahr"
+   }
+  }
+ ]
+}

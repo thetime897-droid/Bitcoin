@@ -189,7 +189,8 @@ body.key #frame:not(.theme-pro) :is(.panel, .badge, .stamp, .chip, .tag) { box-s
 .theme-tr #chrome { display: none; }
 .theme-tr.layout-full #stage { top: 0; height: 1920px; transform: none; }
 .trcard {
-  position: absolute; background: #fff; border-radius: 40px; color: #111317; transform-origin: 50% 0;
+  position: absolute; background: linear-gradient(180deg, #ffffff 0%, #f7f8fa 100%); border-radius: 46px; color: #111317; transform-origin: 50% 50%;
   box-shadow: 0 18px 50px rgba(0,0,0,.35);
 }
 body.alpha .trcard { box-shadow: none; }
+body.key .trcard { box-shadow: inset 0 0 0 2px #e6e8ec; }

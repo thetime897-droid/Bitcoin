@@ -136,14 +136,14 @@ const scenes = sb.scenes.map((s, i) => ({ s, i })).filter(({ s }) => !only.lengt
     ff.stdin.end();
     await new Promise((r, j) => ff.on('close', (c) => (c ? j(new Error('ffmpeg ' + c)) : r())));
     if (s._audioFile) fs.unlinkSync(s._audioFile);
-    // --tiktok: crop to the union of all non-black pixels (+20 px), keep H.264.
+    // --tiktok: crop to the union of all non-black pixels (+4 px), keep H.264.
     // The TikTok app cannot decode alpha video, so overlays must be plain MP4.
     if (flag('tiktok')) {
       const log = require('child_process').spawnSync('ffmpeg', ['-hide_banner', '-i', file, '-vf', 'cropdetect=limit=24:round=2:reset=0', '-f', 'null', '-'], { encoding: 'utf8' }).stderr;
       const m = [...log.matchAll(/crop=(\d+):(\d+):(\d+):(\d+)/g)].pop();
       if (m) {
         let [w, h, x, y] = m.slice(1).map(Number);
-        const W = 1080 * SS, H = 1920 * SS, m2 = 20 * SS;
+        const W = 1080 * SS, H = 1920 * SS, m2 = 4 * SS;
         x = Math.max(0, x - m2); y = Math.max(0, y - m2);
         w = Math.min(W - x, w + 2 * m2) & ~1; h = Math.min(H - y, h + 2 * m2) & ~1;
         const tmp = file.replace(/\.mp4$/, '.crop.mp4');
