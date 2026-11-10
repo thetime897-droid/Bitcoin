@@ -1,0 +1,320 @@
+{
+ "name": "rheinmetall-insider-2",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trInsider",
+   "duration": 5.6,
+   "script": "0:00 · Breaking: Der Rheinmetall-Chef kauft schon wieder eigene Aktien – mitten im Crash.",
+   "params": {
+    "tag": "BREAKING · Insider-Kauf",
+    "name": "Armin Papperger",
+    "role": "CEO Rheinmetall",
+    "label": "Insgesamt investiert",
+    "value": "702.780 €",
+    "size": 168,
+    "at": 0.3,
+    "countDur": 1.1,
+    "facts": [
+     {
+      "label": "Aktien",
+      "value": "834"
+     },
+     {
+      "label": "Käufe",
+      "value": "2 in 2 Tagen",
+      "size": 38
+     },
+     {
+      "label": "Ø-Kurs",
+      "value": "842,66 €"
+     }
+    ],
+    "factsAt": 2.0,
+    "stamp": "KAUF #2",
+    "sticker": {
+     "text": "SCHON WIEDER!",
+     "icon": "🚨",
+     "color": "#e5392f",
+     "at": 3.0,
+     "x": 790,
+     "y": 770,
+     "size": 46
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:05 · Erst am Donnerstag 585 Aktien für gut 502.000 Euro. Und am Freitag legt Papperger nach: 249 Aktien zu je 804,40 Euro.",
+   "params": {
+    "brand": "RHM",
+    "context": "Directors' Dealings",
+    "title": "Zwei Käufe in *zwei Tagen*",
+    "items": [
+     {
+      "text": "Kauf 1 · *Donnerstag*",
+      "sub": "585 Aktien · Ø 858,95 €",
+      "value": "502.484 €",
+      "at": 1.6
+     },
+     {
+      "text": "Kauf 2 · *Freitag*",
+      "sub": "249 Aktien · je 804,40 €",
+      "value": "200.296 €",
+      "at": 4.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "trChart",
+   "duration": 6.6,
+   "script": "0:12 · Und das genau am Tiefpunkt: Nach der Gewinnwarnung und Friedenssignalen aus Washington verliert die Aktie in wenigen Tagen rund 21 Prozent. Jahrestief: 798 Euro.",
+   "params": {
+    "ticker": "RHM",
+    "name": "Rheinmetall · Absturz",
+    "price": "798 €",
+    "priceFrom": 1010,
+    "change": "-21 % in wenigen Tagen",
+    "range": "1M",
+    "data": [
+     1010.4706816264497,
+     1011.7768228698642,
+     1005.7430684601198,
+     1014.2202834416274,
+     1010.8591318647115,
+     1013.813057462092,
+     1012.5820429880606,
+     1005.0854667742465,
+     1005.4771363595257,
+     1002.7771869712712,
+     1002.1769943430596,
+     1000.8531051319367,
+     1003.3305949235192,
+     1006.5944628260347,
+     997.0541299099897,
+     997.0136146594297,
+     980.7396831193793,
+     969.4593269056501,
+     966.7629558610198,
+     950.525256319414,
+     937.0526896935431,
+     928.0328275131232,
+     919.9413728129211,
+     897.9120148725726,
+     900.9349263436411,
+     874.0325156787102,
+     872.9975402674953,
+     865.8052373393242,
+     847.5501437578757,
+     848.4528596477652,
+     835.060880376769,
+     829.2755592820158,
+     815.0907838681953,
+     812.133937853656,
+     810.1425282128439,
+     814.5517989959117,
+     803.6318833717967,
+     805.8906974578465,
+     798
+    ],
+    "height": 460,
+    "drawAt": 0.3,
+    "drawDur": 2.2,
+    "sticker": {
+     "text": "Jahrestief",
+     "icon": "📉",
+     "color": "#e5392f",
+     "at": 4.2,
+     "x": 740,
+     "y": 330,
+     "size": 44
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trChart",
+   "duration": 6.4,
+   "script": "0:19 · Und jetzt? Montag plus 2,5 Prozent, Dienstag plus 4,2 Prozent – die Aktie steht wieder bei rund 892 Euro.",
+   "params": {
+    "ticker": "RHM",
+    "name": "Rheinmetall · Erholung",
+    "price": "892,10 €",
+    "priceFrom": 798,
+    "change": "+6,8 % in 2 Tagen",
+    "range": "1W",
+    "data": [
+     800.5779319175851,
+     801.5272629765662,
+     798.8162908783181,
+     799.7537592303474,
+     801.6482109241588,
+     804.028618088194,
+     800.898317214389,
+     805.615388338908,
+     807.3778134207307,
+     810.3775545535007,
+     806.2930526395426,
+     816.0664014803375,
+     811.7294389133741,
+     816.2259242840338,
+     820.886620304741,
+     825.8446974842665,
+     823.7196762130068,
+     832.2685809554223,
+     833.1111522967859,
+     835.1246029547433,
+     839.034399885307,
+     841.7948222040399,
+     844.8755698577646,
+     849.3159443569859,
+     857.513396698791,
+     863.5738145162936,
+     860.492235715397,
+     863.1884173083876,
+     874.2935928702741,
+     874.2682459308867,
+     876.8471041698352,
+     879.0986928308344,
+     885.5516817655463,
+     891.0103640943889,
+     892.1
+    ],
+    "height": 460,
+    "drawAt": 0.3,
+    "drawDur": 2.4,
+    "threshold": {
+     "value": 842.66,
+     "label": "Chef-Ø 842,66 €",
+     "at": 3.2
+    },
+    "sticker": {
+     "text": "Comeback?",
+     "icon": "🚀",
+     "color": "#0d7d4d",
+     "at": 4.2,
+     "x": 740,
+     "y": 330,
+     "size": 44
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 4.8,
+   "script": "0:25 · Damit liegt Papperger mit seinen neuen Käufen schon rund 6 Prozent im Plus.",
+   "params": {
+    "title": "Der Chef ist *im Plus*",
+    "label": "Ø 842,66 € → 892,10 €",
+    "logos": [
+     "RHM"
+    ],
+    "value": "+5,9 %",
+    "size": 170,
+    "at": 0.9,
+    "sticker": {
+     "text": "Volltreffer?",
+     "icon": "🎯",
+     "color": "#0d7d4d",
+     "at": 2.4,
+     "x": 790,
+     "y": 330,
+     "size": 42
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 6.0,
+   "script": "0:30 · Aber: Ende September hatte er schon zu rund 950 Euro gekauft – da liegt er immer noch hinten.",
+   "params": {
+    "title": "Frühere *Käufe*",
+    "accent": "#e5392f",
+    "label": "Ende Sept. / Anfang Okt. – rund 950 bis 955 €",
+    "logos": [
+     "RHM"
+    ],
+    "value": "~950 €",
+    "tone": "red",
+    "size": 140,
+    "at": 1.8,
+    "second": {
+     "value": "dort noch ~ −6 %",
+     "size": 64,
+     "tone": "red",
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:36 · Und Vorsicht: Die Prognose wurde gerade auf 13,2 Milliarden Euro Umsatz gesenkt – und Friedenssignale können Rüstungsaktien weiter belasten.",
+   "params": {
+    "brand": "RHM",
+    "context": "Risiken",
+    "tag": "Vorsicht",
+    "live": true,
+    "text": "Prognose gesenkt: *13,2 Mrd. €*",
+    "size": 48,
+    "sub": "vorher 13,7–14,2 Mrd. € · *Friedenssignale* drücken Rüstungsaktien",
+    "pills": [
+     "Gewinnwarnung",
+     "Friedensgespräche"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 6.0,
+   "script": "0:43 · Also: Zwei Käufe in zwei Tagen sind ein klares Signal. Eine Garantie für die Wende sind sie aber nicht.",
+   "params": {
+    "title": "Signal oder *Wende*?",
+    "left": {
+     "label": "Pro",
+     "title": "2 Käufe in 2 Tagen",
+     "result": "starkes Insider-Signal",
+     "good": true,
+     "at": 0.9
+    },
+    "right": {
+     "label": "Contra",
+     "title": "Prognose gesenkt",
+     "result": "keine Garantie",
+     "good": false,
+     "at": 3.0
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "0:49 · Kommt jetzt die Wende bei Rheinmetall? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Kommt jetzt die *Wende*?",
+    "options": [
+     "Ja, ich kaufe mit",
+     "Erst mal abwarten",
+     "Nein, Finger weg"
+    ],
+    "note": "Keine Anlageberatung · Insiderkäufe sind keine Kaufempfehlung"
+   }
+  }
+ ]
+}

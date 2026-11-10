@@ -1,0 +1,271 @@
+{
+ "name": "alphabet-tpu",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.35,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trVersus",
+   "duration": 5.6,
+   "script": "0:00 · Alphabet greift Nvidia an – mit eigenen KI-Chips, die rund 30 Prozent billiger sein sollen.",
+   "params": {
+    "title": "Der *Chip-Angriff*",
+    "titleAccent": "#e5392f",
+    "left": {
+     "brand": "GOOGL",
+     "name": "Google TPU",
+     "sub": "neue KI-Chips",
+     "value": "~30 % billiger"
+    },
+    "right": {
+     "brand": "NVDA",
+     "name": "Nvidia",
+     "sub": "Marktführer bei KI-Chips",
+     "value": "unter Druck",
+     "tone": "red"
+    },
+    "at": [
+     0.3,
+     0.7
+    ],
+    "vsAt": 1.2,
+    "sticker": {
+     "text": "ANGRIFF!",
+     "icon": "⚔️",
+     "color": "#e5392f",
+     "at": 2.4,
+     "x": 560,
+     "y": 650,
+     "size": 52
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 5.6,
+   "script": "0:05 · Und die Börse reagiert: Alphabet legt zu – Nvidia rutscht am selben Tag um über 6 Prozent ab. Auch wegen der Affäre um Nvidia-Chef Huang.",
+   "params": {
+    "ticker": "NVDA",
+    "name": "Nvidia · Montag",
+    "price": "−6,17 %",
+    "countPrice": false,
+    "change": "-6,17 % an einem Tag",
+    "range": "1T",
+    "data": [
+     100.1229016948897,
+     100.26262032259406,
+     100.33686023223237,
+     100.50495028377705,
+     100.32323190807325,
+     100.5264916633321,
+     99.65400522828361,
+     100.11145598771144,
+     100.61002338366498,
+     100.33647455313692,
+     100.60923382508395,
+     99.84237263131982,
+     100.21906904778217,
+     100.01740616595316,
+     100.3354275259026,
+     100.3864411879281,
+     99.84644752292223,
+     100.07089646713052,
+     100.15448236601111,
+     100.81217870514187,
+     100.68239211829581,
+     100.09710421235803,
+     100.75548032476453,
+     100.11793408506557,
+     100.64094302455933,
+     99.40203907906032,
+     98.60212983464305,
+     98.99568569366913,
+     97.55134765899415,
+     96.90857740306969,
+     97.1789053305911,
+     96.39688931852416,
+     95.0471662012963,
+     95.20377358674011,
+     93.83
+    ],
+    "height": 440,
+    "drawAt": 0.3,
+    "drawDur": 1.8,
+    "sticker": {
+     "text": "Google + Huang-Affäre",
+     "icon": "📉",
+     "color": "#e5392f",
+     "at": 2.6,
+     "x": 700,
+     "y": 330,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:11 · Google hat zwei neue Chips vorgestellt: den TPU 8tx – bis zu doppelt so stark wie der Vorgänger. Und den TPU 8i Max – zwei Chips in einem Gehäuse.",
+   "params": {
+    "brand": "GOOGL",
+    "context": "Vorgestellt am 9. Nov. 2026",
+    "title": "Die neuen *TPUs*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "TPU *8tx*",
+      "sub": "bis zu 2× Leistung der TPU 8t · für sensible Daten",
+      "value": "2×",
+      "mark": "⚡",
+      "markColor": "#2f6bff",
+      "at": 2.2
+     },
+     {
+      "text": "TPU *8i Max*",
+      "sub": "2 Chips in 1 Gehäuse · doppelte Rechenleistung",
+      "value": "2 in 1",
+      "mark": "⚡",
+      "markColor": "#2f6bff",
+      "at": 4.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 5.6,
+   "script": "0:18 · Und der Knaller: Laut Bloomberg Intelligence kosten Googles Chips rund 30 Prozent weniger als vergleichbare Nvidia-Prozessoren.",
+   "params": {
+    "title": "Der *Preis*-Hammer",
+    "accent": "#2f6bff",
+    "label": "vs. vergleichbare Nvidia-Prozessoren",
+    "logos": [
+     "GOOGL",
+     "NVDA"
+    ],
+    "value": "~ −30 %",
+    "size": 150,
+    "at": 1.6,
+    "sub": "laut *Bloomberg Intelligence*",
+    "sticker": {
+     "text": "billiger!",
+     "icon": "💸",
+     "color": "#0d7d4d",
+     "at": 3.0,
+     "x": 800,
+     "y": 480,
+     "size": 44
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "trStat",
+   "duration": 4.8,
+   "script": "0:24 · Und Google verbindet bis zu eine Million TPUs zu einem einzigen Rechen-Cluster.",
+   "params": {
+    "brand": "GOOGL",
+    "context": "TPU-Generation 8",
+    "label": "TPUs in einem Cluster",
+    "icon": "⚡",
+    "value": "1 Mio.",
+    "size": 190,
+    "at": 0.9,
+    "countDur": 0.9,
+    "sub": "laut Google – *KI im Großformat*"
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:29 · Aber: Das kostet Unsummen. Laut Bloomberg verhandelt Alphabet über seine ersten Anleihen in Hongkong- und Singapur-Dollar – bis zu 3 Milliarden Dollar.",
+   "params": {
+    "title": "Alphabet *leiht* sich Geld",
+    "accent": "#e5392f",
+    "label": "erste Anleihen in HKD & SGD – laut Bloomberg",
+    "logos": [
+     "GOOGL"
+    ],
+    "value": "bis 3 Mrd. $",
+    "tone": "red",
+    "size": 130,
+    "at": 2.6,
+    "pills": [
+     "🇭🇰 Hongkong-Dollar",
+     "🇸🇬 Singapur-Dollar"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "07",
+   "type": "trYear",
+   "duration": 4.8,
+   "script": "0:36 · Und: Kaufen kann man die neuen Chips laut Bericht erst ab 2027.",
+   "params": {
+    "title": "Wann *kommen* sie?",
+    "label": "VERFÜGBAR LAUT BERICHT",
+    "from": 2026,
+    "to": 2027,
+    "rollAt": 1.4,
+    "progress": 0.4,
+    "sub": "Preise & genaue Termine nennt Google *noch nicht*",
+    "sticker": {
+     "text": "noch nicht im Markt",
+     "icon": "⏳",
+     "color": "#b8860b",
+     "at": 2.6,
+     "x": 560,
+     "y": 680,
+     "size": 42
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 7.0,
+   "script": "0:41 · Heißt: Nvidia bleibt vorerst der Platzhirsch. Aber Google zeigt, dass KI-Rechenleistung billiger geht – und das könnte Nvidias Margen langfristig unter Druck setzen.",
+   "params": {
+    "title": "Wer *gewinnt*?",
+    "left": {
+     "label": "Google",
+     "title": "billigere Chips",
+     "result": "Druck auf die KI-Preise",
+     "good": true,
+     "at": 1.0
+    },
+    "right": {
+     "label": "Nvidia",
+     "title": "noch Platzhirsch",
+     "result": "Margen langfristig unter Druck?",
+     "good": false,
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "0:48 · Wer gewinnt den Chip-Krieg – Google oder Nvidia? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Wer gewinnt den *Chip-Krieg*?",
+    "options": [
+     "Google",
+     "Nvidia",
+     "Beide"
+    ],
+    "note": "Keine Anlageberatung · Preisvergleich laut Bloomberg Intelligence"
+   }
+  }
+ ]
+}
