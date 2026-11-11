@@ -1,0 +1,281 @@
+{
+ "name": "coreweave-ki-boom",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trChart",
+   "duration": 6.0,
+   "script": "0:00 · Das musst du jetzt wissen: CoreWeave hat gerade den Grundstein für die nächste Runde im KI-Boom gelegt. Die Aktie springt zweistellig nach oben.",
+   "params": {
+    "ticker": "CRWV",
+    "name": "CoreWeave · nach den Quartalszahlen",
+    "price": "+14 %",
+    "countPrice": false,
+    "change": "+12 bis 15 % am Mittwoch",
+    "range": "1W",
+    "data": [
+     99.57767694357989,
+     99.07935136905485,
+     99.26226461674852,
+     98.590812776141,
+     98.16356701023021,
+     98.41397419460469,
+     98.95444235465465,
+     98.4807237623933,
+     98.13854587829441,
+     96.98365650967594,
+     97.20154515593684,
+     96.49983508664918,
+     96.04769181828516,
+     95.65560755360474,
+     95.6572805190947,
+     96.38797075771367,
+     96.1447040585341,
+     95.99298281604278,
+     95.86053740625155,
+     95.00712274162309,
+     95.02181994875944,
+     95.27737072289575,
+     95.23189470887871,
+     97.75464835799136,
+     100.1800507513612,
+     101.78671825263493,
+     104.70585188371987,
+     107.20604174781977,
+     107.2071445308525,
+     107.01334820908895,
+     107.56830546510217,
+     107.30721544871847,
+     108.5215060366799,
+     108.6385810042221,
+     108.45716664350446,
+     108.36029488748798,
+     109.29064434729762,
+     109.5
+    ],
+    "height": 400,
+    "drawAt": 0.2,
+    "drawDur": 2.2,
+    "sticker": {
+     "text": "DAS MUSST DU WISSEN",
+     "icon": "🚨",
+     "color": "#e5392f",
+     "at": 2.8,
+     "x": 470,
+     "y": 420,
+     "size": 46
+    }
+   }
+  },
+  {
+   "id": "02",
+   "type": "trBars",
+   "duration": 6.0,
+   "script": "0:06 · Und sie reißt den ganzen Markt mit: Die Nasdaq steigt um rund 1,6 Prozent, der S&P 500 um knapp ein Prozent – und Nvidia holt 5 Prozent auf.",
+   "params": {
+    "title": "Die Börse *dreht*",
+    "items": [
+     {
+      "name": "Nvidia",
+      "brand": "NVDA",
+      "value": 5,
+      "label": "+5 %",
+      "at": 4.2
+     },
+     {
+      "name": "Nasdaq",
+      "brand": "NDX",
+      "value": 1.6,
+      "label": "+1,6 %",
+      "at": 1.6
+     },
+     {
+      "name": "S&P 500",
+      "brand": "SPX",
+      "value": 0.9,
+      "label": "+0,9 %",
+      "at": 3.0
+     }
+    ],
+    "max": 6,
+    "note": "Mittwoch, 11. November 2026 · Werte aus dem frühen Handel"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:12 · Der Grund: CoreWeave meldet 3,66 Milliarden Dollar Umsatz – plus 168 Prozent. Erwartet waren nur 3,55.",
+   "params": {
+    "title": "CoreWeave *liefert*",
+    "label": "Umsatz im 3. Quartal 2026",
+    "logos": [
+     "CRWV"
+    ],
+    "value": "3,66 Mrd. $",
+    "size": 130,
+    "at": 1.2,
+    "second": {
+     "value": "+168 % zum Vorjahr",
+     "size": 64,
+     "at": 3.2
+    },
+    "pills": [
+     "erwartet: 3,55 Mrd. $"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStat",
+   "duration": 6.0,
+   "script": "0:18 · Und noch krasser: Der Auftragsbestand liegt bei über 132 Milliarden Dollar. CoreWeave ist bis 2027 praktisch ausgebucht.",
+   "params": {
+    "brand": "CRWV",
+    "context": "Auftragsbestand",
+    "label": "Aufträge in den Büchern",
+    "icon": "$",
+    "value": "132,5 Mrd. $",
+    "size": 140,
+    "at": 1.2,
+    "countDur": 1.0,
+    "sub": "im Juni noch *104 Mrd. $*",
+    "pills": [
+     "ausgebucht bis 2027"
+    ],
+    "pillsAt": 3.8
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:24 · Dazu hebt die Firma ihre Jahresprognose an: bis zu 13,3 Milliarden Dollar Umsatz. Und die operative Marge hat sich verdoppelt – auf 10 Prozent.",
+   "params": {
+    "title": "Prognose *angehoben*",
+    "label": "Umsatz 2026 – neues Ziel",
+    "logos": [
+     "CRWV"
+    ],
+    "value": "13,0–13,3 Mrd. $",
+    "countUp": false,
+    "size": 100,
+    "at": 1.4,
+    "second": {
+     "value": "Marge: 5 % → 10 %",
+     "size": 64,
+     "at": 4.2
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trWarn",
+   "duration": 7.0,
+   "script": "0:30 · Aber: Unterm Strich steht noch ein Verlust von 709 Millionen Dollar. Allein die Zinsen kosten 846 Millionen im Quartal. Das ist keine Anlageberatung.",
+   "params": {
+    "brand": "CRWV",
+    "context": "Die Kehrseite",
+    "tag": "Aber",
+    "live": true,
+    "text": "Noch *−709 Mio. $* Verlust",
+    "size": 58,
+    "sub": "Zinsen: *846 Mio. $* im Quartal · Investitionen: 37–39 Mrd. $",
+    "pills": [
+     "Keine Anlageberatung",
+     "Hohe Schulden"
+    ],
+    "pillsAt": 4.8
+   }
+  },
+  {
+   "id": "07",
+   "type": "trHeadline",
+   "duration": 6.0,
+   "script": "0:37 · Warum das so wichtig ist: CoreWeave vermietet KI-Rechenleistung. Volle Auftragsbücher heißen – die Nachfrage nach KI ist ungebrochen.",
+   "params": {
+    "brand": "CRWV",
+    "context": "Warum das zählt",
+    "text": "KI-Nachfrage: *ungebrochen*",
+    "accent": "#0d7d4d",
+    "size": 64,
+    "pills": [
+     "vermietet KI-Rechenleistung",
+     "Großkunde für Nvidia-Chips"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:43 · Und jetzt wird's spannend: Morgen, am Donnerstag, kommt Nebius mit Zahlen. Und am 17. November der wichtigste Termin überhaupt – Nvidia.",
+   "params": {
+    "title": "Die nächsten *Termine*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "*Nebius* · Do., 12. Nov.",
+      "sub": "vor US-Börsenstart · erwartet ~907 Mio. $ Umsatz",
+      "mark": "1",
+      "markColor": "#2f6bff",
+      "at": 2.0
+     },
+     {
+      "text": "*Nvidia* · Di., 17. Nov.",
+      "sub": "nach US-Börsenschluss · erwartet ~109 Mrd. $ Umsatz",
+      "mark": "2",
+      "markColor": "#76b900",
+      "at": 4.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "09",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:51 · Liefern die auch stark ab, kann die Rally richtig Fahrt aufnehmen. Enttäuschen sie, geht's schnell wieder runter – CoreWeave hatte davor in einem Monat rund 40 Prozent verloren.",
+   "params": {
+    "title": "Zwei *Szenarien*",
+    "left": {
+     "label": "Starke Zahlen",
+     "title": "Rally geht weiter",
+     "result": "KI-Boom bestätigt",
+     "good": true,
+     "at": 0.8
+    },
+    "right": {
+     "label": "Enttäuschung",
+     "title": "Rückschlag",
+     "result": "CoreWeave davor: −40 % im Monat",
+     "good": false,
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:57 · Was glaubst du: Geht die KI-Rally jetzt weiter? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Geht die *KI-Rally* weiter?",
+    "options": [
+     "Ja, Nvidia liefert",
+     "Erst mal abwarten",
+     "Nein, Blase"
+    ],
+    "note": "Keine Anlageberatung · Stand: 11. November 2026"
+   }
+  }
+ ]
+}

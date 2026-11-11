@@ -134,6 +134,7 @@
     INTC: { name: 'INTEL', color: '#0071c5', glyph: 'i' },
     ARM: { name: 'ARM', color: '#0091bd', glyph: 'arm' },
     QCOM: { name: 'QUALCOMM', color: '#3253dc', glyph: 'Q' },
+    NBIS: { name: 'NEBIUS', color: '#1f2a44', glyph: 'N' },
     ANT: { name: 'ANTHROPIC', color: '#c96442', glyph: 'A' },
     EZB: { name: 'EZB', color: '#003399', glyph: '€' },
     MSCI: { name: 'MSCI', color: '#002f6c', glyph: 'MSCI' },
