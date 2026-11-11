@@ -607,7 +607,7 @@
     C.h('div', { style: { fontSize: (p.size || 64) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', marginBottom: '22px' } }, card, T.rich(p.title, p.accent ? C.color(p.accent) : BL));
     const oldRow = C.h('div', { style: { position: 'relative', display: 'inline-block', padding: '14px 28px', borderRadius: '18px', background: '#eef0f2', color: INK, fontSize: '40px', fontWeight: 800 } }, card, p.old || '');
     const line = C.h('div', { style: { position: 'absolute', left: '-8px', top: '50%', height: '8px', marginTop: '-4px', width: '0%', borderRadius: '4px', background: RD } }, oldRow);
-    const nw = C.h('div', { style: { marginTop: '24px', padding: '22px 30px', borderRadius: '24px', border: `5px solid ${GL}`, background: '#f2fbf6', color: G, fontSize: (p.newSize || 50) + 'px', fontWeight: 900, letterSpacing: '-1px', lineHeight: 1.1 } }, card, T.rich(p.new || '', INK));
+    const nw = C.h('div', { style: { marginTop: '24px', padding: '22px 30px', borderRadius: '24px', border: `5px solid ${p.newTone === 'red' ? RD : GL}`, background: p.newTone === 'red' ? '#fff1ef' : '#f2fbf6', color: p.newTone === 'red' ? RD : G, fontSize: (p.newSize || 50) + 'px', fontWeight: 900, letterSpacing: '-1px', lineHeight: 1.1 } }, card, T.rich(p.new || '', INK));
     nw.dataset.own = 1;
     if (p.sub) { const sb = C.h('div', { style: { fontSize: '30px', fontWeight: 700, color: '#4b5058', marginTop: '20px' } }, card, T.rich(p.sub)); sb.dataset.own = 1; sb.className = 'trsub'; }
     const subEl = card.querySelector('.trsub');
@@ -1028,6 +1028,60 @@
         b.d.style.boxShadow = `0 0 0 ${C.k(t, landAt, 0.7) * 26}px rgba(184,134,11,${0.3 * (1 - C.k(t, landAt, 0.7))})`;
       }
       foot.style.opacity = C.k(t, spinAt + 0.2, 0.3);
+    };
+  };
+
+  // ------------------------------------------------------------- trCoins ---
+  // Hook card for crypto news: live tag, a row of coin chips that pop in one
+  // after another and keep bobbing, a big title that gets struck through and
+  // a stamp ("VOM TISCH?") that slams on top.
+  S.trCoins = (st, p, ctx) => {
+    const card = T.card(st, { pad: 44, ...p.card });
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '10px 20px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '28px', fontWeight: 900, letterSpacing: '1px' } }, card);
+    const dot = C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: '#fff' } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'BREAKING'}</span>`);
+    const row = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', margin: '30px 6px 26px' } }, card);
+    row.dataset.own = 1;
+    const coins = (p.coins || ['BTC', 'ETH', 'XRP', 'SOL']).map((b, i) => {
+      const w = C.h('div', { class: 'ctr', style: { flexDirection: 'column', gap: '10px' } }, row);
+      const br = C.brand(b);
+      const c = C.h('div', { class: 'ctr', style: { width: '170px', height: '170px', borderRadius: '50%', background: br.color, color: '#fff', fontSize: '92px', fontWeight: 900, boxShadow: `0 0 0 8px ${br.color}33` } }, w, br.glyph);
+      const l = C.h('div', { style: { fontSize: '28px', fontWeight: 900, color: INK } }, w, br.ticker || b);
+      const at = (p.coinsAt ?? 0.35) + i * (p.coinStep ?? 0.22);
+      ctx.cue('pop', at + 0.05, 0.6); if (i === 0) ctx.cue('whoosh', at - 0.1, 0.45); ctx.cue('coins', at + 0.1, 0.3);
+      return { w, c, l, at, i };
+    });
+    const tw = C.h('div', { style: { position: 'relative', display: 'inline-block' } }, card);
+    tw.dataset.own = 1;
+    const ttl = C.h('div', { style: { fontSize: (p.size || 104) + 'px', fontWeight: 900, color: INK, letterSpacing: '-4px', lineHeight: 1, whiteSpace: 'nowrap' } }, tw, p.title || 'Krypto-Steuer');
+    const line = C.h('div', { style: { position: 'absolute', left: '-10px', top: '54%', height: '14px', width: '0%', borderRadius: '7px', background: RD } }, tw);
+    const sub = C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: '#4b5058', marginTop: '18px', marginBottom: '130px' } }, card, T.rich(p.sub || '', G));
+    sub.dataset.own = 1;
+    const stamp = stampEl(card, p.stamp || 'VOM TISCH?', C.color(p.stampColor || G), 0, 0, p.stampSize || 76);
+    stamp.style.left = p.stampX || '50%'; stamp.style.top = p.stampY || '87%'; stamp.style.borderWidth = '7px';
+    const titleAt = p.titleAt ?? 1.3, strikeAt = p.strikeAt ?? 2.2, stampAt = p.stampAt ?? strikeAt + 0.55;
+    ctx.cue('whoosh', 0, 0.8);
+    ctx.cue('whoosh', titleAt - 0.1, 0.4); ctx.cue('marker', strikeAt, 0.7);
+    ctx.cue('stamp', stampAt, 0.9); ctx.cue('success', stampAt + 0.15, 0.5);
+    return (t) => {
+      T.enter(card, t);
+      const ph = (t * 1.5) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      coins.forEach((o) => {
+        const k = C.k(t, o.at, 0.5, 'back');
+        o.w.style.opacity = C.k(t, o.at, 0.1);
+        o.c.style.transform = `translateY(${(1 - Math.min(1, k)) * 60 + Math.sin(t * 2.4 + o.i * 1.3) * 7}px) scale(${Math.max(0, k)}) rotate(${(1 - Math.min(1, k)) * -120 + Math.sin(t * 1.7 + o.i) * 5}deg)`;
+        o.l.style.opacity = C.k(t, o.at + 0.2, 0.2);
+      });
+      const kT = C.k(t, titleAt, 0.45, 'expo');
+      tw.style.opacity = C.k(t, titleAt, 0.15); tw.style.transform = `translateY(${(1 - kT) * 24}px)`;
+      line.style.width = C.k(t, strikeAt, 0.35, 'inOut') * 103 + '%';
+      ttl.style.color = t > strikeAt + 0.3 ? '#9aa0a8' : INK;
+      sub.style.opacity = C.k(t, stampAt + 0.3, 0.3);
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS))) * (1 + Math.sin(t * 3) * 0.012)}) rotate(-7deg)`;
+      const shake = t > stampAt && t < stampAt + 0.3 ? Math.sin(t * 80) * 8 * (stampAt + 0.3 - t) / 0.3 : 0;
+      card.style.translate = `${shake}px 0`;
     };
   };
 })();
