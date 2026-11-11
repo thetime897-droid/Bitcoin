@@ -965,4 +965,69 @@
       stick(t);
     };
   };
+
+  // ------------------------------------------------------------ trPrompt ---
+  // Hook card: AI chip + name, a dark prompt bubble that types itself, then
+  // two tiles - the stake (green, counts up) and the result, which spins
+  // through red/green numbers like a slot machine and lands on "+ ??? €".
+  S.trPrompt = (st, p, ctx) => {
+    const card = T.card(st, { pad: 44, ...p.card });
+    const col = C.brand(p.brand || 'ANT').color;
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '20px' } }, card);
+    const chip = C.chip(p.brand || 'ANT', 104, head);
+    const hn = C.h('div', { style: { flex: 1 } }, head);
+    C.h('div', { style: { fontSize: '64px', fontWeight: 900, color: col, lineHeight: 1, letterSpacing: '-2px' } }, hn, p.name || 'Claude');
+    C.h('div', { style: { fontSize: '28px', fontWeight: 700, color: GR, marginTop: '4px' } }, hn, p.role || 'KI · 1 Prompt');
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '10px 20px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '28px', fontWeight: 900, letterSpacing: '1px' } }, head);
+    const dot = C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: '#fff' } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'EXPERIMENT'}</span>`);
+    const bub = C.h('div', { style: { marginTop: '26px', padding: '26px 30px', borderRadius: '30px', background: INK, color: '#fff', fontSize: '40px', fontWeight: 800, lineHeight: 1.25, minHeight: '152px', boxShadow: `0 0 0 5px ${col}55` } }, card);
+    const txt = C.h('span', {}, bub), cur = C.h('span', { style: { color: col } }, bub, '▌');
+    const full = p.prompt || '';
+    const row = C.h('div', { class: 'ctr', style: { gap: '16px', marginTop: '26px', alignItems: 'stretch' } }, card);
+    row.dataset.own = 1;
+    const mkTile = (label, bg, bd) => { const d = C.h('div', { style: { flex: 1, padding: '20px 24px', borderRadius: '28px', background: bg, border: `5px solid ${bd}` } }, row); C.h('div', { style: { fontSize: '28px', fontWeight: 800, color: '#4b5058' } }, d, label); const v = C.h('div', { style: { fontSize: '104px', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-4px', whiteSpace: 'nowrap' } }, d, ''); return { d, v }; };
+    const a = mkTile(p.stakeLabel || 'Investiert', '#ddf4e8', CHK);
+    const arrow = C.h('div', { class: 'ctr', style: { fontSize: '64px', fontWeight: 900, color: INK, flex: 'none' } }, row, '→');
+    const b = mkTile(p.resultLabel || 'Nach 1 Woche', '#f2f3f5', '#d5d8dc');
+    a.v.style.color = G;
+    const foot = C.h('div', { class: 'ctr', style: { gap: '14px', marginTop: '22px', fontSize: '34px', fontWeight: 900 } }, card);
+    foot.dataset.own = 1;
+    foot.innerHTML = `<span style="color:${G}">▲ Gewinn</span><span style="color:${GR}">oder</span><span style="color:${RD}">▼ Verlust?</span>`;
+    const typeAt = p.typeAt ?? 0.5, typeDur = p.typeDur ?? 1.8, stakeAt = p.stakeAt ?? typeAt + typeDur + 0.2, spinAt = p.spinAt ?? stakeAt + 1.0, landAt = p.landAt ?? spinAt + 1.5;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('pop', 0.25, 0.5);
+    for (let i = 0; i < 6; i++) ctx.cue('tick', typeAt + (typeDur * i) / 6, 0.32);
+    ctx.cue('whoosh', stakeAt - 0.1, 0.5); ctx.cue('cash', stakeAt + 0.5, 0.7);
+    ctx.cue('whoosh', spinAt - 0.1, 0.45);
+    for (let i = 0; i < 7; i++) ctx.cue('tick', spinAt + (landAt - spinAt) * Math.pow(i / 7, 0.8), 0.45);
+    ctx.cue('stamp', landAt, 0.8); ctx.cue('shine', landAt + 0.1, 0.5);
+    return (t) => {
+      T.enter(card, t);
+      chip.style.transform = `scale(${Math.max(0, C.k(t, 0.15, 0.45, 'back')) * (1 + Math.sin(t * 3) * 0.03)}) rotate(${Math.sin(t * 2) * 3}deg)`;
+      const ph = (t * 1.5) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      tag.style.transform = `scale(${Math.max(0, C.k(t, 0.3, 0.35, 'back'))})`;
+      const n = Math.round(C.k(t, typeAt, typeDur) * full.length);
+      txt.innerHTML = T.rich(full.slice(0, n), '#5fe39a').replace(/\*/g, '');
+      cur.style.opacity = n < full.length || Math.floor(t * 3) % 2 ? 1 : 0;
+      const kA = C.k(t, stakeAt, 0.45, 'back');
+      [a.d, arrow].forEach((el) => { el.style.opacity = C.k(t, stakeAt, 0.12); });
+      a.d.style.transform = `scale(${0.8 + 0.2 * Math.max(0, kA)})`;
+      a.v.textContent = C.count(p.stake || '3.000 €', C.k(t, stakeAt + 0.05, 0.5, 'out'));
+      arrow.style.transform = `translateX(${Math.sin(t * 5) * 5}px)`;
+      const kB = C.k(t, spinAt, 0.4, 'back');
+      b.d.style.opacity = C.k(t, spinAt, 0.12);
+      if (t < landAt) {
+        const step = Math.floor((t - spinAt) * 14), up = step % 2 === 0;
+        b.v.textContent = (up ? '+' : '−') + (100 + Math.floor(C.rand(step + 7) * 880)) + ' €';
+        b.v.style.color = up ? G : RD; b.d.style.borderColor = up ? CHK : RD; b.d.style.background = up ? '#ddf4e8' : '#fde6e3';
+        b.d.style.transform = `scale(${0.8 + 0.2 * Math.max(0, kB)})`;
+      } else {
+        const kL = C.k(t, landAt, 0.4, 'back');
+        b.v.textContent = p.result || '+ ??? €'; b.v.style.color = GD; b.d.style.borderColor = GD; b.d.style.background = GDL;
+        b.d.style.transform = `scale(${(1.18 - 0.18 * Math.min(1, kL)) * (1 + Math.sin(t * 4) * 0.012)})`;
+        b.d.style.boxShadow = `0 0 0 ${C.k(t, landAt, 0.7) * 26}px rgba(184,134,11,${0.3 * (1 - C.k(t, landAt, 0.7))})`;
+      }
+      foot.style.opacity = C.k(t, spinAt + 0.2, 0.3);
+    };
+  };
 })();

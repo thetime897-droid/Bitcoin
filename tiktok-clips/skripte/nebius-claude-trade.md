@@ -17,7 +17,7 @@
 
 | Zeit | Karte | Text |
 |---|---|---|
-| 0:00 | `01-trMetric` | Ich habe Claude 3.000 Euro gegeben – mit einem einzigen Auftrag: Finde mir die Aktie mit dem größten Potenzial für eine Woche. Was daraus geworden ist, zeige ich dir gleich. |
+| 0:00 | `01-trPrompt` | Ich habe Claude 3.000 Euro gegeben – mit einem einzigen Auftrag: Finde mir die Aktie mit dem größten Potenzial für eine Woche. Was daraus geworden ist, zeige ich dir gleich. |
 | 0:06 | `02-trList` | Der Prompt war simpel: Welche Aktie hat in den nächsten sieben Tagen einen klaren Auslöser? Wie groß ist die Chance, wie groß das Risiko? Und am Ende: ein einziger Favorit. |
 | 0:13 | `03-trChart` | Und die Antwort hat mich erst mal geschockt: eine Aktie, die sich vorher mehr als halbiert hatte. |
 | 0:19 | `04-trBuy` | Nebius. Ein KI-Cloud-Anbieter. Ich bin letzte Woche bei rund 110 Euro eingestiegen – mit den vollen 3.000 Euro. |

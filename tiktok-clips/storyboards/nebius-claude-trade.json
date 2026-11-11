@@ -9,24 +9,21 @@
  "scenes": [
   {
    "id": "01",
-   "type": "trMetric",
+   "type": "trPrompt",
    "duration": 6.4,
    "script": "0:00 · Ich habe Claude 3.000 Euro gegeben – mit einem einzigen Auftrag: Finde mir die Aktie mit dem größten Potenzial für eine Woche. Was daraus geworden ist, zeige ich dir gleich.",
    "params": {
-    "title": "Claude + *3.000 €*",
-    "accent": "#c96442",
-    "label": "Mein Depot · eine Woche · eine Aktie",
-    "value": "+ ??? €",
-    "countUp": false,
-    "tone": "gold",
-    "size": 170,
-    "at": 1.6,
-    "sub": "Auflösung *gleich*",
-    "pills": [
-     "Einsatz: 3.000 €",
-     "1 Analyse-Prompt"
-    ],
-    "pillsAt": 3.6
+    "brand": "ANT",
+    "name": "Claude",
+    "role": "KI-Analyse · 1 Prompt",
+    "tag": "EXPERIMENT",
+    "prompt": "„Finde mir die Aktie mit dem *größten Potenzial* für 1 Woche.“",
+    "stake": "3.000 €",
+    "typeAt": 0.4,
+    "typeDur": 1.8,
+    "stakeAt": 2.4,
+    "spinAt": 3.5,
+    "landAt": 5.0
    }
   },
   {

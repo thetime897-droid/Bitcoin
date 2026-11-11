@@ -214,6 +214,7 @@ Echte Logos: PNG mit `"logo": "logos/xyz.png"` am Ticker/Brand.
 | `trInsider` | Directors' Dealings: Live-Tag, Person + Firmen-Chip, Betrag zählt hoch, 3 Fakten-Kacheln, Stempel „KAUF“ | `tag`, `name`, `role`, `brand`, `label`, `value`, `facts[{label,value}]`, `stamp`, `sticker` |
 | `trWallet` | Wallet-App: Guthaben zählt hoch, Zahlungen rein, dann grau + rotes Schloss + Stempel (z. B. „EINGEFROREN?“) | `balance`, `from`, `rows[{icon,text,value}]`, `lockAt`, `lockText` |
 | `trVanish` | Watchlist: Zielzeile glitcht, wird durchgestrichen und graut aus, Stempel „VERSCHWINDET?“, optional schiebt sich eine Ersatzzeile rein | `title`, `rows[{brand,name,sub,status}]`, `target`, `glitchAt`, `replace{…}`, `replaceAt`, `stamp` |
+| `trPrompt` | Hook-Karte: KI-Chip + Name, Prompt tippt sich selbst, Einsatz-Kachel (grün) und Ergebnis-Kachel, die rot/grün durchrattert und auf „+ ??? €“ landet | `brand`, `name`, `role`, `tag`, `prompt`, `stake`, `result`, `typeAt`, `stakeAt`, `spinAt`, `landAt` |
 | `trChart` | App-Chartkarte: Name, Preis zählt, Änderung, Linie, Zeitraum-Tabs | `ticker`, `name`, `price`, `priceFrom`, `change`, `range`, `data`, `color`, `threshold{value,label,at}`, `sticker` |
 
 Beispiel: `storyboards/jahresendrallye-tr.json`.
