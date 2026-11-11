@@ -1,0 +1,335 @@
+{
+ "name": "nebius-claude-trade",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:00 · Ich habe Claude 3.000 Euro gegeben – mit einem einzigen Auftrag: Finde mir die Aktie mit dem größten Potenzial für eine Woche. Was daraus geworden ist, zeige ich dir gleich.",
+   "params": {
+    "title": "Claude + *3.000 €*",
+    "accent": "#c96442",
+    "label": "Mein Depot · eine Woche · eine Aktie",
+    "value": "+ ??? €",
+    "countUp": false,
+    "tone": "gold",
+    "size": 170,
+    "at": 1.6,
+    "sub": "Auflösung *gleich*",
+    "pills": [
+     "Einsatz: 3.000 €",
+     "1 Analyse-Prompt"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "02",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:06 · Der Prompt war simpel: Welche Aktie hat in den nächsten sieben Tagen einen klaren Auslöser? Wie groß ist die Chance, wie groß das Risiko? Und am Ende: ein einziger Favorit.",
+   "params": {
+    "title": "Der *Prompt*",
+    "accent": "#c96442",
+    "items": [
+     {
+      "text": "*Auslöser* in 7 Tagen?",
+      "sub": "Zahlen, Termine, News",
+      "mark": "1",
+      "markColor": "#c96442",
+      "at": 1.6
+     },
+     {
+      "text": "*Chance* gegen Risiko",
+      "sub": "was spricht dafür, was dagegen",
+      "mark": "2",
+      "markColor": "#c96442",
+      "at": 3.6
+     },
+     {
+      "text": "*Ein* Favorit",
+      "sub": "keine Liste, eine Entscheidung",
+      "mark": "3",
+      "markColor": "#c96442",
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "trChart",
+   "duration": 6.0,
+   "script": "0:13 · Und die Antwort hat mich erst mal geschockt: eine Aktie, die sich vorher mehr als halbiert hatte.",
+   "params": {
+    "ticker": {
+     "name": "???",
+     "glyph": "?",
+     "color": "#e5392f"
+    },
+    "name": "Welche Aktie? Kommt gleich …",
+    "price": "−57 %",
+    "countPrice": false,
+    "change": "-57 % vom Hoch",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     99.92371203606564,
+     99.67241750797177,
+     98.89923141337452,
+     96.52780105877609,
+     95.3325813292702,
+     95.6242634761901,
+     94.52214441843499,
+     95.33104415670526,
+     94.17177795911604,
+     93.1043711161832,
+     92.2327601910134,
+     91.07385577205943,
+     87.43835403598327,
+     87.04593345341337,
+     84.36335500384126,
+     85.76674906897443,
+     80.80672588107204,
+     82.27528051136832,
+     77.72700996311494,
+     78.60492487351704,
+     75.63371265688136,
+     74.33274284680031,
+     74.51247061410739,
+     69.64584577267658,
+     68.41882490628029,
+     70.2441211162758,
+     67.53213329913973,
+     64.7775207606109,
+     66.75368236546005,
+     65.35816686747577,
+     61.1050994901293,
+     60.97354380411474,
+     58.68625020341699,
+     58.07514649909216,
+     57.937227013777154,
+     55.038686861948335,
+     55.47240277324155,
+     52.82324796119601,
+     52.010913822184456,
+     52.45767435580974,
+     50.36124487413357,
+     49.30521650913028,
+     48.63033034449083,
+     47.244243787693314,
+     45.9229953385797,
+     43.97318651629796,
+     43
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.4,
+    "sticker": {
+     "text": "mehr als halbiert",
+     "icon": "📉",
+     "color": "#e5392f",
+     "at": 3.0,
+     "x": 640,
+     "y": 330,
+     "size": 42
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trBuy",
+   "duration": 6.4,
+   "script": "0:19 · Nebius. Ein KI-Cloud-Anbieter. Ich bin letzte Woche bei rund 110 Euro eingestiegen – mit den vollen 3.000 Euro.",
+   "params": {
+    "brand": "NBIS",
+    "name": "Nebius",
+    "badge": "KI-Cloud · Nasdaq: NBIS",
+    "value": "~110 €",
+    "at": 2.4,
+    "countDur": 0.8,
+    "size": 150,
+    "sub": "Einstieg *letzte Woche*",
+    "tags": [
+     "3.000 € ≈ 27,3 Aktien",
+     "Trade Republic"
+    ],
+    "tagsAt": 4.4
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 6.2,
+   "script": "0:25 · Die Begründung: Diese Woche kommen die Zahlen von CoreWeave, dem größten Konkurrenten. Liefert CoreWeave, zieht die ganze Branche mit – und danach kommt Nebius selbst.",
+   "params": {
+    "brand": "CRWV",
+    "context": "Die Begründung",
+    "text": "Die *Wette*: CoreWeave liefert",
+    "accent": "#2f6bff",
+    "size": 62,
+    "pills": [
+     "erst CoreWeave-Zahlen",
+     "dann Nebius-Zahlen"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 5.6,
+   "script": "0:31 · Und genau so kam es: CoreWeave meldet plus 168 Prozent Umsatz und hebt die Prognose an.",
+   "params": {
+    "title": "CoreWeave *liefert*",
+    "label": "Umsatz im 3. Quartal 2026",
+    "logos": [
+     "CRWV"
+    ],
+    "value": "+168 %",
+    "size": 160,
+    "at": 0.9,
+    "second": {
+     "value": "Prognose angehoben",
+     "size": 60,
+     "at": 2.8
+    },
+    "pills": [
+     "Aktie: +12 bis 15 %"
+    ],
+    "pillsAt": 4.0
+   }
+  },
+  {
+   "id": "07",
+   "type": "trChart",
+   "duration": 6.0,
+   "script": "0:37 · Nebius zieht voll mit: von rund 110 auf über 140 Euro.",
+   "params": {
+    "ticker": "NBIS",
+    "name": "Nebius · seit meinem Einstieg",
+    "price": "140,24 €",
+    "priceFrom": 110,
+    "change": "+27,5 % seit Einstieg",
+    "range": "1W",
+    "data": [
+     117.39690906369975,
+     117.34158046359163,
+     116.24299989272849,
+     114.96238084970341,
+     113.48882582620902,
+     113.52674004476044,
+     112.55413774351616,
+     111.02242123134766,
+     110.00915147624602,
+     110.08740145429317,
+     110.23072513509854,
+     111.45538404493779,
+     112.40365249492783,
+     112.03717657372997,
+     113.90375183934253,
+     113.4555548895798,
+     114.0188509125192,
+     115.11370374997215,
+     118.27061017596476,
+     119.24213795354413,
+     120.92507113763827,
+     121.89610216018045,
+     122.28632610680296,
+     124.25457282343707,
+     125.99559417254514,
+     126.70845765894555,
+     129.61353541082323,
+     129.963203953518,
+     130.97866350214062,
+     133.5715169978085,
+     133.7247787822448,
+     136.57029895361654,
+     137.11562966920417,
+     138.69360517495292,
+     140.24
+    ],
+    "height": 400,
+    "drawAt": 0.5,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 110,
+     "label": "Einstieg ~110 €",
+     "at": 0.3
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:43 · Und jetzt die Auflösung: Aus 3.000 Euro sind 3.825 Euro geworden. 825 Euro Plus – in einer Woche.",
+   "params": {
+    "title": "Die *Auflösung*",
+    "label": "aus 3.000 € wurden",
+    "logos": [
+     "NBIS"
+    ],
+    "value": "3.825 €",
+    "size": 170,
+    "at": 1.8,
+    "countDur": 1.2,
+    "second": {
+     "value": "+825 € in einer Woche",
+     "size": 68,
+     "at": 4.0
+    },
+    "pills": [
+     "Stand Mittwoch · vor Steuern"
+    ],
+    "pillsAt": 5.2
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 7.4,
+   "script": "0:50 · Aber ganz ehrlich: Ein Treffer beweist gar nichts. Morgen kommen die Nebius-Zahlen – der Optionsmarkt rechnet mit 17 Prozent Bewegung, in beide Richtungen. Keine Anlageberatung.",
+   "params": {
+    "brand": "NBIS",
+    "context": "Zahlen am 12. Nov.",
+    "tag": "Ganz ehrlich",
+    "live": true,
+    "text": "*Ein* Treffer beweist nichts",
+    "size": 58,
+    "sub": "Optionsmarkt erwartet *±17 %* nach den Zahlen",
+    "pills": [
+     "Keine Anlageberatung",
+     "Hohes Risiko"
+    ],
+    "pillsAt": 4.8
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.4,
+   "script": "0:57 · Jetzt du: Soll ich über die Zahlen halten – oder den Gewinn mitnehmen? Und willst du den Prompt? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Halten oder *Gewinn mitnehmen*?",
+    "options": [
+     "Halten – da geht mehr",
+     "Gewinn mitnehmen",
+     "Zeig den Prompt!"
+    ],
+    "note": "Keine Anlageberatung · Ein einzelner Trade ist kein Beweis"
+   }
+  }
+ ]
+}
