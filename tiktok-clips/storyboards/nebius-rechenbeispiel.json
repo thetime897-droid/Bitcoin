@@ -1,0 +1,325 @@
+{
+ "name": "nebius-rechenbeispiel",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trMetric",
+   "duration": 6.0,
+   "script": "0:00 · Hättest du am Montag 3.000 Euro in diese eine Aktie gesteckt – wie viel hättest du zwei Tage später? Die Zahl ist heftig. Auflösung kommt gleich.",
+   "params": {
+    "title": "3.000 € → *2 Tage* später",
+    "accent": "#b8860b",
+    "label": "Rechenbeispiel · eine einzige Aktie",
+    "value": "+ ??? €",
+    "countUp": false,
+    "tone": "gold",
+    "size": 170,
+    "at": 1.2,
+    "sub": "Auflösung *gleich*",
+    "pills": [
+     "Einsatz: 3.000 €",
+     "Montag → Mittwoch"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 6.0,
+   "script": "0:06 · Und das Verrückte: Genau diese Aktie hatte sich vorher mehr als halbiert. Kaum einer wollte sie noch haben.",
+   "params": {
+    "ticker": {
+     "name": "???",
+     "glyph": "?",
+     "color": "#e5392f"
+    },
+    "name": "Welche Aktie? Kommt gleich …",
+    "price": "−57 %",
+    "countPrice": false,
+    "change": "-57 % vom Hoch",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     99.92371203606564,
+     99.67241750797177,
+     98.89923141337452,
+     96.52780105877609,
+     95.3325813292702,
+     95.6242634761901,
+     94.52214441843499,
+     95.33104415670526,
+     94.17177795911604,
+     93.1043711161832,
+     92.2327601910134,
+     91.07385577205943,
+     87.43835403598327,
+     87.04593345341337,
+     84.36335500384126,
+     85.76674906897443,
+     80.80672588107204,
+     82.27528051136832,
+     77.72700996311494,
+     78.60492487351704,
+     75.63371265688136,
+     74.33274284680031,
+     74.51247061410739,
+     69.64584577267658,
+     68.41882490628029,
+     70.2441211162758,
+     67.53213329913973,
+     64.7775207606109,
+     66.75368236546005,
+     65.35816686747577,
+     61.1050994901293,
+     60.97354380411474,
+     58.68625020341699,
+     58.07514649909216,
+     57.937227013777154,
+     55.038686861948335,
+     55.47240277324155,
+     52.82324796119601,
+     52.010913822184456,
+     52.45767435580974,
+     50.36124487413357,
+     49.30521650913028,
+     48.63033034449083,
+     47.244243787693314,
+     45.9229953385797,
+     43.97318651629796,
+     43
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.4,
+    "sticker": {
+     "text": "mehr als halbiert",
+     "icon": "📉",
+     "color": "#e5392f",
+     "at": 3.0,
+     "x": 640,
+     "y": 330,
+     "size": 42
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trBuy",
+   "duration": 6.4,
+   "script": "0:12 · Es geht um Nebius – einen KI-Cloud-Anbieter. Am Montag stand die Aktie bei 114,50 Euro. Für 3.000 Euro hättest du rund 26 Aktien bekommen.",
+   "params": {
+    "brand": "NBIS",
+    "name": "Nebius",
+    "badge": "KI-Cloud · Nasdaq: NBIS",
+    "value": "114,50 €",
+    "at": 2.4,
+    "countDur": 0.8,
+    "size": 150,
+    "sub": "Kurs am *Montag, 9. Nov.* (Tradegate)",
+    "tags": [
+     "3.000 € ≈ 26,2 Aktien",
+     "Rechenbeispiel"
+    ],
+    "tagsAt": 4.4
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 6.2,
+   "script": "0:18 · Warum gerade jetzt? Am Dienstagabend kamen die Zahlen von CoreWeave – dem größten Konkurrenten. Die Wette: Liefert CoreWeave, zieht die ganze Branche mit.",
+   "params": {
+    "brand": "CRWV",
+    "context": "Der Auslöser",
+    "text": "Die *Wette*: CoreWeave liefert",
+    "accent": "#2f6bff",
+    "size": 62,
+    "pills": [
+     "Zahlen am Dienstagabend",
+     "gleiche Branche wie Nebius"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 6.0,
+   "script": "0:24 · Und CoreWeave hat geliefert: Umsatz plus 168 Prozent, Prognose angehoben. Die Aktie springt zweistellig.",
+   "params": {
+    "title": "CoreWeave *liefert*",
+    "label": "Umsatz im 3. Quartal 2026",
+    "logos": [
+     "CRWV"
+    ],
+    "value": "+168 %",
+    "size": 160,
+    "at": 0.9,
+    "second": {
+     "value": "Prognose angehoben",
+     "size": 60,
+     "at": 2.8
+    },
+    "pills": [
+     "Aktie: +12 bis 15 %"
+    ],
+    "pillsAt": 4.0
+   }
+  },
+  {
+   "id": "06",
+   "type": "trChart",
+   "duration": 6.4,
+   "script": "0:30 · Und Nebius? Zieht voll mit: von 114,50 auf über 140 Euro. Plus 22 Prozent – in zwei Tagen.",
+   "params": {
+    "ticker": "NBIS",
+    "name": "Nebius · Montag bis Mittwoch",
+    "price": "140,24 €",
+    "priceFrom": 114.5,
+    "change": "+22,5 % in 2 Tagen",
+    "range": "1W",
+    "data": [
+     116.36212388375597,
+     116.56043421258767,
+     116.38708603128559,
+     115.699253669519,
+     115.02015230585441,
+     114.84350569088616,
+     115.17918314201349,
+     114.9655365146387,
+     113.80489832203298,
+     115.12295036914512,
+     116.45398028394789,
+     117.82043090337376,
+     119.4581927312698,
+     120.0000218221764,
+     120.25065788094436,
+     122.78062171300017,
+     123.17427787675624,
+     124.43419514779995,
+     125.05546872229164,
+     125.80025555344602,
+     126.15452712620582,
+     127.18506972321616,
+     126.53084775312698,
+     127.66328751906522,
+     127.42048914984142,
+     129.55261197159302,
+     129.5663229613026,
+     131.19778573287232,
+     132.5195212772766,
+     134.24647334595454,
+     134.39370587561453,
+     136.32667166935616,
+     137.07582818129202,
+     138.4074124352644,
+     140.24
+    ],
+    "height": 400,
+    "drawAt": 0.6,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 114.5,
+     "label": "Montag: 114,50 €",
+     "at": 0.4
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:37 · Und jetzt die Auflösung: Aus deinen 3.000 Euro wären 3.674 Euro geworden. 674 Euro Plus – in zwei Tagen.",
+   "params": {
+    "title": "Die *Auflösung*",
+    "label": "aus 3.000 € wären geworden",
+    "logos": [
+     "NBIS"
+    ],
+    "value": "3.674 €",
+    "size": 170,
+    "at": 1.8,
+    "countDur": 1.2,
+    "second": {
+     "value": "+674 € in 2 Tagen",
+     "size": 72,
+     "at": 4.0
+    },
+    "pills": [
+     "Rechenbeispiel · vor Steuern & Gebühren"
+    ],
+    "pillsAt": 5.2
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 7.2,
+   "script": "0:43 · Aber bevor du jetzt kaufst: Morgen kommen die Nebius-Zahlen. Der Optionsmarkt rechnet mit 17 Prozent Bewegung – nach oben oder nach unten. Keine Anlageberatung.",
+   "params": {
+    "brand": "NBIS",
+    "context": "Zahlen am 12. Nov.",
+    "tag": "Vorsicht",
+    "live": true,
+    "text": "*±17 %* – in beide Richtungen",
+    "size": 58,
+    "sub": "So viel Bewegung erwartet der Optionsmarkt *nach den Zahlen*",
+    "pills": [
+     "Keine Anlageberatung",
+     "Hohes Risiko"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:50 · Also: War das absehbar – oder ist man hinterher einfach immer schlauer? Der Auslöser stand im Kalender. Dass CoreWeave liefert, wusste aber niemand.",
+   "params": {
+    "title": "Können oder *Glück*?",
+    "left": {
+     "label": "Können",
+     "title": "Termin war bekannt",
+     "result": "CoreWeave-Zahlen im Kalender",
+     "good": true,
+     "at": 2.2
+    },
+    "right": {
+     "label": "Glück",
+     "title": "Ergebnis war offen",
+     "result": "hätte auch −20 % sein können",
+     "good": false,
+     "at": 4.2
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:57 · Hättest du am Montag gekauft? Und hältst du über die Zahlen – oder nimmst du den Gewinn mit? Ab in die Kommentare.",
+   "params": {
+    "question": "Vor den Zahlen: *halten* oder raus?",
+    "options": [
+     "Halten – da geht mehr",
+     "Gewinn mitnehmen",
+     "Ich wäre nie eingestiegen"
+    ],
+    "note": "Rechenbeispiel, kein echter Trade · Keine Anlageberatung"
+   }
+  }
+ ]
+}
