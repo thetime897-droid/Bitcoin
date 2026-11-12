@@ -1,0 +1,202 @@
+{
+ "name": "hsbc-welt-etf",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trStrike",
+   "duration": 6.2,
+   "script": "0:00 · Dein MSCI-World-ETF ist zu teuer. Ein neuer Welt-ETF kostet nur noch 0,04 Prozent im Jahr – so billig war noch keiner.",
+   "params": {
+    "title": "Dein *MSCI World*",
+    "accent": "#e5392f",
+    "size": 76,
+    "old": "0,20 % Kosten pro Jahr",
+    "new": "Neu: *0,04 %*",
+    "newSize": 84,
+    "strikeAt": 1.4,
+    "newAt": 2.6,
+    "sub": "So billig war *noch kein* Welt-ETF",
+    "pills": [
+     "5× günstiger"
+    ],
+    "pillsAt": 4.2
+   }
+  },
+  {
+   "id": "02",
+   "type": "trStat",
+   "duration": 5.4,
+   "script": "0:06 · Heißt: Auf 10.000 Euro Depot zahlst du gerade mal 4 Euro im Jahr.",
+   "params": {
+    "label": "Kosten pro Jahr auf 10.000 €",
+    "icon": "€",
+    "value": "4 €",
+    "size": 220,
+    "at": 1.4,
+    "countDur": 0.8,
+    "sub": "beim Klassiker: rund *20 €*",
+    "subAccent": "#e5392f"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trBuy",
+   "duration": 6.4,
+   "script": "0:11 · Der ETF heißt HSBC World. Er ist ganz neu am Markt – und unterbietet sogar den bisherigen Preisbrecher von Invesco.",
+   "params": {
+    "brand": "HSBC",
+    "name": "HSBC World UCITS ETF",
+    "badge": "ISIN IE000P2V15V8",
+    "value": "0,04 %",
+    "countDur": 0.01,
+    "at": 1.6,
+    "size": 150,
+    "sub": "laufende Kosten *pro Jahr*",
+    "tags": [
+     "Neu am Markt",
+     "Welt-ETF"
+    ],
+    "tagsAt": 3.6
+   }
+  },
+  {
+   "id": "04",
+   "type": "trBars",
+   "duration": 7.0,
+   "script": "0:18 · Der Vergleich auf 10.000 Euro: Der bekannte iShares Core MSCI World kostet 20 Euro im Jahr. Invesco 5. Und der Neue: 4 Euro.",
+   "params": {
+    "title": "Kosten pro Jahr auf *10.000 €*",
+    "items": [
+     {
+      "name": "iShares Core MSCI World",
+      "brand": "ISHARES",
+      "value": 20,
+      "label": "20 €",
+      "at": 2.0,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Invesco MSCI World",
+      "brand": "INVESCO",
+      "value": 5,
+      "label": "5 €",
+      "at": 4.2,
+      "color": "#b8860b",
+      "barColor": "#e8c25a"
+     },
+     {
+      "name": "HSBC World",
+      "brand": "HSBC",
+      "value": 4,
+      "label": "4 €",
+      "at": 5.4
+     }
+    ],
+    "max": 22,
+    "note": "TER: 0,20 % · 0,05 % · 0,04 %"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 6.2,
+   "script": "0:25 · Warum so billig? Der ETF bildet nicht den MSCI World ab, sondern einen Index von Solactive. Das spart teure Lizenzgebühren.",
+   "params": {
+    "brand": "HSBC",
+    "context": "Der Trick",
+    "text": "*Solactive* statt MSCI",
+    "accent": "#2f6bff",
+    "size": 68,
+    "pills": [
+     "weniger Lizenzgebühren",
+     "ähnliche Welt-Aktien"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "06",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:31 · Und noch ein Pluspunkt: Der HSBC kauft die Aktien wirklich. Der Invesco baut die Rendite nur über ein Tauschgeschäft nach.",
+   "params": {
+    "title": "Echt oder *nachgebaut*?",
+    "left": {
+     "label": "HSBC World",
+     "title": "physisch",
+     "result": "kauft die Aktien wirklich",
+     "good": true,
+     "at": 1.0
+    },
+    "right": {
+     "label": "Invesco MSCI World",
+     "title": "synthetisch",
+     "result": "Rendite per Tauschgeschäft",
+     "good": false,
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:37 · Aber ganz ehrlich: Zum Invesco sparst du nur einen Euro im Jahr. Richtig lohnt sich der Wechsel nur gegenüber teuren ETFs. Keine Anlageberatung.",
+   "params": {
+    "title": "Ganz *ehrlich*",
+    "accent": "#b8860b",
+    "label": "Ersparnis gegenüber Invesco · auf 10.000 €",
+    "value": "1 €",
+    "tone": "gold",
+    "size": 190,
+    "at": 1.6,
+    "countDur": 0.6,
+    "sub": "pro Jahr",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:44 · Und die Kosten sind nicht alles: Der ETF ist neu und noch klein. Prüf vorher, ob dein Broker ihn überhaupt im Sparplan anbietet.",
+   "params": {
+    "tag": "Vorher prüfen",
+    "live": true,
+    "text": "Kosten sind *nicht alles*",
+    "size": 62,
+    "sub": "ETF ist *neu und noch klein* · Sparplan bei deinem Broker?",
+    "pills": [
+     "Fondsgröße",
+     "Sparplan-Angebot"
+    ],
+    "pillsAt": 4.0
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:50 · Was zahlst du für deinen Welt-ETF? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Was kostet *dein* Welt-ETF?",
+    "options": [
+     "0,20 % oder mehr",
+     "Unter 0,10 %",
+     "Keine Ahnung"
+    ],
+    "note": "Keine Anlageberatung · Stand: 12. November 2026"
+   }
+  }
+ ]
+}
