@@ -96,3 +96,12 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Export immer als `_key.mp4` mit **Magenta-Key** (nicht grün: der Key würde die grünen Grafiken ausstanzen)
   plus `_alpha.webm` mit echter Transparenz. Harte Sticker-Schatten statt weicher, damit der Key sauber bleibt.
 - Mit Panda: Karte rechts (x=715, w=610), Panda links (x=185, h=520), keine Überlappung.
+
+## Studio-Stil (3D-Kulissen, sprechender Panda) – Nutzerwunsch nach Referenzvideos
+- Engine `toonfin/studio.py` + Software-3D `toonfin/scene3d.py` (Sets: hq, avenue, boardroom, office, studio;
+  Kamera fährt pro Shot von `from` nach `to`). Shots ~1–2,5 s, Übergänge `zoom`/`whip`/`cut` mit Whoosh-Varianten.
+- Panda in wechselnden Einstellungen (`wide`, `medium`, `close`, `*_left/_right`), **hier mit sprechendem Mund**
+  (nur in diesem Stil gewünscht): Mundlinien je Pose in `MOUTH` (von Hand eingemessen), Öffnung aus der Lautstärke.
+- Glas-Karten mit Farbschimmer drehen sich in 3D rein (`title`, `person`, `news`, `chart`, `kpi`, `quote`, `shrink`,
+  `stamp`, `icon`). Kopfzeile „PANDA_INVESTIERT · BÖRSENNEWS datum“, Untertitel Wort für Wort gelb.
+- Beispiel: `examples/nvidia_huang_studio_spec.py` → JSON, `python -m toonfin.studio spec.json out.mp4`.
