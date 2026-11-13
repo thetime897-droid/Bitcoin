@@ -1,0 +1,248 @@
+{
+ "name": "kiyosaki-6-regeln",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trCoins",
+   "duration": 6.4,
+   "script": "0:00 · Dein Haus ist kein Vermögen. Laut Robert Kiyosaki ist es eine Verbindlichkeit – und das ist nur die erste von sechs Geld-Regeln, die dir in der Schule keiner beibringt.",
+   "params": {
+    "tag": "GELD-REGEL #1",
+    "coins": [
+     {
+      "name": "HAUS",
+      "ticker": "HAUS",
+      "glyph": "🏠",
+      "color": "#f2f3f5"
+     },
+     {
+      "name": "AUTO",
+      "ticker": "AUTO",
+      "glyph": "🚗",
+      "color": "#f2f3f5"
+     },
+     {
+      "name": "IPHONE",
+      "ticker": "IPHONE",
+      "glyph": "📱",
+      "color": "#f2f3f5"
+     }
+    ],
+    "title": "= Vermögen",
+    "size": 110,
+    "sub": "Laut *Robert Kiyosaki* („Rich Dad Poor Dad“)",
+    "stamp": "VERBINDLICHKEIT",
+    "stampColor": "#e5392f",
+    "stampSize": 62,
+    "coinsAt": 0.3,
+    "coinStep": 0.25,
+    "titleAt": 1.2,
+    "strikeAt": 2.0
+   }
+  },
+  {
+   "id": "02",
+   "type": "trRule",
+   "duration": 6.2,
+   "script": "0:06 · Seine Logik: Ein Vermögenswert bringt dir jeden Monat Geld. Eine Verbindlichkeit kostet dich Geld – Kredit, Steuern, Reparaturen. Also: erst Vermögen kaufen, dann Luxus.",
+   "params": {
+    "title": "Vermögen oder *Verbindlichkeit*?",
+    "left": {
+     "label": "Vermögen",
+     "title": "bringt Geld rein",
+     "result": "Aktien, Mietwohnung, Firma",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Verbindlichkeit",
+     "title": "zieht Geld raus",
+     "result": "Eigenheim, Auto, Kredit",
+     "good": false,
+     "at": 3.0
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trMetric",
+   "duration": 6.0,
+   "script": "0:12 · Regel zwei: Reich bist du nicht durch dein Gehalt – sondern dadurch, wie lange du ohne Arbeit leben könntest.",
+   "params": {
+    "title": "Wie reich bist *du* wirklich?",
+    "accent": "#b8860b",
+    "label": "Monate, die du ohne Job leben könntest",
+    "value": "?? Monate",
+    "countUp": false,
+    "tone": "gold",
+    "size": 150,
+    "at": 1.6,
+    "sub": "*Das* ist dein echter Reichtum – nicht dein Gehalt"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trDrain",
+   "duration": 6.6,
+   "script": "0:18 · Regel drei: Sparer verlieren. Der US-Dollar hat seit 1971 über 80 Prozent seiner Kaufkraft verloren. Und auch der Euro hat seit 2002 über ein Drittel eingebüßt.",
+   "params": {
+    "brand": "USD",
+    "name": "US-Dollar",
+    "tag": "REGEL #3",
+    "title": "Kaufkraft *seit 1971*",
+    "value": "−80 %",
+    "size": 180,
+    "at": 0.6,
+    "countDur": 1.4,
+    "barFrom": "1971: 1,00 $",
+    "barTo": "heute: unter 0,20 $",
+    "drainTo": 0.17,
+    "sub": "Euro seit 2002: *über ein Drittel* weg",
+    "stamp": "SPARER VERLIEREN",
+    "stampSize": 60
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 4.8,
+   "script": "0:25 · Deshalb: Nicht nur sparen – sondern in echte Werte investieren.",
+   "params": {
+    "brand": false,
+    "text": "Nicht nur *sparen* – investieren",
+    "accent": "#0d7d4d",
+    "size": 72,
+    "pills": [
+     "Aktien",
+     "Immobilien",
+     "Firmenanteile"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 7.6,
+   "script": "0:30 · Regel vier: der Cashflow-Quadrant. Angestellte und Selbstständige tauschen Zeit gegen Geld. Unternehmer und Investoren lassen Systeme und Geld für sich arbeiten – sogar nachts.",
+   "params": {
+    "title": "Der *Cashflow-Quadrant*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "Angestellte",
+      "sub": "Zeit gegen Geld",
+      "mark": "E",
+      "markColor": "#e5392f",
+      "at": 1.8
+     },
+     {
+      "text": "Selbstständige",
+      "sub": "Zeit gegen Geld",
+      "mark": "S",
+      "markColor": "#e5392f",
+      "at": 2.8
+     },
+     {
+      "text": "*Unternehmer*",
+      "sub": "Systeme arbeiten für dich",
+      "mark": "B",
+      "markColor": "#0d7d4d",
+      "at": 4.6
+     },
+     {
+      "text": "*Investoren*",
+      "sub": "Geld arbeitet für dich – auch nachts",
+      "mark": "I",
+      "markColor": "#0d7d4d",
+      "at": 5.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:37 · Regel fünf: Schulden sind ein Werkzeug. Schlechte Schulden kaufen dir ein neues iPhone. Gute Schulden kaufen dir etwas, das dir Geld bringt.",
+   "params": {
+    "title": "Schulden = *Werkzeug*",
+    "left": {
+     "label": "Gute Schulden",
+     "title": "kaufen Vermögen",
+     "result": "z. B. vermietete Wohnung",
+     "good": true,
+     "at": 2.8
+    },
+    "right": {
+     "label": "Schlechte Schulden",
+     "title": "kaufen Konsum",
+     "result": "iPhone, Auto, Urlaub",
+     "good": false,
+     "at": 1.4
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 6.0,
+   "script": "0:44 · Aber Achtung: Selbst Kiyosaki sagt, Schulden helfen nur, wenn du weißt, was du tust. Ohne Wissen sind sie eine Falle. Das ist keine Anlageberatung.",
+   "params": {
+    "tag": "Wichtig",
+    "live": true,
+    "text": "Schulden *nur mit Wissen*",
+    "size": 64,
+    "sub": "Ohne Wissen sind sie eine *Falle*",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trYear",
+   "duration": 6.0,
+   "script": "0:50 · Und Regel sechs: Dein größter Feind ist Unwissen. Wer mit 20 anfängt zu lernen, ist mit 30 zehn Jahre voraus.",
+   "params": {
+    "title": "Regel #6: früh *anfangen*",
+    "label": "DEIN ALTER",
+    "from": 20,
+    "to": 30,
+    "rollAt": 2.0,
+    "progress": 1.0,
+    "sub": "Wer mit 20 lernt, ist *10 Jahre* voraus",
+    "sticker": {
+     "text": "+10 JAHRE",
+     "color": "#0d7d4d",
+     "at": 3.2,
+     "x": 540,
+     "y": 628,
+     "size": 50
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:56 · Welche Regel trifft dich am meisten? Schreib die Nummer in die Kommentare.",
+   "params": {
+    "question": "Welche Regel trifft *dich*?",
+    "options": [
+     "#1 · Das Haus",
+     "#3 · Sparer verlieren",
+     "#4 · Zeit gegen Geld"
+    ],
+    "note": "Keine Anlageberatung · Regeln nach Robert Kiyosaki, Meinung statt Garantie"
+   }
+  }
+ ]
+}
