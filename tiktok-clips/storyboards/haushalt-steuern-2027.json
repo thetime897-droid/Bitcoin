@@ -1,0 +1,253 @@
+{
+ "name": "haushalt-steuern-2027",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trOutage",
+   "duration": 6.0,
+   "script": "0:00 · Die Regierung hat entschieden – und ab jetzt wird's teurer. Hier sind alle Steuern, die kommen. Und die, die doch nicht kommen.",
+   "params": {
+    "tag": "HAUSHALT 2027",
+    "title": "Das wird *teurer*",
+    "services": [
+     {
+      "icon": "🍸",
+      "name": "Wodka"
+     },
+     {
+      "icon": "🥃",
+      "name": "Whisky"
+     },
+     {
+      "icon": "🍾",
+      "name": "Korn"
+     },
+     {
+      "icon": "🥤",
+      "name": "Cola",
+      "bad": "▲ ab 2028"
+     },
+     {
+      "icon": "🧃",
+      "name": "Eistee",
+      "bad": "▲ ab 2028"
+     },
+     {
+      "icon": "⚡",
+      "name": "Strom",
+      "bad": "✕ keine Entlastung"
+     }
+    ],
+    "flipAt": 0.8,
+    "step": 0.28,
+    "stamp": "ES KOMMT",
+    "okText": "● normal",
+    "badText": "▲ TEURER"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trStat",
+   "duration": 5.6,
+   "script": "0:06 · Schlag eins: Die Alkoholsteuer steigt laut BILD ab Januar um 20 Prozent. Wodka, Korn, Whisky – alles wird teurer.",
+   "params": {
+    "context": "ab Januar · laut BILD",
+    "label": "Alkoholsteuer",
+    "tone": "red",
+    "icon": "🥃",
+    "value": "+20 %",
+    "size": 200,
+    "at": 1.4,
+    "countDur": 0.8,
+    "sub": "Wodka, Korn, Whisky – *teurer*",
+    "pills": [
+     "kommt"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 7.2,
+   "script": "0:11 · Schlag zwei: Die Zuckersteuer kommt. Zwar erst 2028 statt Mitte 2027, aber mit drei Stufen: ab 5, ab 7 und ab 9 Gramm Zucker. Kritiker nennen sie eine Abkassier-Steuer.",
+   "params": {
+    "title": "Die *Zuckersteuer* kommt",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Start: *1. Januar 2028*",
+      "sub": "statt 1. Juli 2027",
+      "mark": "📅",
+      "markColor": "#111317",
+      "at": 1.6
+     },
+     {
+      "text": "*3 Stufen* statt 2",
+      "sub": "ab 5 g · 7 g · 9 g Zucker je 100 ml",
+      "mark": "3",
+      "markColor": "#e5392f",
+      "at": 3.4
+     },
+     {
+      "text": "„*Abkassier-Steuer*“",
+      "sub": "Kritik aus der Getränke-Branche",
+      "mark": "!",
+      "markColor": "#e5392f",
+      "at": 5.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStrike",
+   "duration": 6.2,
+   "script": "0:18 · Schlag drei: Die versprochene Stromsteuer-Senkung für alle? Vertagt. Kein Geld. Frühestens 2028.",
+   "params": {
+    "title": "Stromsteuer *runter*?",
+    "accent": "#e5392f",
+    "old": "Senkung für alle",
+    "new": "*Vertagt* – kein Geld",
+    "newTone": "red",
+    "newSize": 58,
+    "strikeAt": 2.0,
+    "newAt": 3.0,
+    "sub": "frühestens etwa *2028*",
+    "pills": [
+     "5 Mrd. € fehlen"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 4.4,
+   "script": "0:25 · Jetzt die guten Nachrichten. Drei Steuern sind vom Tisch.",
+   "params": {
+    "brand": false,
+    "text": "Jetzt die *guten* News",
+    "accent": "#0d7d4d",
+    "size": 84,
+    "pills": [
+     "3 Steuern vom Tisch"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:29 · Die Plastiksteuer kommt nicht. Die Schaumweinsteuer-Erhöhung um 20 Prozent kommt nicht. Und das Wohngeld bleibt, wie es ist.",
+   "params": {
+    "title": "Vom *Tisch*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "*Plastiksteuer*",
+      "sub": "kommt nicht",
+      "at": 1.2
+     },
+     {
+      "text": "*Sekt-Steuer* +20 %",
+      "sub": "kommt nicht – hätte nur 65 Mio. € gebracht",
+      "at": 3.0
+     },
+     {
+      "text": "*Wohngeld*",
+      "sub": "bleibt unverändert",
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:36 · Und beim Elterngeld gibt's sogar mehr: Der Mindestbetrag steigt um 30 auf 330 Euro, der Höchstbetrag um 100 auf 1.900 Euro.",
+   "params": {
+    "title": "Elterngeld *steigt*",
+    "label": "Höchstbetrag pro Monat",
+    "value": "1.900 €",
+    "size": 160,
+    "at": 1.8,
+    "second": {
+     "value": "Mindestens: 330 €",
+     "size": 64,
+     "at": 3.8
+    },
+    "pills": [
+     "+100 € oben",
+     "+30 € unten",
+     "14 Monate bleiben"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:42 · Aber: Wer Grundsicherung bekommt, kriegt 18 Monate lang keinen Cent mehr – Nullrunde bis Juni 2028. Das ist keine Steuerberatung.",
+   "params": {
+    "tag": "Nullrunde",
+    "live": true,
+    "text": "*18 Monate* kein Cent mehr",
+    "size": 60,
+    "sub": "Grundsicherung · eingefroren bis *30. Juni 2028*",
+    "pills": [
+     "ca. 7 Mio. Empfänger",
+     "Keine Steuerberatung"
+    ],
+    "pillsAt": 4.0
+   }
+  },
+  {
+   "id": "09",
+   "type": "trYear",
+   "duration": 5.6,
+   "script": "0:49 · Und die große Einkommensteuer-Reform? Mehr Netto vom Brutto? Weiter offen. Wann und ob – keiner weiß es.",
+   "params": {
+    "title": "Mehr *Netto*?",
+    "label": "EINKOMMENSTEUER-REFORM",
+    "from": 2027,
+    "to": 2028,
+    "rollAt": 1.4,
+    "progress": 0.12,
+    "sub": "Wann und ob? *Offen*",
+    "sticker": {
+     "text": "WEITER OFFEN",
+     "color": "#b8860b",
+     "at": 2.8,
+     "x": 540,
+     "y": 628,
+     "size": 48
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:54 · Was trifft dich am meisten? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Was trifft *dich* am meisten?",
+    "options": [
+     "Alkoholsteuer",
+     "Zuckersteuer",
+     "Keine Stromsteuer-Senkung"
+    ],
+    "note": "Keine Steuerberatung · laut Medienberichten, Haushalt noch nicht beschlossen"
+   }
+  }
+ ]
+}

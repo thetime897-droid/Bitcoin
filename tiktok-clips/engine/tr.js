@@ -1101,7 +1101,7 @@
       const d = C.h('div', { style: { padding: '22px 14px', borderRadius: '26px', background: '#ddf4e8', border: `5px solid ${CHK}`, textAlign: 'center' } }, grid);
       const ic = C.h('div', { style: { fontSize: '64px', lineHeight: 1 } }, d, sv.icon || '☁️');
       const nm = C.h('div', { style: { fontSize: '34px', fontWeight: 900, color: INK, marginTop: '8px' } }, d, sv.name);
-      const stt = C.h('div', { style: { fontSize: '26px', fontWeight: 900, color: G, marginTop: '4px' } }, d, '● online');
+      const stt = C.h('div', { style: { fontSize: '26px', fontWeight: 900, color: G, marginTop: '4px' } }, d, p.okText || '● online');
       const at = flipAt + i * step;
       ctx.cue('error', at, 0.4); ctx.cue('tick', at + 0.02, 0.5);
       return { d, ic, nm, stt, at, i };
@@ -1120,7 +1120,7 @@
         const j = g ? (C.rand(Math.floor(t * 40) + o.i) - 0.5) * 16 : 0;
         o.d.style.transform = `translate(${j}px, ${g ? -j * 0.4 : 0}px) scale(${Math.max(0, k) * (down ? 1 - 0.03 * Math.abs(Math.sin(t * 4 + o.i)) : 1)})`;
         o.d.style.background = down ? '#fde6e3' : '#ddf4e8'; o.d.style.borderColor = down ? RD : CHK;
-        o.stt.textContent = down ? '✕ DOWN' : '● online'; o.stt.style.color = down ? RD : G;
+        o.stt.textContent = down ? ((p.services[o.i] || {}).bad || p.badText || '✕ DOWN') : (p.okText || '● online'); o.stt.style.color = down ? RD : G;
         o.ic.style.filter = down ? 'grayscale(1)' : 'none'; o.ic.style.opacity = down ? 0.55 : 1;
         o.nm.style.textShadow = g ? `${-j * 0.3}px 0 rgba(229,57,47,.8), ${j * 0.3}px 0 rgba(47,107,255,.8)` : 'none';
       });
