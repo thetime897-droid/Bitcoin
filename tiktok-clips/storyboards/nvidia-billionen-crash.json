@@ -13,17 +13,19 @@
    "duration": 6.4,
    "script": "0:00 · 1,6 Billionen Dollar. Einfach weg. In nur sechs Wochen. Und jetzt passiert bei Nvidia etwas, womit kaum einer gerechnet hat.",
    "params": {
-    "tag": "NVIDIA",
+    "tag": "CRASH",
     "title": "Börsenwert *vernichtet*",
     "value": "−1,6 Bio. $",
-    "size": 176,
+    "size": 168,
     "at": 0.3,
     "countDur": 1.5,
     "barFrom": "Anfang Oktober",
     "barTo": "heute: −29 %",
     "drainTo": 0.71,
     "sub": "in nur *6 Wochen*",
-    "stamp": "EINFACH WEG"
+    "stamp": "EINFACH WEG",
+    "brand": "NVDA",
+    "name": "Nvidia"
    }
   },
   {

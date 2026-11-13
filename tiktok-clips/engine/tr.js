@@ -1140,40 +1140,64 @@
     const card = T.card(st, { pad: 44, ...p.card });
     card.style.overflow = 'hidden';
     const rain = C.h('div', { style: { position: 'absolute', inset: 0, pointerEvents: 'none' } }, card); rain.dataset.own = 1;
-    const notes = [...Array(p.notes ?? 9)].map((_, i) => ({ el: C.h('div', { style: { position: 'absolute', left: 6 + C.rand(i * 7 + 1) * 86 + '%', top: 0, fontSize: 44 + C.rand(i + 3) * 34 + 'px', opacity: 0 } }, rain, p.note || '💸'), sp: 0.55 + C.rand(i * 3) * 0.5, ph: C.rand(i * 11), rot: (C.rand(i) - 0.5) * 90 }));
-    const tag = C.h('div', { style: { position: 'relative', display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '10px 20px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '28px', fontWeight: 900, letterSpacing: '1px' } }, card);
+    const notes = [...Array(p.notes ?? 8)].map((_, i) => ({ el: C.h('div', { style: { position: 'absolute', left: 4 + C.rand(i * 7 + 1) * 88 + '%', top: 0, fontSize: 40 + C.rand(i + 3) * 30 + 'px', opacity: 0 } }, rain, p.note || '💸'), sp: 0.55 + C.rand(i * 3) * 0.5, ph: C.rand(i * 11), rot: (C.rand(i) - 0.5) * 90 }));
+    const I = p.intro ? (p.intro.dur ?? 2.6) : 0;
+    const head = C.h('div', { class: 'ctr', style: { position: 'relative', justifyContent: 'flex-start', gap: '18px' } }, card);
+    let chip;
+    if (p.brand) { chip = C.chip(p.brand, 96, head); C.h('div', { style: { fontSize: '52px', fontWeight: 900, color: INK, letterSpacing: '-1px', flex: 1 } }, head, p.name || C.brand(p.brand).name); }
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '10px 20px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '28px', fontWeight: 900, letterSpacing: '1px' } }, head);
     const dot = C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: '#fff' } }, tag);
     tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'ALARM'}</span>`);
-    const ttl = C.h('div', { style: { position: 'relative', fontSize: (p.titleSize || 60) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', lineHeight: 1.08, margin: '18px 0 6px' } }, card, T.rich(p.title || '', RD));
-    const num = C.h('div', { style: { position: 'relative', fontSize: (p.size || 170) + 'px', fontWeight: 900, color: RD, lineHeight: 1.05, letterSpacing: '-6px', whiteSpace: 'nowrap', transformOrigin: '0 50%' } }, card, '');
+    C.h('div', { style: { position: 'relative', fontSize: (p.titleSize || 58) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', lineHeight: 1.1, margin: '22px 0 4px' } }, card, T.rich(p.title || '', RD));
+    const num = C.h('div', { style: { position: 'relative', fontSize: (p.size || 160) + 'px', fontWeight: 900, color: RD, lineHeight: 1.08, letterSpacing: '-4px', whiteSpace: 'nowrap', transformOrigin: '0 50%' } }, card, '');
     let fill, lab;
     if (p.bar !== false) {
-      const track = C.h('div', { style: { position: 'relative', height: '34px', borderRadius: '17px', background: '#e6e8eb', marginTop: '18px', overflow: 'hidden' } }, card);
-      fill = C.h('div', { style: { height: '100%', width: '100%', borderRadius: '17px', background: CHK } }, track);
-      lab = C.h('div', { class: 'ctr', style: { position: 'relative', justifyContent: 'space-between', fontSize: '28px', fontWeight: 800, color: '#4b5058', marginTop: '10px' } }, card);
+      const track = C.h('div', { style: { position: 'relative', height: '36px', borderRadius: '18px', background: '#e6e8eb', marginTop: '22px', overflow: 'hidden' } }, card);
+      fill = C.h('div', { style: { height: '100%', width: '100%', borderRadius: '18px', background: CHK } }, track);
+      lab = C.h('div', { class: 'ctr', style: { position: 'relative', justifyContent: 'space-between', fontSize: '30px', fontWeight: 800, color: '#4b5058', marginTop: '12px' } }, card);
       lab.innerHTML = `<span>${p.barFrom || ''}</span><span style="color:${RD}">${p.barTo || ''}</span>`;
     }
-    const sub = C.h('div', { style: { position: 'relative', fontSize: '34px', fontWeight: 800, color: '#4b5058', marginTop: '16px', marginBottom: (p.stamp === false ? 0 : 120) + 'px' } }, card, T.rich(p.sub || '', RD));
+    const sub = C.h('div', { style: { position: 'relative', fontSize: '36px', fontWeight: 800, color: '#4b5058', marginTop: '18px', marginBottom: '160px' } }, card, T.rich(p.sub || '', RD));
     sub.dataset.own = 1;
     const stamp = stampEl(card, p.stamp || 'WEG', RD, 0, 0, p.stampSize || 84);
-    stamp.style.left = p.stampX || '50%'; stamp.style.top = p.stampY || '88%'; stamp.style.borderWidth = '7px';
-    const at = p.at ?? 0.4, dur = p.countDur ?? 1.6, stampAt = p.stampAt ?? at + dur + 0.25;
-    ctx.cue('whoosh', 0, 0.8); ctx.cue('alert', 0.25, 0.4); ctx.cue('whoosh-down', at, 0.5);
+    stamp.style.left = p.stampX || '50%'; stamp.style.top = p.stampY || '89%'; stamp.style.borderWidth = '7px';
+    // Optional first phase: a full-card "BREAKING NEWS" panel that owns the
+    // focus, then lifts away to reveal the drain underneath.
+    let ov, ovTag, ovDot, ovTxt, ovSub;
+    if (p.intro) {
+      ov = C.h('div', { class: 'ctr', style: { position: 'absolute', inset: 0, flexDirection: 'column', gap: '22px', background: 'linear-gradient(180deg,#ffffff,#f3f5f8)', borderRadius: '46px', padding: '40px', textAlign: 'center', zIndex: 5 } }, card); ov.dataset.own = 1;
+      ovTag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '14px', padding: '14px 30px', borderRadius: '18px', background: RD, color: '#fff', fontSize: '46px', fontWeight: 900, letterSpacing: '2px' } }, ov);
+      ovDot = C.h('span', { style: { width: '20px', height: '20px', borderRadius: '50%', background: '#fff' } }, ovTag);
+      ovTag.insertAdjacentHTML('beforeend', `<span>${p.intro.tag || 'BREAKING NEWS'}</span>`);
+      ovTxt = C.h('div', { style: { fontSize: (p.intro.size || 92) + 'px', fontWeight: 900, color: INK, letterSpacing: '-3px', lineHeight: 1.05 } }, ov, T.rich(p.intro.text || '', G));
+      ovSub = C.h('div', { style: { padding: '12px 28px', borderRadius: '30px', background: '#ddf4e8', color: G, fontSize: '38px', fontWeight: 900 } }, ov, p.intro.sub || '');
+      ctx.cue('alert', 0.2, 0.5); ctx.cue('pop', 0.55, 0.6); ctx.cue('success', 1.0, 0.45); ctx.cue('whoosh', I - 0.25, 0.7);
+    }
+    const at = I + (p.at ?? 0.4), dur = p.countDur ?? 1.6, stampAt = p.stampAt != null ? I + p.stampAt : at + dur + 0.25;
+    ctx.cue('whoosh', 0, 0.8); if (!p.intro) ctx.cue('alert', 0.25, 0.4); ctx.cue('whoosh-down', at, 0.5);
     for (let i = 0; i < 7; i++) ctx.cue('tick', at + dur * Math.pow(i / 7, 1.5), 0.42);
     ctx.cue('impact', at + dur, 0.5); ctx.cue('stamp', stampAt, 0.95); ctx.cue('downer', stampAt + 0.1, 0.4);
     return (t) => {
       T.enter(card, t);
       const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      if (chip) chip.style.transform = `scale(${Math.max(0, C.k(t, I + 0.1, 0.45, 'back')) * (1 + Math.sin(t * 3) * 0.03)})`;
+      if (ov) {
+        ovDot.style.boxShadow = `0 0 0 ${ph * 16}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+        ovTag.style.transform = `scale(${Math.max(0, C.k(t, 0.2, 0.4, 'back')) * (1 + Math.sin(t * 6) * 0.02)})`;
+        const kt = C.k(t, 0.5, 0.5, 'back'); ovTxt.style.opacity = C.k(t, 0.5, 0.15); ovTxt.style.transform = `scale(${0.8 + 0.2 * Math.max(0, kt)})`;
+        ovSub.style.transform = `scale(${Math.max(0, C.k(t, 1.0, 0.4, 'back'))})`;
+        const out = C.k(t, I - 0.3, 0.4, 'inOut'); ov.style.transform = `translateY(${-out * 105}%)`; ov.style.opacity = 1 - 0.2 * out;
+      }
       const k = C.k(t, at, dur, 'out');
       num.textContent = countable(p.value) ? C.count(p.value, k) : p.value;
       const run = t > at && t < at + dur ? 1 : 0;
-      num.style.transform = `translate(${run * (C.rand(Math.floor(t * 40)) - 0.5) * 10}px, 0) scale(${1 + 0.07 * Math.sin(Math.PI * C.k(t, at + dur - 0.05, 0.35))})`;
+      num.style.transform = `translate(${run * (C.rand(Math.floor(t * 40)) - 0.5) * 10}px, 0) scale(${1 + 0.06 * Math.sin(Math.PI * C.k(t, at + dur - 0.05, 0.35))})`;
       if (fill) { const d = 1 - (1 - (p.drainTo ?? 0.71)) * k; fill.style.width = d * 100 + '%'; fill.style.background = k > 0.35 ? RD : CHK; lab.style.opacity = C.k(t, at + 0.2, 0.3); }
       const H = card.offsetHeight;
-      notes.forEach((n, i) => { const q = ((t * n.sp * 0.45 + n.ph) % 1); n.el.style.opacity = C.k(t, at, 0.3) * 0.5 * Math.sin(Math.PI * q); n.el.style.transform = `translateY(${q * (H + 80) - 60}px) rotate(${n.rot + t * 40 * (i % 2 ? 1 : -1)}deg)`; });
+      notes.forEach((n, i) => { const q = ((t * n.sp * 0.45 + n.ph) % 1); n.el.style.opacity = C.k(t, at, 0.3) * 0.3 * Math.sin(Math.PI * q); n.el.style.transform = `translateY(${q * (H + 80) - 60}px) rotate(${n.rot + t * 40 * (i % 2 ? 1 : -1)}deg)`; });
       sub.style.opacity = C.k(t, at + dur, 0.3);
       const kS = C.k(t, stampAt, 0.35, 'back');
-      stamp.style.opacity = p.stamp === false ? 0 : C.k(t, stampAt, 0.1);
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
       stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS))) * (1 + Math.sin(t * 3) * 0.012)}) rotate(-7deg)`;
       const shake = t > stampAt && t < stampAt + 0.3 ? Math.sin(t * 80) * 9 * (stampAt + 0.3 - t) / 0.3 : 0;
       card.style.translate = `${shake}px 0`;
