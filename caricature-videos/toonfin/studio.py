@@ -463,20 +463,17 @@ class Studio:
             e = smooth(u)
             mode = s.get("trans", "zoom")
             if mode == "zoom":
-                zo = 1 + 0.6 * e
-                pv = prev.resize((int(W * zo), int(H * zo)), Image.BILINEAR)
-                pv = pv.crop(((pv.width - W) // 2, (pv.height - H) // 2, (pv.width - W) // 2 + W, (pv.height - H) // 2 + H))
-                zi = lerp(0.7, 1.0, e)
-                cur = img.resize((int(W * zi), int(H * zi)), Image.BILINEAR)
-                out = pv.copy()
-                if zi < 1:
-                    blurbg = img.filter(ImageFilter.GaussianBlur(8))
-                    out = Image.blend(pv, blurbg, e)
-                    comp(out, cur, (W - cur.width) / 2, (H - cur.height) / 2)
-                    out = Image.blend(out, img, e * e)
+                # old shot rushes in, hard switch at the midpoint, new shot settles out of a zoom: no ghosting
+                if u < 0.5:
+                    k = smooth(u * 2)
+                    src, zo = prev, 1 + 0.45 * k * k
                 else:
-                    out = img
-                img = Image.blend(out, out.filter(ImageFilter.GaussianBlur(10)), 0.6 * (1 - abs(2 * u - 1)))
+                    k = smooth((u - 0.5) * 2)
+                    src, zo = img, 1.3 - 0.3 * k
+                big = src.resize((int(W * zo), int(H * zo)), Image.BILINEAR)
+                x0, y0 = (big.width - W) // 2, (big.height - H) // 2
+                frame_ = big.crop((x0, y0, x0 + W, y0 + H))
+                img = frame_.filter(ImageFilter.GaussianBlur(9 * (1 - abs(2 * u - 1)) + 0.01))
             else:  # whip
                 off = int(W * e)
                 both = Image.new("RGBA", (W * 2, H))
