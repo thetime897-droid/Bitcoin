@@ -138,6 +138,7 @@
     HSBC: { name: 'HSBC', color: '#db0011', glyph: 'H' },
     ISHARES: { name: 'ISHARES', color: '#111317', glyph: 'iS' },
     INVESCO: { name: 'INVESCO', color: '#000ad2', glyph: 'In' },
+    AWS: { name: 'AWS', color: '#ff9900', glyph: 'aws' },
     ANT: { name: 'ANTHROPIC', color: '#c96442', glyph: 'A' },
     EZB: { name: 'EZB', color: '#003399', glyph: '€' },
     MSCI: { name: 'MSCI', color: '#002f6c', glyph: 'MSCI' },

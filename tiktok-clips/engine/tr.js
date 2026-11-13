@@ -1084,4 +1084,51 @@
       card.style.translate = `${shake}px 0`;
     };
   };
+
+  // ------------------------------------------------------------ trOutage ---
+  // Status board: service tiles start green ("online"), then flip to red
+  // "DOWN" one after another with a glitch, and an "AUSFALL" stamp lands.
+  S.trOutage = (st, p, ctx) => {
+    const card = T.card(st, { pad: 44, ...p.card });
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '10px 20px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '28px', fontWeight: 900, letterSpacing: '1px' } }, card);
+    const dot = C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: '#fff' } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'STÖRUNG'}</span>`);
+    C.h('div', { style: { fontSize: (p.size || 68) + 'px', fontWeight: 900, color: INK, letterSpacing: '-2px', lineHeight: 1.05, margin: '18px 0 24px' } }, card, T.rich(p.title || '', RD));
+    const grid = C.h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' } }, card);
+    grid.dataset.own = 1;
+    const flipAt = p.flipAt ?? 1.0, step = p.step ?? 0.28;
+    const tiles = (p.services || []).map((sv, i) => {
+      const d = C.h('div', { style: { padding: '22px 14px', borderRadius: '26px', background: '#ddf4e8', border: `5px solid ${CHK}`, textAlign: 'center' } }, grid);
+      const ic = C.h('div', { style: { fontSize: '64px', lineHeight: 1 } }, d, sv.icon || '☁️');
+      const nm = C.h('div', { style: { fontSize: '34px', fontWeight: 900, color: INK, marginTop: '8px' } }, d, sv.name);
+      const stt = C.h('div', { style: { fontSize: '26px', fontWeight: 900, color: G, marginTop: '4px' } }, d, '● online');
+      const at = flipAt + i * step;
+      ctx.cue('error', at, 0.4); ctx.cue('tick', at + 0.02, 0.5);
+      return { d, ic, nm, stt, at, i };
+    });
+    const stamp = stampEl(card, p.stamp || 'AUSFALL', RD, 0, 0, p.stampSize || 96);
+    stamp.style.left = '50%'; stamp.style.top = '66%'; stamp.style.borderWidth = '8px';
+    const stampAt = p.stampAt ?? flipAt + tiles.length * step + 0.3;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('alert', flipAt - 0.25, 0.45); ctx.cue('whoosh-down', stampAt - 0.15, 0.5); ctx.cue('stamp', stampAt, 0.95); ctx.cue('downer', stampAt + 0.1, 0.4);
+    return (t) => {
+      T.enter(card, t);
+      const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      tiles.forEach((o) => {
+        const k = C.k(t, 0.3 + o.i * 0.07, 0.4, 'back');
+        const down = t >= o.at, g = t >= o.at && t < o.at + 0.3;
+        o.d.style.opacity = C.k(t, 0.3 + o.i * 0.07, 0.12);
+        const j = g ? (C.rand(Math.floor(t * 40) + o.i) - 0.5) * 16 : 0;
+        o.d.style.transform = `translate(${j}px, ${g ? -j * 0.4 : 0}px) scale(${Math.max(0, k) * (down ? 1 - 0.03 * Math.abs(Math.sin(t * 4 + o.i)) : 1)})`;
+        o.d.style.background = down ? '#fde6e3' : '#ddf4e8'; o.d.style.borderColor = down ? RD : CHK;
+        o.stt.textContent = down ? '✕ DOWN' : '● online'; o.stt.style.color = down ? RD : G;
+        o.ic.style.filter = down ? 'grayscale(1)' : 'none'; o.ic.style.opacity = down ? 0.55 : 1;
+        o.nm.style.textShadow = g ? `${-j * 0.3}px 0 rgba(229,57,47,.8), ${j * 0.3}px 0 rgba(47,107,255,.8)` : 'none';
+      });
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS))) * (1 + Math.sin(t * 3) * 0.012)}) rotate(-8deg)`;
+      const shake = t > stampAt && t < stampAt + 0.3 ? Math.sin(t * 80) * 9 * (stampAt + 0.3 - t) / 0.3 : 0;
+      card.style.translate = `${shake}px 0`;
+    };
+  };
 })();
