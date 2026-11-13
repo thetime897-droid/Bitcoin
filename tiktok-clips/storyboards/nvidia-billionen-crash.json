@@ -1,0 +1,262 @@
+{
+ "name": "nvidia-billionen-crash",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 6.4,
+   "script": "0:00 · 1,6 Billionen Dollar. Einfach weg. In nur sechs Wochen. Und jetzt passiert bei Nvidia etwas, womit kaum einer gerechnet hat.",
+   "params": {
+    "tag": "NVIDIA",
+    "title": "Börsenwert *vernichtet*",
+    "value": "−1,6 Bio. $",
+    "size": 176,
+    "at": 0.3,
+    "countDur": 1.5,
+    "barFrom": "Anfang Oktober",
+    "barTo": "heute: −29 %",
+    "drainTo": 0.71,
+    "sub": "in nur *6 Wochen*",
+    "stamp": "EINFACH WEG"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 5.6,
+   "script": "0:06 · Die Aktie hat seit Anfang Oktober 29 Prozent verloren. Das ist mehr Geld, als fast jeder Konzern der Welt überhaupt wert ist.",
+   "params": {
+    "ticker": "NVDA",
+    "name": "Nvidia · seit Anfang Oktober",
+    "price": "−29 %",
+    "countPrice": false,
+    "change": "-29 % in knapp 6 Wochen",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     99.76204137999154,
+     99.08643837262095,
+     98.58207344862826,
+     99.70266686954542,
+     98.65587805057186,
+     98.50526531463053,
+     97.85611895139196,
+     97.14208812791054,
+     97.55589809590435,
+     96.48342710154047,
+     96.27490296213156,
+     95.28779433365781,
+     95.01431524190308,
+     93.35454682616242,
+     91.97211860990521,
+     91.25960413777776,
+     91.93560721252354,
+     89.90202587111318,
+     90.30931040184502,
+     89.74154687797706,
+     88.11899829089371,
+     89.06862860303752,
+     87.06601244855817,
+     88.23378339829796,
+     87.68209173880264,
+     85.93174669254896,
+     86.45247597039052,
+     85.46468023173787,
+     83.2500075780636,
+     83.33990460661855,
+     81.24753515569402,
+     81.82644313787802,
+     76,
+     73,
+     71
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.4
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:12 · Wie konnte das passieren? Erst kamen Zinsängste. Dann Zweifel, wer die ganzen KI-Milliarden eigentlich bezahlen soll. Und dann der Skandal – Chef Jensen Huang ist weg.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Die Gründe",
+    "title": "Drei *Schläge*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Zinsängste*",
+      "sub": "Tech-Aktien unter Druck",
+      "mark": "1",
+      "markColor": "#111317",
+      "at": 1.8
+     },
+     {
+      "text": "Wer zahlt die *KI-Milliarden*?",
+      "sub": "Zweifel an der Finanzierung",
+      "mark": "2",
+      "markColor": "#111317",
+      "at": 3.4
+     },
+     {
+      "text": "Chef *Huang ist weg*",
+      "sub": "Rücktritt nach Affären-Berichten",
+      "mark": "3",
+      "markColor": "#e5392f",
+      "at": 5.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStrike",
+   "duration": 6.2,
+   "script": "0:19 · Die Profis ziehen die Reißleine: Die Analysten von Bernstein halbieren ihr Kursziel – von 400 auf 200 Dollar.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Analysten",
+    "title": "Kursziel *halbiert*",
+    "accent": "#e5392f",
+    "old": "Bernstein: 400 $",
+    "new": "Neu: *200 $*",
+    "newTone": "red",
+    "newSize": 72,
+    "strikeAt": 2.6,
+    "newAt": 3.6,
+    "pills": [
+     "Dan Ives: 225 $ ohne Huang"
+    ],
+    "pillsAt": 4.8
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 5.2,
+   "script": "0:25 · Aber genau jetzt, mitten in der Panik, passiert das Unerwartete.",
+   "params": {
+    "brand": false,
+    "text": "Mitten in der *Panik* …",
+    "accent": "#b8860b",
+    "size": 80,
+    "pills": [
+     "… passiert das Unerwartete"
+    ],
+    "pillsAt": 2.2
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:30 · Privatanleger kaufen wie verrückt: 111 Millionen Dollar in Nvidia-Aktien – in den ersten 30 Minuten eines einzigen Handelstags.",
+   "params": {
+    "title": "Kleinanleger *kaufen*",
+    "label": "Nvidia-Käufe in den ersten 30 Minuten",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "111 Mio. $",
+    "size": 150,
+    "at": 1.4,
+    "countDur": 1.0,
+    "sub": "am Donnerstag · laut *Vanda Research*",
+    "pills": [
+     "Rekordtempo"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "07",
+   "type": "trRule",
+   "duration": 6.8,
+   "script": "0:37 · Also: Die Profis senken ihre Ziele – und die Kleinanleger greifen zu. Einer von beiden liegt falsch. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Wer hat *recht*?",
+    "left": {
+     "label": "Kleinanleger",
+     "title": "kaufen den Dip",
+     "result": "111 Mio. $ in 30 Minuten",
+     "good": true,
+     "at": 1.0
+    },
+    "right": {
+     "label": "Profis",
+     "title": "senken Kursziele",
+     "result": "Bernstein: 400 → 200 $",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trStat",
+   "duration": 5.6,
+   "script": "0:44 · Für die Käufer spricht: Laut Forbes ist Nvidia so günstig bewertet wie seit 2012 nicht mehr.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Bewertung",
+    "label": "So günstig bewertet wie zuletzt",
+    "tone": "gold",
+    "icon": "📉",
+    "value": "2012",
+    "countUp": false,
+    "size": 200,
+    "at": 1.6,
+    "sub": "laut *Forbes*",
+    "subAccent": "#b8860b"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.2,
+   "script": "0:49 · Dagegen: Die Chefin ist nur übergangsweise im Amt. Und im Dezember will ein Senatsausschuss Huang befragen – es geht um Chips für China.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Die Risiken",
+    "tag": "Aber",
+    "live": true,
+    "text": "Führung *ungeklärt*",
+    "size": 62,
+    "sub": "Interims-Chefin Colette Kress · *Senat* will Huang im Dezember befragen",
+    "pills": [
+     "China-Chips",
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 4.2
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:56 · Mutig oder verrückt: Würdest du Nvidia jetzt kaufen? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Nvidia jetzt kaufen: *mutig* oder verrückt?",
+    "options": [
+     "Mutig – ich kaufe",
+     "Verrückt – Finger weg",
+     "Ich warte die Zahlen ab"
+    ],
+    "note": "Keine Anlageberatung · Stand: 13. November 2026"
+   }
+  }
+ ]
+}

@@ -1131,4 +1131,52 @@
       card.style.translate = `${shake}px 0`;
     };
   };
+
+  // ------------------------------------------------------------- trDrain ---
+  // Hook card for "money gone": live tag, title, a huge red number that
+  // counts up while the card trembles, banknotes falling through the card,
+  // an optional value bar draining from green to red, and a stamp.
+  S.trDrain = (st, p, ctx) => {
+    const card = T.card(st, { pad: 44, ...p.card });
+    card.style.overflow = 'hidden';
+    const rain = C.h('div', { style: { position: 'absolute', inset: 0, pointerEvents: 'none' } }, card); rain.dataset.own = 1;
+    const notes = [...Array(p.notes ?? 9)].map((_, i) => ({ el: C.h('div', { style: { position: 'absolute', left: 6 + C.rand(i * 7 + 1) * 86 + '%', top: 0, fontSize: 44 + C.rand(i + 3) * 34 + 'px', opacity: 0 } }, rain, p.note || '💸'), sp: 0.55 + C.rand(i * 3) * 0.5, ph: C.rand(i * 11), rot: (C.rand(i) - 0.5) * 90 }));
+    const tag = C.h('div', { style: { position: 'relative', display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '10px 20px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '28px', fontWeight: 900, letterSpacing: '1px' } }, card);
+    const dot = C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: '#fff' } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'ALARM'}</span>`);
+    const ttl = C.h('div', { style: { position: 'relative', fontSize: (p.titleSize || 60) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', lineHeight: 1.08, margin: '18px 0 6px' } }, card, T.rich(p.title || '', RD));
+    const num = C.h('div', { style: { position: 'relative', fontSize: (p.size || 170) + 'px', fontWeight: 900, color: RD, lineHeight: 1.05, letterSpacing: '-6px', whiteSpace: 'nowrap', transformOrigin: '0 50%' } }, card, '');
+    let fill, lab;
+    if (p.bar !== false) {
+      const track = C.h('div', { style: { position: 'relative', height: '34px', borderRadius: '17px', background: '#e6e8eb', marginTop: '18px', overflow: 'hidden' } }, card);
+      fill = C.h('div', { style: { height: '100%', width: '100%', borderRadius: '17px', background: CHK } }, track);
+      lab = C.h('div', { class: 'ctr', style: { position: 'relative', justifyContent: 'space-between', fontSize: '28px', fontWeight: 800, color: '#4b5058', marginTop: '10px' } }, card);
+      lab.innerHTML = `<span>${p.barFrom || ''}</span><span style="color:${RD}">${p.barTo || ''}</span>`;
+    }
+    const sub = C.h('div', { style: { position: 'relative', fontSize: '34px', fontWeight: 800, color: '#4b5058', marginTop: '16px', marginBottom: (p.stamp === false ? 0 : 120) + 'px' } }, card, T.rich(p.sub || '', RD));
+    sub.dataset.own = 1;
+    const stamp = stampEl(card, p.stamp || 'WEG', RD, 0, 0, p.stampSize || 84);
+    stamp.style.left = p.stampX || '50%'; stamp.style.top = p.stampY || '88%'; stamp.style.borderWidth = '7px';
+    const at = p.at ?? 0.4, dur = p.countDur ?? 1.6, stampAt = p.stampAt ?? at + dur + 0.25;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('alert', 0.25, 0.4); ctx.cue('whoosh-down', at, 0.5);
+    for (let i = 0; i < 7; i++) ctx.cue('tick', at + dur * Math.pow(i / 7, 1.5), 0.42);
+    ctx.cue('impact', at + dur, 0.5); ctx.cue('stamp', stampAt, 0.95); ctx.cue('downer', stampAt + 0.1, 0.4);
+    return (t) => {
+      T.enter(card, t);
+      const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      const k = C.k(t, at, dur, 'out');
+      num.textContent = countable(p.value) ? C.count(p.value, k) : p.value;
+      const run = t > at && t < at + dur ? 1 : 0;
+      num.style.transform = `translate(${run * (C.rand(Math.floor(t * 40)) - 0.5) * 10}px, 0) scale(${1 + 0.07 * Math.sin(Math.PI * C.k(t, at + dur - 0.05, 0.35))})`;
+      if (fill) { const d = 1 - (1 - (p.drainTo ?? 0.71)) * k; fill.style.width = d * 100 + '%'; fill.style.background = k > 0.35 ? RD : CHK; lab.style.opacity = C.k(t, at + 0.2, 0.3); }
+      const H = card.offsetHeight;
+      notes.forEach((n, i) => { const q = ((t * n.sp * 0.45 + n.ph) % 1); n.el.style.opacity = C.k(t, at, 0.3) * 0.5 * Math.sin(Math.PI * q); n.el.style.transform = `translateY(${q * (H + 80) - 60}px) rotate(${n.rot + t * 40 * (i % 2 ? 1 : -1)}deg)`; });
+      sub.style.opacity = C.k(t, at + dur, 0.3);
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = p.stamp === false ? 0 : C.k(t, stampAt, 0.1);
+      stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS))) * (1 + Math.sin(t * 3) * 0.012)}) rotate(-7deg)`;
+      const shake = t > stampAt && t < stampAt + 0.3 ? Math.sin(t * 80) * 9 * (stampAt + 0.3 - t) / 0.3 : 0;
+      card.style.translate = `${shake}px 0`;
+    };
+  };
 })();

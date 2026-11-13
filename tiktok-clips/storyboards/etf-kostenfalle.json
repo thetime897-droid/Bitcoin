@@ -1,0 +1,211 @@
+{
+ "name": "etf-kostenfalle",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 6.2,
+   "script": "0:00 · Dein ETF kostet dich heimlich über 12.000 Euro. Und du merkst es nicht mal.",
+   "params": {
+    "tag": "KOSTENFALLE",
+    "title": "Dein ETF *frisst* Rendite",
+    "value": "−12.500 €",
+    "size": 176,
+    "at": 0.3,
+    "countDur": 1.5,
+    "bar": false,
+    "sub": "und du merkst es *nicht mal*",
+    "stamp": "HEIMLICH"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trWarn",
+   "duration": 5.0,
+   "script": "0:06 · Schuld ist eine winzige Zahl, die fast jeder ignoriert.",
+   "params": {
+    "tag": "Der Grund",
+    "live": true,
+    "text": "Eine *winzige* Zahl",
+    "size": 72,
+    "sub": "die fast jeder *ignoriert*"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 6.0,
+   "script": "0:11 · Die laufenden Kosten. Beim bekanntesten MSCI-World-ETF sind das 0,20 Prozent pro Jahr. Klingt nach nichts.",
+   "params": {
+    "brand": "ISHARES",
+    "context": "iShares Core MSCI World",
+    "label": "Laufende Kosten pro Jahr",
+    "tone": "red",
+    "icon": "%",
+    "value": "0,20 %",
+    "countUp": false,
+    "size": 180,
+    "at": 2.2,
+    "sub": "klingt nach *nichts* …"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 7.2,
+   "script": "0:17 · Aber rechne mal: 50.000 Euro, 30 Jahre, 6 Prozent Rendite. Mit 0,20 Prozent Kosten landest du bei 271.400 Euro. Mit 0,04 Prozent bei 283.900.",
+   "params": {
+    "title": "Die *Rechnung*",
+    "accent": "#e5392f",
+    "label": "50.000 € · 30 Jahre · 6 % pro Jahr",
+    "value": "271.400 €",
+    "tone": "red",
+    "size": 120,
+    "at": 2.6,
+    "countDur": 1.0,
+    "sub": "mit *0,20 %* Kosten",
+    "second": {
+     "value": "283.900 € mit 0,04 %",
+     "size": 64,
+     "at": 5.4
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 5.4,
+   "script": "0:24 · Und genau so einen ETF gibt es jetzt: billiger als jeder MSCI World.",
+   "params": {
+    "brand": false,
+    "text": "Billiger als *jeder* MSCI World",
+    "accent": "#0d7d4d",
+    "size": 70,
+    "pills": [
+     "Name kommt jetzt"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trBuy",
+   "duration": 6.2,
+   "script": "0:29 · Er heißt HSBC World. Kosten: 0,04 Prozent im Jahr. Das sind 4 Euro auf 10.000 Euro.",
+   "params": {
+    "brand": "HSBC",
+    "name": "HSBC World UCITS ETF",
+    "badge": "ISIN IE000P2V15V8",
+    "value": "0,04 %",
+    "countDur": 0.01,
+    "at": 1.6,
+    "size": 150,
+    "sub": "= *4 €* pro Jahr auf 10.000 €",
+    "tags": [
+     "Neu am Markt",
+     "Welt-ETF"
+    ],
+    "tagsAt": 4.0
+   }
+  },
+  {
+   "id": "07",
+   "type": "trBars",
+   "duration": 6.4,
+   "script": "0:36 · Zum Vergleich: Der iShares kostet 20 Euro, der bisher günstigste von Invesco 5 – und der Neue 4.",
+   "params": {
+    "title": "Kosten pro Jahr auf *10.000 €*",
+    "items": [
+     {
+      "name": "iShares Core MSCI World",
+      "brand": "ISHARES",
+      "value": 20,
+      "label": "20 €",
+      "at": 1.4,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Invesco MSCI World",
+      "brand": "INVESCO",
+      "value": 5,
+      "label": "5 €",
+      "at": 3.4,
+      "color": "#b8860b",
+      "barColor": "#e8c25a"
+     },
+     {
+      "name": "HSBC World",
+      "brand": "HSBC",
+      "value": 4,
+      "label": "4 €",
+      "at": 4.8
+     }
+    ],
+    "max": 22,
+    "note": "TER: 0,20 % · 0,05 % · 0,04 %"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 6.8,
+   "script": "0:42 · Der Haken: Er bildet nicht den MSCI World ab, sondern einen Index von Solactive. Und er ist ganz neu. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Der *Haken*",
+    "left": {
+     "label": "Plus",
+     "title": "0,04 % Kosten",
+     "result": "kauft die Aktien wirklich",
+     "good": true,
+     "at": 0.8
+    },
+    "right": {
+     "label": "Minus",
+     "title": "kein MSCI-Index",
+     "result": "Solactive · ganz neu am Markt",
+     "good": false,
+     "at": 2.4
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.0,
+   "script": "0:49 · Und bitte nicht blind umschichten: Verkaufst du deinen alten ETF mit Gewinn, zahlst du Steuern. Oft ist es klüger, nur den Sparplan umzustellen.",
+   "params": {
+    "tag": "Wichtig",
+    "live": true,
+    "text": "Nicht *blind* umschichten",
+    "size": 62,
+    "sub": "Verkauf mit Gewinn = *Steuern* · lieber nur den Sparplan umstellen",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 4.2
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:55 · Weißt du, was dein ETF kostet? Schau nach – und schreib's in die Kommentare.",
+   "params": {
+    "question": "Was kostet *dein* ETF?",
+    "options": [
+     "0,20 % oder mehr",
+     "Unter 0,10 %",
+     "Muss ich nachschauen"
+    ],
+    "note": "Keine Anlageberatung · Rechenbeispiel, Stand: 13. November 2026"
+   }
+  }
+ ]
+}

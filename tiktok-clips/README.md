@@ -217,6 +217,7 @@ Echte Logos: PNG mit `"logo": "logos/xyz.png"` am Ticker/Brand.
 | `trPrompt` | Hook-Karte: KI-Chip + Name, Prompt tippt sich selbst, Einsatz-Kachel (grün) und Ergebnis-Kachel, die rot/grün durchrattert und auf „+ ??? €“ landet | `brand`, `name`, `role`, `tag`, `prompt`, `stake`, `result`, `typeAt`, `stakeAt`, `spinAt`, `landAt` |
 | `trCoins` | Krypto-Hook: Live-Tag, Coin-Reihe springt nacheinander rein und wippt, Titel wird durchgestrichen, Stempel knallt drauf | `tag`, `coins[]`, `title`, `sub`, `stamp`, `stampColor`, `coinsAt`, `titleAt`, `strikeAt` |
 | `trOutage` | Status-Tafel: Dienste-Kacheln kippen nacheinander von Grün („online“) auf Rot („DOWN“), dann Stempel | `tag`, `title`, `services[{icon,name}]`, `flipAt`, `step`, `stamp` |
+| `trDrain` | „Geld weg“-Hook: rote Riesenzahl zählt hoch und zittert, Geldscheine fallen durch die Karte, optionaler Wert-Balken läuft von Grün nach Rot, Stempel | `tag`, `title`, `value`, `bar`, `barFrom`, `barTo`, `drainTo`, `sub`, `stamp` |
 | `trChart` | App-Chartkarte: Name, Preis zählt, Änderung, Linie, Zeitraum-Tabs | `ticker`, `name`, `price`, `priceFrom`, `change`, `range`, `data`, `color`, `threshold{value,label,at}`, `sticker` |
 
 Beispiel: `storyboards/jahresendrallye-tr.json`.
