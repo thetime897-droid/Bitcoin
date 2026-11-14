@@ -1261,7 +1261,7 @@
     const stage = C.h('div', { style: { position: 'relative', height: FH + 'px', borderRadius: '30px', overflow: 'hidden', background: 'linear-gradient(180deg,#eaf2fb,#f7f9fc)' } }, card);
     const pole = C.h('div', { style: { position: 'absolute', left: '34px', top: '18px', bottom: '18px', width: '16px', borderRadius: '8px', background: 'linear-gradient(90deg,#9aa0a8,#e6e8eb,#7d838b)' } }, stage);
     C.h('div', { style: { position: 'absolute', left: '28px', top: '8px', width: '28px', height: '28px', borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%,#fff3b0,#d4a017)' } }, stage);
-    const AMP = p.amp ?? 16, X0 = 50, H = FH - 2 * (AMP + 30), W = Math.round(H * (p.ratio || 1.5)), Y0 = AMP + 30;
+    const AMP = p.amp ?? 16, X0 = 50, padT = p.padTop ?? 30, H = FH - padT - AMP * 2 - 30, W = Math.round(H * (p.ratio || 1.5)), Y0 = AMP + padT;
     const cloth = C.h('div', { style: { position: 'absolute', left: X0 + 'px', top: Y0 + 'px', width: W + 'px', height: H + 'px' } }, stage);
     const sw = W / N;
     const strips = [...Array(N)].map((_, i) => {
@@ -1274,9 +1274,9 @@
     tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'BREAKING'}</span>`);
     const sp = C.h('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden', zIndex: 2, pointerEvents: 'none' } }, stage);
     const sparks = [...Array(p.sparks ?? 18)].map((_, i) => ({ el: C.h('div', { style: { position: 'absolute', left: '55%', top: '50%', fontSize: 26 + C.rand(i + 5) * 34 + 'px', color: i % 3 ? '#ffd84d' : '#fff', textShadow: '0 0 16px rgba(255,216,77,.95)', opacity: 0 } }, sp, i % 2 ? '✦' : '✧'), a: (i / (p.sparks ?? 18)) * Math.PI * 2 + C.rand(i) * 0.4, d: 160 + C.rand(i * 3) * 230, ph: C.rand(i * 7) }));
-    const ttl = C.h('div', { style: { fontSize: (p.titleSize || 66) + 'px', fontWeight: 900, color: INK, letterSpacing: '-2px', lineHeight: 1.05, marginTop: '26px' } }, card, T.rich(p.title || '', RD));
-    const num = C.h('div', { style: { fontSize: (p.size || 150) + 'px', fontWeight: 900, color: RD, lineHeight: 1.05, letterSpacing: '-4px', whiteSpace: 'nowrap', transformOrigin: '0 50%' } }, card, '');
-    const sub = C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: '#4b5058', marginTop: '6px', marginBottom: '130px' } }, card, T.rich(p.sub || '', RD));
+    const ttl = C.h('div', { style: { fontSize: (p.titleSize || 66) + 'px', fontWeight: 900, color: INK, letterSpacing: '-2px', lineHeight: 1.05, marginTop: '26px', textAlign: p.center ? 'center' : 'left' } }, card, T.rich(p.title || '', RD));
+    const num = C.h('div', { style: { fontSize: (p.size || 150) + 'px', fontWeight: 900, color: RD, lineHeight: 1.05, letterSpacing: '-4px', whiteSpace: 'nowrap', transformOrigin: p.center ? '50% 50%' : '0 50%', textAlign: p.center ? 'center' : 'left' } }, card, '');
+    const sub = C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: '#4b5058', marginTop: '6px', marginBottom: '130px', textAlign: p.center ? 'center' : 'left' } }, card, T.rich(p.sub || '', RD));
     sub.dataset.own = 1;
     const stamp = stampEl(card, p.stamp || 'SKANDAL', RD, 0, 0, p.stampSize || 84);
     stamp.style.left = '50%'; stamp.style.top = '91%'; stamp.style.borderWidth = '7px';

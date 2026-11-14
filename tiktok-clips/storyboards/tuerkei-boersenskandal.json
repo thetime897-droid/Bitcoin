@@ -21,7 +21,10 @@
     "at": 1.6,
     "countDur": 1.2,
     "sub": "Fonds-Skandal · fast *500.000* Anleger",
-    "stamp": "SKANDAL"
+    "stamp": "SKANDAL",
+    "flagH": 430,
+    "padTop": 12,
+    "center": true
    }
   },
   {
