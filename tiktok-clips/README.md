@@ -219,6 +219,7 @@ Echte Logos: PNG mit `"logo": "logos/xyz.png"` am Ticker/Brand.
 | `trOutage` | Status-Tafel: Dienste-Kacheln kippen nacheinander von Grün („online“) auf Rot („DOWN“), dann Stempel | `tag`, `title`, `services[{icon,name}]`, `flipAt`, `step`, `stamp` |
 | `trDrain` | „Geld weg“-Hook: rote Riesenzahl zählt hoch und zittert, Geldscheine fallen durch die Karte, optionaler Wert-Balken läuft von Grün nach Rot, Stempel | `tag`, `title`, `value`, `bar`, `barFrom`, `barTo`, `drainTo`, `sub`, `stamp` |
 | `trLaunch` | Produkt-Launch-Hook: großes Trade-Republic-Logo, pulsierendes „NEUE FUNKTION“, Schalter springt auf Grün, Pills, Frage-Stempel | `title`, `pills[]`, `onAt`, `stamp` |
+| `trFlag` | Länder-Krisen-Hook: große wehende Flagge mit Lichtreflex, Funken-Feuerwerk, BREAKING, Titel, rote Zahl zählt hoch, Stempel. Flagge als Bild-URI (`engine/flag-tr.txt` = Türkei) | `flag`, `tag`, `title`, `value`, `sub`, `stamp` |
 | `trChart` | App-Chartkarte: Name, Preis zählt, Änderung, Linie, Zeitraum-Tabs | `ticker`, `name`, `price`, `priceFrom`, `change`, `range`, `data`, `color`, `threshold{value,label,at}`, `sticker` |
 
 Beispiel: `storyboards/jahresendrallye-tr.json`.

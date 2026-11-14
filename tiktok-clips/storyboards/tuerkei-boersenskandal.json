@@ -1,0 +1,231 @@
+{
+ "name": "tuerkei-boersenskandal",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trFlag",
+   "duration": 6.6,
+   "script": "0:00 · In der Türkei brennt der Aktienmarkt. Ein Milliarden-Skandal, fast eine halbe Million Anleger betroffen – und jetzt droht der Rauswurf von den Weltbörsen.",
+   "params": {
+    "flag": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDgwMCI+PHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBmaWxsPSIjZTMwYTE3Ii8+PGNpcmNsZSBjeD0iNDI1IiBjeT0iNDAwIiByPSIyMDAiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSI0NzUiIGN5PSI0MDAiIHI9IjE2MCIgZmlsbD0iI2UzMGExNyIvPjxwb2x5Z29uIHBvaW50cz0iNDk2LjAsNDAwLjAgNTY1LjEsMzc3LjUgNTY1LjEsMzA0LjkgNjA3LjgsMzYzLjcgNjc2LjksMzQxLjIgNjM0LjIsNDAwLjAgNjc2LjksNDU4LjggNjA3LjgsNDM2LjMgNTY1LjEsNDk1LjEgNTY1LjEsNDIyLjUiIGZpbGw9IiNmZmYiLz48L3N2Zz4=",
+    "tag": "BREAKING",
+    "title": "Börsen-*Beben* in der Türkei",
+    "value": "20 Mrd. $",
+    "size": 150,
+    "at": 1.6,
+    "countDur": 1.2,
+    "sub": "Fonds-Skandal · fast *500.000* Anleger",
+    "stamp": "SKANDAL"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trDrain",
+   "duration": 6.2,
+   "script": "0:06 · Seit Mitte September hat die Börse in Istanbul mehr als ein Viertel ihres Werts verloren. Rund 128 Milliarden Dollar – einfach weg.",
+   "params": {
+    "brand": {
+     "name": "TÜRKEI",
+     "glyph": "TR",
+     "color": "#e30a17",
+     "logo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDgwMCI+PHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBmaWxsPSIjZTMwYTE3Ii8+PGNpcmNsZSBjeD0iNDI1IiBjeT0iNDAwIiByPSIyMDAiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSI0NzUiIGN5PSI0MDAiIHI9IjE2MCIgZmlsbD0iI2UzMGExNyIvPjxwb2x5Z29uIHBvaW50cz0iNDk2LjAsNDAwLjAgNTY1LjEsMzc3LjUgNTY1LjEsMzA0LjkgNjA3LjgsMzYzLjcgNjc2LjksMzQxLjIgNjM0LjIsNDAwLjAgNjc2LjksNDU4LjggNjA3LjgsNDM2LjMgNTY1LjEsNDk1LjEgNTY1LjEsNDIyLjUiIGZpbGw9IiNmZmYiLz48L3N2Zz4="
+    },
+    "name": "Börse Istanbul",
+    "tag": "CRASH",
+    "title": "Börsenwert *vernichtet*",
+    "value": "−128 Mrd. $",
+    "size": 160,
+    "at": 0.5,
+    "countDur": 1.4,
+    "barFrom": "Mitte September",
+    "barTo": "−25 % in 7 Wochen",
+    "drainTo": 0.75,
+    "sub": "Stand: *Ende Oktober*",
+    "stamp": "WEG"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:12 · Was ist passiert? Im September sind hochspekulative Investmentfonds zusammengebrochen – mit rund 20 Milliarden Dollar Anlegergeld. Im Zentrum: die Fondshäuser Tera und Pusula.",
+   "params": {
+    "title": "Was ist *passiert*?",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Fonds *brechen zusammen*",
+      "sub": "hochspekulativ · ab September",
+      "mark": "1",
+      "markColor": "#111317",
+      "at": 1.6
+     },
+     {
+      "text": "Rund *20 Mrd. $* Anlegergeld",
+      "sub": "ca. 1 Billion Lira",
+      "mark": "$",
+      "markColor": "#e5392f",
+      "at": 3.4
+     },
+     {
+      "text": "Im Fokus: *Tera* & *Pusula*",
+      "sub": "Fondsgesellschaften",
+      "mark": "!",
+      "markColor": "#e5392f",
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 7.6,
+   "script": "0:20 · Und jetzt rollen Köpfe: Der Chef der Börse Istanbul wurde verhaftet – Vorwurf Bestechung. Ein Ex-Chef der Clearingbank Takasbank sitzt im Gefängnis. Und der Vize-Finanzminister ist zurückgetreten.",
+   "params": {
+    "title": "Jetzt rollen *Köpfe*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Börsen-Chef *verhaftet*",
+      "sub": "Vorwurf: Bestechung",
+      "mark": "🔒",
+      "markColor": "#e5392f",
+      "at": 1.6
+     },
+     {
+      "text": "Ex-*Takasbank*-Chef in Haft",
+      "sub": "Clearingbank der Börse",
+      "mark": "🔒",
+      "markColor": "#e5392f",
+      "at": 3.8
+     },
+     {
+      "text": "Vize-*Finanzminister* zurückgetreten",
+      "sub": "Schwiegersohn in U-Haft",
+      "mark": "✕",
+      "markColor": "#e5392f",
+      "at": 5.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 5.0,
+   "script": "0:27 · Der Justizminister spricht von einem kriminellen Netzwerk.",
+   "params": {
+    "brand": false,
+    "text": "„Kriminelles *Netzwerk*“",
+    "accent": "#e5392f",
+    "size": 80,
+    "pills": [
+     "Justizminister Akın Gürlek"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "06",
+   "type": "trStrike",
+   "duration": 6.4,
+   "script": "0:32 · Und das Gefährlichste: Der Indexanbieter MSCI droht, die Türkei herabzustufen. Die Entscheidung fällt im Juni 2027.",
+   "params": {
+    "brand": "MSCI",
+    "context": "Prüfung läuft",
+    "title": "Türkei bei *MSCI*",
+    "accent": "#e5392f",
+    "old": "Emerging Market",
+    "new": "*Herabstufung* droht",
+    "newTone": "red",
+    "newSize": 60,
+    "strikeAt": 2.4,
+    "newAt": 3.2,
+    "sub": "Entscheidung: *Juni 2027*",
+    "pills": [
+     "ETFs müssten verkaufen"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 6.0,
+   "script": "0:39 · Die ausländischen Anleger flüchten schon: In sieben Wochen haben sie türkische Wertpapiere für 3,65 Milliarden Dollar abgestoßen.",
+   "params": {
+    "title": "Ausländer *flüchten*",
+    "accent": "#e5392f",
+    "label": "Netto-Verkäufe in 7 Wochen",
+    "value": "−3,65 Mrd. $",
+    "tone": "red",
+    "size": 140,
+    "at": 2.0,
+    "countDur": 1.0,
+    "sub": "türkische Wertpapiere · Stand *7. November*"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 7.0,
+   "script": "0:45 · Und jetzt die Frage: Ist das eine Chance? Nach einem Viertel Minus ist vieles billig. Aber solange ermittelt wird und MSCI droht, kann es noch tiefer gehen. Keine Anlageberatung.",
+   "params": {
+    "title": "Chance oder *Falle*?",
+    "left": {
+     "label": "Chance",
+     "title": "Aktien viel billiger",
+     "result": "−25 % in 7 Wochen",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Risiko",
+     "title": "MSCI-Rauswurf",
+     "result": "weitere Abflüsse möglich",
+     "good": false,
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 5.4,
+   "script": "0:52 · Und check deinen Schwellenländer-ETF – da steckt die Türkei oft mit drin.",
+   "params": {
+    "tag": "Check das",
+    "live": true,
+    "text": "Steckt die Türkei in deinem *ETF*?",
+    "size": 60,
+    "sub": "In vielen Schwellenländer-ETFs mit *kleinem Anteil*",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:57 · Würdest du jetzt türkische Aktien kaufen? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Türkische Aktien *jetzt* kaufen?",
+    "options": [
+     "Ja, Schnäppchen",
+     "Nein, zu riskant",
+     "Erst nach MSCI-Entscheid"
+    ],
+    "note": "Keine Anlageberatung · Ermittlungen laufen, Vorwürfe nicht abschließend geklärt"
+   }
+  }
+ ]
+}

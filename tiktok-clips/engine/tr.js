@@ -1247,4 +1247,58 @@
       card.style.translate = `${shake}px 0`;
     };
   };
+
+  // -------------------------------------------------------------- trFlag ---
+  // Country-crisis hook: a big waving flag with a moving light sheen, a
+  // burst of sparkles, BREAKING tag, title, red count-up and a stamp.
+  S.trFlag = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    const fw = C.h('div', { style: { position: 'relative', height: (p.flagH || 420) + 'px', borderRadius: '30px', overflow: 'hidden', transformOrigin: '0 50%' } }, card);
+    const img = C.h('img', { src: p.flag, style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' } }, fw);
+    const sheen = C.h('div', { style: { position: 'absolute', inset: '-20%', background: 'linear-gradient(100deg, rgba(0,0,0,.18) 0%, rgba(255,255,255,.0) 30%, rgba(255,255,255,.35) 45%, rgba(0,0,0,.0) 60%, rgba(0,0,0,.2) 100%)' } }, fw);
+    const tag = C.h('div', { style: { position: 'absolute', left: '22px', top: '22px', display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '10px 20px', borderRadius: '14px', background: '#fff', color: RD, fontSize: '30px', fontWeight: 900, letterSpacing: '1px', boxShadow: '0 6px 16px rgba(0,0,0,.25)' } }, fw);
+    const dot = C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: RD } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'BREAKING'}</span>`);
+    const sp = C.h('div', { style: { position: 'absolute', inset: 0, pointerEvents: 'none' } }, card); sp.dataset.own = 1;
+    const sparks = [...Array(p.sparks ?? 16)].map((_, i) => ({ el: C.h('div', { style: { position: 'absolute', left: '50%', top: (p.flagH || 420) / 2 + 40 + 'px', fontSize: 30 + C.rand(i + 5) * 40 + 'px', color: i % 3 ? '#ffd84d' : '#fff', textShadow: '0 0 18px rgba(255,216,77,.9)', opacity: 0 } }, sp, i % 2 ? '✦' : '✧'), a: (i / (p.sparks ?? 16)) * Math.PI * 2 + C.rand(i) * 0.4, d: 260 + C.rand(i * 3) * 260, ph: C.rand(i * 7) }));
+    const ttl = C.h('div', { style: { fontSize: (p.titleSize || 66) + 'px', fontWeight: 900, color: INK, letterSpacing: '-2px', lineHeight: 1.05, marginTop: '26px' } }, card, T.rich(p.title || '', RD));
+    const num = C.h('div', { style: { fontSize: (p.size || 150) + 'px', fontWeight: 900, color: RD, lineHeight: 1.05, letterSpacing: '-4px', whiteSpace: 'nowrap', transformOrigin: '0 50%' } }, card, '');
+    const sub = C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: '#4b5058', marginTop: '6px', marginBottom: '120px' } }, card, T.rich(p.sub || '', RD));
+    sub.dataset.own = 1;
+    const stamp = stampEl(card, p.stamp || 'SKANDAL', RD, 0, 0, p.stampSize || 84);
+    stamp.style.left = '50%'; stamp.style.top = '91%'; stamp.style.borderWidth = '7px';
+    const burstAt = p.burstAt ?? 0.35, at = p.at ?? 1.3, dur = p.countDur ?? 1.2, stampAt = p.stampAt ?? at + dur + 0.25;
+    ctx.cue('whoosh', 0, 0.85); ctx.cue('shine', burstAt, 0.6); ctx.cue('impact', burstAt + 0.05, 0.35); ctx.cue('alert', burstAt + 0.4, 0.35);
+    ctx.cue('whoosh', at - 0.15, 0.4);
+    for (let i = 0; i < 6; i++) ctx.cue('tick', at + dur * Math.pow(i / 6, 1.5), 0.42);
+    ctx.cue('pop', at + dur, 0.6); ctx.cue('stamp', stampAt, 0.95); ctx.cue('downer', stampAt + 0.1, 0.35);
+    return (t) => {
+      T.enter(card, t);
+      const kf = C.k(t, 0.1, 0.6, 'back');
+      fw.style.transform = `perspective(900px) rotateY(${Math.sin(t * 2.2) * 6}deg) skewY(${Math.sin(t * 2.2 + 1) * 1.6}deg) scale(${0.85 + 0.15 * Math.max(0, kf)})`;
+      img.style.transform = `scale(1.06) translateX(${Math.sin(t * 2.2) * 10}px)`;
+      sheen.style.transform = `translateX(${((t * 0.5) % 1.4 - 0.7) * 100}%)`;
+      const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(229,57,47,${0.5 * (1 - ph)})`;
+      tag.style.transform = `scale(${Math.max(0, C.k(t, 0.3, 0.35, 'back'))})`;
+      sparks.forEach((o) => {
+        const kb = C.k(t, burstAt, 0.9, 'out');
+        const tw = 0.5 + 0.5 * Math.sin(t * 6 + o.ph * 10);
+        const op = t < burstAt ? 0 : (1 - C.k(t, burstAt + 0.6, 0.6)) * 0.9 + 0.35 * tw * C.k(t, burstAt + 0.9, 0.3);
+        o.el.style.opacity = op;
+        const dx = Math.cos(o.a) * o.d * kb, dy = Math.sin(o.a) * o.d * 0.55 * kb + Math.sin(t * 1.5 + o.ph * 6) * 10;
+        o.el.style.transform = `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(${(0.4 + kb * 0.8) * (0.7 + 0.5 * tw)}) rotate(${t * 90 + o.ph * 360}deg)`;
+      });
+      const kT = C.k(t, 0.8, 0.45, 'expo'); ttl.style.opacity = C.k(t, 0.8, 0.15); ttl.style.transform = `translateY(${(1 - kT) * 24}px)`;
+      const k = C.k(t, at, dur, 'out');
+      num.style.opacity = C.k(t, at - 0.05, 0.1);
+      num.textContent = countable(p.value) ? C.count(p.value, k) : p.value;
+      num.style.transform = `scale(${1 + 0.07 * Math.sin(Math.PI * C.k(t, at + dur - 0.05, 0.35))})`;
+      sub.style.opacity = C.k(t, at + dur, 0.3);
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS))) * (1 + Math.sin(t * 3) * 0.012)}) rotate(-7deg)`;
+      const shake = t > stampAt && t < stampAt + 0.3 ? Math.sin(t * 80) * 9 * (stampAt + 0.3 - t) / 0.3 : 0;
+      card.style.translate = `${shake}px 0`;
+    };
+  };
 })();
