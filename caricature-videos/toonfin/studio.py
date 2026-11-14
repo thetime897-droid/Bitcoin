@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
-from . import audio, scene3d
+from . import audio, scene3d, pandaface
 from .anim import clamp, lerp, seg, ease_out, ease_in_out, ease_out_back
 from .ink import Ink, affine, font, mix, WHITE
 
@@ -39,10 +39,15 @@ MOUTH = {"mikrofon": (352, 380, 70), "zeigen": (322, 308, 55), "tipp_geben": (27
          "wuetend": (246, 320, 55), "augenzwinkern": (251, 303, 55), "arme_verschraenkt": (393, 390, 60),
          "zeigestock": (293, 314, 45)}
 
-# shot sizes: centre x, feet y and height of the panda
-FRAMES = {"wide": (540, 1600, 560), "medium": (540, 1880, 1060), "close": (560, 2380, 1560),
-          "wide_left": (300, 1620, 600), "wide_right": (790, 1620, 600), "medium_left": (330, 1900, 1080),
-          "medium_right": (760, 1900, 1080)}
+# poses whose drawn mouth is replaced cleanly by the talking mouth (checked one by one)
+TALK = {"mikrofon", "zeigen", "selbstbewusst", "cool", "hoodie_daumen", "kaffee", "entspannt", "zeigen_tablet",
+        "zeigestock"}
+
+# shot sizes: centre x, feet y and height of the panda. The head always stays below y~930, so the card zone
+# (y 110..780) and the small caption line (y~860) are never covered.
+FRAMES = {"wide": (540, 1620, 560), "medium": (540, 2010, 1060), "close": (560, 2520, 1560),
+          "wide_left": (300, 1640, 600), "wide_right": (790, 1640, 600), "medium_left": (330, 2010, 1060),
+          "medium_right": (760, 2010, 1060)}
 
 
 def smooth(k):
@@ -79,14 +84,17 @@ def _draw_mouth(im, pose, k):
     im.alpha_composite(lay)
 
 
-@lru_cache(maxsize=600)
+@lru_cache(maxsize=900)
 def panda_sprite(pose, h, kq, flip=False):
-    im = Image.open(HERE / "panda" / f"{pose}.png").convert("RGBA")
-    if kq > 0 and pose in MOUTH:
-        _draw_mouth(im, pose, kq / 4)
+    """Pose at height h. Poses that can talk always use the redrawn mouth (state kq, 0 = closed), so the
+    mouth never changes style inside a shot and the original drawn mouth never shows underneath."""
+    if pose in TALK:
+        im = pandaface.talking(pose, int(kq))
+    else:
+        im = Image.open(HERE / "panda" / f"{pose}.png").convert("RGBA")
     im = im.resize((max(1, int(im.width * h / im.height)), int(h)), Image.LANCZOS)
     if h > 900:
-        im = im.filter(ImageFilter.UnsharpMask(2, 60, 2))
+        im = im.filter(ImageFilter.UnsharpMask(2, 50, 2))
     if flip:
         im = im.transpose(Image.FLIP_LEFT_RIGHT)
     return im
@@ -97,6 +105,24 @@ def shadow_sprite(w):
     im = Image.new("RGBA", (int(w * 1.6), int(w * 0.5)), (0, 0, 0, 0))
     ImageDraw.Draw(im).ellipse([w * 0.3, w * 0.15, w * 1.3, w * 0.35], fill=(40, 44, 60, 70))
     return im.filter(ImageFilter.GaussianBlur(w * 0.06))
+
+
+def _chunks(words, max_chars=24):
+    """Group words into short subtitle phrases (break at punctuation or length)."""
+    out, cur = [], []
+    for w in words:
+        cur.append(w)
+        txt = " ".join(x["w"] for x in cur)
+        if len(txt) >= max_chars - 6 and (w["w"][-1] in ",.?!:" or len(txt) >= max_chars) or w["w"][-1] in ".?!":
+            out.append(cur)
+            cur = []
+    if cur:
+        out.append(cur)
+    res = []
+    for i, c in enumerate(out):
+        end = out[i + 1][0]["s"] if i + 1 < len(out) else c[-1]["e"] + 0.6
+        res.append((c[0]["s"] - 0.05, min(end, c[-1]["e"] + 0.8), c))
+    return res
 
 
 def mouth_track(voice, n):
@@ -293,6 +319,99 @@ def card_draw(ink, c, t, w, h):
             tw = ink.text_w(c["text"], c.get("size", 80), "mont") + 70
             ink.rect(-tw / 2, -62, tw / 2, 62, fill=(255, 255, 255, 0) if False else None, outline=col, w=12, wob=0.4, r=16)
             T(ink, 0, 4, c["text"], c.get("size", 80), col)
+    elif ty == "coins":
+        T(ink, 0, -h / 2 + 46, c.get("kicker", ""), 28, TXT2, "montb")
+        coins = c["coins"]          # [[label, colour, at], ...]
+        n_ = len(coins)
+        for i, (lbl, col, at) in enumerate(coins):
+            if t < at:
+                continue
+            k = ease_out_back(seg(t, at, at + 0.35), 2.0)
+            cx = -w / 2 + w * (i + 0.5) / n_
+            with ink.at(cx, 18, 0, max(0.05, k)):
+                ink.circle(4, 8, 62, fill=(30, 34, 48, 40), outline=None, wob=0)
+                ink.circle(0, 0, 62, fill=tuple(col), outline=WHITE, w=6, wob=0)
+                ink.circle(-14, -18, 22, fill=mix(tuple(col), WHITE, 0.35), outline=None, wob=0)
+                T(ink, 0, 2, lbl[0], 54, WHITE)
+                T(ink, 0, 92, lbl, 26, DARK, "mont")
+    elif ty == "strike":
+        T(ink, 0, -h / 2 + 46, c.get("kicker", ""), 28, RED, "mont")
+        size = fit(ink, c["text"], 92, w - 80)
+        T(ink, 0, 14, c["text"], size, DARK)
+        sa = c.get("strike_at", 99)
+        if t > sa:
+            k = smooth(seg(t, sa, sa + 0.35))
+            tw = ink.text_w(c["text"], size, "mont")
+            ink.line([(-tw / 2 - 16, 26), (-tw / 2 - 16 + (tw + 32) * k, 2)], RED, 14, wob=0)
+        if c.get("sub") and t > c.get("sub_at", sa + 0.3):
+            k = smooth(seg(t, c["sub_at"], c["sub_at"] + 0.35))
+            T(ink, 0, h / 2 - 40, c["sub"], 30, mix(WHITE, TXT2, k), "montb")
+    elif ty == "reasons":
+        T(ink, -w / 2 + 40, -h / 2 + 48, c.get("title", ""), fit(ink, c.get("title", ""), 44, w - 80), DARK, "mont", "lm")
+        for i, (txt, at) in enumerate(c["items"]):
+            yy = -h / 2 + 128 + i * 84
+            if t < at:
+                ink.rect(-w / 2 + 40, yy - 30, w / 2 - 40, yy + 30, fill=(244, 245, 249), outline=None, wob=0, r=14)
+                continue
+            k = smooth(seg(t, at, at + 0.35))
+            with ink.at(30 * (1 - k), yy):
+                ink.rect(-w / 2 + 40, -30, w / 2 - 40, 30, fill=(250, 238, 240), outline=None, wob=0, r=14)
+                ink.circle(-w / 2 + 78, 0, 20, fill=RED, outline=None, wob=0)
+                ink.line([(-w / 2 + 70, -8), (-w / 2 + 86, 8)], WHITE, 6, wob=0)
+                ink.line([(-w / 2 + 86, -8), (-w / 2 + 70, 8)], WHITE, 6, wob=0)
+                T(ink, -w / 2 + 116, 2, txt, fit(ink, txt, 34, w - 190), DARK, "mont", "lm")
+    elif ty == "vote":
+        T(ink, -w / 2 + 40, -h / 2 + 48, c.get("title", ""), 40, DARK, "mont", "lm")
+        T(ink, w / 2 - 40, -h / 2 + 48, c.get("sub", ""), 24, TXT2, "montb", "rm")
+        rows = c["rows"]           # [[label, value, colour, at], ...]
+        vmax = max(r[1] for r in rows)
+        for i, (lbl, val, col, at) in enumerate(rows):
+            yy = -h / 2 + 130 + i * 92
+            T(ink, -w / 2 + 40, yy - 26, lbl, 28, DARK, "montb", "lm")
+            k = ease_out(seg(t, at, at + 0.8))
+            x0, x1 = -w / 2 + 40, w / 2 - 150
+            ink.rect(x0, yy, x1, yy + 26, fill=(238, 240, 246), outline=None, wob=0, r=13)
+            if k > 0.01:
+                ink.rect(x0, yy, x0 + (x1 - x0) * val / vmax * k, yy + 26, fill=tuple(col), outline=None, wob=0, r=13)
+            T(ink, w / 2 - 44, yy + 12, de(val * k), 46, tuple(col), "mont", "rm")
+    elif ty == "rule":
+        T(ink, 0, -h / 2 + 46, c.get("title", ""), 40, DARK)
+        for i, (head, body, col, at) in enumerate(c["boxes"]):
+            if t < at:
+                continue
+            k = ease_out_back(seg(t, at, at + 0.4), 1.5)
+            bx = -w / 4 + i * w / 2
+            with ink.at(bx, 40, 0, max(0.05, k)):
+                bw, bh = w / 2 - 40, h - 130
+                ink.rect(-bw / 2, -bh / 2, bw / 2, bh / 2, fill=mix(tuple(col), WHITE, 0.88), outline=tuple(col), w=4,
+                         wob=0, r=20)
+                T(ink, 0, -bh / 2 + 40, head, fit(ink, head, 28, bw - 30), TXT2, "montb")
+                for j, ln in enumerate(body.split("\n")):
+                    T(ink, 0, -6 + j * 50, ln, fit(ink, ln, 44 if j == 0 else 28, bw - 30), tuple(col) if j == 0 else DARK,
+                      "mont" if j == 0 else "montb")
+    elif ty == "calc":
+        T(ink, -w / 2 + 40, -h / 2 + 46, c.get("kicker", ""), 28, TXT2, "montb", "lm")
+        T(ink, -w / 2 + 40, -h / 2 + 108, c["gain_label"], 34, DARK, "montb", "lm")
+        T(ink, w / 2 - 40, -h / 2 + 108, c["gain"], 46, GREEN, "mont", "rm")
+        ink.line([(-w / 2 + 40, -h / 2 + 150), (w / 2 - 40, -h / 2 + 150)], (230, 232, 238), 3, wob=0)
+        ca, ce = c.get("count_at", 0.4), c.get("count_end", 1.3)
+        if t > ca:
+            k = ease_out(seg(t, ca, ce))
+            T(ink, -w / 2 + 40, -h / 2 + 206, c["tax_label"], 34, DARK, "montb", "lm")
+            T(ink, w / 2 - 40, -h / 2 + 206, "−" + de(c["tax"] * k) + " €", 62, RED, "mont", "rm")
+        if c.get("plus") and t > c.get("plus_at", 99):
+            kb = ease_out_back(seg(t, c["plus_at"], c["plus_at"] + 0.4), 1.7)
+            with ink.at(w / 2 - 120, h / 2 - 34, -4, max(0.05, kb)):
+                pill(ink, 0, 0, c["plus"], 30, RED)
+    elif ty == "warn":
+        with ink.at(-w / 2 + 92, 0):
+            ink.shape([(0, -60), (58, 46), (-58, 46)], fill=RED, outline=None, wob=0)
+            T(ink, 0, 12, "!", 64, WHITE)
+        T(ink, -w / 2 + 180, -h / 2 + 46, c.get("kicker", ""), 28, RED, "mont", "lm")
+        for j, ln in enumerate(c["lines"]):
+            T(ink, -w / 2 + 180, -h / 2 + 106 + j * 54, ln, fit(ink, ln, 44, w - 220), DARK, "mont", "lm")
+        if c.get("sub"):
+            T(ink, -w / 2 + 180, h / 2 - 36, c["sub"], fit(ink, c["sub"], 24, w - 220), TXT2, "montb", "lm")
     elif ty == "icon":
         icon3d(ink, c["icon"], c.get("s", 1.0), t)
         if c.get("label"):
@@ -364,7 +483,8 @@ class Studio:
         self.words = spec["words"]
         v = audio.load(spec["audio"])
         self.n = int(math.ceil(spec["duration"] * FPS))
-        self.mouth = mouth_track(v, self.n)
+        self.mouth = pandaface.mouth_track(v, audio.SR, self.n, FPS)
+        self.chunks = _chunks(self.words)
 
     def shot_at(self, t):
         for i, s in enumerate(self.shots):
@@ -396,13 +516,14 @@ class Studio:
         squash = 0.06 * math.sin(math.pi * min(1, since / 0.2)) if since < 0.2 and since != lt else 0.0
         bob = math.sin(lt * 2 * math.pi / 2.6) * 6
         h = fh * z * k_in
-        kq = int(self.mouth[min(gi, self.n - 1)]) if p.get("talk", True) and pose in MOUTH else 0
+        kq = int(self.mouth[min(gi, self.n - 1)]) if p.get("talk", True) and pose in TALK else 0
         hq = int(round(h * (1 - squash) / 6)) * 6
         sp = panda_sprite(pose, hq, kq, p.get("flip", False))
         feet = fy + (fy - H * 0.5) * (z - 1) * 0.2
         if p.get("frame", "medium").startswith("wide"):
+            # contact shadow, falling slightly to the right/back like the buildings' shadows
             sh = shadow_sprite(int(sp.width * 0.8))
-            comp(img, sh, fx + dx - sh.width / 2, feet - sh.height * 0.55)
+            comp(img, sh, fx + dx - sh.width / 2 + sp.width * 0.1, feet - sh.height * 0.62)
         comp(img, sp, fx + dx - sp.width / 2, feet - hq + bob)
         return feet - hq + bob
 
@@ -411,7 +532,7 @@ class Studio:
         lt = t - s["start"]
         dur = s["end"] - s["start"]
         cam = _cam(s["cam"], clamp(lt / dur)) if s.get("cam") else scene3d.Camera((0, 1.6, -6), (0, 1.2, 10), 45)
-        bg = scene3d.get_set(s.get("set", "studio")).render(cam, W, H, ss=1.25, blur=s.get("blur", 0.0))
+        bg = scene3d.get_set(s.get("set", "studio"), *s.get("set_args", [])).render(cam, W, H, ss=1.25, blur=s.get("blur", 0.0))
         img = bg.convert("RGBA")
         top = self.panda_layer(img, s, lt, gi)
         for c in s.get("cards", []):
@@ -428,19 +549,32 @@ class Studio:
         return img, top
 
     def caption(self, img, t, top):
-        cur = None
-        for j, w in enumerate(self.words):
-            nxt = self.words[j + 1]["s"] if j + 1 < len(self.words) else w["e"] + 0.4
-            if w["s"] <= t < max(w["e"] + 0.12, min(nxt, w["s"] + 0.9)):
-                cur = w
+        """Small phrase subtitles in a soft dark pill at a fixed height between the cards and the panda;
+        the spoken word lights up yellow."""
+        cur = next((c for c in self.chunks if c[0] <= t < c[1]), None)
         if not cur:
             return
-        y = min(1060, (top or 1200) - 80)
+        s_, e_, ws = cur
         ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
-        k = 1 + 0.18 * math.exp(-(t - cur["s"]) * 14)
-        txt = cur["w"].upper().strip(",.:;")
-        with ink.at(540, y, 0, k):
-            ink.text(0, 0, txt, fit(ink, txt, 62, 900), "mont", fill=YELLOW, stroke=DARK, sw=0.2)
+        size = self.spec.get("cap_size", 40)
+        texts = [w["w"] for w in ws]
+        sp = size * 0.3
+        widths = [ink.text_w(x, size, "mont") for x in texts]
+        total = sum(widths) + sp * (len(widths) - 1)
+        y = self.spec.get("cap_y", 862)
+        k = smooth(seg(t, s_, s_ + 0.12))
+        a_ = int(150 * k)
+        lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        ImageDraw.Draw(lay).rounded_rectangle([540 - total / 2 - 26, y - size * 0.95, 540 + total / 2 + 26,
+                                               y + size * 0.85], radius=size, fill=(18, 20, 28, a_))
+        img.alpha_composite(lay)
+        x = 540 - total / 2
+        for w, wd, tx in zip(ws, widths, texts):
+            on = w["s"] <= t < max(w["e"], w["s"] + 0.1)
+            col = YELLOW if on else (255, 255, 255)
+            col = tuple(int(c * k + 40 * (1 - k)) for c in col)
+            ink.text(x + wd / 2, y, tx, size, "mont", fill=col, stroke=None)
+            x += wd + sp
 
     def header(self, img):
         ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
@@ -517,7 +651,23 @@ def cues(spec):
             out.append((st + at, "pop", 0.35))
         for c in s.get("cards", []):
             a = st + c.get("at", 0)
+            if c.get("at", 0) < 0:
+                continue
             out.append((a + 0.02, "pop", 0.55))
+            if c["type"] == "coins":
+                out += [(st + c.get("at", 0) + x[2], "pop", 0.5) for x in c["coins"]]
+            if c["type"] == "strike" and c.get("strike_at") is not None:
+                out.append((a + c["strike_at"], "swish", 0.5))
+            if c["type"] == "reasons":
+                out += [(a + x[1], "pop", 0.5) for x in c["items"]]
+            if c["type"] == "vote":
+                out += [(a + x[3] + 0.8, "pop", 0.5) for x in c["rows"]]
+            if c["type"] == "rule":
+                out += [(a + x[3], "pop", 0.55) for x in c["boxes"]]
+            if c["type"] == "calc":
+                out.append((a + c.get("count_end", 1.3), "cash", 0.5))
+                if c.get("plus_at") is not None:
+                    out.append((a + c["plus_at"], "pop", 0.5))
             if c["type"] == "kpi":
                 out.append((st + c.get("at", 0) + c.get("count_end", 1.2), "cash" if "$" in c.get("fmt", "") or "€" in c.get("fmt", "") else "pop", 0.5))
             for key in ("badge_at",):
@@ -528,7 +678,7 @@ def cues(spec):
     return sorted(out)
 
 
-def mix(spec, out_wav):
+def mix_sfx(spec, out_wav):
     from .pandanews import _active_rms, master_wav, SFX_TRIM
     v = audio.normalize(audio.load(spec["audio"]))
     n = int(spec["duration"] * audio.SR)
@@ -570,7 +720,7 @@ def _work(i):
 def render(spec, out_path, workers=None, log=print):
     out_path = Path(out_path)
     wav = out_path.with_suffix(".mix.wav")
-    mix(spec, wav)
+    mix_sfx(spec, wav)
     n = int(math.ceil(spec["duration"] * FPS))
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
            "-i", "-", "-i", str(wav), "-map", "0:v", "-map", "1:a", "-c:v", "libx264", "-preset", "medium", "-crf", "17",

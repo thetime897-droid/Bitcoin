@@ -101,7 +101,18 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Engine `toonfin/studio.py` + Software-3D `toonfin/scene3d.py` (Sets: hq, avenue, boardroom, office, studio;
   Kamera fährt pro Shot von `from` nach `to`). Shots ~1–2,5 s, Übergänge `zoom`/`whip`/`cut` mit Whoosh-Varianten.
 - Panda in wechselnden Einstellungen (`wide`, `medium`, `close`, `*_left/_right`), **hier mit sprechendem Mund**
-  (nur in diesem Stil gewünscht): Mundlinien je Pose in `MOUTH` (von Hand eingemessen), Öffnung aus der Lautstärke.
+  (nur in diesem Stil gewünscht): `toonfin/pandaface.py` malt den gezeichneten Mund jeder Pose weg (Inpainting) und
+  zeichnet einen einheitlichen Mund in 5 Öffnungen (gehalten auf 4 Frames, kein Flackern, nie doppelt). Nur Posen in
+  `studio.TALK` sprechen (sauber geprüft); `arme_verschraenkt`, `nachdenklich`, `tipp_geben`, `wuetend`,
+  `augenzwinkern`, `winken`, `laptop` nicht zum Sprechen verwenden (Reste/Schmierer).
+- Zonen (nichts überlappt): Karten y 110–780, kleine Untertitel als Phrase in dunkler Pille bei y≈862 (40 px),
+  Panda-Kopf immer unter y≈930. Schilder der 3D-Kulisse per Kamera-Blickrichtung aus der Untertitelzeile halten,
+  Panda seitlich stellen, wenn ein Schild in der Mitte steht.
+- Kulissen mit Details: `reichstag` (Kuppel, Säulen, Inschrift, Flaggen, Bäume, Laternen), `ministry` (Fensterraster,
+  Portal, Schild), `trading` (Monitore mit Krypto-Charts), `avenue` (Bäume, Laternen, Plakat-Text als `set_args`),
+  `boardroom` (Screen-Text als `set_args`). Gebäude/Bäume werfen Bodenschatten passend zum Licht.
+- Kartentypen zusätzlich: `coins`, `strike`, `reasons`, `vote`, `rule`, `calc`, `warn`.
+  Beispiel mit eigener Stimme: `examples/krypto_steuer_studio_spec.py`.
 - Glas-Karten mit Farbschimmer drehen sich in 3D rein (`title`, `person`, `news`, `chart`, `kpi`, `quote`, `shrink`,
   `stamp`, `icon`). Kopfzeile „PANDA_INVESTIERT · BÖRSENNEWS datum“, Untertitel Wort für Wort gelb.
 - Beispiel: `examples/nvidia_huang_studio_spec.py` → JSON, `python -m toonfin.studio spec.json out.mp4`.
