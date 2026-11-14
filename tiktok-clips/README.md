@@ -218,6 +218,7 @@ Echte Logos: PNG mit `"logo": "logos/xyz.png"` am Ticker/Brand.
 | `trCoins` | Krypto-Hook: Live-Tag, Coin-Reihe springt nacheinander rein und wippt, Titel wird durchgestrichen, Stempel knallt drauf | `tag`, `coins[]`, `title`, `sub`, `stamp`, `stampColor`, `coinsAt`, `titleAt`, `strikeAt` |
 | `trOutage` | Status-Tafel: Dienste-Kacheln kippen nacheinander von Grün („online“) auf Rot („DOWN“), dann Stempel | `tag`, `title`, `services[{icon,name}]`, `flipAt`, `step`, `stamp` |
 | `trDrain` | „Geld weg“-Hook: rote Riesenzahl zählt hoch und zittert, Geldscheine fallen durch die Karte, optionaler Wert-Balken läuft von Grün nach Rot, Stempel | `tag`, `title`, `value`, `bar`, `barFrom`, `barTo`, `drainTo`, `sub`, `stamp` |
+| `trLaunch` | Produkt-Launch-Hook: großes Trade-Republic-Logo, pulsierendes „NEUE FUNKTION“, Schalter springt auf Grün, Pills, Frage-Stempel | `title`, `pills[]`, `onAt`, `stamp` |
 | `trChart` | App-Chartkarte: Name, Preis zählt, Änderung, Linie, Zeitraum-Tabs | `ticker`, `name`, `price`, `priceFrom`, `change`, `range`, `data`, `color`, `threshold{value,label,at}`, `sticker` |
 
 Beispiel: `storyboards/jahresendrallye-tr.json`.

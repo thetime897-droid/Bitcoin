@@ -1203,4 +1203,48 @@
       card.style.translate = `${shake}px 0`;
     };
   };
+
+  // ------------------------------------------------------------ trLaunch ---
+  // Product-launch hook: big Trade Republic logo tile, pulsing "NEUE
+  // FUNKTION" tag, headline, a mini toggle that switches on, pills and a
+  // question stamp.
+  S.trLaunch = (st, p, ctx) => {
+    const card = T.card(st, { pad: 44, ...p.card });
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'flex-start', gap: '24px' } }, card);
+    const logo = C.h('div', { class: 'ctr', style: { width: '150px', height: '150px', borderRadius: '40px', background: INK, flex: 'none' } }, head);
+    logo.innerHTML = `<svg width="96" height="72" viewBox="0 0 40 30"><path d="M2 7 C10 1 18 13 27 7 C31 4 35 4 38 6 L38 25 C35 23 31 23 27 26 C18 32 10 20 2 26 Z" fill="#fff"/></svg>`;
+    const hn = C.h('div', {}, head);
+    C.h('div', { style: { fontSize: '60px', fontWeight: 900, color: INK, letterSpacing: '-2px', lineHeight: 1 } }, hn, p.brandName || 'Trade Republic');
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '10px', marginTop: '12px', padding: '10px 20px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '30px', fontWeight: 900, letterSpacing: '1px' } }, hn);
+    const dot = C.h('span', { style: { width: '14px', height: '14px', borderRadius: '50%', background: '#fff' } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'NEUE FUNKTION'}</span>`);
+    const row = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', gap: '24px', marginTop: '30px', padding: '26px 30px', borderRadius: '30px', background: '#f2f3f5' } }, card);
+    const ttl = C.h('div', { style: { fontSize: (p.size || 58) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1px', lineHeight: 1.08 } }, row, T.rich(p.title || '', GL));
+    const sw = C.h('div', { style: { position: 'relative', width: '150px', height: '84px', borderRadius: '42px', background: '#c5c9cf', flex: 'none' } }, row);
+    const knob = C.h('div', { style: { position: 'absolute', top: '7px', left: '7px', width: '70px', height: '70px', borderRadius: '50%', background: '#fff', boxShadow: '0 4px 10px rgba(0,0,0,.2)' } }, sw);
+    const pills = p.pills ? T.pills(card, p.pills) : [];
+    if (pills.length) pills[0].parentNode.style.marginBottom = '130px';
+    const stamp = stampEl(card, p.stamp || 'LOHNT SICH DAS?', RD, 0, 0, p.stampSize || 64);
+    stamp.style.left = '50%'; stamp.style.top = '87%'; stamp.style.borderWidth = '7px';
+    const onAt = p.onAt ?? 1.4, pillsAt = p.pillsAt ?? onAt + 0.6, stampAt = p.stampAt ?? pillsAt + 0.8;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('pop', 0.25, 0.6); ctx.cue('alert', 0.45, 0.35);
+    ctx.cue('tick', onAt, 0.7); ctx.cue('success', onAt + 0.1, 0.45);
+    T.pillSfx(ctx, pills.length, pillsAt, 0.18);
+    ctx.cue('stamp', stampAt, 0.9);
+    return (t) => {
+      T.enter(card, t);
+      logo.style.transform = `scale(${Math.max(0, C.k(t, 0.15, 0.5, 'back')) * (1 + Math.sin(t * 2.5) * 0.02)}) rotate(${(1 - C.k(t, 0.15, 0.5)) * -25}deg)`;
+      const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      tag.style.transform = `scale(${Math.max(0, C.k(t, 0.4, 0.35, 'back')) * (1 + Math.sin(t * 5) * 0.02)})`;
+      const k = C.k(t, onAt, 0.25, 'out');
+      knob.style.left = 7 + k * 66 + 'px'; sw.style.background = k > 0.5 ? CHK : '#c5c9cf';
+      sw.style.boxShadow = `0 0 0 ${C.k(t, onAt, 0.6) * 18}px rgba(47,191,104,${0.35 * (1 - C.k(t, onAt, 0.6))})`;
+      pills.forEach((el, i) => (el.style.transform = `scale(${Math.max(0, C.k(t, pillsAt + i * 0.18, 0.32, 'back'))})`));
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS))) * (1 + Math.sin(t * 3) * 0.012)}) rotate(-6deg)`;
+      const shake = t > stampAt && t < stampAt + 0.3 ? Math.sin(t * 80) * 8 * (stampAt + 0.3 - t) / 0.3 : 0;
+      card.style.translate = `${shake}px 0`;
+    };
+  };
 })();

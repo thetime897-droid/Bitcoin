@@ -1,0 +1,229 @@
+{
+ "name": "tr-dividenden-reinvest",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trLaunch",
+   "duration": 6.0,
+   "script": "0:00 · Trade Republic hat eine neue Funktion – und die meisten schalten sie sofort ein. Aber für viele ist das ein Fehler.",
+   "params": {
+    "title": "Dividenden *automatisch* reinvestieren",
+    "pills": [
+     "0 € Gebühr",
+     "ab sofort in der App"
+    ],
+    "onAt": 1.5,
+    "stamp": "LOHNT SICH DAS?"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trList",
+   "duration": 6.8,
+   "script": "0:06 · Die Funktion: Deine Dividenden werden automatisch wieder angelegt – in genau die Aktie oder den ETF, aus dem sie kommen. Spätestens am nächsten Handelstag.",
+   "params": {
+    "brand": "Trade Republic",
+    "context": "So funktioniert es",
+    "title": "Was *passiert*",
+    "items": [
+     {
+      "text": "Dividende kommt *rein*",
+      "sub": "nach Abzug der Steuer",
+      "mark": "1",
+      "markColor": "#111317",
+      "at": 1.4
+     },
+     {
+      "text": "*Automatisch* nachgekauft",
+      "sub": "gleiche Aktie bzw. gleicher ETF",
+      "mark": "2",
+      "markColor": "#0d7d4d",
+      "at": 3.2
+     },
+     {
+      "text": "Spätestens am *nächsten Handelstag*",
+      "sub": "auch als Bruchstück",
+      "mark": "3",
+      "markColor": "#0d7d4d",
+      "at": 5.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 5.4,
+   "script": "0:12 · Und das Beste: Das kostet keine Ordergebühr. Normal zahlst du für jeden Kauf einen Euro.",
+   "params": {
+    "brand": "Trade Republic",
+    "context": "Kosten",
+    "label": "Ordergebühr für die Wiederanlage",
+    "icon": "€",
+    "value": "0 €",
+    "size": 220,
+    "at": 1.4,
+    "countUp": false,
+    "sub": "sonst *1 €* pro Order",
+    "subAccent": "#e5392f"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 6.8,
+   "script": "0:18 · Der Effekt ist Zinseszins: 10.000 Euro, 3 Prozent Dividende, 20 Jahre. Mit Wiederanlage hast du rund 15.480 Euro – ohne nur 14.420.",
+   "params": {
+    "title": "Der *Zinseszins*",
+    "label": "10.000 € · 3 % Dividende · 20 Jahre · nach Steuern",
+    "value": "15.480 €",
+    "size": 150,
+    "at": 2.6,
+    "second": {
+     "value": "ohne Wiederanlage: 14.420 €",
+     "size": 56,
+     "color": "#e5392f",
+     "at": 4.8
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 4.4,
+   "script": "0:25 · Aber jetzt kommt der Haken. Denn sinnvoll ist das nicht für jeden.",
+   "params": {
+    "brand": false,
+    "text": "Jetzt kommt der *Haken*",
+    "accent": "#e5392f",
+    "size": 84,
+    "pills": [
+     "nicht für jeden sinnvoll"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 8.0,
+   "script": "0:29 · Erstens: Du brauchst die Dividenden als Einkommen, zum Beispiel in der Rente. Zweitens: Du hast einen thesaurierenden ETF – der legt eh automatisch an. Drittens: Klumpenrisiko. Deine größten Positionen werden immer größer.",
+   "params": {
+    "title": "Für wen es *nicht* passt",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Du brauchst *Einkommen*",
+      "sub": "z. B. in der Rente",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "*Thesaurierender* ETF",
+      "sub": "legt sowieso automatisch an",
+      "ok": false,
+      "at": 3.6
+     },
+     {
+      "text": "*Klumpenrisiko*",
+      "sub": "große Positionen werden noch größer",
+      "ok": false,
+      "at": 6.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:37 · Und die Steuer: Bei jeder Dividende gehen erst mal rund 26 Prozent ab – erst der Rest wird angelegt. Außer, dein Freistellungsauftrag ist eingestellt.",
+   "params": {
+    "title": "Achtung *Steuer*",
+    "left": {
+     "label": "Mit Freistellungsauftrag",
+     "title": "bis 1.000 € steuerfrei",
+     "result": "alles wird angelegt",
+     "good": true,
+     "at": 3.6
+    },
+    "right": {
+     "label": "Ohne",
+     "title": "ca. 26 % weg",
+     "result": "erst der Rest wird angelegt",
+     "good": false,
+     "at": 1.6
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trList",
+   "duration": 7.6,
+   "script": "0:44 · Und so schaltest du's ein: App öffnen, ins Profil, dann in die Einstellungen. Dividenden-Wiederanlage aktivieren – und auswählen: ganzes Depot oder nur einzelne Werte.",
+   "params": {
+    "brand": "Trade Republic",
+    "context": "Schritt für Schritt",
+    "title": "So geht's",
+    "items": [
+     {
+      "text": "App öffnen → *Profil*",
+      "at": 1.2
+     },
+     {
+      "text": "*Einstellungen* öffnen",
+      "at": 2.6
+     },
+     {
+      "text": "*Dividenden reinvestieren* aktivieren",
+      "at": 4.2
+     },
+     {
+      "text": "*Ganzes Depot* oder einzelne Werte",
+      "at": 6.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 5.6,
+   "script": "0:51 · Gut zu wissen: Ausschalten geht jederzeit – das gilt dann für alle künftigen Dividenden. Das ist keine Anlageberatung.",
+   "params": {
+    "brand": "Trade Republic",
+    "context": "Gut zu wissen",
+    "tag": "Info",
+    "live": true,
+    "text": "Jederzeit *ausschaltbar*",
+    "size": 64,
+    "sub": "Gilt dann für alle *künftigen* Dividenden",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "0:57 · Und du? Schaltest du's ein – oder lässt du's? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Schaltest *du* es ein?",
+    "options": [
+     "Ja, sofort",
+     "Nein, ich brauche die Dividende",
+     "Hab eh einen Thesaurierer"
+    ],
+    "note": "Keine Anlageberatung · Stand: 14. November 2026"
+   }
+  }
+ ]
+}
