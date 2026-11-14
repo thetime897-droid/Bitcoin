@@ -12,3 +12,6 @@
   Detail (z. B. Manipulation, Insiderkauf, Riesenzahl) sofort zeigen, aber nicht alles
   spoilern. Danach Stück für Stück aufdecken (Wer? Wo? Wie? Folgen?) mit Re-Hooks,
   damit Retention und Watchtime hoch bleiben. Logos/Grafiken/Charts wo möglich.
+- **Clips nie generisch und nie abgeschnitten:** Flaggen als echte wehende Flagge am Mast
+  (`trFlag`), Animationen (Wellen, Funken, Wackeln) bleiben immer komplett innerhalb der
+  Karte – nichts darf über den Rand ragen oder vom Export abgeschnitten werden.
