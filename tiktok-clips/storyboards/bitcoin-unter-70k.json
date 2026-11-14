@@ -1,0 +1,215 @@
+{
+ "name": "bitcoin-unter-70k",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 6.0,
+   "script": "0:00 · Bitcoin stürzt ab. Unter 70.000 Dollar – der tiefste Stand seit August. Und dafür gibt es drei Gründe.",
+   "params": {
+    "brand": "BTC",
+    "name": "Bitcoin",
+    "tag": "CRASH",
+    "title": "Bitcoin *stürzt ab*",
+    "value": "−46 %",
+    "size": 180,
+    "at": 0.4,
+    "countDur": 1.4,
+    "barFrom": "Rekordhoch: ~126.000 $",
+    "barTo": "jetzt: unter 70.000 $",
+    "drainTo": 0.54,
+    "sub": "tiefster Stand *seit August*",
+    "stamp": "ABSTURZ"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trCoins",
+   "duration": 5.6,
+   "script": "0:06 · Und es reißt den ganzen Kryptomarkt mit. Ethereum rutscht sogar unter 2.000 Dollar.",
+   "params": {
+    "tag": "KRYPTO-MARKT",
+    "coins": [
+     "BTC",
+     "ETH",
+     "XRP",
+     "SOL"
+    ],
+    "title": "Alles im Plus?",
+    "size": 96,
+    "sub": "Ethereum fällt unter *2.000 $*",
+    "stamp": "ALLES ROT",
+    "stampColor": "#e5392f",
+    "coinsAt": 0.2,
+    "coinStep": 0.18,
+    "titleAt": 1.0,
+    "strikeAt": 1.7,
+    "subAccent": "#e5392f"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trHeadline",
+   "duration": 3.8,
+   "script": "0:11 · Aber warum? Hier sind die drei Gründe.",
+   "params": {
+    "brand": false,
+    "text": "*3 Gründe* für den Absturz",
+    "accent": "#e5392f",
+    "size": 86,
+    "pills": [
+     "#1 Zinsen",
+     "#2 ETFs",
+     "#3 Hebel"
+    ],
+    "pillsAt": 1.4
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStat",
+   "duration": 6.8,
+   "script": "0:15 · Grund eins: Zinsangst. Die US-Inflation war höher als erwartet – viele rechnen jetzt sogar mit einer Zinserhöhung der Fed im Dezember. Und das ist Gift für Bitcoin.",
+   "params": {
+    "context": "Grund #1 · Zinsangst",
+    "label": "US-Kerninflation im Monat",
+    "tone": "red",
+    "icon": "%",
+    "value": "+0,3 %",
+    "countUp": false,
+    "size": 190,
+    "at": 1.6,
+    "sub": "höher als erwartet → *Zinserhöhung* im Dezember?",
+    "pills": [
+     "Gift für Bitcoin"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:22 · Grund zwei: Die großen Anleger ziehen Geld ab. Allein im Oktober flossen über 2,5 Milliarden Dollar aus den US-Bitcoin-ETFs – und die Abflüsse gehen weiter.",
+   "params": {
+    "title": "Grund #2: *ETF-Abflüsse*",
+    "accent": "#e5392f",
+    "label": "Abflüsse aus US-Bitcoin-ETFs im Oktober",
+    "logos": [
+     "BLK",
+     "BTC"
+    ],
+    "value": "−2,5 Mrd. $",
+    "tone": "red",
+    "size": 140,
+    "at": 2.2,
+    "countDur": 1.0,
+    "pills": [
+     "Abflüsse gehen weiter"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "06",
+   "type": "trStat",
+   "duration": 6.6,
+   "script": "0:28 · Grund drei: die Hebel-Falle. Als die 70.000 fielen, wurden laut Trackern über eine Milliarde Dollar an Hebel-Wetten zwangsliquidiert – und das hat den Absturz noch beschleunigt.",
+   "params": {
+    "context": "Grund #3 · Hebel-Falle",
+    "label": "zwangsliquidiert in 24 Stunden",
+    "tone": "red",
+    "icon": "⚡",
+    "value": "> 1 Mrd. $",
+    "size": 170,
+    "at": 2.4,
+    "countUp": false,
+    "sub": "fast alles *Long-Wetten* auf steigende Kurse",
+    "pills": [
+     "Kettenreaktion"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "07",
+   "type": "trWarn",
+   "duration": 6.0,
+   "script": "0:35 · Und als ob das nicht reicht: MSCI streicht Strategy und ähnliche Bitcoin-Firmen aus seinen Indizes. Damit fehlt einem der größten Käufer frisches Geld.",
+   "params": {
+    "brand": "MSTR",
+    "context": "Bonus-Problem",
+    "tag": "Dazu",
+    "live": true,
+    "text": "MSCI streicht *Strategy*",
+    "size": 62,
+    "sub": "Einem der *größten Bitcoin-Käufer* fehlt frisches Geld",
+    "pills": [
+     "laut Investing.com"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 7.2,
+   "script": "0:41 · Und jetzt? Panikverkäufe sind meistens die schlechteste Idee. Wer langfristig denkt, kauft lieber gestaffelt – zum Beispiel per Sparplan. Aber nur mit Geld, das du nicht brauchst. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Wie jetzt *reagieren*?",
+    "left": {
+     "label": "Langfristig",
+     "title": "Sparplan weiter",
+     "result": "gestaffelt statt alles auf einmal",
+     "good": true,
+     "at": 1.6
+    },
+    "right": {
+     "label": "Panik",
+     "title": "alles verkaufen",
+     "result": "Verluste festgeschrieben",
+     "good": false,
+     "at": 0.6
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 5.4,
+   "script": "0:48 · Und eine Regel gilt immer: Finger weg vom Hebel. Genau die Hebel-Trader hat es jetzt erwischt.",
+   "params": {
+    "tag": "Regel",
+    "live": true,
+    "text": "Finger weg vom *Hebel*",
+    "size": 72,
+    "sub": "Genau die Hebel-Trader hat es *jetzt erwischt*",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "0:53 · Kaufst du jetzt nach – oder wartest du ab? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Bitcoin unter 70k: *nachkaufen*?",
+    "options": [
+     "Ja, Sparplan läuft",
+     "Abwarten",
+     "Nein, raus"
+    ],
+    "note": "Keine Anlageberatung · Stand: 14. November 2026"
+   }
+  }
+ ]
+}

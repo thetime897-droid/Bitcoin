@@ -1055,7 +1055,7 @@
     tw.dataset.own = 1;
     const ttl = C.h('div', { style: { fontSize: (p.size || 104) + 'px', fontWeight: 900, color: INK, letterSpacing: '-4px', lineHeight: 1, whiteSpace: 'nowrap' } }, tw, p.title || 'Krypto-Steuer');
     const line = C.h('div', { style: { position: 'absolute', left: '-10px', top: '54%', height: '14px', width: '0%', borderRadius: '7px', background: RD } }, tw);
-    const sub = C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: '#4b5058', marginTop: '18px', marginBottom: '130px' } }, card, T.rich(p.sub || '', G));
+    const sub = C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: '#4b5058', marginTop: '18px', marginBottom: '130px' } }, card, T.rich(p.sub || '', p.subAccent ? C.color(p.subAccent) : G));
     sub.dataset.own = 1;
     const stamp = stampEl(card, p.stamp || 'VOM TISCH?', C.color(p.stampColor || G), 0, 0, p.stampSize || 76);
     stamp.style.left = p.stampX || '50%'; stamp.style.top = p.stampY || '87%'; stamp.style.borderWidth = '7px';
