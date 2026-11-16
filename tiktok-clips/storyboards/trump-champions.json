@@ -1,0 +1,249 @@
+{
+ "name": "trump-champions",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trCoins",
+   "duration": 6.4,
+   "script": "0:00 · Trump will Nvidia, Amazon, Microsoft und OpenAI zu Staats-Champions machen – mit Staatshilfe gegen China. Ist das noch freier Markt?",
+   "params": {
+    "tag": "USA · BREAKING",
+    "coins": [
+     "NVDA",
+     "AMZN",
+     "MSFT",
+     "OPENAI"
+    ],
+    "title": "Freier Markt?",
+    "size": 110,
+    "sub": "Trumps Plan gegen *China* · laut WSJ",
+    "subAccent": "#e5392f",
+    "stamp": "STAATS-CHAMPIONS",
+    "stampColor": "#e5392f",
+    "stampSize": 60,
+    "coinsAt": 0.25,
+    "coinStep": 0.22,
+    "titleAt": 1.3,
+    "strikeAt": 2.1
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 5.4,
+   "script": "0:06 · Laut Wall Street Journal will die US-Regierung über zwei Dutzend Firmen offiziell zu „Nationalen Champions“ erklären.",
+   "params": {
+    "brand": false,
+    "text": "„*Nationale Champions*“",
+    "accent": "#2f6bff",
+    "size": 82,
+    "pills": [
+     "über 24 US-Firmen",
+     "laut Wall Street Journal"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 6.8,
+   "script": "0:11 · Auf der Liste sollen stehen: Nvidia, Amazon, Microsoft, OpenAI – und Anthropic, das gerade an die Börse geht.",
+   "params": {
+    "title": "Wer auf der *Liste* steht",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "*Nvidia*",
+      "sub": "KI-Chips",
+      "mark": "N",
+      "markColor": "#76b900",
+      "at": 1.6
+     },
+     {
+      "text": "*Amazon* & *Microsoft*",
+      "sub": "Cloud",
+      "mark": "☁",
+      "markColor": "#111317",
+      "at": 2.6
+     },
+     {
+      "text": "*OpenAI*",
+      "sub": "ChatGPT",
+      "mark": "AI",
+      "markColor": "#10a37f",
+      "at": 3.8
+     },
+     {
+      "text": "*Anthropic*",
+      "sub": "Claude · geht gerade an die Börse",
+      "mark": "A",
+      "markColor": "#c96442",
+      "at": 4.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 6.4,
+   "script": "0:18 · Was sie bekommen: schnellere Exportgenehmigungen und Fördergeld vom Staat. Das Ziel: im Ausland gegen China gewinnen.",
+   "params": {
+    "title": "Was sie *bekommen*",
+    "items": [
+     {
+      "text": "*Schnellere* Exportlizenzen",
+      "sub": "weniger Bürokratie im Ausland",
+      "at": 1.6
+     },
+     {
+      "text": "*Fördergeld* vom Staat",
+      "sub": "laut WSJ-Bericht",
+      "at": 3.2
+     },
+     {
+      "text": "Ziel: *China* schlagen",
+      "sub": "im Ausland Marktanteile holen",
+      "mark": "🎯",
+      "markColor": "#e5392f",
+      "at": 4.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trVersus",
+   "duration": 5.6,
+   "script": "0:25 · Denn darum geht es eigentlich: das KI-Rennen zwischen den USA und China.",
+   "params": {
+    "title": "Das *KI-Rennen*",
+    "titleAccent": "#e5392f",
+    "left": {
+     "brand": {
+      "name": "USA",
+      "glyph": "🇺🇸",
+      "color": "#3c3b6e"
+     },
+     "name": "USA",
+     "sub": "Nvidia, OpenAI & Co."
+    },
+    "right": {
+     "brand": {
+      "name": "CHINA",
+      "glyph": "🇨🇳",
+      "color": "#de2910"
+     },
+     "name": "China",
+     "sub": "eigene Chips & KI"
+    },
+    "at": [
+     0.6,
+     1.2
+    ],
+    "vsAt": 1.8,
+    "sticker": {
+     "text": "Wer gewinnt?",
+     "icon": "🏁",
+     "color": "#e5392f",
+     "at": 3.0,
+     "x": 770,
+     "y": 176,
+     "size": 36,
+     "rotate": -5
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trWarn",
+   "duration": 5.6,
+   "script": "0:30 · Parallel will die Regierung stoppen, dass moderne Chips über Umwege doch noch nach China gelangen.",
+   "params": {
+    "tag": "Parallel",
+    "live": true,
+    "text": "Chip-Schmuggel *stoppen*",
+    "size": 64,
+    "sub": "Moderne Chips sollen *nicht über Umwege* nach China"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trHeadline",
+   "duration": 5.0,
+   "script": "0:36 · Und es könnte schnell gehen: Handelsminister Lutnick könnte die Liste schon diese Woche vorstellen.",
+   "params": {
+    "brand": false,
+    "text": "Liste schon *diese Woche*?",
+    "accent": "#b8860b",
+    "size": 76,
+    "pills": [
+     "Handelsminister Howard Lutnick"
+    ],
+    "pillsAt": 2.2
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 7.2,
+   "script": "0:41 · Und jetzt die Frage: Ist das Wettbewerb – oder Staatswirtschaft? Für die Riesen ist es Rückenwind. Für kleinere Konkurrenten eher ein Nachteil. Keine Anlageberatung.",
+   "params": {
+    "title": "Wettbewerb oder *Staatswirtschaft*?",
+    "left": {
+     "label": "Pro",
+     "title": "Rückenwind für die Riesen",
+     "result": "Exporte & Fördergeld",
+     "good": true,
+     "at": 2.4
+    },
+    "right": {
+     "label": "Contra",
+     "title": "Staat wählt Gewinner",
+     "result": "Nachteil für kleine Konkurrenz",
+     "good": false,
+     "at": 4.0
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 5.0,
+   "script": "0:48 · Wichtig: Offiziell bestätigt ist die Liste noch nicht – das stammt aus einem Bericht des Wall Street Journal.",
+   "params": {
+    "tag": "Wichtig",
+    "live": true,
+    "text": "Noch *nicht offiziell*",
+    "size": 68,
+    "sub": "Grundlage: Bericht des *Wall Street Journal*",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "0:53 · Richtig so – oder gefährlich? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Staats-Champions: *richtig* oder gefährlich?",
+    "options": [
+     "Richtig – gegen China",
+     "Gefährlich – Staatswirtschaft",
+     "Gut für meine Aktien"
+    ],
+    "note": "Keine Anlageberatung · Stand: 16. November 2026"
+   }
+  }
+ ]
+}

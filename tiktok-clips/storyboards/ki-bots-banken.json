@@ -1,0 +1,237 @@
+{
+ "name": "ki-bots-banken",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trVanish",
+   "duration": 6.4,
+   "script": "0:00 · Bald zahlst nicht mehr du – sondern eine KI. Und die Banken haben richtig Angst davor.",
+   "params": {
+    "label": "Deine Zahlungsmittel",
+    "title": "Deine Kreditkarte – bald *weg*?",
+    "rows": [
+     {
+      "brand": {
+       "name": "KARTE",
+       "glyph": "💳",
+       "color": "#111317"
+      },
+      "name": "Kreditkarte",
+      "sub": "du tippst, du zahlst",
+      "status": "aktiv"
+     },
+     {
+      "brand": "VISA",
+      "name": "Visa",
+      "sub": "Zahlungsnetz",
+      "status": "aktiv"
+     },
+     {
+      "brand": "MA",
+      "name": "Mastercard",
+      "sub": "Zahlungsnetz",
+      "status": "aktiv"
+     }
+    ],
+    "at": 0.2,
+    "glitchAt": 0.9,
+    "lostStatus": "ersetzt?",
+    "stamp": "KI ZAHLT",
+    "replace": {
+     "brand": {
+      "name": "KI",
+      "glyph": "🤖",
+      "color": "#2f6bff"
+     },
+     "name": "KI-Agent",
+     "sub": "sucht, kauft & zahlt für dich",
+     "status": "neu"
+    },
+    "replaceAt": 3.0,
+    "keepStamp": true
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 6.0,
+   "script": "0:06 · Meta hat es gestartet: Seine KI-Assistenten können jetzt selbst Produkte aussuchen – und mit deiner Karte bezahlen.",
+   "params": {
+    "brand": "META",
+    "context": "Neue KI-Assistenten",
+    "text": "Die KI kauft *für dich* ein",
+    "accent": "#2f6bff",
+    "size": 70,
+    "pills": [
+     "Meta-Assistenten",
+     "zahlt mit deiner Karte"
+    ],
+    "pillsAt": 2.8
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:12 · Du sagst nur: Kauf mir Laufschuhe unter 100 Euro. Die KI sucht, vergleicht – und bezahlt. Ohne dass du je eine Kartennummer eintippst.",
+   "params": {
+    "title": "So *läuft* das",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "„Laufschuhe *unter 100 €*“",
+      "sub": "du gibst nur den Auftrag",
+      "mark": "🗣",
+      "markColor": "#111317",
+      "at": 1.4
+     },
+     {
+      "text": "KI *sucht & vergleicht*",
+      "sub": "Shops, Preise, Bewertungen",
+      "mark": "🤖",
+      "markColor": "#2f6bff",
+      "at": 3.2
+     },
+     {
+      "text": "KI *bezahlt*",
+      "sub": "ohne dass du die Karte zückst",
+      "mark": "💳",
+      "markColor": "#0d7d4d",
+      "at": 4.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trVersus",
+   "duration": 6.6,
+   "script": "0:19 · Und genau hier spalten sich die Banken: JPMorgan blockiert. Bank of America, Citi und Capital One lassen KI-Käufe schon zu.",
+   "params": {
+    "title": "Banken *gespalten*",
+    "titleAccent": "#e5392f",
+    "left": {
+     "brand": "JPM",
+     "name": "JPMorgan",
+     "nameSize": 40,
+     "value": "blockiert",
+     "tone": "red"
+    },
+    "right": {
+     "brands": [
+      "BAC",
+      "CITI",
+      "COF"
+     ],
+     "chip": 86,
+     "name": "BoA · Citi · Capital One",
+     "nameSize": 30,
+     "value": "erlauben"
+    },
+    "at": [
+     1.2,
+     2.6
+    ],
+    "vsAt": 3.4
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 5.4,
+   "script": "0:26 · Und Visa, Mastercard und Stripe? Die sehen darin eine riesige Chance.",
+   "params": {
+    "brand": false,
+    "text": "Visa & Co. wittern die *Chance*",
+    "accent": "#0d7d4d",
+    "size": 70,
+    "pills": [
+     "Visa",
+     "Mastercard",
+     "Stripe"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 6.0,
+   "script": "0:31 · Für Banken steht viel auf dem Spiel: Laut McKinsey könnten sie bis zu 170 Milliarden Dollar Gewinn verlieren, wenn sie den KI-Wandel verschlafen.",
+   "params": {
+    "title": "Was Banken *verlieren* könnten",
+    "accent": "#e5392f",
+    "label": "weltweit, laut McKinsey",
+    "value": "−170 Mrd. $",
+    "tone": "red",
+    "size": 150,
+    "at": 2.2,
+    "countDur": 1.0,
+    "sub": "Gewinn – wenn sie den KI-Wandel *verschlafen*"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trWarn",
+   "duration": 6.8,
+   "script": "0:37 · Aber die Gefahr ist real: Betrug, Datenmissbrauch, ungewollte Käufe. Erst im September wurden mit KI-Agenten die Daten von über 600.000 Karten gestohlen.",
+   "params": {
+    "tag": "Die Gefahr",
+    "live": true,
+    "text": "*600.000* Karten gestohlen",
+    "size": 64,
+    "sub": "mit KI-Agenten, im *September* · Betrug & Fehlkäufe",
+    "pills": [
+     "Betrug",
+     "Datenmissbrauch",
+     "ungewollte Käufe"
+    ],
+    "pillsAt": 4.2
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:44 · Also: Bequemlichkeit gegen Kontrolle. Die KI spart dir Zeit – aber du gibst ein Stück Kontrolle ab. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Bequemlichkeit oder *Kontrolle*?",
+    "left": {
+     "label": "Pro",
+     "title": "spart Zeit",
+     "result": "KI vergleicht Preise",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Contra",
+     "title": "Kontrolle weg",
+     "result": "Betrug, Fehlkäufe",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "0:50 · Würdest du einer KI deine Karte geben? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Gibst du einer KI *deine Karte*?",
+    "options": [
+     "Ja, sofort",
+     "Nur mit Limit",
+     "Niemals"
+    ],
+    "note": "Keine Anlageberatung · Stand: 16. November 2026"
+   }
+  }
+ ]
+}

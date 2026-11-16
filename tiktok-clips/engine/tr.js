@@ -954,7 +954,8 @@
       tgt.el.style.transform = `scale(${1 - 0.06 * kG})`;
       const kS = C.k(t, goneAt + 0.15, 0.35, 'back');
       stamp.style.left = '50%'; stamp.style.top = (tgt.el.offsetTop + list.offsetTop + tgt.el.offsetHeight / 2) + 'px';
-      stamp.style.opacity = C.k(t, goneAt + 0.15, 0.1) * (rep ? 1 - C.k(t, repAt - 0.05, 0.25) : 1);
+      stamp.style.opacity = C.k(t, goneAt + 0.15, 0.1) * (rep && !p.keepStamp ? 1 - C.k(t, repAt - 0.05, 0.25) : 1);
+      if (rep && p.keepStamp && t > repAt) { const kk = C.k(t, repAt, 0.4, 'inOut'); stamp.style.top = (tgt.el.offsetTop + list.offsetTop + tgt.el.offsetHeight / 2 + kk * (list.offsetHeight - tgt.el.offsetHeight / 2 - 10)) + 'px'; stamp.style.left = (50 + kk * 14) + '%'; }
       stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.7 * (1 - Math.min(1, kS)))}) rotate(-8deg)`;
       if (rep) {
         rep.el.style.top = tgt.el.offsetTop + 'px';
