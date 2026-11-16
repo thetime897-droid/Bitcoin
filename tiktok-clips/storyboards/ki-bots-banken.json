@@ -10,8 +10,8 @@
   {
    "id": "01",
    "type": "trVanish",
-   "duration": 6.4,
-   "script": "0:00 · Bald zahlst nicht mehr du – sondern eine KI. Und die Banken haben richtig Angst davor.",
+   "duration": 7.0,
+   "script": "0:00 · Bald zahlst nicht mehr du – sondern eine KI. Sie sucht, sie kauft, sie bezahlt. Und die Banken haben richtig Angst davor.",
    "params": {
     "label": "Deine Zahlungsmittel",
     "title": "Deine Kreditkarte – bald *weg*?",
@@ -60,17 +60,18 @@
   {
    "id": "02",
    "type": "trHeadline",
-   "duration": 6.0,
-   "script": "0:06 · Meta hat es gestartet: Seine KI-Assistenten können jetzt selbst Produkte aussuchen – und mit deiner Karte bezahlen.",
+   "duration": 6.4,
+   "script": "0:07 · Meta hat es gestartet: Sein KI-Agent Muse durchsucht Shops nach Produkten und geht für dich bis zur Kasse. Du gibst nur noch dein Okay.",
    "params": {
     "brand": "META",
-    "context": "Neue KI-Assistenten",
+    "context": "KI-Agent „Muse“",
     "text": "Die KI kauft *für dich* ein",
     "accent": "#2f6bff",
     "size": 70,
     "pills": [
-     "Meta-Assistenten",
-     "zahlt mit deiner Karte"
+     "sucht Produkte",
+     "geht bis zur Kasse",
+     "du sagst nur Ja"
     ],
     "pillsAt": 2.8
    }
@@ -78,8 +79,8 @@
   {
    "id": "03",
    "type": "trList",
-   "duration": 7.0,
-   "script": "0:12 · Du sagst nur: Kauf mir Laufschuhe unter 100 Euro. Die KI sucht, vergleicht – und bezahlt. Ohne dass du je eine Kartennummer eintippst.",
+   "duration": 7.4,
+   "script": "0:13 · Du sagst nur: Kauf mir Laufschuhe unter 100 Euro. Die KI sucht, vergleicht Preise und Bewertungen – und bezahlt. Ohne dass du je eine Kartennummer eintippst.",
    "params": {
     "title": "So *läuft* das",
     "accent": "#2f6bff",
@@ -96,23 +97,43 @@
       "sub": "Shops, Preise, Bewertungen",
       "mark": "🤖",
       "markColor": "#2f6bff",
-      "at": 3.2
+      "at": 3.4
      },
      {
       "text": "KI *bezahlt*",
-      "sub": "ohne dass du die Karte zückst",
+      "sub": "du tippst keine Kartennummer ein",
       "mark": "💳",
       "markColor": "#0d7d4d",
-      "at": 4.8
+      "at": 5.2
      }
     ]
    }
   },
   {
    "id": "04",
-   "type": "trVersus",
+   "type": "trStrike",
    "duration": 6.6,
-   "script": "0:19 · Und genau hier spalten sich die Banken: JPMorgan blockiert. Bank of America, Citi und Capital One lassen KI-Käufe schon zu.",
+   "script": "0:20 · Der Trick dahinter: Die KI sieht deine echte Karte gar nicht. Sie bekommt eine virtuelle Einmal-Karte – genau für diesen einen Einkauf.",
+   "params": {
+    "title": "Der *Trick*",
+    "accent": "#2f6bff",
+    "old": "KI bekommt deine echte Karte",
+    "new": "*Einmal-Karte* nur für diesen Kauf",
+    "newSize": 50,
+    "strikeAt": 2.0,
+    "newAt": 3.2,
+    "sub": "über Stripes Bezahldienst *Link*",
+    "pills": [
+     "Limit = Kaufpreis"
+    ],
+    "pillsAt": 4.8
+   }
+  },
+  {
+   "id": "05",
+   "type": "trVersus",
+   "duration": 6.8,
+   "script": "0:27 · Und genau hier spalten sich die Banken: JPMorgan blockiert solche KI-Käufe laut Bericht. Bank of America, Citi und Capital One lassen sie schon zu.",
    "params": {
     "title": "Banken *gespalten*",
     "titleAccent": "#e5392f",
@@ -135,35 +156,50 @@
      "value": "erlauben"
     },
     "at": [
-     1.2,
-     2.6
+     1.4,
+     2.8
     ],
-    "vsAt": 3.4
-   }
-  },
-  {
-   "id": "05",
-   "type": "trHeadline",
-   "duration": 5.4,
-   "script": "0:26 · Und Visa, Mastercard und Stripe? Die sehen darin eine riesige Chance.",
-   "params": {
-    "brand": false,
-    "text": "Visa & Co. wittern die *Chance*",
-    "accent": "#0d7d4d",
-    "size": 70,
-    "pills": [
-     "Visa",
-     "Mastercard",
-     "Stripe"
-    ],
-    "pillsAt": 2.0
+    "vsAt": 3.6
    }
   },
   {
    "id": "06",
+   "type": "trList",
+   "duration": 6.8,
+   "script": "0:34 · Und Visa und Mastercard? Die liefern sich gerade ein Wettrennen um den Standard für KI-Zahlungen. Bei Mastercard kannst du deinem Agenten sogar Limits setzen.",
+   "params": {
+    "title": "Das *Wettrennen*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "*Visa* Intelligent Commerce",
+      "sub": "wird gerade ausgerollt",
+      "mark": "V",
+      "markColor": "#1a1f71",
+      "at": 1.8
+     },
+     {
+      "text": "*Mastercard* Agent Pay",
+      "sub": "Limits, Händler-Sperren, Freigabe",
+      "mark": "M",
+      "markColor": "#eb001b",
+      "at": 3.6
+     },
+     {
+      "text": "*Stripe* Link",
+      "sub": "virtuelle Karten für KI-Agenten",
+      "mark": "S",
+      "markColor": "#635bff",
+      "at": 5.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
    "type": "trMetric",
-   "duration": 6.0,
-   "script": "0:31 · Für Banken steht viel auf dem Spiel: Laut McKinsey könnten sie bis zu 170 Milliarden Dollar Gewinn verlieren, wenn sie den KI-Wandel verschlafen.",
+   "duration": 6.4,
+   "script": "0:40 · Für die Banken steht viel auf dem Spiel: Laut McKinsey könnten sie weltweit bis zu 170 Milliarden Dollar Gewinn verlieren, wenn sie den KI-Wandel verschlafen.",
    "params": {
     "title": "Was Banken *verlieren* könnten",
     "accent": "#e5392f",
@@ -171,16 +207,16 @@
     "value": "−170 Mrd. $",
     "tone": "red",
     "size": 150,
-    "at": 2.2,
+    "at": 2.4,
     "countDur": 1.0,
     "sub": "Gewinn – wenn sie den KI-Wandel *verschlafen*"
    }
   },
   {
-   "id": "07",
+   "id": "08",
    "type": "trWarn",
-   "duration": 6.8,
-   "script": "0:37 · Aber die Gefahr ist real: Betrug, Datenmissbrauch, ungewollte Käufe. Erst im September wurden mit KI-Agenten die Daten von über 600.000 Karten gestohlen.",
+   "duration": 7.0,
+   "script": "0:47 · Aber die Gefahr ist real: Betrug, Datenmissbrauch, ungewollte Käufe. Erst im September haben Kriminelle mit KI-Agenten die Daten von über 600.000 Karten gestohlen.",
    "params": {
     "tag": "Die Gefahr",
     "live": true,
@@ -192,14 +228,14 @@
      "Datenmissbrauch",
      "ungewollte Käufe"
     ],
-    "pillsAt": 4.2
+    "pillsAt": 4.4
    }
   },
   {
-   "id": "08",
+   "id": "09",
    "type": "trRule",
-   "duration": 6.6,
-   "script": "0:44 · Also: Bequemlichkeit gegen Kontrolle. Die KI spart dir Zeit – aber du gibst ein Stück Kontrolle ab. Das ist keine Anlageberatung.",
+   "duration": 6.8,
+   "script": "0:54 · Also: Bequemlichkeit gegen Kontrolle. Die KI spart dir Zeit – aber du gibst ein Stück Kontrolle ab. Wenn du es testest: immer mit Limit. Das ist keine Anlageberatung.",
    "params": {
     "title": "Bequemlichkeit oder *Kontrolle*?",
     "left": {
@@ -219,10 +255,10 @@
    }
   },
   {
-   "id": "09",
+   "id": "10",
    "type": "trPoll",
    "duration": 4.8,
-   "script": "0:50 · Würdest du einer KI deine Karte geben? Schreib's in die Kommentare.",
+   "script": "1:01 · Würdest du einer KI deine Karte geben? Schreib's in die Kommentare.",
    "params": {
     "question": "Gibst du einer KI *deine Karte*?",
     "options": [
