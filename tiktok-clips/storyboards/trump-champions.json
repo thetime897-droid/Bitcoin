@@ -191,10 +191,97 @@
    }
   },
   {
+   "id": "07b",
+   "type": "trList",
+   "duration": 6.8,
+   "script": "0:41 · Und das ist nicht die einzige News diese Woche: Nvidia legt Zahlen vor, Anthropic geht an die Börse. Das könnte dem ganzen Tech-Markt wieder Rückenwind geben.",
+   "params": {
+    "title": "Die Woche der *Entscheidung*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "*Nvidia*-Quartalszahlen",
+      "sub": "erwartet: rund 109 Mrd. $ Umsatz",
+      "mark": "N",
+      "markColor": "#76b900",
+      "at": 1.6
+     },
+     {
+      "text": "*Anthropic* geht an die Börse",
+      "sub": "laut Berichten am 19. November",
+      "mark": "A",
+      "markColor": "#c96442",
+      "at": 3.2
+     },
+     {
+      "text": "*Staats-Champions*-Liste",
+      "sub": "Rückenwind aus Washington?",
+      "mark": "🇺🇸",
+      "markColor": "#3c3b6e",
+      "at": 4.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "07c",
+   "type": "trChart",
+   "duration": 6.4,
+   "script": "0:48 · Nach dem Tech-Ausverkauf der letzten Wochen wäre das genau der Impuls, der den Abwärtstrend bremsen könnte. Liefern Nvidia und Anthropic, könnte sich die Lage beruhigen.",
+   "params": {
+    "ticker": "NDX",
+    "name": "Tech-Aktien · letzte Wochen",
+    "price": "Bodenbildung?",
+    "countPrice": false,
+    "change": "nach dem Ausverkauf",
+    "range": "1M",
+    "data": [
+     100.14748203386765,
+     100.29014438711287,
+     100.35423227867884,
+     100.53094034053247,
+     100.28787828968791,
+     100.5067899959985,
+     97.64640836525379,
+     96.74499624700496,
+     95.9093707471973,
+     93.83835928501907,
+     92.641440786801,
+     89.78112954344503,
+     88.75051047645145,
+     86.79451653219174,
+     85.67001737477749,
+     84.11830590068496,
+     81.62098270334225,
+     80.34676768074216,
+     78.84717178561777,
+     78.26615259489368,
+     76.42516072260662,
+     76,
+     76.5,
+     78,
+     80.5,
+     83
+    ],
+    "height": 420,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "sticker": {
+     "text": "Rückenwind?",
+     "icon": "🚀",
+     "color": "#0d7d4d",
+     "at": 3.4,
+     "x": 790,
+     "y": 330,
+     "size": 44
+    }
+   }
+  },
+  {
    "id": "08",
    "type": "trRule",
    "duration": 7.2,
-   "script": "0:41 · Und jetzt die Frage: Ist das Wettbewerb – oder Staatswirtschaft? Für die Riesen ist es Rückenwind. Für kleinere Konkurrenten eher ein Nachteil. Keine Anlageberatung.",
+   "script": "0:54 · Und jetzt die Frage: Ist das Wettbewerb – oder Staatswirtschaft? Für die Riesen ist es Rückenwind. Für kleinere Konkurrenten eher ein Nachteil. Keine Anlageberatung.",
    "params": {
     "title": "Wettbewerb oder *Staatswirtschaft*?",
     "left": {
@@ -217,7 +304,7 @@
    "id": "09",
    "type": "trWarn",
    "duration": 5.0,
-   "script": "0:48 · Wichtig: Offiziell bestätigt ist die Liste noch nicht – das stammt aus einem Bericht des Wall Street Journal.",
+   "script": "1:01 · Wichtig: Offiziell bestätigt ist die Liste noch nicht – das stammt aus einem Bericht des Wall Street Journal.",
    "params": {
     "tag": "Wichtig",
     "live": true,
@@ -234,7 +321,7 @@
    "id": "10",
    "type": "trPoll",
    "duration": 4.8,
-   "script": "0:53 · Richtig so – oder gefährlich? Schreib's in die Kommentare.",
+   "script": "1:06 · Richtig so – oder gefährlich? Schreib's in die Kommentare.",
    "params": {
     "question": "Staats-Champions: *richtig* oder gefährlich?",
     "options": [

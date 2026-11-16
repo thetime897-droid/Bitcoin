@@ -13,9 +13,11 @@
 | 0:25 | `05-trVersus` | Denn darum geht es eigentlich: das KI-Rennen zwischen den USA und China. |
 | 0:30 | `06-trWarn` | Parallel will die Regierung stoppen, dass moderne Chips über Umwege doch noch nach China gelangen. |
 | 0:36 | `07-trHeadline` | Und es könnte schnell gehen: Handelsminister Lutnick könnte die Liste schon diese Woche vorstellen. |
-| 0:41 | `08-trRule` | Und jetzt die Frage: Ist das Wettbewerb – oder Staatswirtschaft? Für die Riesen ist es Rückenwind. Für kleinere Konkurrenten eher ein Nachteil. Keine Anlageberatung. |
-| 0:48 | `09-trWarn` | Wichtig: Offiziell bestätigt ist die Liste noch nicht – das stammt aus einem Bericht des Wall Street Journal. |
-| 0:53 | `10-trPoll` | Richtig so – oder gefährlich? Schreib's in die Kommentare. |
+| 0:41 | `07b-trList` | Und das ist nicht die einzige News diese Woche: Nvidia legt Zahlen vor, Anthropic geht an die Börse. Das könnte dem ganzen Tech-Markt wieder Rückenwind geben. |
+| 0:48 | `07c-trChart` | Nach dem Tech-Ausverkauf der letzten Wochen wäre das genau der Impuls, der den Abwärtstrend bremsen könnte. Liefern Nvidia und Anthropic, könnte sich die Lage beruhigen. |
+| 0:54 | `08-trRule` | Und jetzt die Frage: Ist das Wettbewerb – oder Staatswirtschaft? Für die Riesen ist es Rückenwind. Für kleinere Konkurrenten eher ein Nachteil. Keine Anlageberatung. |
+| 1:01 | `09-trWarn` | Wichtig: Offiziell bestätigt ist die Liste noch nicht – das stammt aus einem Bericht des Wall Street Journal. |
+| 1:06 | `10-trPoll` | Richtig so – oder gefährlich? Schreib's in die Kommentare. |
 
 ## Faktencheck
 
@@ -23,6 +25,7 @@
 - **Vorteile:** schnellere Exportlizenzen und mögliches Fördergeld. Grundlage ist ein Exportprogramm, das Trump im Juli 2025 per Verordnung angestoßen hat. ✔
 - **Zeitplan:** Handelsminister Howard Lutnick könnte die Liste noch diese Woche vorstellen. ⚠ („könnte“)
 - **Chips:** Parallel sind Maßnahmen gegen die Umleitung moderner Chips nach China geplant. ✔
+- **Rückenwind (`07b`/`07c`):** Nvidia-Quartalszahlen diese Woche (erwartet ca. 109 Mrd. $ Umsatz) und Anthropic-Börsengang (laut CNBC-Quellen 19.11.). ⚠ Ob das den Tech-Ausverkauf bremst, ist eine Einschätzung, deshalb „könnte“. Der Chart in `07c` ist schematisch (Ausverkauf, dann Erholung), kein echter Kursverlauf.
 - **Anthropic:** Der Börsengang ist für den 19.11.2026 erwartet. ✔ (CNBC-Quellen)
 
 ## Hook-Text
