@@ -151,6 +151,7 @@
     CNI: { name: 'CANADIAN NATIONAL', color: '#d71920', glyph: 'CN' },
     CAT: { name: 'CATERPILLAR', color: '#f4b400', glyph: 'CAT' },
     DLTR: { name: 'DOLLAR TREE', color: '#00843d', glyph: 'DT' },
+    SLS: { name: 'SELLAS', color: '#0072ce', glyph: 'SLS' },
     ANT: { name: 'ANTHROPIC', color: '#c96442', glyph: 'A' },
     EZB: { name: 'EZB', color: '#003399', glyph: '€' },
     MSCI: { name: 'MSCI', color: '#002f6c', glyph: 'MSCI' },

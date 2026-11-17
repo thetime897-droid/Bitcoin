@@ -1,0 +1,254 @@
+{
+ "name": "sellas-krebs-aktie",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 6.4,
+   "script": "0:00 · Ein Impfstoff gegen Krebs – und diese Aktie explodiert über Nacht um 240 Prozent. Aus 1.000 Euro wurden 3.400. Aber ist das wirklich die Heilung?",
+   "params": {
+    "up": true,
+    "brand": "SLS",
+    "name": "SELLAS",
+    "tag": "+240 %",
+    "title": "Krebs-Durchbruch *lässt Aktie explodieren*",
+    "titleSize": 52,
+    "value": "+240 %",
+    "size": 190,
+    "at": 0.3,
+    "countDur": 1.3,
+    "barFrom": "vorher: ~7,50 $",
+    "barTo": "zeitweise über 26 $",
+    "fillFrom": 0.28,
+    "sub": "Aus 1.000 € wurden *3.400 €*",
+    "stamp": "DURCHBRUCH?",
+    "stampSize": 74
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 7.4,
+   "script": "0:06 · Die Firma heißt SELLAS Life Sciences. Vorbörslich springt die Aktie von rund 7,50 auf über 26 Dollar – Handelsvolumen wie selten zuvor. Ein paar Minuten Handel – und die Firma ist plötzlich ein Vielfaches wert.",
+   "params": {
+    "ticker": "SLS",
+    "name": "SELLAS Life Sciences · vorbörslich",
+    "price": "26,45 $",
+    "priceFrom": 7.47,
+    "change": "+255 % vorbörslich",
+    "range": "1T",
+    "data": [
+     7.4,
+     7.5,
+     7.45,
+     7.5,
+     7.47,
+     7.5,
+     7.47,
+     13.947470710047263,
+     17.28800966430451,
+     19.992130073234765,
+     22.351319898345537,
+     24.48325692215015,
+     26.45,
+     25.5,
+     24,
+     22.8,
+     21.5,
+     20.2
+    ],
+    "height": 440,
+    "drawAt": 0.3,
+    "drawDur": 2.0,
+    "sticker": {
+     "text": "RAKETE",
+     "icon": "🚀",
+     "color": "#0d7d4d",
+     "at": 2.6,
+     "x": 400,
+     "y": 470,
+     "size": 48
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trHeadline",
+   "duration": 4.6,
+   "script": "0:13 · Aber was steckt dahinter? Und ist das wirklich die Heilung von Krebs?",
+   "params": {
+    "brand": false,
+    "text": "Ist das die *Heilung*?",
+    "accent": "#b8860b",
+    "size": 86,
+    "pills": [
+     "Spoiler: nicht ganz"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 7.2,
+   "script": "0:18 · Es geht um einen Impfstoff namens GPS gegen akute myeloische Leukämie – eine aggressive Form von Blutkrebs. Getestet in einer großen Phase-3-Studie, der letzten Hürde vor der Zulassung.",
+   "params": {
+    "title": "Was *getestet* wurde",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Krebs-*Impfstoff* „GPS“",
+      "sub": "Galinpepimut-S",
+      "mark": "💉",
+      "markColor": "#2f6bff",
+      "at": 1.6
+     },
+     {
+      "text": "Gegen *Blutkrebs* (AML)",
+      "sub": "akute myeloische Leukämie – sehr aggressiv",
+      "mark": "🩸",
+      "markColor": "#e5392f",
+      "at": 3.4
+     },
+     {
+      "text": "*Phase-3*-Studie",
+      "sub": "letzte Hürde vor der Zulassung",
+      "mark": "3",
+      "markColor": "#0d7d4d",
+      "at": 5.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:25 · Und das Ergebnis ist stark: Das Sterberisiko sinkt um 41 Prozent. Und die Patienten leben im Schnitt 24 Monate statt nur knapp 15.",
+   "params": {
+    "title": "Das *Ergebnis*",
+    "label": "weniger Sterberisiko",
+    "logos": [
+     "SLS"
+    ],
+    "value": "−41 %",
+    "size": 170,
+    "at": 1.6,
+    "second": {
+     "value": "24 statt 14,7 Monate",
+     "size": 66,
+     "at": 3.6
+    },
+    "pills": [
+     "Überleben im Schnitt"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trBars",
+   "duration": 7.2,
+   "script": "0:32 · Heißt: Mit dem Impfstoff leben Patienten im Schnitt gut neun Monate länger als mit der bisherigen Behandlung. Bei einer so aggressiven Krebsart ist das ein riesiger Unterschied.",
+   "params": {
+    "title": "Überlebenszeit im *Schnitt*",
+    "items": [
+     {
+      "name": "Mit Impfstoff GPS",
+      "brand": "SLS",
+      "value": 24.0,
+      "label": "24,0 Monate",
+      "at": 1.4
+     },
+     {
+      "name": "Bisherige Behandlung",
+      "brand": {
+       "name": "B",
+       "glyph": "⚕",
+       "color": "#8b9099"
+      },
+      "value": 14.7,
+      "label": "14,7 Monate",
+      "at": 2.6,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     }
+    ],
+    "max": 26,
+    "note": "Phase-3-Studie REGAL · Median Gesamtüberleben"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trStrike",
+   "duration": 6.4,
+   "script": "0:39 · Aber ehrlich: Eine Heilung ist das nicht. Der Impfstoff verlängert das Leben – er besiegt den Krebs nicht.",
+   "params": {
+    "title": "Ganz *ehrlich*",
+    "accent": "#e5392f",
+    "old": "Krebs geheilt",
+    "new": "*Länger* leben – nicht geheilt",
+    "newSize": 54,
+    "strikeAt": 1.6,
+    "newAt": 2.6,
+    "sub": "trotzdem ein *großer Fortschritt* bei Blutkrebs"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trYear",
+   "duration": 5.8,
+   "script": "0:45 · Und zugelassen ist er auch noch nicht. Erst jetzt beginnen die Gespräche mit der US-Behörde FDA – der Antrag ist für 2027 geplant.",
+   "params": {
+    "title": "Wann *kommt* er?",
+    "label": "NOCH NICHT ZUGELASSEN",
+    "from": 2026,
+    "to": 2027,
+    "rollAt": 1.8,
+    "progress": 0.3,
+    "sub": "erst Gespräche mit der *FDA* · 1. Halbjahr 2027"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:51 · Und Vorsicht: Kleine Biotech-Aktien sind extrem riskant. Was heute 240 Prozent steigt, kann bei der nächsten schlechten Nachricht genauso schnell abstürzen. Keine Anlageberatung.",
+   "params": {
+    "brand": "SLS",
+    "context": "Risiko",
+    "tag": "Vorsicht",
+    "live": true,
+    "text": "Biotech = *extrem riskant*",
+    "size": 62,
+    "sub": "Schon im frühen Handel *wieder deutlich unter* dem Hoch",
+    "pills": [
+     "Keine Anlageberatung",
+     "kein Rat zum Nachkaufen"
+    ],
+    "pillsAt": 4.0
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "0:57 · Würdest du jetzt noch einsteigen – oder ist der Zug abgefahren? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Jetzt noch *einsteigen*?",
+    "options": [
+     "Ja, das ist erst der Anfang",
+     "Nein, zu spät",
+     "Biotech ist mir zu heiß"
+    ],
+    "note": "Keine Anlageberatung · Stand: 17. November 2026"
+   }
+  }
+ ]
+}
