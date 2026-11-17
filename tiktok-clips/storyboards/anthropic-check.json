@@ -1,0 +1,308 @@
+{
+ "name": "anthropic-check",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 7.0,
+   "script": "0:00 · Übermorgen geht Anthropic an die Börse. Aber wer am ersten Tag kauft, könnte genauso bluten wie die SpaceX-Käufer – die lagen zeitweise fast 50 Prozent im Minus.",
+   "params": {
+    "intro": {
+     "tag": "IN 2 TAGEN",
+     "text": "*Anthropic* geht an die Börse",
+     "sub": "📅 19. November · Kürzel ANT",
+     "dur": 2.6,
+     "size": 78
+    },
+    "brand": "SPACEX",
+    "name": "SpaceX",
+    "tag": "WARNUNG",
+    "title": "So erging es den *Tag-1-Käufern*",
+    "titleSize": 54,
+    "value": "−46 %",
+    "size": 180,
+    "at": 0.3,
+    "countDur": 1.3,
+    "barFrom": "Hoch am 1. Tag: 201,80 $",
+    "barTo": "6 Wochen später: 108 $",
+    "drainTo": 0.54,
+    "sub": "Wiederholt sich das bei *Anthropic*?",
+    "stamp": "TAG-1-FALLE?",
+    "stampSize": 70
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 6.6,
+   "script": "0:07 · Die Lehre von SpaceX: Am ersten Tag sprang die Aktie bis auf über 200 Dollar. Eineinhalb Monate später stand sie bei 108. Wer am Hype gekauft hat, verlor fast die Hälfte.",
+   "params": {
+    "ticker": "SPACEX",
+    "name": "SpaceX · nach dem Börsengang",
+    "price": "108,37 $",
+    "priceFrom": 201.8,
+    "change": "-46 % vom Hoch in 6 Wochen",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     150.70850330720108,
+     151.13964542434843,
+     150.08186462881233,
+     165,
+     182,
+     195,
+     201.8,
+     196,
+     188,
+     176,
+     170,
+     160,
+     152,
+     147,
+     140,
+     133,
+     128,
+     124,
+     118,
+     114,
+     111,
+     108.37
+    ],
+    "height": 420,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 201.8,
+     "label": "Hoch am 1. Tag: 201,80 $",
+     "at": 0.6
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trHeadline",
+   "duration": 4.6,
+   "script": "0:13 · Wiederholt sich das jetzt bei Anthropic? Hier ist der komplette Check.",
+   "params": {
+    "brand": "ANT",
+    "context": "Der Check",
+    "text": "Lohnt sich *Anthropic*?",
+    "accent": "#c96442",
+    "size": 84,
+    "pills": [
+     "Fakten",
+     "Zahlen",
+     "Fazit"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 8.0,
+   "script": "0:18 · Die Eckdaten: Kürzel ANT, an der Nasdaq. 825 Millionen Aktien zu 70 bis 78 Dollar. Und 20 Prozent davon sind für Privatanleger reserviert.",
+   "params": {
+    "brand": "ANT",
+    "context": "Die Eckdaten",
+    "title": "Was du *wissen* musst",
+    "accent": "#c96442",
+    "items": [
+     {
+      "text": "Kürzel *ANT* · Nasdaq",
+      "sub": "Handelsstart 19. November",
+      "mark": "📅",
+      "markColor": "#111317",
+      "at": 1.4
+     },
+     {
+      "text": "*825 Mio.* Aktien",
+      "sub": "Preisspanne 70–78 $",
+      "mark": "$",
+      "markColor": "#0d7d4d",
+      "at": 3.2
+     },
+     {
+      "text": "*20 %* für Privatanleger",
+      "sub": "auch über deutsche Broker",
+      "mark": "👤",
+      "markColor": "#2f6bff",
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:26 · Der Börsengang ist gigantisch: Inklusive Privatplatzierung und Mehrzuteilung werden rund 100 Milliarden Dollar eingesammelt. Bewertung: bis zu 1,4 Billionen Dollar.",
+   "params": {
+    "title": "Ein *Mega*-Börsengang",
+    "accent": "#c96442",
+    "label": "Gesamtvolumen inkl. Privatplatzierung",
+    "logos": [
+     "ANT"
+    ],
+    "value": "~100 Mrd. $",
+    "size": 140,
+    "at": 1.4,
+    "second": {
+     "value": "Bewertung: bis 1,41 Bio. $",
+     "size": 60,
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:32 · Und die Zahlen? Im ersten Halbjahr 16,3 Milliarden Dollar Umsatz. Operativ, also ohne Sondereffekte, sogar 1,6 Milliarden Gewinn.",
+   "params": {
+    "title": "Die *Zahlen*",
+    "label": "Umsatz 1. Halbjahr 2026",
+    "logos": [
+     "ANT"
+    ],
+    "value": "16,29 Mrd. $",
+    "size": 140,
+    "at": 1.4,
+    "second": {
+     "value": "bereinigt: +1,6 Mrd. $",
+     "size": 64,
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:39 · Aber unterm Strich steht ein Verlust von über 80 Milliarden. Der kommt zwar vor allem durch einen Bilanzeffekt – aber er steht da.",
+   "params": {
+    "brand": "ANT",
+    "context": "Die Kehrseite",
+    "tag": "Aber",
+    "live": true,
+    "text": "*−80,75 Mrd. $* Nettoverlust",
+    "size": 60,
+    "sub": "vor allem *Bilanzeffekt* aus Wandelanleihen – kein echter Geldabfluss"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trList",
+   "duration": 6.8,
+   "script": "0:45 · Dazu greift Anthropic jetzt Microsoft und Google direkt an: Mit Claude Whiteboards, Claude Sheets und Claude Data – also genau dort, wo Copilot und Google Workspace sitzen.",
+   "params": {
+    "title": "Angriff auf *Microsoft & Google*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Claude *Whiteboards*",
+      "sub": "Pläne & Boards",
+      "at": 1.4
+     },
+     {
+      "text": "Claude *Sheets*",
+      "sub": "Konkurrenz zu Excel & Google Sheets",
+      "at": 3.0
+     },
+     {
+      "text": "Claude *Data*",
+      "sub": "Daten auswerten & erzählen",
+      "at": 4.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "09",
+   "type": "trList",
+   "duration": 8.4,
+   "script": "0:52 · Der Check: Wachstum – top. Operativ profitabel – ja. Produkte – stark. Aber die Bewertung ist extrem hoch. Und das SpaceX-Muster zeigt: Am ersten Tag zahlst du oft den Hype-Preis.",
+   "params": {
+    "title": "Der *Check*",
+    "items": [
+     {
+      "text": "Wachstum",
+      "sub": "Umsatz explodiert",
+      "at": 1.2
+     },
+     {
+      "text": "Operativ profitabel",
+      "sub": "bereinigt +1,6 Mrd. $",
+      "at": 2.4
+     },
+     {
+      "text": "Starke Produkte",
+      "sub": "Claude greift Microsoft & Google an",
+      "at": 3.6
+     },
+     {
+      "text": "Bewertung *extrem hoch*",
+      "sub": "bis 1,41 Bio. $",
+      "ok": false,
+      "at": 5.2
+     },
+     {
+      "text": "*Tag-1-Risiko*",
+      "sub": "siehe SpaceX: −46 %",
+      "ok": false,
+      "at": 6.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "1:00 · Heißt: Ein starkes Unternehmen – aber nicht jeder Preis ist ein guter Preis. Viele warten deshalb auf den ersten Rücksetzer. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Das *Fazit*",
+    "left": {
+     "label": "Langfristig",
+     "title": "starke Firma",
+     "result": "Wachstum, Produkte, KI-Spitze",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Am 1. Tag",
+     "title": "Hype-Preis",
+     "result": "Rücksetzer gut möglich",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "1:07 · Kaufst du am 19. November – oder wartest du auf den Dip? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Anthropic: *Tag 1* oder Dip?",
+    "options": [
+     "Tag 1 – ich zeichne",
+     "Ich warte auf den Dip",
+     "Gar nicht"
+    ],
+    "note": "Keine Anlageberatung · Stand: 17. November 2026"
+   }
+  }
+ ]
+}
