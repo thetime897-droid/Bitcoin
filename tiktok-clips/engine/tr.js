@@ -278,7 +278,7 @@
   S.trBars = (st, p, ctx) => {
     const card = T.card(st, p.card);
     if (p.brand) T.header(card, p.brand, p.context);
-    if (p.title) C.h('div', { style: { fontSize: '50px', fontWeight: 900, color: INK, marginBottom: '24px' } }, card, T.rich(p.title));
+    if (p.title) C.h('div', { style: { fontSize: '50px', fontWeight: 900, color: INK, marginBottom: '24px' } }, card, T.rich(p.title, p.accent ? C.color(p.accent) : GL));
     const items = p.items || [];
     const mx = p.max || Math.max(...items.map((i) => i.value));
     const rows = items.map((it, i) => {

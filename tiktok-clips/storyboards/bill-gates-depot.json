@@ -1,0 +1,248 @@
+{
+ "name": "bill-gates-depot",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trVanish",
+   "duration": 7.0,
+   "script": "0:00 · Bill Gates verkauft schon wieder. Erst hat er Microsoft komplett rausgeworfen – jetzt trennt er sich von Teilen seiner nächsten Top-Aktie.",
+   "params": {
+    "label": "Depot der Gates-Stiftung",
+    "title": "Bill Gates *verkauft* schon wieder",
+    "rows": [
+     {
+      "brand": "MSFT",
+      "name": "Microsoft",
+      "sub": "seine eigene Firma",
+      "status": "im Depot"
+     },
+     {
+      "brand": "BRK",
+      "name": "Berkshire Hathaway",
+      "sub": "Top-Position",
+      "status": "im Depot"
+     },
+     {
+      "brand": "WM",
+      "name": "Waste Management",
+      "sub": "Top-Position",
+      "status": "im Depot"
+     }
+    ],
+    "at": 0.2,
+    "glitchAt": 0.9,
+    "lostStatus": "komplett raus",
+    "stamp": "VERKAUFT"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 7.0,
+   "script": "0:07 · Wichtig: Es geht um das Depot der Bill & Melinda Gates Stiftung – fast 30 Milliarden Dollar schwer. Und jedes Quartal muss die Stiftung offenlegen, was sie gekauft und verkauft hat.",
+   "params": {
+    "brand": false,
+    "text": "Gates-Stiftung: *~30 Mrd. $*",
+    "accent": "#2f6bff",
+    "size": 76,
+    "pills": [
+     "Bill & Melinda Gates Foundation Trust",
+     "laut 13F-Meldung"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStrike",
+   "duration": 6.6,
+   "script": "0:14 · Microsoft? Komplett verkauft. Die letzten rund 7,7 Millionen Aktien sind raus. Ausgerechnet die Firma, die Gates selbst gegründet hat.",
+   "params": {
+    "brand": "MSFT",
+    "context": "Microsoft",
+    "title": "Seine *eigene* Firma",
+    "accent": "#e5392f",
+    "old": "7,7 Mio. Microsoft-Aktien",
+    "new": "*0* – komplett verkauft",
+    "newTone": "red",
+    "newSize": 60,
+    "strikeAt": 2.2,
+    "newAt": 3.2,
+    "sub": "zuletzt ca. *10 %* des Depots",
+    "pills": [
+     "Gates privat: weiter ~103 Mio. Aktien"
+    ],
+    "pillsAt": 4.8
+   }
+  },
+  {
+   "id": "04",
+   "type": "trBars",
+   "duration": 7.0,
+   "script": "0:20 · Und jetzt geht's weiter: Bei Waste Management verkauft er rund ein Viertel seiner Aktien. Und bei Berkshire Hathaway von Warren Buffett 15 Prozent.",
+   "params": {
+    "title": "Jetzt wird *weiter* verkauft",
+    "items": [
+     {
+      "name": "Waste Management",
+      "brand": "WM",
+      "value": 23,
+      "label": "−23 %",
+      "at": 2.0,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Berkshire Hathaway",
+      "brand": "BRK",
+      "value": 15,
+      "label": "−15 %",
+      "at": 4.2,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     }
+    ],
+    "max": 30,
+    "note": "Verkaufte Aktien im 3. Quartal 2026 · laut 13F-Meldung",
+    "accent": "#e5392f"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 4.4,
+   "script": "0:27 · Aber jetzt kommt das Spannende: Wo steckt das Geld jetzt?",
+   "params": {
+    "brand": false,
+    "text": "Wo steckt das Geld *jetzt*?",
+    "accent": "#b8860b",
+    "size": 82,
+    "pills": [
+     "4 Aktien",
+     "~73 % des Depots"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 8.8,
+   "script": "0:32 · Auf nur vier Aktien setzt er rund 73 Prozent seines Depots: Berkshire Hathaway, Waste Management, Canadian National Railway – und Caterpillar. Fast drei Viertel des ganzen Geldes in nur vier Firmen.",
+   "params": {
+    "title": "Die *4 Aktien*: ~73 %",
+    "items": [
+     {
+      "text": "*Berkshire* Hathaway",
+      "sub": "Warren Buffetts Holding",
+      "mark": "1",
+      "markColor": "#000080",
+      "at": 1.8
+     },
+     {
+      "text": "*Waste* Management",
+      "sub": "Müllentsorgung, USA",
+      "mark": "2",
+      "markColor": "#00754a",
+      "at": 3.0
+     },
+     {
+      "text": "*Canadian National* Railway",
+      "sub": "Güterbahn, Kanada",
+      "mark": "3",
+      "markColor": "#d71920",
+      "at": 4.4
+     },
+     {
+      "text": "*Caterpillar*",
+      "sub": "Bau- & Bergbaumaschinen",
+      "mark": "4",
+      "markColor": "#f4b400",
+      "at": 5.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trRule",
+   "duration": 6.8,
+   "script": "0:40 · Fällt dir was auf? Keine einzige Tech-Aktie. Müll, Züge, Bagger – und Buffett. Langweilig? Ja. Aber genau diese Firmen verdienen auch in der Krise Geld.",
+   "params": {
+    "title": "Langweilig = *sicher*?",
+    "left": {
+     "label": "Gates jetzt",
+     "title": "Müll, Züge, Bagger",
+     "result": "stabile Gewinne, auch in Krisen",
+     "good": true,
+     "at": 1.6
+    },
+    "right": {
+     "label": "Gates früher",
+     "title": "Tech & Microsoft",
+     "result": "komplett raus",
+     "good": false,
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trBuy",
+   "duration": 6.8,
+   "script": "0:47 · Und eine Aktie hat er neu gekauft: Dollar Tree, ein US-Discounter. Rund 1,3 Millionen Aktien. Auch das: kein Tech, sondern ein Billig-Händler.",
+   "params": {
+    "brand": "DLTR",
+    "name": "Dollar Tree",
+    "badge": "NEU im Depot",
+    "value": "1,3 Mio.",
+    "countDur": 0.8,
+    "at": 1.6,
+    "size": 150,
+    "sub": "Aktien gekauft · *US-Discounter*",
+    "tags": [
+     "Neukauf Q3 2026"
+    ],
+    "tagsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.2,
+   "script": "0:54 · Aber Vorsicht beim Kopieren: Die Stiftung soll nach und nach aufgelöst werden – viele Verkäufe sind also geplant und kein Signal. Keine Anlageberatung.",
+   "params": {
+    "tag": "Vorsicht",
+    "live": true,
+    "text": "Nicht *blind kopieren*",
+    "size": 66,
+    "sub": "Die Stiftung wird *schrittweise aufgelöst* · Verkäufe sind oft geplant",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "1:00 · Würdest du wie Bill Gates auf Müll, Züge und Bagger setzen? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Wie Gates auf *Müll, Züge & Bagger* setzen?",
+    "options": [
+     "Ja, langweilig = gut",
+     "Nein, ich will Tech",
+     "Ich kaufe Microsoft"
+    ],
+    "note": "Keine Anlageberatung · laut 13F-Meldung zum 3. Quartal 2026"
+   }
+  }
+ ]
+}
