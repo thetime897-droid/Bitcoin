@@ -1,0 +1,241 @@
+{
+ "name": "cathie-wood-nvidia",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trPartner",
+   "duration": 8.6,
+   "script": "0:00 · Cathie Wood wirft Nvidia raus – kurz vor den Quartalszahlen. Und mit dem Geld kauft sie Krypto-Aktien. Mitten im Absturz. Ist das genial – oder völlig verrückt?",
+   "params": {
+    "tag": "ARK INVEST · CATHIE WOOD",
+    "title": "Nvidia *raus*, Krypto *rein*",
+    "accent": "#e5392f",
+    "left": {
+     "brand": "NVDA",
+     "word": "NVIDIA",
+     "wordColor": "#e5392f",
+     "spacing": "3px",
+     "wordSize": 52,
+     "sub": "−84,8 Mio. $ verkauft"
+    },
+    "right": {
+     "brand": "COIN",
+     "word": "KRYPTO",
+     "wordColor": "#0d7d4d",
+     "spacing": "3px",
+     "wordSize": 52,
+     "sub": "+40 Mio. $ gekauft"
+    },
+    "joiner": "→",
+    "at": [
+     0.4,
+     0.9
+    ],
+    "xAt": 1.5,
+    "line": "🤯 Genial oder *verrückt*?",
+    "lineAt": 2.6,
+    "pills": [
+     "mitten im Abverkauf",
+     "kurz vor Nvidias Zahlen"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "02",
+   "type": "trMetric",
+   "duration": 8.4,
+   "script": "0:08 · Am 16. November verkauft ARK Invest über 540.000 Nvidia-Aktien. Wert: rund 85 Millionen Dollar. Fast alles davon aus ihrem bekanntesten Fonds, dem ARK Innovation ETF.",
+   "params": {
+    "title": "Nvidia *verkauft*",
+    "accent": "#e5392f",
+    "label": "am 16. November · 543.092 Aktien",
+    "logos": [
+     "ARK",
+     "NVDA"
+    ],
+    "value": "−84,8 Mio. $",
+    "tone": "red",
+    "size": 140,
+    "at": 1.6,
+    "countDur": 1.0,
+    "sub": "fast alles aus dem Flaggschiff-Fonds *ARKK*"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trHeadline",
+   "duration": 5.0,
+   "script": "0:17 · Und jetzt wird's spannend: Wohin fließt das Geld?",
+   "params": {
+    "brand": false,
+    "text": "Wohin fließt das *Geld*?",
+    "accent": "#b8860b",
+    "size": 86,
+    "pills": [
+     "Krypto statt KI"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "04",
+   "type": "trBars",
+   "duration": 7.7,
+   "script": "0:22 · In Krypto-Aktien: Block, also die Firma hinter Cash App, für 23 Millionen Dollar. Circle, der Herausgeber des Stablecoins USDC, für 10 Millionen. Und Coinbase für 6 Millionen.",
+   "params": {
+    "title": "Ihre *Krypto-Käufe*",
+    "items": [
+     {
+      "name": "Block (Cash App)",
+      "brand": "XYZ",
+      "value": 23,
+      "label": "23,0 Mio. $",
+      "at": 1.4
+     },
+     {
+      "name": "Circle (USDC)",
+      "brand": "CRCL",
+      "value": 10.4,
+      "label": "10,4 Mio. $",
+      "at": 3.2
+     },
+     {
+      "name": "Coinbase",
+      "brand": "COIN",
+      "value": 6.4,
+      "label": "6,4 Mio. $",
+      "at": 4.6
+     }
+    ],
+    "max": 25,
+    "note": "Käufe am 16. November · zusammen ca. 40 Mio. $"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trChart",
+   "duration": 8.9,
+   "script": "0:29 · Und das an einem Horror-Tag: Die Nasdaq fällt um 2,5 Prozent, Circle um 7 Prozent, Coinbase um 6 – und Bitcoin hängt unter 70.000 Dollar. Die meisten Anleger flüchten aus Krypto – Cathie Wood macht genau das Gegenteil.",
+   "params": {
+    "ticker": "NDX",
+    "name": "Nasdaq · 16. November",
+    "price": "−2,49 %",
+    "countPrice": false,
+    "change": "-2,49 % an einem Tag",
+    "range": "1T",
+    "data": [
+     100.50983830195113,
+     100.53832693359182,
+     100.4709200128583,
+     99.50026081219681,
+     100.11043267226289,
+     99.90849688988196,
+     100.03610561214161,
+     99.55636352949698,
+     99.63039658904715,
+     99.93348828864761,
+     99.2,
+     98,
+     97,
+     96.6,
+     96.2,
+     95.9
+    ],
+    "height": 380,
+    "drawAt": 0.3,
+    "drawDur": 2.0,
+    "sticker": {
+     "text": "Circle −7 % · Coinbase −6 %",
+     "icon": "📉",
+     "color": "#e5392f",
+     "at": 2.8,
+     "x": 560,
+     "y": 380,
+     "size": 34
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trRule",
+   "duration": 7.7,
+   "script": "0:38 · Genau das ist ihre Strategie: Sie kauft, wenn alle verkaufen. Und sie verkauft, was gut gelaufen ist. Nvidia gibt sie trotzdem nicht ganz auf – im ARKK stecken noch über 360 Millionen.",
+   "params": {
+    "title": "Ihre *Strategie*",
+    "left": {
+     "label": "Kaufen",
+     "title": "wenn alle verkaufen",
+     "result": "Krypto im Abverkauf",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Verkaufen",
+     "title": "was gut gelaufen ist",
+     "result": "Nvidia teilweise raus",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 7.7,
+   "script": "0:46 · Heißt: Sie hält Nvidia weiter – nur weniger. Rund 367 Millionen Dollar liegen noch im Fonds. Sie nimmt also Gewinne mit – und setzt einen Teil davon auf die Krypto-Erholung.",
+   "params": {
+    "title": "Nvidia *bleibt*",
+    "label": "Nvidia-Aktien noch im ARKK",
+    "logos": [
+     "ARK",
+     "NVDA"
+    ],
+    "value": "~367 Mio. $",
+    "size": 140,
+    "at": 1.4,
+    "sub": "Gewinne mitgenommen, *nicht ausgestiegen*"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 8.4,
+   "script": "0:54 · Aber Vorsicht beim Nachmachen: Cathie Woods Fonds sind extrem schwankungsanfällig. Ihr Flaggschiff hat schon riesige Gewinne und genauso riesige Verluste gemacht. Keine Anlageberatung – das ist nur, was sie macht, nicht, was du machen solltest.",
+   "params": {
+    "brand": "ARK",
+    "context": "Risiko",
+    "tag": "Vorsicht",
+    "live": true,
+    "text": "Nicht *blind kopieren*",
+    "size": 66,
+    "sub": "ARK-Fonds schwanken *extrem* – nach oben wie nach unten",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 5.5,
+   "script": "1:02 · Mutig oder verrückt: Krypto statt Nvidia? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Krypto statt *Nvidia*?",
+    "options": [
+     "Mutig – richtiger Moment",
+     "Verrückt – Nvidia halten",
+     "Ich mache beides"
+    ],
+    "note": "Keine Anlageberatung · Stand: 18. November 2026"
+   }
+  }
+ ]
+}

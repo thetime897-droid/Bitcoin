@@ -1,0 +1,253 @@
+{
+ "name": "msci-world-klumpen",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trCoins",
+   "duration": 6.9,
+   "script": "0:00 · Dein MSCI World ist gar nicht so breit gestreut, wie du denkst. Ein Großteil deines Geldes steckt in nur fünf Tech-Konzernen – und jetzt planen zwei Finanzriesen die Lösung.",
+   "params": {
+    "tag": "DEIN WELT-ETF",
+    "coins": [
+     "NVDA",
+     "AAPL",
+     "MSFT",
+     "AMZN",
+     "META"
+    ],
+    "title": "Breit gestreut?",
+    "size": 104,
+    "sub": "Ein Großteil steckt in *5 Tech-Konzernen*",
+    "subAccent": "#e5392f",
+    "stamp": "KLUMPENRISIKO",
+    "stampColor": "#e5392f",
+    "stampSize": 66,
+    "coinsAt": 0.25,
+    "coinStep": 0.2,
+    "titleAt": 1.4,
+    "strikeAt": 2.3
+   }
+  },
+  {
+   "id": "02",
+   "type": "trBars",
+   "duration": 8.0,
+   "script": "0:06 · Schau dir die Gewichte an: Nvidia, Apple, Microsoft, Amazon und Meta kommen einzeln auf 4 bis 7 Prozent. Allein Nvidia liegt bei rund 6 Prozent. Zusammen sind das grob ein Viertel des ganzen Index.",
+   "params": {
+    "title": "So viel *Gewicht* haben sie",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "name": "Nvidia",
+      "brand": "NVDA",
+      "value": 6.1,
+      "label": "~6 %",
+      "at": 1.6,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Apple",
+      "brand": "AAPL",
+      "value": 5,
+      "label": "4–7 %",
+      "at": 2.4,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Microsoft",
+      "brand": "MSFT",
+      "value": 5,
+      "label": "4–7 %",
+      "at": 3.0,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Amazon",
+      "brand": "AMZN",
+      "value": 4,
+      "label": "4–7 %",
+      "at": 3.6,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     },
+     {
+      "name": "Meta",
+      "brand": "META",
+      "value": 4,
+      "label": "4–7 %",
+      "at": 4.2,
+      "color": "#e5392f",
+      "barColor": "#ef6b62"
+     }
+    ],
+    "max": 8,
+    "note": "Einzelgewichte in klassischen Welt-Indizes, gerundet"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trDrain",
+   "duration": 6.7,
+   "script": "0:14 · Das Problem: Kracht Tech, kracht dein ganzer Welt-ETF mit. Genau das haben wir in den letzten Wochen gesehen – Nvidia hat Billionen verloren.",
+   "params": {
+    "tag": "DAS PROBLEM",
+    "title": "Kracht Tech, kracht *dein ETF*",
+    "titleSize": 56,
+    "value": "−1,6 Bio. $",
+    "size": 150,
+    "at": 0.6,
+    "countDur": 1.2,
+    "bar": false,
+    "sub": "Nvidias Wertverlust in *6 Wochen*",
+    "stamp": "KLUMPEN",
+    "stampSize": 72
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 5.5,
+   "script": "0:21 · Und jetzt kommt die Wende. Denn die großen Anbieter haben das Problem erkannt.",
+   "params": {
+    "brand": false,
+    "text": "Jetzt kommt die *Wende*",
+    "accent": "#0d7d4d",
+    "size": 90,
+    "pills": [
+     "neue Welt-ETFs"
+    ],
+    "pillsAt": 1.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trPartner",
+   "duration": 7.1,
+   "script": "0:27 · State Street und UBS bereiten laut ETFstream neue Welt-ETFs vor – mit einem Index, der die Riesen deckelt.",
+   "params": {
+    "tag": "In Planung",
+    "title": "Neue *Welt-ETFs*",
+    "left": {
+     "brand": "STT",
+     "word": "State Street",
+     "wordColor": "#003a70",
+     "wordSize": 40,
+     "sub": "SPDR-ETFs"
+    },
+    "right": {
+     "brand": "UBS",
+     "word": "UBS",
+     "wordColor": "#e60000",
+     "sub": "Schweizer Großbank"
+    },
+    "joiner": "+",
+    "at": [
+     0.6,
+     1.0
+    ],
+    "xAt": 1.6,
+    "line": "Index: *S&P Global Select Capped*",
+    "lineAt": 3.0,
+    "pills": [
+     "laut ETFstream"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trStrike",
+   "duration": 8.0,
+   "script": "0:34 · Der Trick: Keine einzelne Aktie darf mehr so schwer werden. Die Gewichte werden gekappt – damit dein Geld wirklich über die Welt verteilt ist. Mehr Europa, mehr Japan, mehr kleinere Firmen.",
+   "params": {
+    "title": "Der *Trick*",
+    "accent": "#0d7d4d",
+    "old": "Nvidia, Apple & Co. bis 7 %",
+    "new": "Gewichte *gedeckelt*",
+    "newSize": 62,
+    "strikeAt": 1.8,
+    "newAt": 2.8,
+    "sub": "mehr *echte Streuung* statt Tech-Klumpen"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trRule",
+   "duration": 7.4,
+   "script": "0:42 · Aber es gibt einen Haken: Ein ähnlicher ETF von comdirect und State Street kostet 0,40 Prozent im Jahr. Normale Welt-ETFs kosten nur 0,07 bis 0,14 Prozent.",
+   "params": {
+    "title": "Der *Haken*: die Kosten",
+    "left": {
+     "label": "Normale Welt-ETFs",
+     "title": "0,07–0,14 %",
+     "result": "günstig",
+     "good": true,
+     "at": 1.8
+    },
+    "right": {
+     "label": "Gedeckelter Welt-ETF",
+     "title": "0,40 %",
+     "result": "bis zu 5× teurer",
+     "good": false,
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 6.7,
+   "script": "0:49 · Und noch was: Laufen die Tech-Riesen weiter nach oben, verdienst du mit gedeckelten Gewichten weniger mit. Das ist keine Anlageberatung.",
+   "params": {
+    "tag": "Ehrlich gesagt",
+    "live": true,
+    "text": "Weniger Risiko = *weniger Rakete*",
+    "size": 58,
+    "sub": "Rennt Tech weiter, verdienst du *weniger mit*",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trYear",
+   "duration": 5.7,
+   "script": "0:56 · Wichtig: Die neuen ETFs sind erst in Planung. Wann sie kommen und was sie kosten, ist noch offen.",
+   "params": {
+    "title": "Wann *kommen* sie?",
+    "label": "NOCH IN PLANUNG",
+    "from": 2026,
+    "to": 2027,
+    "rollAt": 1.6,
+    "progress": 0.2,
+    "sub": "Start & Kosten: *noch offen*"
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:02 · Was ist dir wichtiger: billig – oder breiter gestreut? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Billig oder *breiter gestreut*?",
+    "options": [
+     "Billig – MSCI World bleibt",
+     "Breiter – her mit dem Deckel",
+     "Ich mische beides"
+    ],
+    "note": "Keine Anlageberatung · Stand: 18. November 2026"
+   }
+  }
+ ]
+}
