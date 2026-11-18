@@ -1168,7 +1168,7 @@
     let ov, ovTag, ovDot, ovTxt, ovSub;
     if (p.intro) {
       ov = C.h('div', { class: 'ctr', style: { position: 'absolute', inset: 0, flexDirection: 'column', gap: '22px', background: 'linear-gradient(180deg,#ffffff,#f3f5f8)', borderRadius: '46px', padding: '40px', textAlign: 'center', zIndex: 5 } }, card); ov.dataset.own = 1;
-      ovTag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '14px', padding: '14px 30px', borderRadius: '18px', background: RD, color: '#fff', fontSize: '46px', fontWeight: 900, letterSpacing: '2px' } }, ov);
+      ovTag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '14px', padding: '14px 30px', borderRadius: '18px', background: p.intro.green ? G : RD, color: '#fff', fontSize: '46px', fontWeight: 900, letterSpacing: '2px' } }, ov);
       ovDot = C.h('span', { style: { width: '20px', height: '20px', borderRadius: '50%', background: '#fff' } }, ovTag);
       ovTag.insertAdjacentHTML('beforeend', `<span>${p.intro.tag || 'BREAKING NEWS'}</span>`);
       ovTxt = C.h('div', { style: { fontSize: (p.intro.size || 92) + 'px', fontWeight: 900, color: INK, letterSpacing: '-3px', lineHeight: 1.05 } }, ov, T.rich(p.intro.text || '', G));

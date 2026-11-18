@@ -1,0 +1,270 @@
+{
+ "name": "nvidia-rekord-abverkauf",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 7.2,
+   "script": "0:00 · Nvidia liefert Rekordzahlen – und trotzdem wird die Aktie wieder abverkauft. Seit dem Hoch im Oktober ist sie über ein Drittel eingebrochen. Was ist da los?",
+   "params": {
+    "intro": {
+     "tag": "REKORD-ZAHLEN",
+     "text": "Nvidia: *115,8 Mrd. $* Umsatz",
+     "sub": "+103 % · bestes Quartal aller Zeiten",
+     "dur": 2.8,
+     "size": 74,
+     "green": true
+    },
+    "brand": "NVDA",
+    "name": "Nvidia",
+    "tag": "ABVERKAUF",
+    "title": "Und trotzdem *abverkauft*",
+    "titleSize": 58,
+    "value": "−35 %",
+    "size": 180,
+    "at": 0.3,
+    "countDur": 1.3,
+    "barFrom": "Hoch Oktober: 239 $",
+    "barTo": "jetzt: ~156 $",
+    "drainTo": 0.65,
+    "sub": "seit dem *Rekordhoch*",
+    "stamp": "WAS IST LOS?",
+    "stampSize": 72
+   }
+  },
+  {
+   "id": "02",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:07 · Erst die Zahlen: 115,8 Milliarden Dollar Umsatz in einem Quartal – mehr als doppelt so viel wie vor einem Jahr. Erwartet waren rund 109.",
+   "params": {
+    "title": "Die *Rekordzahlen*",
+    "label": "Umsatz im 3. Quartal (GJ 2027)",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "115,8 Mrd. $",
+    "size": 140,
+    "at": 1.4,
+    "countDur": 1.0,
+    "second": {
+     "value": "+103 % zum Vorjahr",
+     "size": 64,
+     "at": 3.6
+    },
+    "pills": [
+     "erwartet: ~109 Mrd. $"
+    ],
+    "pillsAt": 5.0
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 5.8,
+   "script": "0:13 · Allein das Rechenzentrums-Geschäft knackt erstmals die 100-Milliarden-Marke – in nur drei Monaten.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Rechenzentren",
+    "label": "Umsatz mit KI-Rechenzentren",
+    "icon": "⚡",
+    "value": "100+ Mrd. $",
+    "countUp": false,
+    "size": 170,
+    "at": 1.4,
+    "sub": "erstmals *über 100 Mrd. $* in einem Quartal"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 6.0,
+   "script": "0:19 · Und der Ausblick ist noch stärker: Für das nächste Quartal erwartet Nvidia 130 Milliarden Dollar Umsatz – mehr, als die Analysten auf dem Zettel hatten.",
+   "params": {
+    "title": "Ausblick *noch stärker*",
+    "label": "Umsatzprognose nächstes Quartal",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "130 Mrd. $",
+    "size": 160,
+    "at": 1.6,
+    "countDur": 1.0,
+    "pills": [
+     "über den Erwartungen"
+    ],
+    "pillsAt": 3.8
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 4.4,
+   "script": "0:25 · Warum also der Abverkauf? Drei Gründe.",
+   "params": {
+    "brand": false,
+    "text": "Warum der *Abverkauf*?",
+    "accent": "#e5392f",
+    "size": 86,
+    "pills": [
+     "#1 Führung",
+     "#2 China",
+     "#3 Erwartungen"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 8.2,
+   "script": "0:30 · Erstens: Jensen Huang ist weg – und der Verwaltungsrat sagt klar, er kommt nicht zurück. Zweitens: China ist im Ausblick komplett ausgeklammert. Drittens: Bei so einer Rally reicht ‚gut‘ oft nicht mehr.",
+   "params": {
+    "title": "Die *3 Gründe*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Huang *kommt nicht zurück*",
+      "sub": "laut Verwaltungsrat",
+      "mark": "1",
+      "markColor": "#e5392f",
+      "at": 1.4
+     },
+     {
+      "text": "*China* ausgeklammert",
+      "sub": "kein Rechenzentrums-Umsatz im Ausblick",
+      "mark": "2",
+      "markColor": "#e5392f",
+      "at": 3.6
+     },
+     {
+      "text": "Erwartungen *riesig*",
+      "sub": "„gut“ reicht oft nicht mehr",
+      "mark": "3",
+      "markColor": "#e5392f",
+      "at": 5.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trChart",
+   "duration": 6.4,
+   "script": "0:38 · Dazu kommt der Tech-Ausverkauf der letzten Wochen: Vor den Zahlen schloss Nvidia vier Tage in Folge im Minus – auf dem tiefsten Stand seit Monaten.",
+   "params": {
+    "ticker": "NVDA",
+    "name": "Nvidia · seit Oktober",
+    "price": "~156 $",
+    "priceFrom": 239,
+    "change": "-35 % vom Hoch",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     239,
+     236,
+     240,
+     233,
+     228,
+     231,
+     222,
+     215,
+     218,
+     207,
+     198,
+     202,
+     190,
+     182,
+     185,
+     176,
+     170,
+     166,
+     163,
+     158,
+     156.1,
+     155.5,
+     159,
+     162,
+     158.9,
+     156
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 239.24,
+     "label": "Rekordhoch: 239,24 $",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 7.2,
+   "script": "0:44 · Und jetzt die große Frage: Chance oder Falle? Die Zahlen sind so stark wie nie. Aber ohne Huang und ohne China ist die Unsicherheit groß. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Chance oder *Falle*?",
+    "left": {
+     "label": "Chance",
+     "title": "Rekordzahlen",
+     "result": "Aktie 35 % unter dem Hoch",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Falle",
+     "title": "Unsicherheit",
+     "result": "ohne Huang, ohne China",
+     "good": false,
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 5.8,
+   "script": "0:51 · Wichtig: Der Kurs schwankt gerade extrem – nachbörslich ging es erst hoch, dann wieder runter. Wer jetzt kauft, braucht starke Nerven.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Achtung",
+    "tag": "Volatil",
+    "live": true,
+    "text": "Erst *hoch*, dann *runter*",
+    "size": 64,
+    "sub": "Nach den Zahlen schwankt die Aktie *stark*",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
+   "id": "10",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "0:57 · Kaufst du den Nvidia-Dip – oder ist der KI-Boom vorbei? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Nvidia-Dip *kaufen*?",
+    "options": [
+     "Ja, Rekordzahlen!",
+     "Nein, Boom vorbei",
+     "Erst mal abwarten"
+    ],
+    "note": "Keine Anlageberatung · Stand: 18. November 2026"
+   }
+  }
+ ]
+}
