@@ -1,0 +1,260 @@
+{
+ "name": "anthropic-ipo-rekord-btc",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 8.4,
+   "script": "0:00 · Der größte Börsengang aller Zeiten – und Anthropic sprengt alle Erwartungen. Die Aktie schießt zum Start sofort um über 30 Prozent nach oben.",
+   "params": {
+    "intro": {
+     "tag": "REKORD-BÖRSENGANG",
+     "text": "*Anthropic* ist an der Börse",
+     "sub": "Nasdaq: ANT · 19. November",
+     "dur": 2.6,
+     "size": 76,
+     "green": true
+    },
+    "up": true,
+    "brand": "ANT",
+    "name": "Anthropic",
+    "tag": "LIVE",
+    "title": "Erster Kurs *explodiert*",
+    "titleSize": 58,
+    "value": "+34 %",
+    "size": 200,
+    "at": 0.3,
+    "countDur": 1.2,
+    "barFrom": "Ausgabepreis: 83 $",
+    "barTo": "Eröffnung: 111,50 $",
+    "fillFrom": 0.74,
+    "sub": "direkt zum *Handelsstart*",
+    "stamp": "REKORD!",
+    "stampSize": 86
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 8.0,
+   "script": "0:08 · Ausgabepreis 83 Dollar – erster Kurs 111,50. In der Spitze sogar fast 115 Dollar. Ein Plus von fast 40 Prozent in wenigen Minuten. Wer gezeichnet hat, lag sofort richtig im Plus.",
+   "params": {
+    "ticker": "ANT",
+    "name": "Anthropic · erster Handelstag",
+    "price": "Hoch: 114,99 $",
+    "priceFrom": 83,
+    "change": "+39 % in der Spitze",
+    "range": "1T",
+    "data": [
+     83,
+     83,
+     90.125,
+     97.25,
+     104.375,
+     111.5,
+     113,
+     114.99,
+     112,
+     108,
+     105,
+     103,
+     101.24,
+     102.5,
+     101.8
+    ],
+    "height": 420,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 83,
+     "label": "Ausgabepreis: 83 $",
+     "at": 0.5
+    },
+    "countPrice": false
+   }
+  },
+  {
+   "id": "03",
+   "type": "trBars",
+   "duration": 8.0,
+   "script": "0:16 · Und das ist ein Rekord: Über 81 Milliarden Dollar Erlös. So viel hat noch nie ein Unternehmen bei einem Börsengang eingesammelt – nicht mal SpaceX.",
+   "params": {
+    "title": "Größter Börsengang *aller Zeiten*",
+    "items": [
+     {
+      "name": "Anthropic",
+      "brand": "ANT",
+      "value": 81.3,
+      "label": "81,3 Mrd. $",
+      "at": 1.8
+     },
+     {
+      "name": "SpaceX (Juni 2026)",
+      "brand": "SPACEX",
+      "value": 75,
+      "label": "75 Mrd. $",
+      "at": 3.2,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     }
+    ],
+    "max": 90,
+    "note": "Erlös aus dem Börsengang"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 7.5,
+   "script": "0:24 · Zum ersten Kurs ist Anthropic laut Fortune rund zwei Billionen Dollar wert. Damit gehört der Claude-Macher sofort zu den wertvollsten Firmen der Welt. Im Mai lag die Bewertung noch bei 965 Milliarden.",
+   "params": {
+    "title": "Sofort in der *Weltspitze*",
+    "accent": "#c96442",
+    "label": "Börsenwert zum ersten Kurs · laut Fortune",
+    "logos": [
+     "ANT"
+    ],
+    "value": "~2 Bio. $",
+    "size": 160,
+    "at": 1.6,
+    "countDur": 1.0,
+    "pills": [
+     "Top 12 weltweit"
+    ],
+    "pillsAt": 3.8
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 5.2,
+   "script": "0:31 · Aber jetzt kommt der Twist – und der betrifft Bitcoin.",
+   "params": {
+    "brand": "BTC",
+    "context": "Der Twist",
+    "text": "Und *Bitcoin*?",
+    "accent": "#b8860b",
+    "size": 92,
+    "pills": [
+     "Gewinner oder Verlierer?"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "06",
+   "type": "trChart",
+   "duration": 8.0,
+   "script": "0:37 · Während Anthropic abhebt, hängt Bitcoin fest: rund 63.000 Dollar, ein kleines Plus am Tag. Aber in den letzten acht Wochen fast 28 Prozent im Minus. Von Euphorie keine Spur.",
+   "params": {
+    "ticker": "BTC",
+    "name": "Bitcoin · letzte 8 Wochen",
+    "price": "~63.200 $",
+    "countPrice": false,
+    "change": "-28 % in 8 Wochen",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     87.5,
+     86,
+     84,
+     85,
+     81,
+     79,
+     80,
+     76,
+     74,
+     72,
+     70,
+     71,
+     68,
+     66,
+     64.5,
+     63,
+     62.6,
+     63.2
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.4,
+    "sticker": {
+     "text": "+1,1 % heute",
+     "icon": "🟢",
+     "color": "#0d7d4d",
+     "at": 3.2,
+     "x": 760,
+     "y": 330,
+     "size": 40
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trRule",
+   "duration": 8.7,
+   "script": "0:45 · Die Frage: Zieht Anthropic Geld aus Krypto ab? Binance-Gründer CZ sagt ja – Anleger verkaufen Bitcoin, um Aktien zu zeichnen. BitMEX-Gründer Arthur Hayes hält den Börsengang dagegen sogar für einen möglichen Rückenwind.",
+   "params": {
+    "title": "Geld *raus* aus Krypto?",
+    "left": {
+     "label": "Arthur Hayes",
+     "title": "Rückenwind möglich",
+     "result": "mehr Risikolust am Markt",
+     "good": true,
+     "at": 3.4
+    },
+    "right": {
+     "label": "CZ (Binance)",
+     "title": "Geld fließt ab",
+     "result": "Bitcoin verkauft für Aktien",
+     "good": false,
+     "at": 1.4
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 7.7,
+   "script": "0:53 · Aber Achtung: Schon im Handelsverlauf rutschte Anthropic zeitweise auf rund 101 Dollar zurück. Der Hype schwankt extrem – wie damals bei SpaceX. Das ist keine Anlageberatung.",
+   "params": {
+    "brand": "ANT",
+    "context": "Im Handelsverlauf",
+    "tag": "Achtung",
+    "live": true,
+    "text": "Schon zurück auf *~101 $*",
+    "size": 62,
+    "sub": "Vom Hoch bei 114,99 $ – der Hype *schwankt extrem*",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 5.6,
+   "script": "1:01 · Was gewinnt am Ende – Anthropic oder Bitcoin? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Wer gewinnt: *Anthropic* oder Bitcoin?",
+    "options": [
+     "Anthropic",
+     "Bitcoin",
+     "Beide"
+    ],
+    "note": "Keine Anlageberatung · Stand: 19. November 2026, Kurse aus dem Handelsverlauf"
+   }
+  }
+ ]
+}
