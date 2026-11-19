@@ -1,0 +1,251 @@
+{
+ "name": "anthropic-ipo-83",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 8.0,
+   "script": "0:00 · Breaking News: Heute geht Anthropic an die Börse – und in letzter Sekunde ändert die Firma nochmal alles. Das musst du jetzt wissen.",
+   "params": {
+    "intro": {
+     "tag": "BREAKING · HEUTE",
+     "text": "*Anthropic* geht an die Börse",
+     "sub": "📅 19. November · Nasdaq: ANT",
+     "dur": 2.8,
+     "size": 76,
+     "green": false
+    },
+    "up": true,
+    "brand": "ANT",
+    "name": "Anthropic",
+    "tag": "PREIS ERHÖHT",
+    "title": "Ausgabepreis *über der Spanne*",
+    "titleSize": 54,
+    "value": "83 $",
+    "size": 200,
+    "at": 0.3,
+    "countDur": 1.1,
+    "barFrom": "geplant: 70–78 $",
+    "barTo": "jetzt: 83 $",
+    "fillFrom": 0.6,
+    "sub": "pro Aktie · *mehr als geplant*",
+    "stamp": "ALLES NEU",
+    "stampSize": 78
+   }
+  },
+  {
+   "id": "02",
+   "type": "trStrike",
+   "duration": 7.3,
+   "script": "0:08 · Erstens: der Preis. Geplant waren 70 bis 78 Dollar pro Aktie. Jetzt sind es 83 Dollar – deutlich mehr als je angekündigt.",
+   "params": {
+    "brand": "ANT",
+    "context": "Änderung #1",
+    "title": "Der *Preis*",
+    "accent": "#c96442",
+    "old": "70–78 $ pro Aktie",
+    "new": "Jetzt: *83 $*",
+    "newSize": 72,
+    "strikeAt": 2.2,
+    "newAt": 3.2,
+    "sub": "über der *gesamten* Preisspanne",
+    "pills": [
+     "Nachfrage riesig"
+    ],
+    "pillsAt": 4.8
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStrike",
+   "duration": 7.1,
+   "script": "0:15 · Zweitens: die Menge. Statt 825 Millionen Aktien werden jetzt 980 Millionen verkauft. Die Nachfrage war offenbar riesig.",
+   "params": {
+    "brand": "ANT",
+    "context": "Änderung #2",
+    "title": "Die *Menge*",
+    "accent": "#c96442",
+    "old": "825 Mio. Aktien",
+    "new": "*980 Mio.* Aktien",
+    "newSize": 72,
+    "strikeAt": 2.0,
+    "newAt": 3.0,
+    "sub": "rund *155 Mio. mehr* als geplant"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trBars",
+   "duration": 9.3,
+   "script": "0:22 · Und damit wird es der größte Börsengang aller Zeiten: Über 81 Milliarden Dollar Erlös – mehr als SpaceX im Juni. Rechnet man die Privatplatzierung dazu, sind es sogar über 100 Milliarden.",
+   "params": {
+    "title": "Größter Börsengang *aller Zeiten*",
+    "items": [
+     {
+      "name": "Anthropic",
+      "brand": "ANT",
+      "value": 81.3,
+      "label": "81,3 Mrd. $",
+      "at": 1.8,
+      "color": "#0d7d4d"
+     },
+     {
+      "name": "SpaceX (Juni 2026)",
+      "brand": "SPACEX",
+      "value": 75,
+      "label": "75 Mrd. $",
+      "at": 3.2,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     }
+    ],
+    "max": 90,
+    "note": "Erlös aus dem Börsengang · Anthropic ohne Privatplatzierung"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 7.1,
+   "script": "0:31 · Die Bewertung: rund 1,5 Billionen Dollar. Im Mai war Anthropic noch 965 Milliarden wert – ein Plus von 50 Prozent in einem halben Jahr.",
+   "params": {
+    "title": "Die *Bewertung*",
+    "accent": "#c96442",
+    "label": "zum Ausgabepreis · voll verwässert",
+    "logos": [
+     "ANT"
+    ],
+    "value": "~1,5 Bio. $",
+    "size": 150,
+    "at": 1.4,
+    "second": {
+     "value": "Mai: 965 Mrd. $",
+     "size": 60,
+     "color": "#8b9099",
+     "at": 3.6
+    },
+    "pills": [
+     "+50 % in 6 Monaten"
+    ],
+    "pillsAt": 4.8
+   }
+  },
+  {
+   "id": "06",
+   "type": "trStat",
+   "duration": 8.2,
+   "script": "0:38 · Und vor dem Start wird schon gezockt: Im außerbörslichen Handel lag die Aktie laut Bericht schon bei rund 98 Dollar – 18 Prozent über dem Ausgabepreis. Aber Achtung: Das ist noch kein offizieller Börsenkurs.",
+   "params": {
+    "brand": "ANT",
+    "context": "Vorbörslich · laut Bericht",
+    "label": "außerbörslicher Kurs",
+    "icon": "$",
+    "value": "~98 $",
+    "size": 190,
+    "at": 1.4,
+    "countDur": 0.9,
+    "sub": "*+18 %* über dem Ausgabepreis",
+    "pills": [
+     "noch kein offizieller Kurs"
+    ],
+    "pillsAt": 3.8
+   }
+  },
+  {
+   "id": "07",
+   "type": "trChart",
+   "duration": 7.3,
+   "script": "0:47 · Aber erinnere dich an SpaceX: Am ersten Tag ging es bis auf über 200 Dollar. Sechs Wochen später stand die Aktie bei 108. Wer am Hype gekauft hat, lag fast 50 Prozent hinten.",
+   "params": {
+    "ticker": "SPACEX",
+    "name": "Die SpaceX-Lehre",
+    "price": "108,37 $",
+    "priceFrom": 201.8,
+    "change": "-46 % vom Hoch in 6 Wochen",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     150.70850330720108,
+     151.13964542434843,
+     150.08186462881233,
+     165,
+     182,
+     195,
+     201.8,
+     196,
+     188,
+     176,
+     170,
+     160,
+     152,
+     147,
+     140,
+     133,
+     128,
+     124,
+     118,
+     114,
+     111,
+     108.37
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 201.8,
+     "label": "Hoch am 1. Tag: 201,80 $",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 7.5,
+   "script": "0:54 · Heißt für dich: Die Firma ist stark, die Nachfrage riesig. Aber zum Hype-Preis am ersten Tag einzusteigen, kann teuer werden. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Was heißt das für *dich*?",
+    "left": {
+     "label": "Stark",
+     "title": "Riesen-Nachfrage",
+     "result": "Preis & Menge erhöht",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Risiko",
+     "title": "Hype-Preis Tag 1",
+     "result": "siehe SpaceX: −46 %",
+     "good": false,
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 5.3,
+   "script": "1:01 · Kaufst du heute zum Start – oder wartest du auf den ersten Dip? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Anthropic: *heute* oder Dip?",
+    "options": [
+     "Heute zum Start",
+     "Ich warte auf den Dip",
+     "Gar nicht"
+    ],
+    "note": "Keine Anlageberatung · Stand: 19. November 2026"
+   }
+  }
+ ]
+}
