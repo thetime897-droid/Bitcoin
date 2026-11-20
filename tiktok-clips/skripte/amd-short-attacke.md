@@ -1,6 +1,6 @@
 # FACELESS SHORT: AMD WIRD ANGEGRIFFEN
 
-*Ca. 66–70 s gesprochen (228 Wörter, Clips zusammen 67 s), Broker-App-Karten, ohne Ausblendung.*
+*Ca. 66–70 s gesprochen (228 Wörter, Clips zusammen 72 s), Broker-App-Karten, ohne Ausblendung.*
 
 ## Storytelling
 
@@ -13,14 +13,15 @@
 | Zeit | Karte | Text |
 |---|---|---|
 | 0:00 | `01-trDrain` | AMD wird angegriffen. Ein Leerverkäufer wettet gegen die Aktie – und an einem Tag ist sie zeitweise über 10 Prozent eingebrochen. Was steckt dahinter? |
-| 0:07 | `02-trHeadline` | Der Angreifer heißt Hunterbrook. Ein Leerverkäufer – heißt: Er verdient Geld, wenn die AMD-Aktie fällt. Und genau deshalb veröffentlicht er seine Recherche – um möglichst viele Anleger zum Verkaufen zu bringen. |
-| 0:14 | `03-trList` | Der Vorwurf: Ein chinesischer Serverhersteller namens IEIT soll trotz US-Sanktionen weiter neue AMD-Software bekommen haben – sogenannte Firmware-Updates für AMD-Chips. Wenn das stimmt, wäre das ein echtes Problem für AMD. |
-| 0:23 | `04-trWarn` | AMD widerspricht sofort: Man halte sich an alle US-Exportregeln. Die Vorwürfe seien falsch. |
-| 0:30 | `05-trRule` | Aber was ist wirklich belegt? Fakt ist: Der Kurssturz und das Dementi. Nicht belegt ist: Ob die Vorwürfe stimmen. Und AMD sagt nicht konkret, ob es die nötigen Exportlizenzen gibt. |
-| 0:38 | `06-trChart` | Am Ende des Tages schließt AMD 7,7 Prozent im Minus bei 489 Dollar. Milliarden an Börsenwert – weg an einem Tag. Und das nur wegen eines einzigen Berichts. |
-| 0:46 | `07-trHeadline` | Und das Timing ist heikel: Die USA verschärfen gerade ihre Exportregeln für KI-Chips. Genau das trifft einen wichtigen Teil von AMDs Geschäft. Jede neue China-Schlagzeile ist für die Aktie jetzt doppelt gefährlich. |
-| 0:52 | `08-trRule` | Also: Chance oder Warnsignal? Leerverkäufer haben ein klares Interesse am Absturz. Aber ganz ignorieren sollte man so einen Bericht auch nicht. Das ist keine Anlageberatung. |
-| 1:01 | `09-trPoll` | Kaufst du den AMD-Dip – oder lässt du die Finger davon? Schreib's in die Kommentare. |
+| 0:07 | `02-trHeadline` | Der Angreifer heißt Hunterbrook. Ein Leerverkäufer – heißt: Er verdient Geld, wenn die AMD-Aktie fällt. |
+| 0:11 | `02b-trList` | Und genau deshalb veröffentlicht er seine Recherche – um möglichst viele Anleger zum Verkaufen zu bringen. |
+| 0:19 | `03-trList` | Der Vorwurf: Ein chinesischer Serverhersteller namens IEIT soll trotz US-Sanktionen weiter neue AMD-Software bekommen haben – sogenannte Firmware-Updates für AMD-Chips. Wenn das stimmt, wäre das ein echtes Problem für AMD. |
+| 0:28 | `04-trWarn` | AMD widerspricht sofort: Man halte sich an alle US-Exportregeln. Die Vorwürfe seien falsch. |
+| 0:34 | `05-trRule` | Aber was ist wirklich belegt? Fakt ist: Der Kurssturz und das Dementi. Nicht belegt ist: Ob die Vorwürfe stimmen. Und AMD sagt nicht konkret, ob es die nötigen Exportlizenzen gibt. |
+| 0:43 | `06-trChart` | Am Ende des Tages schließt AMD 7,7 Prozent im Minus bei 489 Dollar. Milliarden an Börsenwert – weg an einem Tag. Und das nur wegen eines einzigen Berichts. |
+| 0:50 | `07-trHeadline` | Und das Timing ist heikel: Die USA verschärfen gerade ihre Exportregeln für KI-Chips. Genau das trifft einen wichtigen Teil von AMDs Geschäft. Jede neue China-Schlagzeile ist für die Aktie jetzt doppelt gefährlich. |
+| 0:57 | `08-trRule` | Also: Chance oder Warnsignal? Leerverkäufer haben ein klares Interesse am Absturz. Aber ganz ignorieren sollte man so einen Bericht auch nicht. Das ist keine Anlageberatung. |
+| 1:05 | `09-trPoll` | Kaufst du den AMD-Dip – oder lässt du die Finger davon? Schreib's in die Kommentare. |
 
 ## Faktencheck
 
@@ -28,6 +29,7 @@
 - **Vorwurf:** Der sanktionierte chinesische Serverhersteller IEIT soll weiterhin aktualisierte AMD-Firmware erhalten haben. ⚠ **Ein Vorwurf des Leerverkäufers, nicht unabhängig bestätigt.**
 - **AMD:** weist die Vorwürfe zurück und erklärt, die US-Exportkontrollen einzuhalten. Laut einem Bericht äußert sich AMD nicht konkret zu Exportlizenzen. ✔
 - **Kurs:** zeitweise mehr als −10 % (Handelsblatt, boersennews nennt −11 %). Schluss −7,7 % auf 489,19 $. ✔ Der Vortageskurs von ca. 530 $ ist daraus zurückgerechnet. Der Chart ist schematisch.
+- **So verdient ein Leerverkäufer (`02b`):** allgemeines Prinzip einer Short-Position: Aktien leihen und verkaufen, später billiger zurückkaufen. Hunterbrook hat seine Position offengelegt. Wann und wie er zurückkauft, ist nicht bekannt.
 - **Exportregeln:** Die USA verschärfen gerade ihre Exportregeln für KI-Chips. ✔ (Goldesel / finanzen.net)
 
 ## Hook-Text
