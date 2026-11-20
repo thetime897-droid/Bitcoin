@@ -90,8 +90,8 @@
   {
    "id": "03",
    "type": "trList",
-   "duration": 8.8,
-   "script": "0:19 · Der Vorwurf: Ein chinesischer Serverhersteller namens IEIT soll trotz US-Sanktionen weiter neue AMD-Software bekommen haben – sogenannte Firmware-Updates für AMD-Chips. Wenn das stimmt, wäre das ein echtes Problem für AMD.",
+   "duration": 6.0,
+   "script": "0:19 · Der Vorwurf: Ein chinesischer Serverhersteller namens IEIT soll trotz US-Sanktionen weiter neue AMD-Software bekommen haben.",
    "params": {
     "title": "Der *Vorwurf*",
     "accent": "#e5392f",
@@ -121,10 +121,44 @@
    }
   },
   {
+   "id": "03b",
+   "type": "trList",
+   "duration": 8.2,
+   "script": "0:25 · Und zwar sogenannte Firmware-Updates. Firmware ist die Software, die direkt im Chip steckt und ihn steuert. Ohne Updates laufen die Server schlechter und unsicherer. Wenn die Vorwürfe stimmen, wäre das ein echtes Problem für AMD.",
+   "params": {
+    "title": "Was sind *Firmware-Updates*?",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "*Software im Chip*",
+      "sub": "steuert die Hardware direkt",
+      "mark": "💾",
+      "markColor": "#2f6bff",
+      "at": 1.6
+     },
+     {
+      "text": "*Updates* = Fehler, Leistung, Sicherheit",
+      "sub": "halten Server am Laufen",
+      "mark": "⟳",
+      "markColor": "#0d7d4d",
+      "at": 3.4
+     },
+     {
+      "text": "Für *IEIT* trotz Sanktionen?",
+      "sub": "genau das wäre das Problem",
+      "ok": false,
+      "mark": "!",
+      "markColor": "#e5392f",
+      "at": 5.6
+     }
+    ]
+   }
+  },
+  {
    "id": "04",
    "type": "trWarn",
    "duration": 6.7,
-   "script": "0:28 · AMD widerspricht sofort: Man halte sich an alle US-Exportregeln. Die Vorwürfe seien falsch.",
+   "script": "0:33 · AMD widerspricht sofort: Man halte sich an alle US-Exportregeln. Die Vorwürfe seien falsch.",
    "params": {
     "brand": "AMD",
     "context": "Die Antwort",
@@ -139,7 +173,7 @@
    "id": "05",
    "type": "trRule",
    "duration": 8.6,
-   "script": "0:34 · Aber was ist wirklich belegt? Fakt ist: Der Kurssturz und das Dementi. Nicht belegt ist: Ob die Vorwürfe stimmen. Und AMD sagt nicht konkret, ob es die nötigen Exportlizenzen gibt.",
+   "script": "0:40 · Aber was ist wirklich belegt? Fakt ist: Der Kurssturz und das Dementi. Nicht belegt ist: Ob die Vorwürfe stimmen. Und AMD sagt nicht konkret, ob es die nötigen Exportlizenzen gibt.",
    "params": {
     "title": "Was ist *belegt*?",
     "left": {
@@ -162,7 +196,7 @@
    "id": "06",
    "type": "trChart",
    "duration": 7.4,
-   "script": "0:43 · Am Ende des Tages schließt AMD 7,7 Prozent im Minus bei 489 Dollar. Milliarden an Börsenwert – weg an einem Tag. Und das nur wegen eines einzigen Berichts.",
+   "script": "0:48 · Am Ende des Tages schließt AMD 7,7 Prozent im Minus bei 489 Dollar. Milliarden an Börsenwert – weg an einem Tag. Und das nur wegen eines einzigen Berichts.",
    "params": {
     "ticker": "AMD",
     "name": "AMD · 19. November",
@@ -198,7 +232,7 @@
    "id": "07",
    "type": "trHeadline",
    "duration": 6.7,
-   "script": "0:50 · Und das Timing ist heikel: Die USA verschärfen gerade ihre Exportregeln für KI-Chips. Genau das trifft einen wichtigen Teil von AMDs Geschäft. Jede neue China-Schlagzeile ist für die Aktie jetzt doppelt gefährlich.",
+   "script": "0:56 · Und das Timing ist heikel: Die USA verschärfen gerade ihre Exportregeln für KI-Chips. Genau das trifft einen wichtigen Teil von AMDs Geschäft. Jede neue China-Schlagzeile ist für die Aktie jetzt doppelt gefährlich.",
    "params": {
     "brand": false,
     "text": "Heikles *Timing*",
@@ -215,7 +249,7 @@
    "id": "08",
    "type": "trRule",
    "duration": 8.4,
-   "script": "0:57 · Also: Chance oder Warnsignal? Leerverkäufer haben ein klares Interesse am Absturz. Aber ganz ignorieren sollte man so einen Bericht auch nicht. Das ist keine Anlageberatung.",
+   "script": "1:02 · Also: Chance oder Warnsignal? Leerverkäufer haben ein klares Interesse am Absturz. Aber ganz ignorieren sollte man so einen Bericht auch nicht. Das ist keine Anlageberatung.",
    "params": {
     "title": "Chance oder *Warnsignal*?",
     "left": {
@@ -238,7 +272,7 @@
    "id": "09",
    "type": "trPoll",
    "duration": 5.6,
-   "script": "1:05 · Kaufst du den AMD-Dip – oder lässt du die Finger davon? Schreib's in die Kommentare.",
+   "script": "1:11 · Kaufst du den AMD-Dip – oder lässt du die Finger davon? Schreib's in die Kommentare.",
    "params": {
     "question": "AMD-Dip *kaufen*?",
     "options": [
