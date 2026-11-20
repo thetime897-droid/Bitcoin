@@ -1,0 +1,253 @@
+{
+ "name": "anthropic-millionaere-blase",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 8.1,
+   "script": "0:00 · Über Nacht sind rund 5.000 Mitarbeiter von Anthropic zu Millionären geworden. Und genau dieser Börsengang könnte jetzt die KI-Blase platzen lassen.",
+   "params": {
+    "intro": {
+     "tag": "ÜBER NACHT",
+     "text": "*5.100* neue Millionäre",
+     "sub": "bei Anthropic · nach dem Börsengang",
+     "dur": 2.6,
+     "size": 84,
+     "green": true
+    },
+    "brand": "ANT",
+    "name": "Anthropic",
+    "tag": "KI-BLASE?",
+    "title": "Und jetzt *platzt* die Blase?",
+    "titleSize": 58,
+    "value": "−20 %",
+    "size": 180,
+    "at": 0.3,
+    "countDur": 1.2,
+    "barFrom": "Hoch am 1. Tag: 114,99 $",
+    "barTo": "nachbörslich: ~92 $",
+    "drainTo": 0.8,
+    "sub": "schon *wieder unter* dem Hoch",
+    "stamp": "BLASE?",
+    "stampSize": 90
+   }
+  },
+  {
+   "id": "02",
+   "type": "trBars",
+   "duration": 8.1,
+   "script": "0:08 · Die Zahlen sind irre: Von 5.300 Mitarbeitern sind rund 5.100 jetzt Millionäre. 2.800 haben über 10 Millionen Dollar. Und 600 sogar über 100 Millionen. Und das alles nur auf dem Papier, gerechnet zum Ausgabepreis.",
+   "params": {
+    "title": "Die neuen *Reichen*",
+    "items": [
+     {
+      "name": "Millionäre",
+      "brand": {
+       "name": "M",
+       "glyph": "$",
+       "color": "#0d7d4d"
+      },
+      "value": 5100,
+      "label": "~5.100",
+      "at": 1.4
+     },
+     {
+      "name": "über 10 Mio. $",
+      "brand": {
+       "name": "10",
+       "glyph": "10M",
+       "color": "#b8860b"
+      },
+      "value": 2800,
+      "label": "~2.800",
+      "at": 3.0,
+      "color": "#b8860b",
+      "barColor": "#e8c25a"
+     },
+     {
+      "name": "über 100 Mio. $",
+      "brand": {
+       "name": "100",
+       "glyph": "100M",
+       "color": "#111317"
+      },
+      "value": 600,
+      "label": "~600",
+      "at": 4.6,
+      "color": "#111317",
+      "barColor": "#4b5058"
+     }
+    ],
+    "max": 5300,
+    "note": "von rund 5.300 Mitarbeitern · gerechnet zum Ausgabepreis von 83 $"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trChart",
+   "duration": 7.9,
+   "script": "0:16 · Aber schau auf den Kurs: Erst rauf auf fast 115 Dollar. Dann zum Handelsschluss nur noch 97. Und nachbörslich ging es nochmal rund 5 Prozent runter. Der Hype hat keinen ganzen Tag gehalten.",
+   "params": {
+    "ticker": "ANT",
+    "name": "Anthropic · erster Handelstag",
+    "price": "~92 $",
+    "priceFrom": 114.99,
+    "change": "nachbörslich ca. -5 %",
+    "range": "1T",
+    "data": [
+     83,
+     83,
+     96,
+     111.5,
+     114.99,
+     110,
+     105,
+     101.24,
+     99,
+     98,
+     97.17,
+     95,
+     93.5,
+     92.3
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 114.99,
+     "label": "Hoch: 114,99 $",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 5.1,
+   "script": "0:24 · Warum? Drei Gründe, warum Experten vor einer Blase warnen.",
+   "params": {
+    "brand": false,
+    "text": "*3 Warnsignale*",
+    "accent": "#e5392f",
+    "size": 96,
+    "pills": [
+     "Bewertung",
+     "Kosten",
+     "Konkurrenz"
+    ],
+    "pillsAt": 1.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 9.7,
+   "script": "0:29 · Erstens: die Bewertung von rund 1,5 Billionen Dollar. Zweitens: gigantische Rechenkosten – im dritten Quartal stand ein operativer Verlust von 567 Millionen Dollar. Drittens: Konkurrenz, zum Beispiel durch Apples eigene KI-Pläne.",
+   "params": {
+    "title": "Die *Warnsignale*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Bewertung *~1,5 Bio. $*",
+      "sub": "für eine Firma, die noch Verlust macht",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "*−567 Mio. $* operativ",
+      "sub": "im 3. Quartal · Rechenkosten explodieren",
+      "ok": false,
+      "at": 3.8
+     },
+     {
+      "text": "*Konkurrenz* wächst",
+      "sub": "z. B. Apples KI-Pläne",
+      "ok": false,
+      "at": 6.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trWarn",
+   "duration": 7.4,
+   "script": "0:38 · Und dann ist da noch die Frage: Was passiert, wenn tausende Mitarbeiter ihre Aktien verkaufen dürfen? Das kann Druck auf den Kurs bringen. Denn wer plötzlich Millionen auf dem Papier hat, will die irgendwann auch auf dem Konto sehen.",
+   "params": {
+    "brand": "ANT",
+    "context": "Risiko",
+    "tag": "Später",
+    "live": true,
+    "text": "Wenn *Mitarbeiter verkaufen*",
+    "size": 62,
+    "sub": "Tausende Millionäre mit Aktien · *Verkaufsdruck* möglich"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trDrain",
+   "duration": 7.2,
+   "script": "0:46 · Und auch Bitcoin leidet: Am Tag nach dem Börsengang fällt er auf den tiefsten Stand seit Juli.",
+   "params": {
+    "brand": "BTC",
+    "name": "Bitcoin",
+    "tag": "AUCH BTC",
+    "title": "Krypto *rutscht mit*",
+    "titleSize": 56,
+    "value": "< 60.000 $",
+    "size": 150,
+    "at": 0.4,
+    "countDur": 1.0,
+    "countUp": false,
+    "bar": false,
+    "sub": "tiefster Stand *seit Juli*",
+    "stamp": "TIEF",
+    "stampSize": 80
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 8.1,
+   "script": "0:53 · Also: Blase oder Zukunft? Anthropic hat starke Produkte und wächst rasant. Aber bei dieser Bewertung muss sehr viel gut gehen. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Blase oder *Zukunft*?",
+    "left": {
+     "label": "Zukunft",
+     "title": "starke Produkte",
+     "result": "Umsatz wächst rasant",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Blase",
+     "title": "extreme Bewertung",
+     "result": "noch operativer Verlust",
+     "good": false,
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 5.5,
+   "script": "1:01 · Was meinst du: Platzt die KI-Blase – oder fängt der Boom gerade erst an? Schreib's in die Kommentare.",
+   "params": {
+    "question": "KI-Blase: *platzt* sie?",
+    "options": [
+     "Ja, bald",
+     "Nein, Boom geht weiter",
+     "Erst mal Korrektur"
+    ],
+    "note": "Keine Anlageberatung · Stand: 20. November 2026"
+   }
+  }
+ ]
+}

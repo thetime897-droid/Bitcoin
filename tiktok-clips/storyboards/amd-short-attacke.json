@@ -1,0 +1,213 @@
+{
+ "name": "amd-short-attacke",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 7.9,
+   "script": "0:00 · AMD wird angegriffen. Ein Leerverkäufer wettet gegen die Aktie – und an einem Tag ist sie zeitweise über 10 Prozent eingebrochen. Was steckt dahinter?",
+   "params": {
+    "brand": "AMD",
+    "name": "AMD",
+    "tag": "SHORT-ATTACKE",
+    "title": "Leerverkäufer *greift an*",
+    "titleSize": 58,
+    "value": "−11 %",
+    "size": 190,
+    "at": 0.4,
+    "countDur": 1.2,
+    "barFrom": "vorher: ~530 $",
+    "barTo": "zeitweise unter 475 $",
+    "drainTo": 0.89,
+    "sub": "an *einem* Handelstag",
+    "stamp": "ANGRIFF",
+    "stampSize": 84
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 6.7,
+   "script": "0:07 · Der Angreifer heißt Hunterbrook. Ein Leerverkäufer – heißt: Er verdient Geld, wenn die AMD-Aktie fällt. Und genau deshalb veröffentlicht er seine Recherche – um möglichst viele Anleger zum Verkaufen zu bringen.",
+   "params": {
+    "brand": false,
+    "text": "Hunterbrook *wettet* gegen AMD",
+    "accent": "#e5392f",
+    "size": 66,
+    "pills": [
+     "Leerverkäufer",
+     "verdient, wenn die Aktie fällt"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 8.8,
+   "script": "0:14 · Der Vorwurf: Ein chinesischer Serverhersteller namens IEIT soll trotz US-Sanktionen weiter neue AMD-Software bekommen haben – sogenannte Firmware-Updates für AMD-Chips. Wenn das stimmt, wäre das ein echtes Problem für AMD.",
+   "params": {
+    "title": "Der *Vorwurf*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Chinesischer Serverhersteller *IEIT*",
+      "sub": "steht unter US-Sanktionen",
+      "mark": "🇨🇳",
+      "markColor": "#e5392f",
+      "at": 1.6
+     },
+     {
+      "text": "Bekommt weiter *AMD-Updates*?",
+      "sub": "Firmware für AMD-Chips",
+      "mark": "?",
+      "markColor": "#e5392f",
+      "at": 3.8
+     },
+     {
+      "text": "Trotz *Sanktionen*",
+      "sub": "laut Hunterbrook",
+      "mark": "!",
+      "markColor": "#e5392f",
+      "at": 5.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trWarn",
+   "duration": 6.7,
+   "script": "0:23 · AMD widerspricht sofort: Man halte sich an alle US-Exportregeln. Die Vorwürfe seien falsch.",
+   "params": {
+    "brand": "AMD",
+    "context": "Die Antwort",
+    "tag": "Dementi",
+    "live": true,
+    "text": "AMD: *„Wir halten alle Regeln ein“*",
+    "size": 56,
+    "sub": "Weist die Vorwürfe zurück"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trRule",
+   "duration": 8.6,
+   "script": "0:30 · Aber was ist wirklich belegt? Fakt ist: Der Kurssturz und das Dementi. Nicht belegt ist: Ob die Vorwürfe stimmen. Und AMD sagt nicht konkret, ob es die nötigen Exportlizenzen gibt.",
+   "params": {
+    "title": "Was ist *belegt*?",
+    "left": {
+     "label": "Belegt",
+     "title": "Kurssturz & Dementi",
+     "result": "Schluss: −7,7 % auf 489 $",
+     "good": true,
+     "at": 1.8
+    },
+    "right": {
+     "label": "Nicht belegt",
+     "title": "Die Vorwürfe",
+     "result": "Lizenzen? Keine konkrete Antwort",
+     "good": false,
+     "at": 4.0
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trChart",
+   "duration": 7.4,
+   "script": "0:38 · Am Ende des Tages schließt AMD 7,7 Prozent im Minus bei 489 Dollar. Milliarden an Börsenwert – weg an einem Tag. Und das nur wegen eines einzigen Berichts.",
+   "params": {
+    "ticker": "AMD",
+    "name": "AMD · 19. November",
+    "price": "489,19 $",
+    "priceFrom": 530,
+    "change": "-7,7 % zum Schluss",
+    "range": "1T",
+    "data": [
+     528.461106576256,
+     530.0132539370189,
+     527.9716250857448,
+     531.9273332950597,
+     528.388397075203,
+     530.3139718438314,
+     532.5581445485622,
+     529.384272525383,
+     532.8072073517868,
+     531.3888314975472,
+     518,
+     500,
+     485,
+     472,
+     476,
+     482,
+     489.19
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.4
+   }
+  },
+  {
+   "id": "07",
+   "type": "trHeadline",
+   "duration": 6.7,
+   "script": "0:46 · Und das Timing ist heikel: Die USA verschärfen gerade ihre Exportregeln für KI-Chips. Genau das trifft einen wichtigen Teil von AMDs Geschäft. Jede neue China-Schlagzeile ist für die Aktie jetzt doppelt gefährlich.",
+   "params": {
+    "brand": false,
+    "text": "Heikles *Timing*",
+    "accent": "#e5392f",
+    "size": 82,
+    "pills": [
+     "strengere US-Exportregeln",
+     "KI-Chips betroffen"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 8.4,
+   "script": "0:52 · Also: Chance oder Warnsignal? Leerverkäufer haben ein klares Interesse am Absturz. Aber ganz ignorieren sollte man so einen Bericht auch nicht. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Chance oder *Warnsignal*?",
+    "left": {
+     "label": "Chance",
+     "title": "Bericht übertrieben?",
+     "result": "Leerverkäufer wollen den Absturz",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Warnsignal",
+     "title": "China-Risiko",
+     "result": "Exportregeln werden strenger",
+     "good": false,
+     "at": 3.6
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trPoll",
+   "duration": 5.6,
+   "script": "1:01 · Kaufst du den AMD-Dip – oder lässt du die Finger davon? Schreib's in die Kommentare.",
+   "params": {
+    "question": "AMD-Dip *kaufen*?",
+    "options": [
+     "Ja, Bericht übertrieben",
+     "Nein, China-Risiko",
+     "Erst mal abwarten"
+    ],
+    "note": "Keine Anlageberatung · Vorwürfe nicht unabhängig bestätigt · Stand: 20. November 2026"
+   }
+  }
+ ]
+}
