@@ -1,0 +1,294 @@
+{
+ "name": "burry-kauft-crash",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trInsider",
+   "duration": 5.7,
+   "script": "0:00 · Der Mann, der 2008 den großen Crash vorhergesagt hat, kauft jetzt – mitten im Börsenbeben. Sieben Aktien auf einmal.",
+   "params": {
+    "tag": "BREAKING · Big Short",
+    "brand": {
+     "name": "Michael Burry",
+     "glyph": "MB",
+     "color": "#111317"
+    },
+    "name": "Michael Burry",
+    "role": "„The Big Short“",
+    "label": "Käufe – während alle flüchten",
+    "value": "7 Aktien",
+    "size": 168,
+    "at": 0.3,
+    "countDur": 0.9,
+    "facts": [
+     {
+      "label": "Kontinente",
+      "value": "4"
+     },
+     {
+      "label": "Fokus",
+      "value": "China"
+     },
+     {
+      "label": "Timing",
+      "value": "im Crash",
+      "size": 38
+     }
+    ],
+    "factsAt": 2.0,
+    "stamp": "KAUF"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 6.6,
+   "script": "0:05 · Die Rede ist von Michael Burry aus „The Big Short“. Er hat damals gegen den US-Immobilienmarkt gewettet – und ein Vermögen gemacht.",
+   "params": {
+    "brand": {
+     "name": "Michael Burry",
+     "glyph": "MB",
+     "color": "#111317"
+    },
+    "text": "Michael *Burry*",
+    "accent": "#2f6bff",
+    "size": 96,
+    "pills": [
+     "„The Big Short“",
+     "2008: Wette gegen den Immobilienmarkt"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 6.3,
+   "script": "0:12 · In seinem Newsletter legt er jetzt sieben Käufe offen – auf vier Kontinenten. Der Schwerpunkt: China.",
+   "params": {
+    "title": "Seine *7 Käufe*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "*BYD* · JD.com · Tencent",
+      "sub": "China",
+      "mark": "🇨🇳",
+      "at": 1.6
+     },
+     {
+      "text": "*Adobe* · Sprouts (Optionen)",
+      "sub": "USA",
+      "mark": "🇺🇸",
+      "at": 2.8
+     },
+     {
+      "text": "*Temple & Webster*",
+      "sub": "Australien",
+      "mark": "🇦🇺",
+      "at": 4.0
+     },
+     {
+      "text": "*Ero Copper*",
+      "sub": "Kupfer aus Brasilien",
+      "mark": "🇧🇷",
+      "at": 5.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:18 · Sein spannendster Kauf: BYD, der chinesische Tesla-Rivale – auf einem Fünf-Jahres-Tief. Burry sagt: Es kann noch tiefer gehen, aber der größte Schaden sei wohl angerichtet.",
+   "params": {
+    "title": "Kauf #1: *BYD*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "Aktie auf *Fünf-Jahres-Tief*",
+      "sub": "Tesla-Rivale aus China",
+      "value": "▼",
+      "ok": false,
+      "at": 1.8
+     },
+     {
+      "text": "Kann *noch weiter fallen*",
+      "sub": "sagt Burry selbst",
+      "value": "!",
+      "ok": false,
+      "at": 3.6
+     },
+     {
+      "text": "Größter Schaden *wohl vorbei*",
+      "sub": "deshalb stockt er auf",
+      "mark": "✓",
+      "markColor": "#0d7d4d",
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 8.6,
+   "script": "0:26 · In den USA kauft er Adobe nach – bei rund 220 Dollar. Er gibt zu: Es könnte sogar bis in den 100er-Bereich fallen. Aber die Bewertung sei zu günstig.",
+   "params": {
+    "title": "Kauf #2: *Adobe*",
+    "label": "Burry kauft nach bei rund",
+    "logos": [
+     {
+      "name": "Adobe",
+      "glyph": "A",
+      "color": "#fa0f00"
+     }
+    ],
+    "value": "~220 $",
+    "size": 150,
+    "at": 1.6,
+    "countDur": 0.9,
+    "second": {
+     "value": "Risiko: bis in die 100er",
+     "size": 56,
+     "tone": "red",
+     "at": 3.6
+    },
+    "pills": [
+     "Bewertung: günstig"
+    ],
+    "pillsAt": 5.0
+   }
+  },
+  {
+   "id": "06",
+   "type": "trHeadline",
+   "duration": 4.9,
+   "script": "0:34 · Und sein Geheimtipp: Temple & Webster, ein Online-Möbelhändler aus Australien. Burry nennt die Aktie „atemberaubend billig“.",
+   "params": {
+    "brand": {
+     "name": "Temple & Webster",
+     "glyph": "TW",
+     "color": "#1a1a1a"
+    },
+    "text": "„*Atemberaubend* billig“",
+    "accent": "#0d7d4d",
+    "size": 80,
+    "pills": [
+     "Temple & Webster",
+     "Online-Möbel · Australien"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "07",
+   "type": "trRule",
+   "duration": 5.4,
+   "script": "0:39 · Sein Prinzip: Kaufen, wenn andere in Panik verkaufen – auch wenn die Kurse vorher noch weiter fallen können.",
+   "params": {
+    "title": "Sein *Prinzip*",
+    "left": {
+     "label": "Die meisten",
+     "title": "Verkaufen in Panik",
+     "result": "zu tiefen Kursen",
+     "good": false,
+     "at": 1.6
+    },
+    "right": {
+     "label": "Burry",
+     "title": "Kauft billig ein",
+     "result": "Geduld statt Timing",
+     "good": true,
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 6.6,
+   "script": "0:44 · Aber jetzt der Twist: Gleichzeitig wettet Burry weiter gegen Nvidia. Und seine Wette gegen den Nasdaq-100 hat er laut Berichten sogar verdoppelt.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Der Twist",
+    "tag": "Gleichzeitig",
+    "live": true,
+    "text": "Er wettet *gegen Nvidia*",
+    "size": 64,
+    "sub": "Wette gegen den *Nasdaq-100* laut Berichten *verdoppelt*.",
+    "pills": [
+     "Puts",
+     "Short"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "09",
+   "type": "trRule",
+   "duration": 5.4,
+   "script": "0:51 · Heißt: Er kauft, was schon abgestürzt ist – und wettet gegen das, was ihm noch zu teuer erscheint.",
+   "params": {
+    "title": "Burrys *Doppel-Strategie*",
+    "left": {
+     "label": "Kauft",
+     "title": "BYD, Adobe, China-Tech",
+     "result": "schon abgestürzt",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Wettet gegen",
+     "title": "Nvidia, Nasdaq",
+     "result": "aus seiner Sicht zu teuer",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trWarn",
+   "duration": 5.4,
+   "script": "0:56 · Aber Achtung: Auch Burry liegt nicht immer richtig. Einfach blind nachkaufen ist keine Strategie. Das ist keine Anlageberatung.",
+   "params": {
+    "brand": {
+     "name": "Michael Burry",
+     "glyph": "MB",
+     "color": "#111317"
+    },
+    "context": "Achtung",
+    "tag": "Wichtig",
+    "text": "Blind *nachkaufen*?",
+    "size": 70,
+    "sub": "Auch Burry liegt *nicht immer richtig*.",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 2.8
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 4.6,
+   "script": "1:02 · Würdest du Burry jetzt folgen – oder hältst du dich raus? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Burry *folgen*?",
+    "options": [
+     "Ja, ich kaufe mit",
+     "Nein, zu riskant",
+     "Nur BYD"
+    ],
+    "note": "Keine Anlageberatung · Stand: 21. November 2026"
+   }
+  }
+ ]
+}

@@ -1,0 +1,350 @@
+{
+ "name": "nvidia-sec-pruefung",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 7.4,
+   "script": "0:00 · Die US-Börsenaufsicht nimmt Nvidia ins Visier – und die Aktie crasht an einem Tag um 14 Prozent. Und das ist vielleicht noch nicht das Ende.",
+   "params": {
+    "intro": {
+     "tag": "EILMELDUNG",
+     "text": "*SEC* prüft Nvidias Bilanz",
+     "sub": "laut Wall Street Journal & Reuters",
+     "dur": 2.8,
+     "size": 74,
+     "green": false
+    },
+    "brand": "NVDA",
+    "name": "Nvidia",
+    "tag": "CRASH",
+    "title": "An *einem Tag*",
+    "titleSize": 58,
+    "value": "−14 %",
+    "size": 190,
+    "at": 0.3,
+    "countDur": 1.2,
+    "barFrom": "Donnerstag",
+    "barTo": "Freitag: 125,53 $",
+    "drainTo": 0.86,
+    "sub": "tiefster Stand seit *Mai 2025*",
+    "stamp": "NICHT VORBEI?",
+    "stampSize": 56
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 6.3,
+   "script": "0:07 · Schon die siebte Verlustwoche in Folge – die längste Serie seit 2008. Seit dem Rekordhoch hat sich die Aktie fast halbiert.",
+   "params": {
+    "ticker": "NVDA",
+    "name": "Nvidia · seit Oktober",
+    "price": "125,53 $",
+    "priceFrom": 239,
+    "change": "-46 % vom Hoch",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     239,
+     241,
+     236,
+     238,
+     231,
+     226,
+     229,
+     221,
+     214,
+     217,
+     206,
+     199,
+     203,
+     192,
+     184,
+     187,
+     177,
+     171,
+     175,
+     166,
+     160,
+     163,
+     158,
+     152,
+     155,
+     148,
+     146,
+     149,
+     143,
+     146,
+     141,
+     145,
+     138,
+     146,
+     143,
+     128,
+     125.53
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.8,
+    "threshold": {
+     "value": 239,
+     "label": "Rekordhoch Okt.: ~239 $",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 4.2,
+   "script": "0:13 · Laut Reuters sind damit rund 2,6 Billionen Dollar Börsenwert verschwunden.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Börsenwert",
+    "label": "seit dem Rekordhoch vernichtet",
+    "icon": "📉",
+    "value": "−2,6 Bio. $",
+    "size": 160,
+    "at": 1.2,
+    "countDur": 1.1,
+    "tone": "red",
+    "sub": "in nur *7 Wochen* · laut Reuters"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 4.2,
+   "script": "0:17 · Aber was prüft die Börsenaufsicht eigentlich?",
+   "params": {
+    "brand": false,
+    "text": "Was prüft die *SEC*?",
+    "accent": "#e5392f",
+    "size": 86,
+    "pills": [
+     "Bilanz",
+     "Huang weg",
+     "China"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 8.6,
+   "script": "0:22 · Laut Wall Street Journal und Reuters geht es um Nvidias Bilanzierung. Ein Bericht nennt als möglichen Punkt, wie Nvidia Umsätze nach Ländern ausweist – etwa Singapur. Nvidia schweigt bisher.",
+   "params": {
+    "title": "Die *SEC-Prüfung*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Bilanzierung* im Fokus",
+      "sub": "laut WSJ & Reuters",
+      "mark": "🔍",
+      "markColor": "#e5392f",
+      "at": 1.6
+     },
+     {
+      "text": "Umsatz nach *Ländern*?",
+      "sub": "z. B. Singapur · laut einem Bericht",
+      "mark": "?",
+      "markColor": "#e5392f",
+      "at": 3.6
+     },
+     {
+      "text": "Nvidia & SEC *schweigen*",
+      "sub": "keine Stellungnahme",
+      "mark": "…",
+      "markColor": "#8b9099",
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trWarn",
+   "duration": 5.2,
+   "script": "0:30 · Wichtig: Eine Prüfung heißt nicht, dass Nvidia etwas falsch gemacht hat. Aber Unsicherheit hassen Anleger am meisten.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Wichtig",
+    "tag": "Einordnung",
+    "text": "Prüfung ≠ *Schuld*",
+    "size": 70,
+    "sub": "Aber *Unsicherheit* hassen Anleger am meisten.",
+    "pills": [
+     "kein Beweis für Fehlverhalten"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 5.4,
+   "script": "0:35 · Dazu kommt: Jensen Huang ist als Chef zurückgetreten. Und Kaliforniens Generalstaatsanwalt prüft laut Berichten mögliche Chip-Lieferungen nach China.",
+   "params": {
+    "title": "Noch *mehr Baustellen*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Jensen Huang* tritt zurück",
+      "sub": "12. November · Kress übernimmt vorerst",
+      "value": "!",
+      "ok": false,
+      "at": 1.8
+     },
+     {
+      "text": "*Kalifornien* ermittelt",
+      "sub": "China-Lieferungen? · laut Berichten",
+      "value": "!",
+      "ok": false,
+      "at": 4.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trMetric",
+   "duration": 5.7,
+   "script": "0:41 · Das Verrückte: Die Zahlen sind super – 115,8 Milliarden Dollar Umsatz im Quartal. Aber das interessiert gerade keinen.",
+   "params": {
+    "title": "Die Zahlen? *Rekord*",
+    "label": "Umsatz im letzten Quartal",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "115,8 Mrd. $",
+    "size": 140,
+    "at": 1.4,
+    "countDur": 1.0,
+    "second": {
+     "value": "Ausblick: 130 Mrd. $",
+     "size": 60,
+     "at": 3.4
+    },
+    "pills": [
+     "🤷 interessiert gerade keinen"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "09",
+   "type": "trList",
+   "duration": 7.7,
+   "script": "0:47 · Und warum es weiter runtergehen könnte? Die Aktie liegt klar unter der 200-Tage-Linie – für Chart-Anleger ein Verkaufssignal. Und die Unsicherheit bleibt, solange die Prüfung läuft.",
+   "params": {
+    "title": "Warum *weitere Verluste* drohen",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Unter der *200-Tage-Linie*",
+      "sub": "für Chart-Anleger ein Verkaufssignal",
+      "value": "▼",
+      "ok": false,
+      "at": 2.2
+     },
+     {
+      "text": "Prüfung *ohne Ende-Datum*",
+      "sub": "Unsicherheit bleibt",
+      "value": "⏳",
+      "ok": false,
+      "at": 4.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "10",
+   "type": "trBars",
+   "duration": 6.6,
+   "script": "0:54 · Analysten sind entspannter: Das Kursziel liegt im Schnitt bei rund 244 Dollar. Raiffeisen senkt auf 210 – rät aber weiter zum Kauf.",
+   "params": {
+    "title": "Was sagen *Analysten*?",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "name": "Kursziel Ø (63 Analysten)",
+      "brand": "NVDA",
+      "value": 244,
+      "label": "~244 $",
+      "at": 1.8,
+      "color": "#0d7d4d"
+     },
+     {
+      "name": "Raiffeisen (Kauf)",
+      "value": 210,
+      "label": "210 $",
+      "at": 3.2,
+      "color": "#0d7d4d"
+     },
+     {
+      "name": "Aktie aktuell",
+      "brand": "NVDA",
+      "value": 125.5,
+      "label": "125,53 $",
+      "at": 4.6,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     }
+    ],
+    "max": 260,
+    "note": "Kursziele sind keine Garantie"
+   }
+  },
+  {
+   "id": "11",
+   "type": "trRule",
+   "duration": 5.7,
+   "script": "1:01 · Also: Schnäppchen oder Falle? Wer jetzt kauft, wettet darauf, dass bei der Prüfung nichts rauskommt. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Schnäppchen oder *Falle*?",
+    "left": {
+     "label": "Schnäppchen",
+     "title": "Rekordzahlen",
+     "result": "Aktie fast halbiert",
+     "good": true,
+     "at": 1.6
+    },
+    "right": {
+     "label": "Falle",
+     "title": "SEC-Prüfung offen",
+     "result": "Ausgang unklar",
+     "good": false,
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "12",
+   "type": "trPoll",
+   "duration": 5.2,
+   "script": "1:07 · Kaufst du jetzt Nvidia – oder wartest du, bis die Prüfung vorbei ist? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Nvidia *jetzt kaufen*?",
+    "options": [
+     "Ja, Schnäppchen!",
+     "Nein, zu riskant",
+     "Erst die SEC abwarten"
+    ],
+    "note": "Keine Anlageberatung · Stand: 21. November 2026"
+   }
+  }
+ ]
+}
