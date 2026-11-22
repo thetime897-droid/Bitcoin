@@ -1,0 +1,340 @@
+{
+ "name": "rheinmetall-4-8-mrd",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 7.0,
+   "script": "0:00 · Minus 65 Prozent. Rheinmetall ist abgestürzt – und jetzt müssen in nur drei Monaten fast 4,8 Milliarden Euro her. Sonst wird es richtig bitter.",
+   "params": {
+    "intro": {
+     "tag": "EILMELDUNG",
+     "text": "*Rheinmetall* im freien Fall",
+     "sub": "vom Börsenliebling zum Sorgenkind",
+     "dur": 2.4,
+     "size": 74,
+     "green": false
+    },
+    "brand": "RHM",
+    "name": "Rheinmetall",
+    "tag": "ABSTURZ",
+    "title": "Seit dem *Rekordhoch*",
+    "titleSize": 56,
+    "value": "−65 %",
+    "size": 200,
+    "at": 0.3,
+    "countDur": 1.2,
+    "barFrom": "Januar: 1.966 €",
+    "barTo": "jetzt: 693 €",
+    "drainTo": 0.35,
+    "sub": "und jetzt müssen *4,8 Mrd. €* her",
+    "stamp": "QUARTAL DER WAHRHEIT",
+    "stampSize": 52
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 5.0,
+   "script": "0:07 · Im Januar noch fast 2.000 Euro, am Freitag nur noch 693. Fast zwei Drittel des Werts – weg.",
+   "params": {
+    "ticker": "RHM",
+    "name": "Rheinmetall · seit Januar",
+    "price": "693,40 €",
+    "priceFrom": 1966,
+    "change": "-65 % vom Hoch",
+    "range": "1J",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     1966,
+     1920,
+     1880,
+     1910,
+     1850,
+     1790,
+     1820,
+     1760,
+     1700,
+     1650,
+     1690,
+     1720,
+     1640,
+     1580,
+     1620,
+     1560,
+     1500,
+     1450,
+     1480,
+     1520,
+     1430,
+     1380,
+     1400,
+     1330,
+     1270,
+     1300,
+     1220,
+     1180,
+     1150,
+     1090,
+     1120,
+     1050,
+     990,
+     1010,
+     950,
+     900,
+     930,
+     880,
+     840,
+     810,
+     780,
+     806,
+     760,
+     720,
+     740,
+     700,
+     693.4
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.8,
+    "threshold": {
+     "value": 1966,
+     "label": "Rekordhoch 19. Jan.: 1.966 €",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStrike",
+   "duration": 6.0,
+   "script": "0:12 · Denn Rheinmetall hat seine Prognose schon wieder gesenkt: Statt bis zu 14,2 nur noch rund 13,2 Milliarden Euro Umsatz in diesem Jahr.",
+   "params": {
+    "brand": "RHM",
+    "context": "Prognose 2026",
+    "title": "Umsatz *gesenkt*",
+    "accent": "#e5392f",
+    "old": "13,7–14,2 Mrd. €",
+    "new": "Neu: *~13,2 Mrd. €*",
+    "newTone": "red",
+    "newSize": 72,
+    "strikeAt": 2.0,
+    "newAt": 3.0,
+    "sub": "Marge: nur noch ~18,5 % statt ~19 %",
+    "pills": [
+     "Boxer-Auftrag verzögert"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 3.6,
+   "script": "0:18 · Und selbst das wird jetzt zum echten Kraftakt.",
+   "params": {
+    "brand": "RHM",
+    "text": "Jetzt wird's *eng*",
+    "accent": "#e5392f",
+    "size": 92,
+    "pills": [
+     "Q4 entscheidet"
+    ],
+    "pillsAt": 1.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trBars",
+   "duration": 8.0,
+   "script": "0:21 · Bis September hat Rheinmetall 8,38 Milliarden umgesetzt. Heißt: Im vierten Quartal müssen fast 4,8 Milliarden Euro her – über 50 Prozent mehr als im Quartal davor.",
+   "params": {
+    "title": "Die *4,8-Mrd.-Rechnung*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "name": "Umsatz Jan.–Sept.",
+      "brand": "RHM",
+      "value": 8.38,
+      "label": "8,38 Mrd. €",
+      "at": 1.6,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Umsatz 3. Quartal",
+      "brand": "RHM",
+      "value": 3.15,
+      "label": "3,15 Mrd. €",
+      "at": 3.0,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Nötig im 4. Quartal",
+      "brand": "RHM",
+      "value": 4.82,
+      "label": "~4,8 Mrd. €",
+      "at": 4.4,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     }
+    ],
+    "max": 9,
+    "note": "Ziel 2026: ~13,2 Mrd. € · nötig: +53 % zum Vorquartal"
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:29 · Und Anleger zweifeln: Der Cashflow ist schwach, Analysten senken ihre Schätzungen – und ein möglicher Frieden in der Ukraine drückt auf die ganze Rüstungsbranche.",
+   "params": {
+    "title": "Warum Anleger *zweifeln*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Schwacher *Cashflow*",
+      "sub": "Aufträge kommen langsam an",
+      "value": "▼",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "Analysten *senken* Schätzungen",
+      "sub": "Kursziele runter",
+      "value": "▼",
+      "ok": false,
+      "at": 2.8
+     },
+     {
+      "text": "Mögliche *Friedenspläne*",
+      "sub": "Ukraine · Druck auf Rüstung",
+      "value": "!",
+      "ok": false,
+      "at": 4.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:36 · Besonders bitter: Chef Papperger hat Anfang November für rund 700.000 Euro eigene Aktien gekauft. Jetzt liegt er fast 18 Prozent im Minus.",
+   "params": {
+    "title": "Der Chef liegt *im Minus*",
+    "accent": "#e5392f",
+    "label": "Pappergers Insiderkauf (Ø 842,66 €)",
+    "logos": [
+     "RHM"
+    ],
+    "value": "−18 %",
+    "tone": "red",
+    "size": 170,
+    "at": 1.6,
+    "countDur": 1.0,
+    "second": {
+     "value": "702.780 € investiert",
+     "size": 56,
+     "at": 3.4,
+     "tone": "red"
+    },
+    "pills": [
+     "Kauf Anfang November"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trStat",
+   "duration": 6.0,
+   "script": "0:43 · Dabei sitzt Rheinmetall auf 78 Milliarden Euro Auftragsbestand – mehr als doppelt so viel, wie die ganze Firma an der Börse wert ist.",
+   "params": {
+    "brand": "RHM",
+    "context": "Die andere Seite",
+    "label": "Auftragsbestand (30.09.2026)",
+    "icon": "📋",
+    "value": "78 Mrd. €",
+    "size": 170,
+    "at": 1.2,
+    "countDur": 1.0,
+    "sub": "Börsenwert: nur *gut 30 Mrd. €*",
+    "pills": [
+     "mehr als 2× der Börsenwert"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.6,
+   "script": "0:49 · Die Entscheidung fällt diese Woche beim Kapitalmarkttag. Bisher verspricht Rheinmetall 50 Milliarden Umsatz bis 2030 – Bernstein erwartet, dass das Ziel gekappt wird.",
+   "params": {
+    "brand": "RHM",
+    "context": "26.–27. November",
+    "tag": "Kapitalmarkttag",
+    "live": true,
+    "text": "Ziel 2030: *50 Mrd. €*\n– wird es *gekappt*?",
+    "size": 58,
+    "sub": "Bernstein erwartet *−14 %* beim Umsatzziel.",
+    "pills": [
+     "Hamburg",
+     "Vertrauens-Check"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:55 · Also: Schnäppchen oder Falle? Chart-Analysten sehen die nächste Unterstützung erst bei 600 bis 650 Euro. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Schnäppchen oder *Falle*?",
+    "left": {
+     "label": "Chance",
+     "title": "78 Mrd. Aufträge",
+     "result": "Aktie −65 % vom Hoch",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Risiko",
+     "title": "Ziele wackeln",
+     "result": "Unterstützung: 600–650 €",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:02 · Kaufst du Rheinmetall jetzt – oder wartest du den Kapitalmarkttag ab? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Rheinmetall *jetzt kaufen*?",
+    "options": [
+     "Ja, Schnäppchen!",
+     "Nein, Finger weg",
+     "Erst Kapitalmarkttag"
+    ],
+    "note": "Keine Anlageberatung · Stand: 22. November 2026"
+   }
+  }
+ ]
+}
