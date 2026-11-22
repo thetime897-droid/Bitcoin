@@ -1,6 +1,6 @@
 # FACELESS SHORT: BLACK MONDAY ODER MEGA-RALLY?
 
-*Ca. 66–69 s gesprochen (~225 Wörter), Broker-App-Karten, ohne Ausblendung. Grundlage: Referenzvideo „Crash oder Rallye am Aktienmarkt?“ (22.11.2026). Die Inhalte sind übernommen und faktengeprüft, die Reihenfolge ist auf Hook und Reveal umgebaut.*
+*Ca. 65–68 s gesprochen (215 Wörter), Broker-App-Karten, ohne Ausblendung. Grundlage: Referenzvideo „Crash oder Rallye am Aktienmarkt?“ (22.11.2026). Die Inhalte sind übernommen und faktengeprüft, die Reihenfolge ist auf Hook und Reveal umgebaut.*
 
 ## Storytelling
 
