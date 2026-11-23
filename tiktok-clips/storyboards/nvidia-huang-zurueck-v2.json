@@ -1,0 +1,294 @@
+{
+ "name": "nvidia-huang-zurueck-v2",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 7.4,
+   "script": "0:00 · Eilmeldung: Jensen Huang ist zurück! Nur zwölf Tage nach seinem Rücktritt holt Nvidia seinen Chef zurück – und die Aktie schießt um 27 Prozent nach oben.",
+   "params": {
+    "intro": {
+     "tag": "EILMELDUNG",
+     "text": "*Jensen Huang* ist zurück!",
+     "sub": "Präsident · CEO · Board",
+     "dur": 2.6,
+     "size": 78,
+     "green": true
+    },
+    "up": true,
+    "brand": "NVDA",
+    "name": "Nvidia",
+    "tag": "COMEBACK",
+    "title": "Nur *12 Tage* später",
+    "titleSize": 58,
+    "value": "+27 %",
+    "size": 200,
+    "at": 0.3,
+    "countDur": 1.1,
+    "barFrom": "Freitag: 125,53 $",
+    "barTo": "heute: ~159 $",
+    "fillFrom": 0.5,
+    "sub": "Kurssprung laut *Bloomberg*",
+    "stamp": "ER IST ZURÜCK",
+    "stampSize": 70
+   }
+  },
+  {
+   "id": "02",
+   "type": "trList",
+   "duration": 6.4,
+   "script": "0:07 · Zwölf Tage, die Nvidia komplett erschüttert haben: Rücktritt, Absturz, ein Post von Trump – und jetzt das große Comeback.",
+   "params": {
+    "title": "*12 Tage* Chaos",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "*12. Nov.*: Huang tritt zurück",
+      "mark": "1",
+      "markColor": "#e5392f",
+      "at": 1.0
+     },
+     {
+      "text": "*Absturz*: Aktie fast halbiert",
+      "sub": "7 Verlustwochen",
+      "mark": "2",
+      "markColor": "#e5392f",
+      "at": 2.0
+     },
+     {
+      "text": "*22. Nov.*: Trump fordert Rückkehr",
+      "sub": "Truth Social",
+      "mark": "3",
+      "markColor": "#2f6bff",
+      "at": 3.0
+     },
+     {
+      "text": "*23. Nov.*: Huang ist zurück",
+      "sub": "einstimmig",
+      "mark": "4",
+      "markColor": "#0d7d4d",
+      "at": 4.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "trPost",
+   "duration": 5.2,
+   "script": "0:13 · Huang selbst sagt: Er übernehme die Verantwortung mit größter Demut und neuem Engagement.",
+   "params": {
+    "name": "Jensen Huang",
+    "role": "CEO · Nvidia",
+    "avatar": {
+     "name": "Jensen Huang",
+     "glyph": "JH",
+     "color": "#76b900"
+    },
+    "quote": "„Ich übernehme diese Verantwortung mit *größter Demut* und *neuem Engagement*.“",
+    "quoteAt": 1.0,
+    "playAt": 0.5,
+    "videoLabel": "Statement",
+    "meta": "Nvidia-Mitteilung · 23. November 2026 · sinngemäß übersetzt",
+    "accent": "#0d7d4d"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 5.8,
+   "script": "0:19 · Verwaltungsratschef Harvey Jones ist sich sicher: Jensen sei die richtige Person, um Nvidia zu führen. Die Entscheidung fiel einstimmig.",
+   "params": {
+    "brand": {
+     "name": "Harvey Jones",
+     "glyph": "HJ",
+     "color": "#111317"
+    },
+    "text": "„Jensen ist die *richtige Person*“",
+    "accent": "#0d7d4d",
+    "size": 74,
+    "pills": [
+     "Harvey Jones · Chairman",
+     "einstimmig"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 7.8,
+   "script": "0:24 · Aber ganz ohne Auflagen kommt er nicht zurück: Nvidia gründet einen eigenen Ausschuss für nationale Sicherheit und Exportkontrollen – und stellt einen Chief Compliance Officer ein.",
+   "params": {
+    "title": "Aber: *neue Auflagen*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Ausschuss für *nationale Sicherheit*",
+      "sub": "& Exportkontrollen",
+      "mark": "🛡️",
+      "markColor": "#2f6bff",
+      "at": 2.0
+     },
+     {
+      "text": "Neuer *Chief Compliance Officer*",
+      "sub": "wird eingestellt",
+      "mark": "+",
+      "markColor": "#2f6bff",
+      "at": 4.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 7.6,
+   "script": "0:32 · Und die Untersuchung läuft weiter: Unabhängige Direktoren prüfen mit externen Anwälten, ob Huang Ziel eines ausländischen Geheimdienstes war. Huang will kooperieren.",
+   "params": {
+    "title": "Untersuchung *läuft weiter*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Unabhängige Direktoren* + Anwälte",
+      "sub": "bis zum Abschluss",
+      "value": "🔍",
+      "ok": false,
+      "at": 1.6
+     },
+     {
+      "text": "Ziel eines *ausländischen Geheimdienstes*?",
+      "sub": "laut Nvidia-Mitteilung",
+      "value": "!",
+      "ok": false,
+      "at": 3.6
+     },
+     {
+      "text": "Huang will kooperieren",
+      "mark": "✓",
+      "markColor": "#0d7d4d",
+      "at": 5.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trWarn",
+   "duration": 5.6,
+   "script": "0:40 · Brisant: Bei der Entscheidung hat sich Nvidia laut eigener Mitteilung mit hochrangigen Stellen der US-Regierung abgestimmt.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Brisant",
+    "tag": "Washington",
+    "live": true,
+    "text": "Abgestimmt mit der\n*US-Regierung*",
+    "size": 64,
+    "sub": "„Input von *hochrangigen Stellen*“",
+    "pills": [
+     "kein Sicherheitsrisiko"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "08",
+   "type": "trPost",
+   "duration": 5.6,
+   "script": "0:45 · Und Donald Trump? Der hatte die Rückkehr gefordert – und feiert die Entscheidung jetzt auf Truth Social.",
+   "params": {
+    "name": "Donald Trump",
+    "role": "US-Präsident · Truth Social",
+    "avatar": {
+     "name": "Donald Trump",
+     "glyph": "DT",
+     "color": "#b22234"
+    },
+    "quote": "Begrüßt die *Rückkehr* von Jensen Huang",
+    "quoteAt": 1.0,
+    "playAt": 0.5,
+    "videoLabel": "Post auf Truth Social",
+    "meta": "23. November 2026 · laut CNN",
+    "sticker": {
+     "text": "HAT ER GEFORDERT",
+     "icon": "🇺🇸",
+     "color": "#2f6bff",
+     "at": 2.6,
+     "x": 690,
+     "y": 540,
+     "size": 38,
+     "rotate": 6
+    },
+    "accent": "#2f6bff"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:51 · Die Börse jubelt: plus 27 Prozent laut Bloomberg. Aber Achtung: Vom Rekordhoch ist die Aktie immer noch rund ein Drittel entfernt.",
+   "params": {
+    "title": "Die Börse *jubelt*",
+    "accent": "#0d7d4d",
+    "label": "Nvidia-Aktie heute",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "+27 %",
+    "size": 180,
+    "at": 1.0,
+    "countDur": 0.9,
+    "second": {
+     "value": "noch rund 33 % unter dem Hoch",
+     "size": 54,
+     "tone": "red",
+     "at": 3.0
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.8,
+   "script": "0:58 · Also: Ist Nvidia jetzt wieder ein Kauf – oder bleibt das Risiko? Solange die Untersuchung läuft, bleibt ein Fragezeichen. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Kauf oder *Risiko*?",
+    "left": {
+     "label": "Pro",
+     "title": "Huang ist zurück",
+     "result": "+ neue Sicherheits-Regeln",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Contra",
+     "title": "Untersuchung offen",
+     "result": "+ SEC prüft Bilanz",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:04 · War das Comeback die richtige Entscheidung – oder ein Fehler? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Huang-Comeback: *richtig*?",
+    "options": [
+     "Ja, Jensen ist Nvidia",
+     "Nein, zu riskant",
+     "Abwarten"
+    ],
+    "note": "Keine Anlageberatung · Stand: 23. November 2026"
+   }
+  }
+ ]
+}
