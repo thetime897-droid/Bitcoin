@@ -6,7 +6,7 @@
 
 ## Storytelling
 
-- **Hook (0:00):** Grüne Eilmeldung „Jensen Huang ist zurück!“, dann **+27 %**, „Nur 12 Tage später“, Stempel „ER IST ZURÜCK“.
+- **Hook (0:00):** Rotes „BREAKING NEWS“, Schlagzeile „Jensen Huang ist zurück an Bord!“. Die Tür mit „CEO“ geht auf, eine Comic-Karikatur (Brille, schwarze Lederjacke) läuft zurück ins Büro und winkt, Sprechblase „Ich bin zurück! 👋“, Konfetti, grünes **+27 %**, Stempel „ZURÜCK AN BORD“, unten ein Newsticker.
 - **Zeitstrahl:** 12 Tage Chaos in 4 Schritten (Rücktritt → Absturz → Trump → Comeback).
 - **Stimmen:** Huangs Zitat („größte Demut“) → Chairman Jones („die richtige Person“, einstimmig).
 - **Re-Hook (0:30):** „Aber: neue Auflagen“, Sicherheits-Ausschuss + Chief Compliance Officer.
@@ -17,7 +17,7 @@
 
 | Zeit | Karte | Text |
 |---|---|---|
-| 0:00 | `01-trDrain` | Eilmeldung: Jensen Huang ist zurück! Nur zwölf Tage nach seinem Rücktritt holt Nvidia seinen Chef zurück – und die Aktie schießt um 27 Prozent nach oben. |
+| 0:00 | `01-trComeback` | Eilmeldung: Jensen Huang ist zurück! Nur zwölf Tage nach seinem Rücktritt holt Nvidia seinen Chef zurück – und die Aktie schießt um 27 Prozent nach oben. |
 | 0:07 | `02-trList` | Zwölf Tage, die Nvidia komplett erschüttert haben: Rücktritt, Absturz, ein Post von Trump – und jetzt das große Comeback. |
 | 0:13 | `03-trPost` | Huang selbst sagt: Er übernehme die Verantwortung mit größter Demut und neuem Engagement. |
 | 0:19 | `04-trHeadline` | Verwaltungsratschef Harvey Jones ist sich sicher: Jensen sei die richtige Person, um Nvidia zu führen. Die Entscheidung fiel einstimmig. |

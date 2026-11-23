@@ -9,34 +9,27 @@
  "scenes": [
   {
    "id": "01",
-   "type": "trDrain",
+   "type": "trComeback",
    "duration": 7.4,
    "script": "0:00 · Eilmeldung: Jensen Huang ist zurück! Nur zwölf Tage nach seinem Rücktritt holt Nvidia seinen Chef zurück – und die Aktie schießt um 27 Prozent nach oben.",
    "params": {
-    "intro": {
-     "tag": "EILMELDUNG",
-     "text": "*Jensen Huang* ist zurück!",
-     "sub": "Präsident · CEO · Board",
-     "dur": 2.6,
-     "size": 78,
-     "green": true
-    },
-    "up": true,
+    "tag": "BREAKING NEWS",
     "brand": "NVDA",
     "name": "Nvidia",
-    "tag": "COMEBACK",
-    "title": "Nur *12 Tage* später",
-    "titleSize": 58,
+    "title": "Jensen Huang ist\n*zurück an Bord!*",
+    "size": 70,
     "value": "+27 %",
-    "size": 200,
-    "at": 0.3,
-    "countDur": 1.1,
-    "barFrom": "Freitag: 125,53 $",
-    "barTo": "heute: ~159 $",
-    "fillFrom": 0.5,
-    "sub": "Kurssprung laut *Bloomberg*",
-    "stamp": "ER IST ZURÜCK",
-    "stampSize": 70
+    "bubble": "Ich bin zurück! 👋",
+    "door": "CEO",
+    "sign": false,
+    "stamp": "ZURÜCK AN BORD",
+    "stampSize": 58,
+    "ticker": [
+     "Eilmeldung: Nvidia holt Jensen Huang zurück",
+     "nur 12 Tage nach Rücktritt",
+     "Aktie +27 %",
+     "einstimmig"
+    ]
    }
   },
   {
