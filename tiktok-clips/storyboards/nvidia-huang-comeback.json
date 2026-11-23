@@ -1,0 +1,313 @@
+{
+ "name": "nvidia-huang-comeback",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 7.0,
+   "script": "0:00 · Nvidia explodiert um über 25 Prozent. An einem einzigen Tag. Und der Grund ist eine Kehrtwende, mit der niemand gerechnet hat.",
+   "params": {
+    "intro": {
+     "tag": "EILMELDUNG",
+     "text": "*Jensen Huang* ist zurück",
+     "sub": "Nvidia holt seinen Chef zurück",
+     "dur": 2.4,
+     "size": 76,
+     "green": true
+    },
+    "up": true,
+    "brand": "NVDA",
+    "name": "Nvidia",
+    "tag": "KURSRAKETE",
+    "title": "An *einem Tag*",
+    "titleSize": 58,
+    "value": "+25 %",
+    "size": 200,
+    "at": 0.3,
+    "countDur": 1.1,
+    "barFrom": "Freitag: 125,53 $",
+    "barTo": "jetzt: ~157 $",
+    "fillFrom": 0.52,
+    "sub": "größtes Comeback des Jahres?",
+    "stamp": "COMEBACK",
+    "stampSize": 80
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 6.6,
+   "script": "0:07 · Rückblick: Vor elf Tagen tritt Jensen Huang als Nvidia-Chef zurück. Die Aktie stürzt ab – sieben Verlustwochen am Stück, fast eine Halbierung.",
+   "params": {
+    "ticker": "NVDA",
+    "name": "Nvidia · seit Oktober",
+    "price": "125,53 $",
+    "priceFrom": 239,
+    "change": "-47 % vom Hoch",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     239,
+     236,
+     240,
+     231,
+     226,
+     229,
+     218,
+     212,
+     214,
+     203,
+     196,
+     199,
+     188,
+     181,
+     184,
+     174,
+     168,
+     171,
+     163,
+     158,
+     160,
+     152,
+     148,
+     150,
+     143,
+     146,
+     139,
+     141,
+     134,
+     137,
+     128,
+     125.53
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.8,
+    "threshold": {
+     "value": 239,
+     "label": "Rekordhoch Okt.: ~239 $",
+     "at": 0.6
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStrike",
+   "duration": 5.0,
+   "script": "0:13 · Und der Verwaltungsrat sagt noch klar: Ein Comeback wird es nicht geben.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Verwaltungsrat",
+    "title": "Huang-*Comeback*?",
+    "accent": "#e5392f",
+    "old": "Comeback: ausgeschlossen",
+    "new": "…oder doch? 👀",
+    "newTone": "green",
+    "newSize": 66,
+    "strikeAt": 3.2,
+    "newAt": 3.8,
+    "pills": [
+     "Chairman Harvey Jones"
+    ],
+    "pillsAt": 1.6
+   }
+  },
+  {
+   "id": "04",
+   "type": "trPost",
+   "duration": 7.4,
+   "script": "0:18 · Dann am Sonntag: Donald Trump schreibt auf Truth Social, er hoffe, dass Nvidia Jensen Huang wieder einstellt. Die Aktie springt vorbörslich schon um 9 Prozent.",
+   "params": {
+    "name": "Donald Trump",
+    "role": "US-Präsident · Truth Social",
+    "avatar": {
+     "name": "Donald Trump",
+     "glyph": "DT",
+     "color": "#b22234"
+    },
+    "quote": "„Ich hoffe, der Verwaltungsrat von Nvidia stellt *Jensen Huang* wieder ein.“",
+    "quoteAt": 1.2,
+    "playAt": 0.6,
+    "videoLabel": "Post auf Truth Social",
+    "meta": "Sonntag, 22. November 2026 · sinngemäß übersetzt",
+    "sticker": {
+     "text": "VORBÖRSLICH +9 %",
+     "icon": "🚀",
+     "color": "#0d7d4d",
+     "at": 4.2,
+     "x": 690,
+     "y": 540,
+     "size": 40,
+     "rotate": 6
+    },
+    "accent": "#0d7d4d"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 5.8,
+   "script": "0:26 · Und heute dann der Hammer: Der Verwaltungsrat holt Huang einstimmig zurück – als Chef, Präsident und Mitglied im Board.",
+   "params": {
+    "brand": "NVDA",
+    "text": "Huang ist *zurück*",
+    "accent": "#0d7d4d",
+    "size": 96,
+    "pills": [
+     "einstimmig",
+     "CEO",
+     "Präsident",
+     "Board"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:31 · Die Begründung: Man habe sich mit der US-Regierung abgestimmt – Huang sei kein Risiko für die nationale Sicherheit. Colette Kress wird wieder Finanzchefin.",
+   "params": {
+    "title": "Die *Begründung*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "Abgestimmt mit der *US-Regierung*",
+      "sub": "laut Nvidia-Mitteilung",
+      "mark": "✓",
+      "markColor": "#0d7d4d",
+      "at": 1.4
+     },
+     {
+      "text": "*Kein Risiko* für die nationale Sicherheit",
+      "sub": "so der Verwaltungsrat",
+      "mark": "✓",
+      "markColor": "#0d7d4d",
+      "at": 3.0
+     },
+     {
+      "text": "Colette Kress wieder *Finanzchefin*",
+      "sub": "Interims-CEO-Rolle endet",
+      "mark": "↺",
+      "markColor": "#2f6bff",
+      "at": 4.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 6.6,
+   "script": "0:38 · Die Börse feiert: Plus 25 Prozent, die Nasdaq-Futures springen um 6 Prozent. Hunderte Milliarden Dollar Börsenwert – zurück an einem Tag.",
+   "params": {
+    "title": "Die Börse *feiert*",
+    "accent": "#0d7d4d",
+    "label": "Nvidia-Aktie heute",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "+25 %",
+    "size": 180,
+    "at": 1.2,
+    "countDur": 0.9,
+    "second": {
+     "value": "Nasdaq-100-Futures: +6 %",
+     "size": 58,
+     "at": 2.8
+    },
+    "pills": [
+     "Hunderte Mrd. $ zurück"
+    ],
+    "pillsAt": 4.2
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 5.8,
+   "script": "0:45 · Aber Achtung: Die interne Untersuchung läuft weiter. Und auch die Börsenaufsicht SEC prüft Nvidias Bilanzierung noch.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Noch offen",
+    "tag": "Achtung",
+    "live": true,
+    "text": "Die Untersuchungen\n*laufen weiter*",
+    "size": 62,
+    "sub": "Interne Prüfung + *SEC* prüft die Bilanz.",
+    "pills": [
+     "nicht ausgestanden"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
+   "id": "09",
+   "type": "trMetric",
+   "duration": 5.2,
+   "script": "0:51 · Und trotz des Sprungs: Vom Rekordhoch ist die Aktie immer noch rund ein Drittel entfernt.",
+   "params": {
+    "title": "Immer noch *weit weg*",
+    "accent": "#e5392f",
+    "label": "Abstand zum Rekordhoch (~239 $)",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "~−34 %",
+    "tone": "red",
+    "size": 170,
+    "at": 1.0,
+    "countDur": 0.8
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.8,
+   "script": "0:56 · Also: Neustart oder nur ein Strohfeuer? Mit Huang ist der wichtigste Kopf zurück – die offenen Fragen aber auch. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Neustart oder *Strohfeuer*?",
+    "left": {
+     "label": "Neustart",
+     "title": "Huang ist zurück",
+     "result": "Rekordzahlen + Chef",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Strohfeuer",
+     "title": "Fragen offen",
+     "result": "Untersuchung + SEC",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:03 · Hättest du Nvidia im Crash gekauft – oder verkaufst du jetzt? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Nvidia: *kaufen* oder *verkaufen*?",
+    "options": [
+     "Im Crash gekauft 🚀",
+     "Jetzt verkaufen",
+     "Weiter halten"
+    ],
+    "note": "Keine Anlageberatung · Stand: 23. November 2026"
+   }
+  }
+ ]
+}
