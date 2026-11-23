@@ -1,0 +1,321 @@
+{
+ "name": "spacex-it-krise",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trOutage",
+   "duration": 6.8,
+   "script": "0:00 · Wenn morgen Microsoft, die Cloud und das halbe Internet ausfallen – dann gewinnt ausgerechnet Elon Musk. Sagt Morgan Stanley.",
+   "params": {
+    "tag": "IT-KRISE",
+    "title": "Alles *offline* – fast",
+    "services": [
+     {
+      "icon": "📧",
+      "name": "Outlook"
+     },
+     {
+      "icon": "💬",
+      "name": "Teams"
+     },
+     {
+      "icon": "☁️",
+      "name": "Cloud"
+     },
+     {
+      "icon": "🤖",
+      "name": "KI-Apps"
+     },
+     {
+      "icon": "🏦",
+      "name": "Banking"
+     },
+     {
+      "icon": "🛰️",
+      "name": "Starlink",
+      "keep": true,
+      "ok": "● ONLINE"
+     }
+    ],
+    "flipAt": 0.8,
+    "step": 0.3,
+    "stamp": "MUSK GEWINNT?",
+    "stampSize": 64,
+    "okText": "● online",
+    "badText": "✕ DOWN"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:06 · Und die Ausfälle häufen sich: Microsoft 365 war zuletzt fast einen ganzen Tag gestört – Outlook, Teams, Copilot. Und Cloudflare hat schon ChatGPT und Spotify lahmgelegt.",
+   "params": {
+    "title": "Die Ausfälle *häufen sich*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Microsoft 365*",
+      "sub": "Outlook, Teams, Copilot · fast 1 Tag",
+      "value": "✕",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "*Cloudflare*",
+      "sub": "ChatGPT, Spotify & Co. offline",
+      "value": "✕",
+      "ok": false,
+      "at": 3.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "trHeadline",
+   "duration": 6.0,
+   "script": "0:13 · Morgan Stanley nennt SpaceX deshalb die ultimative „Off-the-Grid“-Aktie – also eine Aktie, die läuft, wenn alles andere ausfällt.",
+   "params": {
+    "brand": {
+     "name": "Morgan Stanley",
+     "glyph": "MS",
+     "color": "#002b51"
+    },
+    "text": "Die ultimative\n*„Off-the-Grid“*-Aktie",
+    "accent": "#2f6bff",
+    "size": 76,
+    "pills": [
+     "SpaceX",
+     "Analyst Adam Jonas"
+    ],
+    "pillsAt": 1.8
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHybrid",
+   "duration": 8.6,
+   "script": "0:19 · Die Idee: Starlink funkt direkt aus dem All. Fällt am Boden etwas aus, läuft das Internet über Satellit weiter. Und so eine Starlink-Schüssel kostet laut Analyst kaum mehr als ein Tiefkühl-Truthahn.",
+   "params": {
+    "title": "Die *Idee*",
+    "items": [
+     {
+      "icon": "tower",
+      "label": "Am Boden",
+      "title": "fällt aus",
+      "at": 1.4
+     },
+     {
+      "icon": "sat",
+      "label": "Im All",
+      "title": "Starlink",
+      "at": 3.4
+     }
+    ],
+    "plusAt": 4.0,
+    "result": "= *Internet läuft weiter*",
+    "resultAt": 4.8
+   }
+  },
+  {
+   "id": "05",
+   "type": "trChart",
+   "duration": 7.6,
+   "script": "0:28 · Aber: Die SpaceX-Aktie ist seit Juni rund 30 Prozent gefallen und steht nur knapp über ihrem Ausgabepreis von 135 Dollar. Die Börse glaubt die Story also noch nicht.",
+   "params": {
+    "ticker": "SPACEX",
+    "name": "SpaceX · seit Juni",
+    "price": "~138 $",
+    "countPrice": false,
+    "priceFrom": 201,
+    "change": "-31 % vom Hoch",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "6M",
+     "Max"
+    ],
+    "data": [
+     201,
+     196,
+     199,
+     190,
+     184,
+     188,
+     179,
+     172,
+     176,
+     168,
+     162,
+     166,
+     158,
+     153,
+     156,
+     149,
+     144,
+     147,
+     141,
+     139.1,
+     142,
+     138
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 135,
+     "label": "Ausgabepreis: 135 $",
+     "at": 0.6
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 5.6,
+   "script": "0:36 · Morgan Stanley bleibt trotzdem bullish: Kursziel 300 Dollar – mehr als eine Verdopplung.",
+   "params": {
+    "title": "Kursziel: *Verdopplung*",
+    "accent": "#0d7d4d",
+    "label": "Morgan Stanley · Overweight",
+    "logos": [
+     {
+      "name": "Morgan Stanley",
+      "glyph": "MS",
+      "color": "#002b51"
+     },
+     "SPACEX"
+    ],
+    "value": "300 $",
+    "size": 190,
+    "at": 1.2,
+    "countDur": 1.0,
+    "second": {
+     "value": "über +100 % Potenzial",
+     "size": 58,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "07",
+   "type": "trBars",
+   "duration": 7.0,
+   "script": "0:41 · Und das Spannende: Den größten Teil davon sieht Morgan Stanley gar nicht bei Raketen – sondern bei KI-Rechenzentren und Starlink.",
+   "params": {
+    "title": "Woher die *300 $* kommen",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "name": "KI-Rechenleistung",
+      "brand": "SPACEX",
+      "value": 165,
+      "label": "~165 $",
+      "at": 1.6,
+      "color": "#0d7d4d"
+     },
+     {
+      "name": "Starlink & Konnektivität",
+      "brand": "STARLINK",
+      "value": 118,
+      "label": "~118 $",
+      "at": 3.0,
+      "color": "#0d7d4d"
+     },
+     {
+      "name": "Raketen & Rest",
+      "brand": "SPACEX",
+      "value": 17,
+      "label": "Rest",
+      "at": 4.4,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     }
+    ],
+    "max": 180,
+    "note": "Summe der Teile laut Bericht · Aufteilung je nach Quelle leicht anders"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trStat",
+   "duration": 4.8,
+   "script": "0:48 · Und die Wall Street sieht es ähnlich: 34 von 44 Analysten sagen Kaufen.",
+   "params": {
+    "brand": "SPACEX",
+    "context": "LSEG-Daten",
+    "label": "Analysten mit Kaufempfehlung",
+    "icon": "👍",
+    "value": "34 / 44",
+    "countUp": false,
+    "size": 170,
+    "at": 1.0,
+    "sub": "Jefferies: Kursziel *210 $*"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.8,
+   "script": "0:53 · Aber Achtung: Kursziele sind keine Garantie. Und im Tech-Ausverkauf ist SpaceX bisher ganz normal mitgefallen – Krisen-Schutz sieht anders aus.",
+   "params": {
+    "brand": "SPACEX",
+    "context": "Achtung",
+    "tag": "Realität",
+    "text": "Kursziel ≠ *Garantie*",
+    "size": 68,
+    "sub": "Im Tech-Ausverkauf fällt SpaceX *mit*.",
+    "pills": [
+     "Keine Anlageberatung"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.8,
+   "script": "1:00 · Also: Krisen-Versicherung oder nur eine gute Story? Wer kauft, wettet darauf, dass die Ausfälle zunehmen. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Versicherung oder *Story*?",
+    "left": {
+     "label": "Pro",
+     "title": "Netz aus dem All",
+     "result": "läuft bei IT-Ausfällen",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Contra",
+     "title": "Aktie −31 %",
+     "result": "Ziel nur Prognose",
+     "good": false,
+     "at": 3.0
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "1:07 · Ist SpaceX für dich die Versicherung gegen die nächste IT-Krise? Schreib's in die Kommentare.",
+   "params": {
+    "question": "SpaceX als *Krisen-Versicherung*?",
+    "options": [
+     "Ja, kaufe ich",
+     "Nein, nur Hype",
+     "Hab ich schon"
+    ],
+    "note": "Keine Anlageberatung · Stand: 23. November 2026"
+   }
+  }
+ ]
+}

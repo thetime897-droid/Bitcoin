@@ -1,0 +1,291 @@
+{
+ "name": "anthropic-schattenseite",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 6.6,
+   "script": "0:00 · Du kaufst Anthropic-Aktien – aber zu sagen hast du praktisch nichts. Und das ist noch nicht mal das größte Risiko.",
+   "params": {
+    "intro": {
+     "tag": "SCHATTENSEITE",
+     "text": "Du zahlst –\n*andere entscheiden*",
+     "sub": "was im Anthropic-Prospekt steht",
+     "dur": 2.4,
+     "size": 72,
+     "green": false
+    },
+    "brand": "ANT",
+    "name": "Anthropic",
+    "tag": "MACHTFRAGE",
+    "title": "Stimmrechte für *7 Gründer*",
+    "titleSize": 54,
+    "value": "50,1 %",
+    "size": 190,
+    "at": 0.3,
+    "countDur": 1.1,
+    "barFrom": "alle anderen Aktionäre",
+    "barTo": "Gründer: 50,1 %",
+    "drainTo": 0.499,
+    "sub": "*egal*, wie viele Aktien du kaufst",
+    "stamp": "KEIN MITSPRACHERECHT",
+    "stampSize": 50,
+    "note": "🗳️"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trStat",
+   "duration": 6.0,
+   "script": "0:06 · Erst kurz: Anthropic, die Firma hinter Claude, hatte den größten Börsengang der Geschichte – über 81 Milliarden Dollar. Die Euphorie war riesig.",
+   "params": {
+    "brand": "ANT",
+    "context": "Rekord-IPO",
+    "label": "Erlös aus dem Börsengang",
+    "icon": "🏆",
+    "value": "81 Mrd. $",
+    "size": 180,
+    "at": 1.2,
+    "countDur": 1.0,
+    "sub": "*größter Börsengang* aller Zeiten"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trChart",
+   "duration": 7.0,
+   "script": "0:12 · Am ersten Tag sprang die Aktie auf 111,50 Dollar. Doch schon am zweiten Tag rutschte sie zeitweise bis auf 83 Dollar – fast zurück auf den Ausgabepreis.",
+   "params": {
+    "ticker": "ANT",
+    "name": "Anthropic · erste 2 Handelstage",
+    "price": "88,91 $",
+    "priceFrom": 111.5,
+    "change": "-20 % vom Eröffnungskurs",
+    "range": "1W",
+    "ranges": [
+     "1T",
+     "1W",
+     "1M",
+     "Max"
+    ],
+    "data": [
+     111.5,
+     109,
+     110.2,
+     106,
+     104,
+     101.5,
+     99,
+     97.17,
+     96,
+     94,
+     92.6,
+     90,
+     87.5,
+     85,
+     83.05,
+     84.6,
+     86.9,
+     88.91
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.8,
+    "threshold": {
+     "value": 83,
+     "label": "Ausgabepreis: 83 $",
+     "at": 0.6
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 4.2,
+   "script": "0:19 · Und jetzt zeigt der Börsenprospekt, worauf du dich als Aktionär wirklich einlässt.",
+   "params": {
+    "brand": "ANT",
+    "text": "Was im *Prospekt* steht",
+    "accent": "#e5392f",
+    "size": 84,
+    "pills": [
+     "Macht",
+     "Kosten",
+     "Risiken"
+    ],
+    "pillsAt": 1.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trBars",
+   "duration": 8.4,
+   "script": "0:23 · Eine einzige Sonder-Aktie gibt den sieben Gründern 50,1 Prozent der Stimmrechte – egal, wie viele Aktien du kaufst. Und ein eigener Trust kann die Mehrheit im Verwaltungsrat bestimmen.",
+   "params": {
+    "title": "Risiko #1: *Macht*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "name": "7 Gründer (1 Sonder-Aktie)",
+      "brand": "ANT",
+      "value": 50.1,
+      "label": "50,1 %",
+      "at": 1.6,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     },
+     {
+      "name": "Alle anderen Aktionäre",
+      "value": 49.9,
+      "label": "49,9 %",
+      "at": 3.0,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     }
+    ],
+    "max": 60,
+    "note": "Stimmrechte bei Aktionärsabstimmungen · Trust bestimmt Mehrheit im Verwaltungsrat"
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:32 · Risiko Nummer zwei: Ausgabenverpflichtungen von rund 900 Milliarden Dollar – vor allem für Rechenleistung. Wächst der Umsatz langsamer, wird es eng.",
+   "params": {
+    "title": "Risiko #2: *Kosten*",
+    "accent": "#e5392f",
+    "label": "Ausgabenverpflichtungen laut Prospekt",
+    "logos": [
+     "ANT"
+    ],
+    "value": "~900 Mrd. $",
+    "tone": "red",
+    "size": 150,
+    "at": 1.4,
+    "countDur": 1.1,
+    "second": {
+     "value": "vor allem für Rechenleistung",
+     "size": 52,
+     "at": 3.2,
+     "tone": "red"
+    },
+    "pills": [
+     "Wachstum muss halten"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:38 · Risiko Nummer drei: Fast ein Viertel des Umsatzes kommt von nur fünf Kunden. Und ausgerechnet Wasser für die Rechenzentren könnte das Wachstum bremsen.",
+   "params": {
+    "title": "Risiko #3: *Abhängigkeit*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*~25 %* Umsatz von *5 Kunden*",
+      "sub": "erste 9 Monate 2026",
+      "value": "!",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "*Wasser* für Rechenzentren",
+      "sub": "könnte Expansion bremsen",
+      "value": "💧",
+      "ok": false,
+      "at": 3.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:45 · Und das Krasseste: Anthropic warnt im eigenen Prospekt, KI könne katastrophale oder sogar existenzielle Risiken für die Menschheit bergen.",
+   "params": {
+    "brand": "ANT",
+    "context": "Im eigenen Prospekt",
+    "tag": "Warnung",
+    "live": true,
+    "text": "„*Existenzielle* Risiken\nfür die Menschheit“",
+    "size": 58,
+    "sub": "Rund *90 Seiten* Risikofaktoren.",
+    "pills": [
+     "Original-Wortlaut"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "09",
+   "type": "trStat",
+   "duration": 7.4,
+   "script": "0:52 · Dazu passt: In einer Umfrage nennen Fondsmanager eine KI-Blase als größtes Risiko. Und über die Hälfte erwartet, dass ein großer KI-Konzern bald seine Investitionen kürzt.",
+   "params": {
+    "brand": false,
+    "context": "Fondsmanager-Umfrage",
+    "label": "sehen eine KI-Blase als Risiko Nr. 1",
+    "icon": "🫧",
+    "value": "34 %",
+    "size": 180,
+    "at": 1.2,
+    "countDur": 0.9,
+    "tone": "red",
+    "sub": "*Platz 1* aller Risiken",
+    "pills": [
+     "52 % erwarten Investitions-Kürzungen"
+    ],
+    "pillsAt": 4.2
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.2,
+   "script": "0:59 · Heißt nicht, dass die Aktie schlecht ist. Aber du kaufst Wachstum – keine Mitsprache. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Was du *wirklich* kaufst",
+    "left": {
+     "label": "Du bekommst",
+     "title": "KI-Wachstum",
+     "result": "Rekord-Nachfrage",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Du bekommst nicht",
+     "title": "Mitsprache",
+     "result": "Gründer entscheiden",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 4.6,
+   "script": "1:05 · Würdest du Anthropic trotzdem kaufen? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Anthropic *trotzdem* kaufen?",
+    "options": [
+     "Ja, Wachstum zählt",
+     "Nein, zu viele Risiken",
+     "Erst mal beobachten"
+    ],
+    "note": "Keine Anlageberatung · Stand: 23. November 2026"
+   }
+  }
+ ]
+}

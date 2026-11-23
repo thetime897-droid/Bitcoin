@@ -1103,9 +1103,10 @@
       const ic = C.h('div', { style: { fontSize: '64px', lineHeight: 1 } }, d, sv.icon || '☁️');
       const nm = C.h('div', { style: { fontSize: '34px', fontWeight: 900, color: INK, marginTop: '8px' } }, d, sv.name);
       const stt = C.h('div', { style: { fontSize: '26px', fontWeight: 900, color: G, marginTop: '4px' } }, d, p.okText || '● online');
-      const at = flipAt + i * step;
-      ctx.cue('error', at, 0.4); ctx.cue('tick', at + 0.02, 0.5);
-      return { d, ic, nm, stt, at, i };
+      const at = flipAt + i * step, keep = !!sv.keep;
+      if (keep) { d.style.boxShadow = `0 0 0 0 rgba(24,165,101,0)`; ctx.cue('success', at, 0.5); }
+      else { ctx.cue('error', at, 0.4); ctx.cue('tick', at + 0.02, 0.5); }
+      return { d, ic, nm, stt, at, i, keep };
     });
     const stamp = stampEl(card, p.stamp || 'AUSFALL', RD, 0, 0, p.stampSize || 96);
     stamp.style.left = '50%'; stamp.style.top = '66%'; stamp.style.borderWidth = '8px';
@@ -1116,12 +1117,13 @@
       const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
       tiles.forEach((o) => {
         const k = C.k(t, 0.3 + o.i * 0.07, 0.4, 'back');
-        const down = t >= o.at, g = t >= o.at && t < o.at + 0.3;
+        const down = !o.keep && t >= o.at, g = !o.keep && t >= o.at && t < o.at + 0.3;
+        if (o.keep) { const ph2 = t >= o.at ? (t * 1.4) % 1 : 0; o.d.style.boxShadow = t >= o.at ? `0 0 0 ${ph2 * 14}px rgba(24,165,101,${0.5 * (1 - ph2)})` : 'none'; }
         o.d.style.opacity = C.k(t, 0.3 + o.i * 0.07, 0.12);
         const j = g ? (C.rand(Math.floor(t * 40) + o.i) - 0.5) * 16 : 0;
         o.d.style.transform = `translate(${j}px, ${g ? -j * 0.4 : 0}px) scale(${Math.max(0, k) * (down ? 1 - 0.03 * Math.abs(Math.sin(t * 4 + o.i)) : 1)})`;
         o.d.style.background = down ? '#fde6e3' : '#ddf4e8'; o.d.style.borderColor = down ? RD : CHK;
-        o.stt.textContent = down ? ((p.services[o.i] || {}).bad || p.badText || '✕ DOWN') : (p.okText || '● online'); o.stt.style.color = down ? RD : G;
+        o.stt.textContent = down ? ((p.services[o.i] || {}).bad || p.badText || '✕ DOWN') : (o.keep && t >= o.at ? ((p.services[o.i] || {}).ok || p.okText || '● online') : (p.okText || '● online')); o.stt.style.color = down ? RD : G;
         o.ic.style.filter = down ? 'grayscale(1)' : 'none'; o.ic.style.opacity = down ? 0.55 : 1;
         o.nm.style.textShadow = g ? `${-j * 0.3}px 0 rgba(229,57,47,.8), ${j * 0.3}px 0 rgba(47,107,255,.8)` : 'none';
       });
