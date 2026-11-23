@@ -1250,6 +1250,64 @@
     };
   };
 
+  // ----------------------------------------------------------- trTakeover ---
+  // M&A hook: BREAKING tag, buyer tile (left) and target tile (right), a
+  // "KAUFT" arrow shoots across, the target slides into the buyer and gets
+  // swallowed (shrinks + flash), then the deal value counts up, pills and a
+  // stamp land. Everything stays inside the card.
+  S.trTakeover = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '10px 22px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '32px', fontWeight: 900, letterSpacing: '2px' } }, card);
+    const dot = C.h('span', { style: { width: '16px', height: '16px', borderRadius: '50%', background: '#fff' } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'MEGA-ÜBERNAHME'}</span>`);
+    if (p.title) { const h = C.h('div', { style: { fontSize: (p.size || 60) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1.5px', lineHeight: 1.06, margin: '18px 0 20px' } }, card); h.innerHTML = T.rich(p.title, RD); }
+    const row = C.h('div', { style: { position: 'relative', height: '330px' } }, card); row.dataset.own = 1;
+    const tile = (b, left, lab) => {
+      const br = C.brand(b);
+      const d = C.h('div', { style: { position: 'absolute', top: '10px', [left ? 'left' : 'right']: '0', width: '360px', height: '300px', borderRadius: '34px', background: '#fff', border: `6px solid ${br.color}`, boxShadow: '0 14px 30px rgba(0,0,0,.10)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '14px' } }, row);
+      C.chip(b, 130, d);
+      C.h('div', { style: { fontSize: '44px', fontWeight: 900, color: INK, letterSpacing: '-1px' } }, d, br.name || '');
+      C.h('div', { style: { fontSize: '26px', fontWeight: 800, color: '#fff', background: br.color, padding: '6px 16px', borderRadius: '10px' } }, d, lab);
+      return d;
+    };
+    const buyer = tile(p.buyer, true, p.buyerLabel || 'KÄUFER'), target = tile(p.target, false, p.targetLabel || 'ZIEL');
+    const arrow = C.h('div', { style: { position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', padding: '12px 22px', borderRadius: '18px', background: INK, color: '#fff', fontSize: '38px', fontWeight: 900, whiteSpace: 'nowrap', zIndex: 2, opacity: 0 } }, row, p.verb || 'KAUFT ➜');
+    const flash = C.h('div', { style: { position: 'absolute', left: '0', top: '10px', width: '360px', height: '300px', borderRadius: '34px', background: '#fff', opacity: 0, zIndex: 3 } }, row);
+    const num = C.h('div', { style: { fontSize: (p.valueSize || 150) + 'px', fontWeight: 900, color: p.valueColor ? C.color(p.valueColor) : INK, letterSpacing: '-4px', lineHeight: 1.05, marginTop: '14px', whiteSpace: 'nowrap', transformOrigin: '0 50%' } }, card, '');
+    if (p.sub) { const s = C.h('div', { style: { fontSize: '36px', fontWeight: 800, color: '#4b5058', marginTop: '6px' } }, card); s.innerHTML = T.rich(p.sub, RD); }
+    const pills = p.pills ? T.pills(card, p.pills, true) : [];
+    const stamp = stampEl(card, p.stamp || 'MEGA-DEAL', RD, 0, 0, p.stampSize || 64);
+    stamp.style.right = '40px'; stamp.style.left = 'auto'; stamp.style.bottom = (p.stampBottom ?? 150) + 'px'; stamp.style.top = 'auto';
+    const inAt = 0.25, arrowAt = p.arrowAt ?? 1.0, eatAt = p.eatAt ?? 1.7, numAt = p.valueAt ?? 2.4, pillsAt = p.pillsAt ?? 3.4, stampAt = p.stampAt ?? 4.2;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('alert', 0.15, 0.45); ctx.cue('pop', inAt + 0.1, 0.5); ctx.cue('pop', inAt + 0.35, 0.5);
+    ctx.cue('whoosh', arrowAt, 0.6); ctx.cue('whoosh-down', eatAt, 0.6); ctx.cue('impact', eatAt + 0.45, 0.6);
+    T.countSfx(ctx, p.value || '43,9 Mrd. $', numAt, 1.1); ctx.cue('cash', numAt + 1.1, 0.6);
+    T.pillSfx(ctx, pills.length, pillsAt, 0.18);
+    ctx.cue('stamp', stampAt, 0.95);
+    return (t) => {
+      T.enter(card, t);
+      const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      const kb = C.k(t, inAt, 0.45, 'back'), kt = C.k(t, inAt + 0.25, 0.45, 'back');
+      const ke = C.k(t, eatAt, 0.55, 'in');
+      buyer.style.transform = `scale(${Math.max(0, kb) * (1 + 0.08 * Math.sin(Math.min(1, C.k(t, eatAt + 0.45, 0.4)) * Math.PI))})`;
+      target.style.transform = `translateX(${-ke * 544}px) scale(${Math.max(0, kt) * (1 - 0.75 * ke)}) rotate(${-ke * 25}deg)`;
+      target.style.opacity = ke >= 1 ? 0 : 1;
+      const ka = C.k(t, arrowAt, 0.35, 'back');
+      arrow.style.opacity = t < eatAt + 0.2 ? C.k(t, arrowAt, 0.1) : Math.max(0, 1 - C.k(t, eatAt + 0.2, 0.25));
+      arrow.style.transform = `translate(-50%,-50%) scale(${Math.max(0, ka)}) translateX(${Math.sin(t * 10) * 4 * (t > arrowAt && t < eatAt ? 1 : 0)}px)`;
+      flash.style.opacity = Math.max(0, 0.85 - C.k(t, eatAt + 0.45, 0.35) * 0.85) * (t > eatAt + 0.45 ? 1 : 0);
+      num.style.opacity = C.k(t, numAt, 0.1);
+      num.textContent = C.count(p.value || '43,9 Mrd. $', C.k(t, numAt, 1.1, 'out'));
+      num.style.transform = `scale(${1 + 0.05 * Math.max(0, Math.sin((t - numAt - 1.1) * 6)) * (t > numAt + 1.1 && t < numAt + 1.7 ? 1 : 0)})`;
+      pills.forEach((el, i) => (el.style.transform = `scale(${Math.max(0, C.k(t, pillsAt + i * 0.18, 0.32, 'back'))})`));
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS)))}) rotate(-8deg)`;
+      const shake = (t > eatAt + 0.45 && t < eatAt + 0.7) || (t > stampAt && t < stampAt + 0.3) ? Math.sin(t * 80) * 8 : 0;
+      card.style.translate = `${shake}px 0`;
+    };
+  };
+
   // ------------------------------------------------------------- trDrain ---
   // Hook card for "money gone": live tag, title, a huge red number that
   // counts up while the card trembles, banknotes falling through the card,

@@ -1,0 +1,291 @@
+{
+ "name": "crowdstrike-zscaler",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trTakeover",
+   "duration": 7.0,
+   "script": "0:00 · Milliarden-Übernahme! CrowdStrike kauft Zscaler – für 43,9 Milliarden Dollar. Und nach der Nachricht schießt eine Aktie hoch, während die andere abstürzt.",
+   "params": {
+    "tag": "BREAKING · MEGA-ÜBERNAHME",
+    "title": "CrowdStrike *schluckt* Zscaler",
+    "buyer": "CRWD",
+    "target": "ZS",
+    "buyerLabel": "KÄUFER",
+    "targetLabel": "WIRD GEKAUFT",
+    "verb": "KAUFT ➜",
+    "value": "43,9 Mrd. $",
+    "valueSize": 150,
+    "pills": [
+     "reiner Aktiendeal",
+     "+34 % Prämie"
+    ],
+    "stamp": "MEGA-DEAL",
+    "stampSize": 62,
+    "stampBottom": 330
+   }
+  },
+  {
+   "id": "02",
+   "type": "trWarn",
+   "duration": 6.2,
+   "script": "0:07 · Und ja – CrowdStrike ist genau die Firma, deren fehlerhaftes Update im Sommer 2024 weltweit Millionen Windows-Rechner lahmgelegt hat.",
+   "params": {
+    "brand": "CRWD",
+    "context": "Rückblick · Juli 2024",
+    "tag": "Der Käufer",
+    "live": true,
+    "text": "Die Firma hinter dem\n*IT-Weltausfall* 2024",
+    "size": 58,
+    "sub": "Fehlerhaftes Update: *~8,5 Mio.* Windows-Rechner lahmgelegt.",
+    "pills": [
+     "Flughäfen",
+     "Banken",
+     "Kliniken"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "03",
+   "type": "trVersus",
+   "duration": 8.4,
+   "script": "0:13 · Jetzt kauft sie Zscaler, den Spezialisten für Cloud- und Netzwerksicherheit. CrowdStrike schützt die Geräte, Zscaler die Verbindungen dazwischen. Zusammen soll daraus eine Sicherheitsplattform für das KI-Zeitalter werden.",
+   "params": {
+    "title": "Warum *zusammen*?",
+    "titleAccent": "#2f6bff",
+    "left": {
+     "brand": "CRWD",
+     "name": "CrowdStrike",
+     "sub": "schützt die Geräte",
+     "value": "Endpoint"
+    },
+    "right": {
+     "brand": "ZS",
+     "name": "Zscaler",
+     "sub": "schützt die Verbindungen",
+     "value": "Cloud & Netz"
+    },
+    "at": [
+     0.4,
+     0.9
+    ],
+    "vsAt": 1.4
+   }
+  },
+  {
+   "id": "04",
+   "type": "trBars",
+   "duration": 6.4,
+   "script": "0:21 · Der Deal ist sogar größer als Googles Wiz-Übernahme für 32 Milliarden – und damit einer der größten Cybersecurity-Deals überhaupt.",
+   "params": {
+    "title": "Größer als *Google*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "name": "CrowdStrike → Zscaler (2026)",
+      "brand": "CRWD",
+      "value": 43.9,
+      "label": "43,9 Mrd. $",
+      "at": 1.2,
+      "color": "#2f6bff",
+      "barColor": "#2f6bff"
+     },
+     {
+      "name": "Google → Wiz (2025)",
+      "brand": "GOOGL",
+      "value": 32,
+      "label": "32 Mrd. $",
+      "at": 2.4,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     }
+    ],
+    "max": 50,
+    "note": "Übernahmewerte in Mrd. US-Dollar"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 7.2,
+   "script": "0:28 · So läuft's: Es fließt kein Bargeld. Zscaler-Aktionäre bekommen 1,135 CrowdStrike-Aktien pro Aktie – rechnerisch rund 260 Dollar, 34 Prozent Aufschlag.",
+   "params": {
+    "title": "So läuft der *Deal*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "*Kein Bargeld* – nur Aktien",
+      "sub": "reiner Aktientausch",
+      "mark": "⇄",
+      "markColor": "#2f6bff",
+      "at": 1.4
+     },
+     {
+      "text": "*1,135* CrowdStrike-Aktien",
+      "sub": "pro Zscaler-Aktie",
+      "mark": "×",
+      "markColor": "#2f6bff",
+      "at": 3.0
+     },
+     {
+      "text": "≈ *260,41 $* je Aktie",
+      "sub": "+34 % zum Schlusskurs vom 20.11.",
+      "mark": "$",
+      "markColor": "#0d7d4d",
+      "at": 4.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trVersus",
+   "duration": 6.6,
+   "script": "0:35 · Und jetzt wird's spannend für dein Depot: Zscaler springt vorbörslich um bis zu 18 Prozent. CrowdStrike verliert rund 8 Prozent.",
+   "params": {
+    "title": "Gewinner & *Verlierer*",
+    "titleAccent": "#e5392f",
+    "left": {
+     "brand": "ZS",
+     "name": "Zscaler",
+     "sub": "vorbörslich",
+     "value": "bis +18 %"
+    },
+    "right": {
+     "brand": "CRWD",
+     "name": "CrowdStrike",
+     "sub": "vorbörslich",
+     "value": "~ −8 %",
+     "tone": "red"
+    },
+    "at": [
+     0.6,
+     1.6
+    ],
+    "vsAt": 2.2
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 6.2,
+   "script": "0:41 · Warum? Anleger fürchten die Verwässerung: neue Aktien für 44 Milliarden – und der Abschluss dauert womöglich bis Ende 2027.",
+   "params": {
+    "title": "Warum CrowdStrike *fällt*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Verwässerung*",
+      "sub": "Neue Aktien für ~44 Mrd. $",
+      "value": "▼",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "Abschluss erst *2. Hälfte GJ 2028*",
+      "sub": "also frühestens Mitte bis Ende 2027",
+      "value": "⏳",
+      "ok": false,
+      "at": 3.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:48 · CrowdStrike hält dagegen: 500 Millionen Dollar Einsparungen pro Jahr – und rund 8.000 Zscaler-Kunden, die noch keine CrowdStrike-Kunden sind.",
+   "params": {
+    "title": "Das *Argument*",
+    "accent": "#0d7d4d",
+    "label": "geplante Einsparungen pro Jahr",
+    "logos": [
+     "CRWD",
+     "ZS"
+    ],
+    "value": "500 Mio. $",
+    "size": 150,
+    "at": 1.2,
+    "countDur": 1.0,
+    "second": {
+     "value": "+ ~8.000 neue Kunden",
+     "size": 58,
+     "at": 3.2
+    },
+    "pills": [
+     "in 18–24 Monaten"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "09",
+   "type": "trStrike",
+   "duration": 8.4,
+   "script": "0:54 · Aber Achtung: Weil Zscaler-Aktionäre mit CrowdStrike-Aktien bezahlt werden, fällt der Wert des Angebots mit. Nach dem Kursrutsch sind es nicht mehr 260, sondern eher rund 240 Dollar.",
+   "params": {
+    "brand": "ZS",
+    "context": "Der Haken",
+    "title": "Angebot *schrumpft* mit",
+    "accent": "#e5392f",
+    "old": "260,41 $ pro Aktie",
+    "new": "Jetzt eher *~240 $*",
+    "newTone": "red",
+    "newSize": 68,
+    "strikeAt": 3.6,
+    "newAt": 4.4,
+    "sub": "1,135 × CrowdStrike-Kurs (~211 $)",
+    "pills": [
+     "Aktien statt Bargeld"
+    ],
+    "pillsAt": 5.8
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 7.0,
+   "script": "1:02 · Also: Wer profitiert? Zscaler-Aktionäre haben ihre Prämie schon fast eingesammelt. Bei CrowdStrike entscheidet, ob die Fusion aufgeht. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Wer *profitiert*?",
+    "left": {
+     "label": "Zscaler",
+     "title": "Prämie fast drin",
+     "result": "Restlücke klein",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "CrowdStrike",
+     "title": "Fusion muss klappen",
+     "result": "Risiko + Verwässerung",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 4.4,
+   "script": "1:09 · Top-Deal oder zu teuer? Schreib's in die Kommentare.",
+   "params": {
+    "question": "CrowdStrike + Zscaler: *Top-Deal*?",
+    "options": [
+     "Genialer Deal",
+     "Viel zu teuer",
+     "Ich kaufe Zscaler"
+    ],
+    "note": "Keine Anlageberatung · Stand: 23. November 2026"
+   }
+  }
+ ]
+}
