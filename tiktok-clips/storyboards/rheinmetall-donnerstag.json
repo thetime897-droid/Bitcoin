@@ -1,0 +1,333 @@
+{
+ "name": "rheinmetall-donnerstag",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trCountdown",
+   "duration": 6.4,
+   "script": "0:00 · Donnerstag könnte für Rheinmetall-Aktionäre zum Schicksalstag werden. Denn dann könnte ein 50-Milliarden-Versprechen fallen.",
+   "params": {
+    "tag": "COUNTDOWN",
+    "brand": "RHM",
+    "name": "Rheinmetall",
+    "title": "Countdown bis *Donnerstag*",
+    "start": [
+     2,
+     9,
+     14,
+     37
+    ],
+    "from": "Heute",
+    "to": "Do., 26. November",
+    "question": "50-Mrd.-Ziel: *fällt es?*",
+    "questionAt": 2.4,
+    "stamp": "SCHICKSALSTAG",
+    "dur": 6.4,
+    "stampSize": 60,
+    "stampRow": true,
+    "stampHalf": 220
+   }
+  },
+  {
+   "id": "02",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:06 · Das Versprechen: Bis 2030 rund 50 Milliarden Euro Umsatz – bei über 20 Prozent Marge. Damit hat Rheinmetall die Rüstungs-Rally befeuert.",
+   "params": {
+    "title": "Das *Versprechen*",
+    "accent": "#2f6bff",
+    "label": "Umsatzziel 2030",
+    "logos": [
+     "RHM"
+    ],
+    "value": "~50 Mrd. €",
+    "size": 160,
+    "at": 1.4,
+    "countDur": 1.0,
+    "second": {
+     "value": "Marge: über 20 %",
+     "size": 60,
+     "at": 3.2
+    },
+    "pills": [
+     "Treibstoff der Rüstungs-Rally"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "03",
+   "type": "trChart",
+   "duration": 7.6,
+   "script": "0:12 · Doch die Aktie ist abgestürzt: rund 65 Prozent unter dem Rekord – allein im letzten Monat rund 30 Prozent minus. Zwei Prognosesenkungen, dazu Friedenshoffnungen für die Ukraine.",
+   "params": {
+    "ticker": "RHM",
+    "name": "Rheinmetall · seit Januar",
+    "price": "~693 €",
+    "countPrice": false,
+    "priceFrom": 1966,
+    "change": "-65 % vom Rekord",
+    "range": "1J",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     1966,
+     1920,
+     1880,
+     1910,
+     1850,
+     1790,
+     1820,
+     1760,
+     1700,
+     1650,
+     1690,
+     1720,
+     1640,
+     1580,
+     1620,
+     1560,
+     1500,
+     1450,
+     1480,
+     1520,
+     1430,
+     1380,
+     1400,
+     1330,
+     1270,
+     1300,
+     1220,
+     1180,
+     1150,
+     1090,
+     1120,
+     1050,
+     990,
+     1010,
+     950,
+     900,
+     930,
+     880,
+     840,
+     810,
+     780,
+     806,
+     760,
+     720,
+     740,
+     700,
+     693.4
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.8,
+    "threshold": {
+     "value": 1966,
+     "label": "Rekord Jan.: 1.966 €",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 4.2,
+   "script": "0:20 · Und jetzt kommt der Kapitalmarkttag in Hamburg. Donnerstag und Freitag.",
+   "params": {
+    "brand": "RHM",
+    "text": "Kapitalmarkttag:\n*Hamburg*",
+    "accent": "#e5392f",
+    "size": 84,
+    "pills": [
+     "Do. 26.11.",
+     "Fr. 27.11."
+    ],
+    "pillsAt": 1.6
+   }
+  },
+  {
+   "id": "05",
+   "type": "trBars",
+   "duration": 9.0,
+   "script": "0:24 · Was die Analysten erwarten: Berenberg rechnet mit 14 Prozent weniger Umsatzziel. Citi sieht den Konsens 16 Prozent unter den Zielen. Und laut Barclays preist die Börse nur noch rund 30 Milliarden ein.",
+   "params": {
+    "title": "Was *erwartet* wird",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "name": "Bisheriges Ziel 2030",
+      "brand": "RHM",
+      "value": 50,
+      "label": "~50 Mrd. €",
+      "at": 1.2,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Berenberg: −14 %",
+      "value": 43,
+      "label": "~43 Mrd. €",
+      "at": 2.4,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     },
+     {
+      "name": "Konsens laut Citi: −16 %",
+      "value": 42,
+      "label": "~42 Mrd. €",
+      "at": 4.0,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     },
+     {
+      "name": "Eingepreist laut Barclays",
+      "value": 30,
+      "label": "~30 Mrd. €",
+      "at": 5.8,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     }
+    ],
+    "max": 55,
+    "note": "Umsatz 2030 · Analysten-Schätzungen, gerundet"
+   }
+  },
+  {
+   "id": "06",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:33 · Dazu kommt ein Problem, über das kaum einer spricht: Nach neun Monaten liegt der operative Free Cashflow bei minus 1,7 Milliarden Euro.",
+   "params": {
+    "brand": "RHM",
+    "context": "Kaum beachtet",
+    "tag": "Cashflow",
+    "live": true,
+    "text": "Free Cashflow:\n*−1,7 Mrd. €*",
+    "size": 66,
+    "sub": "operativ, nach *9 Monaten* 2026",
+    "pills": [
+     "Geld fließt ab"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "07",
+   "type": "trHeadline",
+   "duration": 4.2,
+   "script": "0:39 · Aber jetzt wird's paradox: Eine Zielsenkung muss gar nicht schlecht sein.",
+   "params": {
+    "brand": false,
+    "text": "Jetzt wird's *paradox*",
+    "accent": "#2f6bff",
+    "size": 90,
+    "pills": [
+     "Senkung ≠ Absturz?"
+    ],
+    "pillsAt": 1.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 8.6,
+   "script": "0:44 · Denn wenn die Börse nur 30 Milliarden einpreist und Rheinmetall zum Beispiel 40 liefert, könnte das sogar eine Erleichterungsrally auslösen. Fällt das Ziel deutlich tiefer, droht der nächste Absturz.",
+   "params": {
+    "title": "Zwei *Szenarien*",
+    "left": {
+     "label": "Besser als befürchtet",
+     "title": "z. B. 40 Mrd. €",
+     "result": "Erleichterungsrally?",
+     "good": true,
+     "at": 2.0
+    },
+    "right": {
+     "label": "Schlechter",
+     "title": "deutlich unter 30",
+     "result": "nächster Absturz?",
+     "good": false,
+     "at": 4.6
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trList",
+   "duration": 6.2,
+   "script": "0:52 · Die Kursziele gehen weit auseinander: Berenberg 900 Euro, Bernstein 950 – und Goldman bleibt bei Kaufen mit 1.350 Euro.",
+   "params": {
+    "title": "Kursziele *gespalten*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "*Berenberg* · Halten: 900 €",
+      "mark": "–",
+      "markColor": "#8b9099",
+      "at": 1.2
+     },
+     {
+      "text": "*Bernstein*: 950 €",
+      "mark": "–",
+      "markColor": "#8b9099",
+      "at": 2.4
+     },
+     {
+      "text": "*Goldman Sachs* · Kaufen: 1.350 €",
+      "mark": "✓",
+      "markColor": "#0d7d4d",
+      "at": 3.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 5.4,
+   "script": "0:59 · Also: Kaufen vor Donnerstag – oder erst die Zahlen abwarten? Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Vorher kaufen oder *abwarten*?",
+    "left": {
+     "label": "Vorher",
+     "title": "Chance auf Rally",
+     "result": "aber volles Risiko",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Abwarten",
+     "title": "Klarheit am Do.",
+     "result": "evtl. höherer Kurs",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:04 · Was glaubst du: Kappt Rheinmetall am Donnerstag das 50-Milliarden-Ziel? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Fällt das *50-Mrd.-Ziel*?",
+    "options": [
+     "Ja, deutlich",
+     "Nur leicht",
+     "Nein, es bleibt"
+    ],
+    "note": "Keine Anlageberatung · Stand: 24. November 2026"
+   }
+  }
+ ]
+}

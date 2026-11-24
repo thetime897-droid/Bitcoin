@@ -1,0 +1,284 @@
+{
+ "name": "nvidia-optionen-rekord",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 7.4,
+   "script": "0:00 · Aus 3,4 Millionen Dollar sollen an einem einzigen Wochenende über 300 Millionen geworden sein. Mit Nvidia-Optionen. Und das ist nicht mal der verrückteste Rekord.",
+   "params": {
+    "intro": {
+     "tag": "OPTIONS-WAHNSINN",
+     "text": "*3,4 Mio. $* → *300 Mio. $*?",
+     "sub": "an einem Wochenende",
+     "dur": 2.4,
+     "size": 78,
+     "green": true
+    },
+    "up": true,
+    "brand": "NVDA",
+    "name": "Nvidia",
+    "tag": "LOTTO-TRADE",
+    "title": "Aus *3,4 Mio. $* wurden",
+    "titleSize": 56,
+    "value": "308 Mio. $",
+    "size": 170,
+    "at": 0.3,
+    "countDur": 1.2,
+    "barFrom": "Freitag: 3,4 Mio. $",
+    "barTo": "Montag: ~308 Mio. $",
+    "fillFrom": 0.03,
+    "sub": "laut Bericht · *nicht bestätigt*",
+    "stamp": "×90",
+    "stampSize": 96,
+    "note": "💵"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trStat",
+   "duration": 5.6,
+   "script": "0:07 · Denn am Montag wurden über 11 Millionen Nvidia-Optionen gehandelt – so viele wie noch nie an einem einzigen Tag.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Allzeit-Rekord",
+    "label": "Optionskontrakte an einem Tag",
+    "icon": "🔥",
+    "value": "11 Mio.",
+    "size": 180,
+    "at": 1.2,
+    "countDur": 1.0,
+    "sub": "*so viele wie nie* zuvor"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trBars",
+   "duration": 6.2,
+   "script": "0:13 · Das ist mehr als beim größten Nasdaq-ETF mit rund 9 Millionen – und fast so viel wie beim S&P-500-ETF.",
+   "params": {
+    "title": "Mehr als der *Nasdaq-ETF*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "name": "S&P-500-ETF (SPY)",
+      "brand": "SPX",
+      "value": 14,
+      "label": "~14 Mio.",
+      "at": 1.2,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Nvidia",
+      "brand": "NVDA",
+      "value": 11,
+      "label": "11 Mio.",
+      "at": 2.4,
+      "color": "#0d7d4d"
+     },
+     {
+      "name": "Nasdaq-ETF (QQQ)",
+      "brand": "NDX",
+      "value": 9,
+      "label": "~9 Mio.",
+      "at": 3.6,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     }
+    ],
+    "max": 15,
+    "note": "gehandelte Optionskontrakte am 23.11.2026"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 4.0,
+   "script": "0:19 · Der Auslöser: Jensen Huang ist zurück als Nvidia-Chef.",
+   "params": {
+    "brand": "NVDA",
+    "text": "Huang ist *zurück*",
+    "accent": "#0d7d4d",
+    "size": 96,
+    "pills": [
+     "Auslöser"
+    ],
+    "pillsAt": 1.4
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 8.4,
+   "script": "0:23 · Die Aktie schoss um 31,5 Prozent auf 165 Dollar – der beste Tag seit 2003. Und rund 950 Milliarden Dollar Börsenwert kamen dazu. Rekord in der Börsengeschichte.",
+   "params": {
+    "title": "Der *Rekordtag*",
+    "accent": "#0d7d4d",
+    "label": "Nvidia-Aktie am Montag",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "+31,5 %",
+    "size": 170,
+    "at": 1.2,
+    "countDur": 1.0,
+    "second": {
+     "value": "+~950 Mrd. $ Börsenwert",
+     "size": 56,
+     "at": 3.4
+    },
+    "pills": [
+     "bester Tag seit 2003",
+     "Dollar-Rekord"
+    ],
+    "pillsAt": 5.2
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 8.8,
+   "script": "0:31 · Kurz erklärt: Eine Call-Option ist eine Wette auf steigende Kurse. Wer am Freitag Calls mit 160 Dollar Basispreis gekauft hat, zahlte fast nichts – denn die Aktie stand da bei 125 Dollar.",
+   "params": {
+    "title": "So funktioniert der *Trade*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "*Call* = Wette auf steigende Kurse",
+      "sub": "Recht, zu einem festen Preis zu kaufen",
+      "mark": "📈",
+      "markColor": "#2f6bff",
+      "at": 1.6
+     },
+     {
+      "text": "Basispreis *160 $*, Verfall Montag",
+      "sub": "Aktie am Freitag: 125,53 $",
+      "mark": "🎯",
+      "markColor": "#2f6bff",
+      "at": 4.0
+     },
+     {
+      "text": "Kostete daher *fast nichts*",
+      "sub": "wie ein Lottoschein",
+      "mark": "🎟️",
+      "markColor": "#2f6bff",
+      "at": 6.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trWarn",
+   "duration": 6.2,
+   "script": "0:40 · Und genau deshalb konnte daraus so viel werden. Aber Vorsicht: Der Riesengewinn ist bisher nur eine Einzelmeldung – und nicht bestätigt.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Vorsicht",
+    "tag": "Unbestätigt",
+    "live": true,
+    "text": "Einzelmeldung –\n*nicht bestätigt*",
+    "size": 64,
+    "sub": "Wer dahintersteckt, ist *unbekannt*.",
+    "pills": [
+     "laut Bericht"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
+   "id": "08",
+   "type": "trBars",
+   "duration": 6.2,
+   "script": "0:46 · Und nicht alle haben auf die Rakete gesetzt: 6,7 Millionen Calls – aber auch 4,3 Millionen Puts, also Wetten auf fallende Kurse.",
+   "params": {
+    "title": "Calls vs. *Puts*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "name": "Calls (steigende Kurse)",
+      "brand": "NVDA",
+      "value": 6.7,
+      "label": "6,7 Mio.",
+      "at": 1.4,
+      "color": "#0d7d4d"
+     },
+     {
+      "name": "Puts (fallende Kurse)",
+      "brand": "NVDA",
+      "value": 4.3,
+      "label": "4,3 Mio.",
+      "at": 3.0,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     }
+    ],
+    "max": 8,
+    "note": "gehandelte Kontrakte am Rekordtag"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.0,
+   "script": "0:52 · Und am Dienstag? Vorbörslich rund 5 Prozent im Minus. Goldman Sachs sagt: Huangs Rückkehr beendet die Unsicherheit noch nicht.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Dienstag",
+    "tag": "Ernüchterung",
+    "text": "Vorbörslich *−5 %*",
+    "size": 72,
+    "sub": "Goldman: Rückkehr beendet die *Unsicherheit* nicht.",
+    "pills": [
+     "Goldman Sachs"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 7.0,
+   "script": "0:58 · Die Wahrheit über solche Lotto-Optionen: Meistens verfallen sie wertlos – Totalverlust. Für einen Gewinner gibt es unzählige Verlierer. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Die *Wahrheit*",
+    "left": {
+     "label": "Selten",
+     "title": "Riesengewinn",
+     "result": "Einzelfall",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "Meistens",
+     "title": "wertlos verfallen",
+     "result": "Totalverlust",
+     "good": false,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 4.8,
+   "script": "1:05 · Würdest du so eine Wette wagen – oder lieber die Aktie? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Lotto-Option oder *Aktie*?",
+    "options": [
+     "🎟️ Option – all in",
+     "📈 Lieber die Aktie",
+     "🙅 Weder noch"
+    ],
+    "note": "Keine Anlageberatung · Stand: 24. November 2026"
+   }
+  }
+ ]
+}

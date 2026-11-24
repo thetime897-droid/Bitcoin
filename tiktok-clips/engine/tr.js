@@ -1308,6 +1308,68 @@
     };
   };
 
+  // ---------------------------------------------------------- trCountdown ---
+  // Ticking countdown hook: red live tag + brand, title, four clock tiles
+  // (Tage/Std/Min/Sek) whose seconds run down live (with a tick each second
+  // and a short card pulse), a progress bar burning down, a "fällt es?" line
+  // with a strike-able target and a stamp. All inside the card.
+  S.trCountdown = (st, p, ctx) => {
+    const card = T.card(st, { pad: 42, ...p.card });
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', gap: '16px' } }, card);
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '10px 22px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '30px', fontWeight: 900, letterSpacing: '2px' } }, head);
+    const dot = C.h('span', { style: { width: '16px', height: '16px', borderRadius: '50%', background: '#fff' } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'COUNTDOWN'}</span>`);
+    if (p.brand) { const b = C.h('div', { class: 'ctr', style: { gap: '12px' } }, head); C.chip(p.brand, 64, b); C.h('div', { style: { fontSize: '34px', fontWeight: 900, color: INK } }, b, p.name || C.brand(p.brand).name); }
+    const hl = C.h('div', { style: { fontSize: (p.size || 64) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1.5px', lineHeight: 1.06, margin: '20px 0 24px' } }, card);
+    hl.innerHTML = T.rich(p.title || '', RD);
+    const clock = C.h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '16px' } }, card); clock.dataset.own = 1;
+    const labs = p.labels || ['TAGE', 'STD', 'MIN', 'SEK'];
+    const tiles = labs.map((l) => {
+      const d = C.h('div', { style: { borderRadius: '26px', background: INK, padding: '20px 0 14px', textAlign: 'center', boxShadow: 'inset 0 -10px 0 rgba(255,255,255,.06)' } }, clock);
+      const n = C.h('div', { style: { fontSize: '118px', fontWeight: 900, color: '#fff', lineHeight: 1, fontVariantNumeric: 'tabular-nums', letterSpacing: '-2px' } }, d, '00');
+      C.h('div', { style: { fontSize: '24px', fontWeight: 800, color: '#9aa0a8', letterSpacing: '3px', marginTop: '8px' } }, d, l);
+      return { d, n };
+    });
+    const track = C.h('div', { style: { height: '22px', borderRadius: '11px', background: '#e6e8eb', marginTop: '22px', overflow: 'hidden' } }, card);
+    const fill = C.h('div', { style: { height: '100%', width: '100%', borderRadius: '11px', background: `linear-gradient(90deg, ${RD}, #ff8a3d)` } }, track);
+    const ev = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', fontSize: '30px', fontWeight: 800, color: '#4b5058', marginTop: '12px' } }, card);
+    ev.innerHTML = `<span>${p.from || 'Heute'}</span><span style="color:${RD}">${p.to || 'Donnerstag'}</span>`;
+    let q;
+    if (p.question) { q = C.h('div', { style: { fontSize: (p.qSize || 52) + 'px', fontWeight: 900, color: INK, marginTop: '20px', letterSpacing: '-1px', opacity: 0 } }, card); q.innerHTML = T.rich(p.question, RD); }
+    if (p.stampRow) C.h('div', { style: { height: (p.stampRow === true ? 110 : p.stampRow) + 'px' } }, card);
+    const stamp = stampEl(card, p.stamp || 'SCHICKSALSTAG', RD, 0, 0, p.stampSize || 64);
+    stamp.style.right = '44px'; stamp.style.left = 'auto';
+    if (p.stampRow) { stamp.style.top = 'auto'; stamp.style.bottom = '34px'; stamp.style.right = 'auto'; stamp.style.left = '50%'; stamp.style.marginLeft = '-' + (p.stampHalf || 190) + 'px'; } else stamp.style.top = (p.stampTop ?? 150) + 'px';
+    const start = (p.start || [2, 9, 14, 37]).slice(), speed = p.speed ?? 1;
+    const total0 = ((start[0] * 24 + start[1]) * 60 + start[2]) * 60 + start[3];
+    const qAt = p.questionAt ?? 2.4, stampAt = p.stampAt ?? 3.6;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('alert', 0.2, 0.45);
+    for (let s = 1; s < (p.dur || 6); s += 1 / speed) ctx.cue('tick', s, 0.55);
+    if (q) { ctx.cue('whoosh', qAt - 0.1, 0.4); ctx.cue('pop', qAt, 0.5); }
+    ctx.cue('stamp', stampAt, 0.95); ctx.cue('downer', stampAt + 0.1, 0.35);
+    const pad = (v) => String(Math.max(0, Math.floor(v))).padStart(2, '0');
+    return (t) => {
+      T.enter(card, t);
+      const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      const left = total0 - Math.floor(Math.max(0, t - 0.3) * speed);
+      const v = [Math.floor(left / 86400), Math.floor(left / 3600) % 24, Math.floor(left / 60) % 60, left % 60];
+      tiles.forEach((o, i) => {
+        o.n.textContent = pad(v[i]);
+        o.d.style.transform = `scale(${Math.max(0, C.k(t, 0.25 + i * 0.1, 0.4, 'back'))})`;
+      });
+      const fr = (t * speed) % 1, beat = fr < 0.15 ? 1 - fr / 0.15 : 0;
+      tiles[3].d.style.background = beat > 0 && t > 0.6 ? RD : INK;
+      tiles[3].n.style.transform = `scale(${1 + 0.08 * beat})`;
+      fill.style.width = `${100 - 22 * C.k(t, 0.4, 5, 'out')}%`;
+      if (q) { q.style.opacity = C.k(t, qAt, 0.15); q.style.transform = `translateY(${(1 - C.k(t, qAt, 0.35, 'out')) * 30}px)`; }
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS)))}) rotate(-8deg)`;
+      const shake = t > stampAt && t < stampAt + 0.3 ? Math.sin(t * 80) * 8 : 0;
+      card.style.translate = `${shake}px 0`;
+    };
+  };
+
   // ------------------------------------------------------------- trDrain ---
   // Hook card for "money gone": live tag, title, a huge red number that
   // counts up while the card trembles, banknotes falling through the card,
