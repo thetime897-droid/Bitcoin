@@ -1,0 +1,335 @@
+{
+ "name": "trump-zoelle-14-laender",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trTariff",
+   "duration": 7.6,
+   "script": "0:00 · Trump-Zölle: Das passiert jetzt mit dem Aktienmarkt. Die USA drohen 14 Volkswirtschaften mit neuen Zöllen – und die Tech-Börse rauscht zeitweise um 4 Prozent ab.",
+   "params": {
+    "tag": "BREAKING NEWS",
+    "flag": "🇺🇸 USA",
+    "title": "Trump-Zölle: *Das passiert jetzt*",
+    "size": 64,
+    "signTop": "NEUE ZÖLLE",
+    "sign": "bis 20 %",
+    "screen": "NASDAQ",
+    "badge": "−4 %",
+    "stamp": "ZOLL-HAMMER",
+    "ticker": [
+     "USA drohen 14 Volkswirtschaften mit Zöllen",
+     "China bis 20 %",
+     "EU 15 %",
+     "Nasdaq zeitweise −4 %",
+     "Chip-Aktien unter Druck"
+    ]
+   }
+  },
+  {
+   "id": "02",
+   "type": "trOutage",
+   "duration": 6.2,
+   "script": "0:07 · Betroffen sind unter anderem China, die EU, Japan, Südkorea, Taiwan, Indien – und sogar die Schweiz.",
+   "params": {
+    "tag": "14 VOLKSWIRTSCHAFTEN",
+    "title": "Wer *getroffen* wird",
+    "services": [
+     {
+      "icon": "🇨🇳",
+      "name": "China",
+      "bad": "bis 20 %"
+     },
+     {
+      "icon": "🇪🇺",
+      "name": "EU",
+      "bad": "15 %"
+     },
+     {
+      "icon": "🇯🇵",
+      "name": "Japan",
+      "bad": "ZOLL"
+     },
+     {
+      "icon": "🇰🇷",
+      "name": "Südkorea",
+      "bad": "ZOLL"
+     },
+     {
+      "icon": "🇮🇳",
+      "name": "Indien",
+      "bad": "ZOLL"
+     },
+     {
+      "icon": "🇨🇭",
+      "name": "Schweiz",
+      "bad": "ZOLL"
+     }
+    ],
+    "flipAt": 0.9,
+    "step": 0.4,
+    "okText": "● Handel",
+    "badText": "ZOLL",
+    "stamp": "+ 8 WEITERE",
+    "stampSize": 64
+   }
+  },
+  {
+   "id": "03",
+   "type": "trBars",
+   "duration": 7.0,
+   "script": "0:13 · China soll bis zu 20 Prozent zahlen – auf manche Waren kämen dann insgesamt über 40 Prozent. Für die EU sind 15 Prozent im Gespräch.",
+   "params": {
+    "title": "Die *Zollsätze*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "name": "China: neuer Zoll",
+      "brand": {
+       "name": "China",
+       "glyph": "CN",
+       "color": "#de2910"
+      },
+      "value": 20,
+      "label": "bis 20 %",
+      "at": 1.4,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     },
+     {
+      "name": "China: gesamt auf manche Waren",
+      "brand": {
+       "name": "China",
+       "glyph": "CN",
+       "color": "#de2910"
+      },
+      "value": 40,
+      "label": "über 40 %",
+      "at": 3.0,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     },
+     {
+      "name": "EU",
+      "brand": {
+       "name": "EU",
+       "glyph": "EU",
+       "color": "#003399"
+      },
+      "value": 15,
+      "label": "15 %",
+      "at": 4.6,
+      "color": "#2f6bff"
+     }
+    ],
+    "max": 45,
+    "note": "Vorschlag nach Section 301 · noch nicht in Kraft"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 3.4,
+   "script": "0:20 · Aber warum gerade jetzt? Hier wird's spannend.",
+   "params": {
+    "brand": false,
+    "text": "Warum *gerade jetzt*?",
+    "accent": "#2f6bff",
+    "size": 92
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 9.0,
+   "script": "0:24 · Im Februar hat der Oberste Gerichtshof der USA Trumps weltweite Zölle gekippt. Jetzt nutzt die Regierung einen anderen Hebel – ein Handelsgesetz von 1974 – um die verlorenen Einnahmen zurückzuholen.",
+   "params": {
+    "title": "Der *Trick* dahinter",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Feb. 2026: *Supreme Court* kippt Zölle",
+      "sub": "Notstands-Zölle waren rechtswidrig",
+      "value": "⚖️",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "Neuer Hebel: *Section 301*",
+      "sub": "Handelsgesetz von 1974",
+      "mark": "📜",
+      "markColor": "#2f6bff",
+      "at": 4.0
+     },
+     {
+      "text": "Ziel: verlorene *Einnahmen* zurück",
+      "sub": "Begründung: Überkapazitäten",
+      "mark": "💰",
+      "markColor": "#2f6bff",
+      "at": 6.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trWarn",
+   "duration": 6.6,
+   "script": "0:33 · Und für China gibt's eine Drohung obendrauf: Hält Peking den Handelsfrieden nicht ein, könnten sich die Zölle auf 40 Prozent verdoppeln.",
+   "params": {
+    "brand": {
+     "name": "USA",
+     "glyph": "US",
+     "color": "#1c3d6e"
+    },
+    "context": "Drohung",
+    "tag": "China",
+    "live": true,
+    "text": "20 % → *40 %*?",
+    "size": 84,
+    "sub": "falls China den *Handelsfrieden* bricht",
+    "pills": [
+     "Verdopplung möglich"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "07",
+   "type": "trBars",
+   "duration": 8.4,
+   "script": "0:39 · Die Börse reagiert sofort: Der Nasdaq fällt zeitweise rund 4 Prozent, Chip-Aktien sogar um fast 7 Prozent. Auch Nvidia rutscht ab – nach dem Rekordsprung vom Montag.",
+   "params": {
+    "title": "Die Börse *reagiert*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "name": "S&P 500 (zeitweise)",
+      "brand": "SPX",
+      "value": 2.9,
+      "label": "−2,9 %",
+      "at": 1.2,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     },
+     {
+      "name": "Nasdaq (zeitweise)",
+      "brand": "NDX",
+      "value": 4.2,
+      "label": "−4,2 %",
+      "at": 2.4,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     },
+     {
+      "name": "Chip-ETF (SMH)",
+      "brand": "NVDA",
+      "value": 6.9,
+      "label": "−6,9 %",
+      "at": 3.8,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     }
+    ],
+    "max": 8,
+    "note": "Intraday-Werte 25.11.2026 · auch KI-Ausverkauf"
+   }
+  },
+  {
+   "id": "08",
+   "type": "trList",
+   "duration": 5.6,
+   "script": "0:48 · Die EU will die Pläne prüfen – und pocht auf die vereinbarte Obergrenze von 15 Prozent.",
+   "params": {
+    "title": "Die *EU* reagiert",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Pläne werden *geprüft*",
+      "sub": "EU-Kommission",
+      "mark": "🔍",
+      "markColor": "#2f6bff",
+      "at": 1.2
+     },
+     {
+      "text": "Obergrenze *15 %* gilt",
+      "sub": "aus dem Handelsabkommen",
+      "mark": "🛡️",
+      "markColor": "#2f6bff",
+      "at": 2.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "09",
+   "type": "trStrike",
+   "duration": 5.8,
+   "script": "0:53 · Wichtig: Noch gilt nichts. Erst gibt es Anhörungen – frühestens im Januar könnten die Zölle kommen.",
+   "params": {
+    "brand": {
+     "name": "USA",
+     "glyph": "US",
+     "color": "#1c3d6e"
+    },
+    "context": "Wichtig",
+    "title": "Noch gilt *nichts*",
+    "accent": "#0d7d4d",
+    "old": "Zölle ab sofort",
+    "new": "frühestens *Januar*",
+    "newTone": "green",
+    "newSize": 70,
+    "strikeAt": 1.8,
+    "newAt": 2.6,
+    "pills": [
+     "Anhörungen",
+     "Kommentarfrist"
+    ],
+    "pillsAt": 3.8
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.4,
+   "script": "0:59 · Also: Panik oder Kaufchance? Zölle sind erst angekündigt – aber die Börse handelt Angst sofort. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Panik oder *Kaufchance*?",
+    "left": {
+     "label": "Chance",
+     "title": "Nur Vorschlag",
+     "result": "frühestens Januar",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Panik",
+     "title": "Börse handelt Angst",
+     "result": "Tech zeitweise −4 %",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.2,
+   "script": "1:06 · Was glaubst du: Kommen die Zölle wirklich – oder knickt Trump wieder ein? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Kommen die *Zölle* wirklich?",
+    "options": [
+     "Ja, voll",
+     "Trump knickt ein",
+     "Nur teilweise"
+    ],
+    "note": "Keine Anlageberatung · Stand: 25. November 2026"
+   }
+  }
+ ]
+}

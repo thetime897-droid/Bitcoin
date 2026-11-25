@@ -1370,6 +1370,98 @@
     };
   };
 
+  // ------------------------------------------------------------- trTariff ---
+  // Breaking-news hook with a friendly cartoon politician (blond swoosh,
+  // dark suit, long red tie) who pops up and slams a sign ("ZÖLLE bis
+  // 20 %") into frame, while a wall screen draws a red crash line and a
+  // red % badge pops. Stamp + news ticker. Everything stays in the stage.
+  S.trTariff = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', gap: '16px' } }, card);
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '10px 22px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '32px', fontWeight: 900, letterSpacing: '2px' } }, head);
+    const dot = C.h('span', { style: { width: '16px', height: '16px', borderRadius: '50%', background: '#fff' } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'BREAKING NEWS'}</span>`);
+    if (p.flag) C.h('div', { style: { fontSize: '30px', fontWeight: 900, color: INK } }, head, p.flag);
+    const hl = C.h('div', { style: { fontSize: (p.size || 66) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1.5px', lineHeight: 1.06, margin: '20px 0 22px' } }, card);
+    hl.innerHTML = T.rich(p.title || '', RD);
+    const SH = p.stageH || 560;
+    const stage = C.h('div', { style: { position: 'relative', height: SH + 'px', borderRadius: '30px', overflow: 'hidden', background: 'linear-gradient(180deg,#eef1f7 0%,#e2e7f1 75%,#d5dbe8 100%)' } }, card);
+    stage.dataset.own = 1;
+    C.h('div', { style: { position: 'absolute', left: 0, right: 0, bottom: 0, height: '80px', background: '#c9d1e0' } }, stage);
+    // wall screen with crash line
+    const scr = C.h('div', { style: { position: 'absolute', right: '28px', top: '150px', width: '330px', height: '230px', borderRadius: '20px', background: INK, boxShadow: '0 10px 24px rgba(0,0,0,.18)', overflow: 'hidden' } }, stage);
+    C.h('div', { style: { position: 'absolute', left: '18px', bottom: '12px', fontSize: '24px', fontWeight: 900, color: '#9aa0a8', letterSpacing: '2px' } }, scr, p.screen || 'NASDAQ');
+    const pts = [[10, 40], [45, 52], [80, 44], [115, 70], [150, 62], [185, 100], [220, 92], [255, 140], [290, 175], [320, 205]];
+    scr.insertAdjacentHTML('beforeend', `<svg viewBox="0 0 330 230" width="330" height="230" style="position:absolute;left:0;top:0"><polyline class="ln" points="${pts.map((q) => q.join(',')).join(' ')}" fill="none" stroke="${RD}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+    const ln = scr.querySelector('.ln'); const L = 520; ln.style.strokeDasharray = L; ln.style.strokeDashoffset = L;
+    const badge = C.h('div', { style: { position: 'absolute', right: '40px', top: '96px', padding: '10px 20px', borderRadius: '18px', background: RD, color: '#fff', fontSize: (p.badgeSize || 64) + 'px', fontWeight: 900, letterSpacing: '-1px', boxShadow: '0 10px 24px rgba(229,57,47,.35)', opacity: 0, transformOrigin: '100% 0' } }, stage, '');
+    // cartoon figure (original drawing, friendly caricature)
+    const fig = C.h('div', { style: { position: 'absolute', left: '40px', bottom: '30px', width: '300px', height: '470px' } }, stage);
+    fig.innerHTML = `<svg viewBox="0 0 300 470" width="300" height="470" style="overflow:visible">
+      <ellipse cx="150" cy="462" rx="100" ry="10" fill="rgba(0,0,0,.12)"/>
+      <rect x="108" y="336" width="38" height="112" rx="14" fill="#1c2a4a"/><rect x="154" y="336" width="38" height="112" rx="14" fill="#1c2a4a"/>
+      <ellipse cx="122" cy="450" rx="30" ry="12" fill="#0e0f12"/><ellipse cx="180" cy="450" rx="30" ry="12" fill="#0e0f12"/>
+      <g class="armL"><path d="M86 232 Q58 270 66 330" stroke="#1c2a4a" stroke-width="36" stroke-linecap="round" fill="none"/><circle cx="66" cy="340" r="18" fill="#f2b27c"/></g>
+      <path d="M80 222 Q150 194 220 222 L232 350 Q150 366 68 350 Z" fill="#1c2a4a"/>
+      <path d="M124 206 L150 250 L176 206 Z" fill="#fff"/>
+      <path d="M143 214 L157 214 L162 236 L156 330 L150 342 L144 330 L138 236 Z" fill="#d7261e"/>
+      <path d="M122 208 L98 236 L116 254 L142 248 Z" fill="#26375e"/><path d="M178 208 L202 236 L184 254 L158 248 Z" fill="#26375e"/>
+      <circle cx="190" cy="262" r="6" fill="#c9d1e0"/>
+      <g class="armR"><path d="M214 228 Q252 190 268 120" stroke="#1c2a4a" stroke-width="36" stroke-linecap="round" fill="none"/><circle cx="270" cy="108" r="20" fill="#f2b27c"/></g>
+      <rect x="132" y="178" width="36" height="34" rx="10" fill="#e8a36d"/>
+      <g class="head">
+        <ellipse cx="70" cy="122" rx="14" ry="20" fill="#e8a36d"/><ellipse cx="230" cy="122" rx="14" ry="20" fill="#e8a36d"/>
+        <ellipse cx="150" cy="118" rx="80" ry="84" fill="#f2b27c"/>
+        <path d="M66 104 Q60 40 128 30 Q206 18 238 70 Q248 92 236 104 Q220 74 176 70 Q206 58 196 46 Q160 70 104 72 Q80 78 74 110 Z" fill="#f3d27a"/>
+        <path d="M96 52 Q150 22 214 52" stroke="#e6bd55" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M98 100 Q118 90 138 98" stroke="#e6bd55" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M162 98 Q182 90 202 100" stroke="#e6bd55" stroke-width="8" stroke-linecap="round" fill="none"/>
+        <ellipse cx="118" cy="120" rx="10" ry="8" fill="#fff"/><ellipse cx="182" cy="120" rx="10" ry="8" fill="#fff"/>
+        <circle cx="120" cy="121" r="5" fill="#2b4a8a"/><circle cx="184" cy="121" r="5" fill="#2b4a8a"/>
+        <path d="M146 126 Q140 150 152 154" stroke="#d98f5c" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="100" cy="150" rx="14" ry="8" fill="rgba(229,57,47,.18)"/><ellipse cx="200" cy="150" rx="14" ry="8" fill="rgba(229,57,47,.18)"/>
+        <ellipse class="mouth" cx="150" cy="172" rx="16" ry="12" fill="#7a2a24"/>
+      </g></svg>`;
+    const armR = fig.querySelector('.armR'), headG = fig.querySelector('.head'), mouth = fig.querySelector('.mouth');
+    [armR, headG].forEach((g) => (g.style.transformBox = 'view-box'));
+    armR.style.transformOrigin = '214px 228px'; headG.style.transformOrigin = '150px 196px';
+    // sign
+    const sign = C.h('div', { style: { position: 'absolute', left: '268px', top: '24px', padding: '16px 26px', borderRadius: '20px', background: '#fff', border: `8px solid ${RD}`, textAlign: 'center', boxShadow: '0 12px 26px rgba(0,0,0,.18)', transformOrigin: '0 100%', opacity: 0 } }, stage);
+    C.h('div', { style: { fontSize: '30px', fontWeight: 900, color: INK, letterSpacing: '3px' } }, sign, p.signTop || 'ZÖLLE');
+    C.h('div', { style: { fontSize: '68px', fontWeight: 900, color: RD, letterSpacing: '-2px', lineHeight: 1 } }, sign, p.sign || 'bis 20 %');
+    const stamp = stampEl(stage, p.stamp || 'ZOLL-HAMMER', RD, 0, 0, p.stampSize || 58);
+    stamp.style.left = '50%'; stamp.style.top = (p.stampY || 86) + '%'; stamp.style.borderWidth = '7px';
+    const tk = C.h('div', { style: { position: 'relative', marginTop: '22px', height: '64px', borderRadius: '16px', overflow: 'hidden', background: INK } }, card);
+    const tkIn = C.h('div', { style: { position: 'absolute', left: 0, top: 0, height: '64px', lineHeight: '64px', whiteSpace: 'nowrap', color: '#fff', fontSize: '30px', fontWeight: 800 } }, tk);
+    const tkt = (p.ticker || ['USA kündigen neue Zölle an']).map((s) => `<span style="color:#ff5a4f">+++</span> ${s} `).join('');
+    tkIn.innerHTML = tkt + tkt + tkt;
+    const figAt = p.figAt ?? 0.35, signAt = p.signAt ?? 1.1, chartAt = p.chartAt ?? 1.8, badgeAt = p.badgeAt ?? 2.8, stampAt = p.stampAt ?? 3.6;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('alert', 0.15, 0.45); ctx.cue('pop', figAt + 0.1, 0.6); ctx.cue('whoosh-down', signAt - 0.05, 0.5); ctx.cue('impact', signAt + 0.25, 0.65);
+    ctx.cue('downer', chartAt, 0.5); ctx.cue('error', badgeAt, 0.45); ctx.cue('pop', badgeAt + 0.05, 0.5); ctx.cue('stamp', stampAt, 0.95);
+    return (t) => {
+      T.enter(card, t);
+      const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      tkIn.style.transform = `translateX(${-((t * 170) % (tkIn.scrollWidth / 3 || 900))}px)`;
+      const kf = C.k(t, figAt, 0.5, 'back');
+      fig.style.transform = `translateY(${(1 - Math.min(1, Math.max(0, kf))) * 480}px)`;
+      const talk = t > figAt + 0.4 ? Math.abs(Math.sin(t * 11)) : 0.3;
+      mouth.setAttribute('ry', 6 + 10 * talk);
+      headG.style.transform = `rotate(${Math.sin(t * 3.2) * 4}deg)`;
+      const ks = C.k(t, signAt, 0.35, 'back');
+      sign.style.opacity = C.k(t, signAt, 0.08);
+      sign.style.transform = `translateY(${(1 - Math.min(1, ks)) * -200}px) rotate(${-6 + Math.sin(t * 4) * 3 * (t > signAt + 0.4 ? 1 : 0)}deg)`;
+      armR.style.transform = `rotate(${t > signAt + 0.4 ? Math.sin(t * 4) * 4 : 0}deg)`;
+      ln.style.strokeDashoffset = L * (1 - C.k(t, chartAt, 1.0, 'out'));
+      const kb = C.k(t, badgeAt, 0.35, 'back');
+      badge.style.opacity = C.k(t, badgeAt, 0.1); badge.style.transform = `scale(${Math.max(0, kb)}) rotate(4deg)`;
+      badge.textContent = C.count(p.badge || '−4 %', C.k(t, badgeAt, 0.6, 'out'));
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `translate(-50%, -50%) scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS)))}) rotate(-7deg)`;
+      const shake = (t > signAt + 0.25 && t < signAt + 0.5) || (t > stampAt && t < stampAt + 0.3) ? Math.sin(t * 80) * 8 : 0;
+      card.style.translate = `${shake}px 0`;
+    };
+  };
+
   // ------------------------------------------------------------- trDrain ---
   // Hook card for "money gone": live tag, title, a huge red number that
   // counts up while the card trembles, banknotes falling through the card,
