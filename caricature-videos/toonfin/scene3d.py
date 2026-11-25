@@ -111,6 +111,14 @@ class Scene:
                 self.quad([[a, lo, zz], [b, lo, zz], [b, hi, zz], [a, hi, zz]], col, bias=-0.6)
 
     # -- rendering -------------------------------------------------------------------
+    def with_extra(self, faces):
+        """Shallow copy with extra (animated) faces for one frame."""
+        c = Scene.__new__(Scene)
+        c.__dict__.update(self.__dict__)
+        c.faces = self.faces + faces
+        c._mirror = None
+        return c
+
     def mirror_scene(self):
         """The scene mirrored at the floor (y -> -y), used for glossy floor reflections."""
         if self._mirror is None:
@@ -849,6 +857,84 @@ def holo_tex(kind, a="", b="", w=900, h=560):
     return im
 
 
+# -- animated props (built per frame) ----------------------------------------------------------
+
+def obox(c, size, yaw=0.0, col=(240, 240, 244)):
+    """Box faces centred at c with size (sx, sy, sz), turned by ``yaw`` degrees around the vertical axis."""
+    cx, cy, cz = c
+    sx, sy, sz = size[0] / 2, size[1] / 2, size[2] / 2
+    a = math.radians(yaw)
+    ca, sa = math.cos(a), math.sin(a)
+
+    def P(x, y, z):
+        return [cx + x * ca + z * sa, cy + y, cz - x * sa + z * ca]
+    V = [P(-sx, -sy, -sz), P(sx, -sy, -sz), P(sx, sy, -sz), P(-sx, sy, -sz),
+         P(-sx, -sy, sz), P(sx, -sy, sz), P(sx, sy, sz), P(-sx, sy, sz)]
+    quads = [(0, 1, 2, 3), (5, 4, 7, 6), (4, 0, 3, 7), (1, 5, 6, 2), (3, 2, 6, 7), (4, 5, 1, 0)]
+    N = [(0, 0, -1), (0, 0, 1), (-1, 0, 0), (1, 0, 0), (0, 1, 0), (0, -1, 0)]
+    out = []
+    for q, n in zip(quads, N):
+        nn = np.array([n[0] * ca + n[2] * sa, n[1], -n[0] * sa + n[2] * ca], float)
+        out.append(dict(p=np.array([V[i] for i in q], float), col=col, nout=nn))
+    return out
+
+
+def money_faces(x0, z0, t, cols=5, rows=3, layers=9, dur=2.4, seed=0):
+    """Bundles of banknotes stacking up (drop in with a small bounce), grid cols x rows, ``layers`` high."""
+    rng = np.random.default_rng(seed)
+    faces = []
+    bw, bh, bd = 1.25, 0.28, 0.6
+    total = cols * rows * layers
+    k = max(0.0, min(1.0, t / dur))
+    shown = k * total
+    idx = 0
+    for L in range(layers):
+        for r in range(rows):
+            for c in range(cols):
+                if idx >= shown:
+                    return faces
+                f = min(1.0, shown - idx)
+                drop = (1 - f) ** 2 * 3.0
+                x = x0 + (c - (cols - 1) / 2) * (bw + 0.12) + rng.uniform(-0.04, 0.04)
+                z = z0 + r * (bd + 0.1)
+                y = L * bh + bh / 2 + drop
+                yaw = rng.uniform(-3, 3)
+                faces += obox((x, y, z), (bw, bh * 0.96, bd), yaw, (118, 178, 112))
+                faces += obox((x, y, z), (0.18, bh * 0.99, bd * 1.01), yaw, (236, 240, 230))
+                idx += 1
+    return faces
+
+
+def gpu_faces(c, t, explode_at=0.3, dur=1.4, yaw=-28.0):
+    """Graphics card lying flat in an exploded view: the layers (backplate, PCB with die and memory,
+    heatsink fins, shroud with fans) lift apart vertically while the card slowly turns."""
+    k = max(0.0, min(1.0, (t - explode_at) / dur))
+    k = 1 - (1 - k) ** 3
+    yaw = yaw + t * 7
+    a = math.radians(yaw)
+    ra = np.array([math.cos(a), 0, -math.sin(a)])            # card length axis
+    rb = np.array([math.sin(a), 0, math.cos(a)])             # card width axis
+    cx, cy, cz = c
+    faces = []
+
+    def lay(level, size, col, local=(0, 0)):
+        p = np.array([cx, cy, cz]) + np.array([0, level * (0.12 + 0.95 * k), 0]) + ra * local[0] + rb * local[1]
+        return obox(tuple(p), size, yaw, col)
+    faces += lay(-1.0, (4.4, 0.05, 1.9), (60, 62, 68))                        # backplate
+    faces += lay(0.0, (4.2, 0.07, 1.7), (24, 70, 42))                         # PCB
+    faces += lay(0.0, (0.9, 0.09, 0.1), (214, 170, 60), (-1.3, -0.86))       # gold edge connector
+    faces += lay(0.1, (1.0, 0.08, 1.0), (196, 200, 208))                      # GPU die
+    for dx, dz in ((-1.35, 0.5), (-1.35, -0.5), (1.35, 0.5), (1.35, -0.5)):
+        faces += lay(0.1, (0.5, 0.06, 0.4), (26, 26, 30), (dx, dz))           # memory
+    for i in range(10):
+        faces += lay(1.0, (0.05, 0.45, 1.6), (170, 174, 182), (-1.9 + i * 0.42, 0))   # fins
+    faces += lay(2.0, (4.4, 0.25, 1.9), (30, 32, 38))                         # shroud
+    for dx in (-1.05, 1.05):
+        faces += lay(2.18, (1.3, 0.03, 1.3), (74, 76, 84), (dx, 0))           # fans
+        faces += lay(2.21, (0.35, 0.04, 0.35), (118, 185, 0), (dx, 0))        # hub accent
+    return faces
+
+
 def darkstudio_set(ticker="NVDA", change="+30 %"):
     """Dark, glossy finance studio: reflective floor, main chart wall, side KPI panels, floating holograms,
     a stage with a glowing ring for the Panda, a holo detail table, ceiling light bars, pillars with light strips."""
@@ -913,13 +999,13 @@ def darkstudio_set(ticker="NVDA", change="+30 %"):
 
 # -- bright line-art studio (reference look: white, airy, thin grey lines, transforms between zones) ---------
 
-def _chair(s, x, z, face=1, col=(250, 250, 252)):
+def _chair(s, x, z, face=1, col=(40, 42, 48)):
     """Simple modern chair: seat, backrest, central post, base. ``face`` +1 looks towards +z."""
     s._box(x - 0.32, x + 0.32, 0.44, 0.52, z - 0.3, z + 0.3, col=col)
     bz = z - face * 0.3
     s._box(x - 0.32, x + 0.32, 0.52, 1.15, min(bz, bz - face * 0.07), max(bz, bz - face * 0.07), col=col)
-    s._box(x - 0.04, x + 0.04, 0.08, 0.44, z - 0.04, z + 0.04, col=(214, 216, 222))
-    s._box(x - 0.3, x + 0.3, 0.0, 0.08, z - 0.3, z + 0.3, col=(226, 228, 233))
+    s._box(x - 0.04, x + 0.04, 0.08, 0.44, z - 0.04, z + 0.04, col=(150, 152, 160))
+    s._box(x - 0.3, x + 0.3, 0.0, 0.08, z - 0.3, z + 0.3, col=(70, 72, 80))
     s.ground_shadow(x - 0.32, x + 0.32, z - 0.3, z + 0.3, 1.0)
 
 
@@ -936,14 +1022,14 @@ def brightstudio_set():
     for z in range(-39, 80, 3):
         s.flat(-120, 120, z - 0.025, z + 0.025, (226, 227, 233), bias=3900.0)
     # ceiling with light panels (soft, not neon)
-    s.quad([[-120, 11, -40], [120, 11, -40], [120, 11, 80], [-120, 11, 80]], (246, 246, 249), bias=9000.0)
+    s.quad([[-120, 11, -40], [120, 11, -40], [120, 11, 21], [-120, 11, 21]], (246, 246, 249), bias=9000.0)
     for x in range(-60, 61, 6):
-        for z in range(-30, 70, 6):
+        for z in range(-30, 19, 6):
             s.quad([[x - 1.8, 10.98, z - 1.8], [x + 1.8, 10.98, z - 1.8], [x + 1.8, 10.98, z + 1.8], [x - 1.8, 10.98, z + 1.8]],
                    (251, 251, 253), bias=8000.0)
     # --- zone A: hall ------------------------------------------------------------------
     s.box(-16, 16, 0, 11, 20, 20.6, col=(248, 248, 251), shadow=False, mull=2.0, band_col=(232, 233, 238))
-    s._box(-5.0, 5.0, 1.6, 8.0, 19.8, 20.0, col=(228, 230, 236))           # screen bezel
+    s._box(-5.0, 5.0, 1.6, 8.0, 19.8, 20.0, col=(34, 36, 42))              # screen bezel (black)
     s.quad([[-4.7, 7.7, 19.78], [4.7, 7.7, 19.78], [4.7, 1.9, 19.78], [-4.7, 1.9, 19.78]], (238, 240, 245),
            bias=-0.3)                                                        # screen surface
     for side in (-1, 1):
@@ -976,7 +1062,7 @@ def brightstudio_set():
         s.box(x - 0.9, x + 0.9, 0, 4.2, 14, 16, col=(244, 244, 247), bands=0.6, band_col=(225, 227, 233))
     # --- zone B: boardroom ---------------------------------------------------------------
     s.box(30, 60, 0, 10, 24, 24.6, col=(247, 247, 250), shadow=False)
-    s._box(39, 51, 1.8, 7.2, 23.8, 24.0, col=(222, 224, 230))
+    s._box(39, 51, 1.8, 7.2, 23.8, 24.0, col=(34, 36, 42))
     s.quad([[39.3, 6.9, 23.78], [50.7, 6.9, 23.78], [50.7, 2.1, 23.78], [39.3, 2.1, 23.78]], (236, 238, 243), bias=-0.3)
     s.box(42.5, 47.5, 0.72, 0.8, 8, 20, col=(252, 252, 253), shadow=False)
     s.ground_shadow(42.5, 47.5, 8, 20, 1.0)
@@ -987,6 +1073,26 @@ def brightstudio_set():
         _chair(s, 48.4, z, face=1)
     for x in (33, 36, 54, 57):                                               # glass partitions
         s._box(x - 0.05, x + 0.05, 0, 8, 10, 20, col=(228, 236, 244))
+    # --- zone D: street outside, behind the hall (z 40..120) --------------------------------
+    s.flat(-60, 60, 74, 84, (92, 96, 106), bias=3700.0)                     # road
+    for x in range(-56, 60, 8):
+        s.flat(x, x + 4, 78.85, 79.15, (240, 240, 244), bias=3600.0)          # lane marks
+    for i in range(7):
+        s.flat(-3 + i * 0.9, -2.5 + i * 0.9, 73.2, 74.0, (240, 240, 244), bias=3600.0)
+    rng2 = np.random.default_rng(9)
+    x = -60
+    while x < 60:                                                            # clean office blocks
+        w = rng2.uniform(10, 16)
+        h = rng2.uniform(14, 30)
+        s.box(x, x + w - 1.5, 0, h, 90, 104, col=(246, 246, 249), bands=3.0, mull=2.0, band_col=(222, 224, 230))
+        s.windows(x + 0.8, x + w - 2.3, 1.5, h - 1.0, 90, int(h // 3), max(2, int(w // 2.2)), col=(214, 222, 234),
+                  frame=0.22)
+        x += w
+    for xx in range(-40, 44, 10):
+        if abs(xx) < 8:
+            continue
+        s.tree(xx, 70.5, 5.8)
+        s.lamp(xx + 5, 71.5, side=-1)
     return s
 
 

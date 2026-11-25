@@ -157,3 +157,17 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - **Nichts überlappt:** Infos oben (y ~250–1020), Panda-Kopf nie über `min_head` (900); wenn Panda aus dem Bild,
   Untertitel bei `cap_y` (1360). Logo nie hinter dem Panda platzieren.
 - Beispiel: `examples/nvidia_color_studio_spec.py` → `demo/nvidia_color_studio_TEST.mp4`.
+
+## News-Studio v3 (aktuell, Nutzer-Feedback: keine Farbschatten, clean, echte Börsen-News-Grafiken, offene 3D-Welt)
+- **Keine `wash`-Farbschimmer.** Raum clean hell, Farbe nur als Akzent im Set: schwarze Stühle, schwarze
+  Leinwandrahmen.
+- **News-Grafiken** (`NEWS` in studio.py): `breaking` (roter Tag + Schlagzeile + Unterzeile, Text-Reveal),
+  `ticker` (Logo, Name, Börse, %-Zähler mit Pfeil, Zusatzzeilen), `pricechart` (Achsen, Preis-Labels, Volumen,
+  gestrichelte Ereignis-Marker, Last-Price-Tag; als 3D-Leinwand-Inhalt via `screen`), `mcap` (Vergleichsbalken +
+  Delta-Pill), `vote` (Abstimmung mit Fortschritt + Haken), `dateblock` (Kalenderblatt + Titel + 3D-Icon).
+  Kursverläufe sind Beispieldaten und so beschriftet.
+- **Offene 3D-Welt mit Animationen** (`props` pro Shot, pro Frame gebaut): `money` (Geldbündel stapeln sich),
+  `gpu` (Grafikkarte zerlegt sich als Explosionszeichnung). Zone D: Straße hinter der Halle (Kran-Fahrt über die Wand).
+  Weitere Themen-Props nach gleichem Muster (z. B. Panzer, Auto-Explosionszeichnung) in `scene3d.py` ergänzen.
+- Kamera ruhig: `shake: 0`, weiche Ease-Fahrten, Zooms nur mit Grund (Leinwand-Chart, Personen, Zahlen).
+- Beispiel: `examples/nvidia_news_studio_spec.py` → `demo/nvidia_news_studio_TEST.mp4`.

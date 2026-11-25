@@ -657,7 +657,9 @@ def draw_overlay(img, c, ct, x, y):
         return
     lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     li = Ink(lay, affine(0, 0, 0, 1), 0, 1)
-    if ty in CLIPS:
+    if ty in NEWS:
+        news_clip(lay, c, ct, x, y)
+    elif ty in CLIPS:
         draw_clip(lay, c, ct, x, y)
     elif ty == "headline":
         col = {"up": GREEN, "down": RED, "gold": (226, 160, 20), "info": BLUE}.get(c.get("tone", "up"), GREEN)
@@ -918,8 +920,243 @@ def draw_clip(lay, c, ct, x, y):
         comp(lay, cw, x - cw.width / 2, y - cw.height / 2)
 
 
+
+NAVY = (14, 22, 40)
+INKC = (18, 22, 32)
+GREY = (120, 128, 142)
+LINEC = (226, 230, 236)
+UPC = (22, 163, 74)
+DNC = (220, 38, 38)
+
+
+def _font(key, px):
+    return font(key, int(px))
+
+
+def _card(w, h, r=26, fill=(255, 255, 255, 250)):
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    ImageDraw.Draw(im).rounded_rectangle([0, 0, w - 1, h - 1], r, fill=fill, outline=(220, 224, 232, 255), width=2)
+    return im
+
+
+def _place(lay, card, x, y, ct, mode="rise"):
+    """Clean news-style entrance: quick rise + fade (or slide from the side), soft drop shadow."""
+    k = smooth(seg(ct, 0, 0.38))
+    if mode == "slide":
+        dx, dy = -120 * (1 - k), 0
+    else:
+        dx, dy = 0, 46 * (1 - k)
+    A = np.asarray(card.getchannel("A"), float) * k
+    c2 = card.copy()
+    c2.putalpha(Image.fromarray(A.astype(np.uint8)))
+    sh, _ = soft_shadow(c2, 22, 70, 16)
+    comp(lay, sh, x - sh.width / 2 + dx, y - sh.height / 2 + dy + 6)
+    comp(lay, c2, x - card.width / 2 + dx, y - card.height / 2 + dy)
+
+
+def news_clip(lay, c, ct, x, y):
+    ty = c["type"]
+    if ty == "breaking":
+        w, h = c.get("w", 960), 150
+        card = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        d = ImageDraw.Draw(card)
+        kw = smooth(seg(ct, 0.05, 0.45))
+        d.rounded_rectangle([0, 0, w - 1, h - 1], 20, fill=(255, 255, 255, 252), outline=(220, 224, 232, 255), width=2)
+        tf = _font("mont", 30)
+        tagw = int(max(200, tf.getlength(c.get("tag", "EILMELDUNG")) + 90))
+        d.rounded_rectangle([0, 0, tagw, h - 1], 20, fill=DNC + (255,))
+        d.rectangle([tagw - 22, 0, tagw, h - 1], fill=DNC + (255,))
+        on = (ct * 2) % 1 < 0.6
+        d.ellipse([28, h / 2 - 9, 46, h / 2 + 9], fill=(255, 255, 255, 255 if on else 120))
+        d.text((60, h / 2 - 16), c.get("tag", "EILMELDUNG"), font=_font("mont", 30), fill=(255, 255, 255), anchor="lm")
+        d.text((60, h / 2 + 22), c.get("time", ""), font=_font("montb", 22), fill=(255, 220, 220), anchor="lm")
+        txt = c["text"]
+        f = _font("mont", 46)
+        while f.getlength(txt) > w - tagw - 60 and f.size > 24:
+            f = _font("mont", f.size - 2)
+        m = Image.new("L", (w, h), 0)
+        ImageDraw.Draw(m).rectangle([tagw, 0, tagw + (w - tagw) * kw, h], fill=255)
+        tl = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        ImageDraw.Draw(tl).text((tagw + 30, h / 2 - 14), txt, font=f, fill=INKC + (255,), anchor="lm")
+        fs = _font("montb", 24)
+        while fs.getlength(c.get("sub", "")) > w - tagw - 60 and fs.size > 16:
+            fs = _font("montb", fs.size - 1)
+        ImageDraw.Draw(tl).text((tagw + 30, h / 2 + 30), c.get("sub", ""), font=fs, fill=GREY + (255,), anchor="lm")
+        tl.putalpha(Image.fromarray(np.minimum(np.asarray(tl.getchannel("A")), np.asarray(m))))
+        card.alpha_composite(tl)
+        _place(lay, card, x, y, ct, "slide")
+    elif ty == "ticker":
+        w, h = c.get("w", 900), 300
+        card = _card(w, h)
+        d = ImageDraw.Draw(card)
+        lg = logo_img(c["logo"], 92, c.get("logo_col", "#76B900"))
+        d.rounded_rectangle([36, 36, 152, 152], 24, fill=(244, 246, 249, 255))
+        card.alpha_composite(lg, (48, 48))
+        d.text((178, 70), c.get("name", ""), font=_font("mont", 46), fill=INKC, anchor="lm")
+        d.text((178, 122), c.get("exch", ""), font=_font("montb", 26), fill=GREY, anchor="lm")
+        kc = ease_out(seg(ct, c.get("count_at", 0.3), c.get("count_end", 1.1)))
+        up = c.get("change", 0) >= 0
+        col = UPC if up else DNC
+        val = c.get("change", 0) * kc
+        txt = ("+" if up else "−") + de(abs(val), 2) + " %"
+        d.line([(36, 186), (w - 36, 186)], fill=LINEC, width=2)
+        d.text((36, 244), txt, font=_font("mont", 86), fill=col, anchor="lm")
+        tw = _font("mont", 86).getlength(txt)
+        ax = 36 + tw + 40
+        if up:
+            d.polygon([(ax, 270), (ax + 44, 270), (ax + 22, 226)], fill=col)
+        else:
+            d.polygon([(ax, 226), (ax + 44, 226), (ax + 22, 270)], fill=col)
+        d.text((w - 36, 222), c.get("note", ""), font=_font("montb", 26), fill=GREY, anchor="rm")
+        d.text((w - 36, 262), c.get("note2", ""), font=_font("mont", 30), fill=INKC, anchor="rm")
+        if ct > c.get("count_end", 1.1):
+            q = seg(ct, c.get("count_end", 1.1), c.get("count_end", 1.1) + 0.5)
+            d.rounded_rectangle([3, 3, w - 4, h - 4], 24, outline=col + (int(255 * (1 - q)),), width=6)
+        _place(lay, card, x, y, ct)
+    elif ty == "pricechart":
+        w, h = c.get("w", 960), c.get("h", 760)
+        card = _card(w, h)
+        d = ImageDraw.Draw(card)
+        lg = logo_img(c["logo"], 54, c.get("logo_col", "#76B900"))
+        card.alpha_composite(lg, (36, 30))
+        d.text((104, 58), c.get("title", ""), font=_font("mont", 38), fill=INKC, anchor="lm")
+        d.text((w - 36, 58), c.get("range", "1M"), font=_font("montb", 26), fill=GREY, anchor="rm")
+        data = c["prices"]
+        vol = c.get("volume", [1] * len(data))
+        lo, hi = min(data), max(data)
+        pad_ = (hi - lo) * 0.12
+        lo, hi = lo - pad_, hi + pad_
+        x0, x1, y0, y1 = 40, w - 140, h - 200, 120
+        vy0, vy1 = h - 70, h - 170
+        for gi in range(5):
+            gy = lerp(y0, y1, gi / 4)
+            d.line([(x0, gy), (x1, gy)], fill=(238, 240, 244), width=2)
+            d.text((x1 + 18, gy), de(lerp(lo, hi, gi / 4), 0) + " $", font=_font("montb", 22), fill=GREY, anchor="lm")
+        n = len(data)
+        X = lambda i: lerp(x0, x1, i / (n - 1))
+        Y = lambda v: lerp(y0, y1, (v - lo) / (hi - lo))
+        kd = ease_in_out(seg(ct, c.get("draw_at", 0.3), c.get("draw_end", 1.8)))
+        m = n * kd
+        vmax = max(vol)
+        for i in range(n):
+            if i > m:
+                break
+            up = i == 0 or data[i] >= data[i - 1]
+            bh = (vy0 - vy1) * vol[i] / vmax
+            d.rectangle([X(i) - (x1 - x0) / n * 0.32, vy0 - bh, X(i) + (x1 - x0) / n * 0.32, vy0],
+                        fill=(UPC if up else DNC) + (110,))
+        pts = [(X(i), Y(v)) for i, v in enumerate(data)][:max(2, int(m) + 1)]
+        if int(m) + 1 < n and int(m) >= 1:
+            f_ = m - int(m)
+            a_, b_ = (X(int(m)), Y(data[int(m)])), (X(int(m) + 1), Y(data[int(m) + 1]))
+            pts = pts[:int(m) + 1] + [(lerp(a_[0], b_[0], f_), lerp(a_[1], b_[1], f_))]
+        lc = UPC if data[-1] >= data[0] or c.get("tone") == "up" else DNC
+        lc = {"up": UPC, "down": DNC}.get(c.get("tone"), lc)
+        area = Image.new("RGBA", card.size, (0, 0, 0, 0))
+        ImageDraw.Draw(area).polygon(pts + [(pts[-1][0], y0), (pts[0][0], y0)], fill=lc + (70,))
+        g = np.clip(np.linspace(1.6, -0.2, h), 0, 1)[:, None]
+        Aa = np.asarray(area.getchannel("A"), float) * g
+        area.putalpha(Image.fromarray(Aa.astype(np.uint8)))
+        card.alpha_composite(area)
+        d = ImageDraw.Draw(card)
+        d.line(pts, fill=lc, width=6, joint="curve")
+        ex, ey = pts[-1]
+        d.ellipse([ex - 9, ey - 9, ex + 9, ey + 9], fill=(255, 255, 255), outline=lc, width=4)
+        for j, lb in enumerate(c.get("xlabels", [])):
+            d.text((lerp(x0, x1, j / max(1, len(c["xlabels"]) - 1)), h - 40), lb, font=_font("montb", 22), fill=GREY,
+                   anchor="mm")
+        for mk in c.get("markers", []):                    # [index, label, "up"/"down", at]
+            if ct < mk[3]:
+                continue
+            km = ease_out_back(seg(ct, mk[3], mk[3] + 0.35), 1.6)
+            i = mk[0]
+            colm = UPC if mk[2] == "up" else DNC
+            mx, my = X(i), Y(data[i])
+            for yy in range(int(y1), int(y0), 14):
+                d.line([(mx, yy), (mx, yy + 7)], fill=colm + (140,), width=2)
+            f = _font("mont", 26)
+            tw = f.getlength(mk[1]) + 30
+            ty_ = my - 52 if mk[2] == "up" else my + 52
+            bx = min(max(mx, x0 + tw / 2), x1 - tw / 2)
+            sc = max(0.05, km)
+            d.rounded_rectangle([bx - tw / 2 * sc, ty_ - 22 * sc, bx + tw / 2 * sc, ty_ + 22 * sc], 22 * sc,
+                                fill=colm + (255,))
+            if km > 0.6:
+                d.text((bx, ty_), mk[1], font=f, fill=(255, 255, 255), anchor="mm")
+            d.ellipse([mx - 8, my - 8, mx + 8, my + 8], fill=colm)
+        if kd > 0.98 and c.get("last"):
+            d.rounded_rectangle([x1 + 6, ey - 20, w - 14, ey + 20], 8, fill=lc)
+            d.text(((x1 + w - 8) / 2, ey), c["last"], font=_font("mont", 22), fill=(255, 255, 255), anchor="mm")
+        _place(lay, card, x, y, ct)
+    elif ty == "mcap":
+        w, h = c.get("w", 900), 330
+        card = _card(w, h)
+        d = ImageDraw.Draw(card)
+        d.text((36, 52), c.get("title", "MARKTKAPITALISIERUNG"), font=_font("montb", 26), fill=GREY, anchor="lm")
+        rows = c["rows"]                                   # [label, value, num]
+        vmax = max(r[2] for r in rows)
+        for i, (lab, val, num) in enumerate(rows):
+            yy = 120 + i * 90
+            k = ease_out(seg(ct, 0.3 + i * 0.5, 1.0 + i * 0.5))
+            col = UPC if i == len(rows) - 1 else (150, 158, 172)
+            d.text((36, yy), lab, font=_font("montb", 28), fill=INKC, anchor="lm")
+            bx0, bx1 = 200, w - 270
+            d.rounded_rectangle([bx0, yy - 20, bx1, yy + 20], 20, fill=(240, 242, 246))
+            if k > 0.02:
+                d.rounded_rectangle([bx0, yy - 20, bx0 + (bx1 - bx0) * num / vmax * k, yy + 20], 20, fill=col)
+            d.text((w - 36, yy), val, font=_font("mont", 40), fill=col if i else INKC, anchor="rm")
+        if ct > 1.6 and c.get("delta"):
+            kb = ease_out_back(seg(ct, 1.6, 1.95), 1.8)
+            f = _font("mont", 34)
+            tw = f.getlength(c["delta"]) + 40
+            cx_, cy_ = w - 36 - tw / 2, h - 46
+            d.rounded_rectangle([cx_ - tw / 2 * kb, cy_ - 26 * kb, cx_ + tw / 2 * kb, cy_ + 26 * kb], 26 * kb, fill=UPC)
+            if kb > 0.6:
+                d.text((cx_, cy_), c["delta"], font=f, fill=(255, 255, 255), anchor="mm")
+        _place(lay, card, x, y, ct)
+    elif ty == "vote":
+        w, h = c.get("w", 860), 300
+        card = _card(w, h)
+        d = ImageDraw.Draw(card)
+        d.text((36, 52), c.get("title", "VERWALTUNGSRAT"), font=_font("montb", 26), fill=GREY, anchor="lm")
+        d.text((36, 118), c.get("text", "EINSTIMMIG"), font=_font("bebas", 96), fill=UPC, anchor="lm")
+        k = ease_out(seg(ct, 0.35, 1.2))
+        d.rounded_rectangle([36, 190, w - 36, 226], 18, fill=(240, 242, 246))
+        d.rounded_rectangle([36, 190, 36 + (w - 72) * k, 226], 18, fill=UPC)
+        d.text((36, 260), c.get("sub", ""), font=_font("montb", 26), fill=INKC, anchor="lm")
+        d.text((w - 36, 260), de(100 * k) + " % dafür", font=_font("mont", 30), fill=UPC, anchor="rm")
+        if k > 0.98:
+            kk = ease_out_back(seg(ct, 1.2, 1.55), 2.0)
+            r = 44 * kk
+            d.ellipse([w - 96 - r, 96 - r, w - 96 + r, 96 + r], fill=UPC)
+            if kk > 0.5:
+                d.line([(w - 116, 96), (w - 100, 114), (w - 74, 80)], fill=(255, 255, 255), width=9)
+        _place(lay, card, x, y, ct)
+    elif ty == "dateblock":
+        w, h = c.get("w", 900), 260
+        card = _card(w, h)
+        d = ImageDraw.Draw(card)
+        d.rounded_rectangle([36, 36, 220, 224], 22, fill=(255, 255, 255), outline=(220, 224, 232), width=2)
+        d.rounded_rectangle([36, 36, 220, 92], 22, fill=DNC)
+        d.rectangle([36, 70, 220, 92], fill=DNC)
+        d.text((128, 64), c.get("month", "DEZ"), font=_font("mont", 30), fill=(255, 255, 255), anchor="mm")
+        d.text((128, 160), c.get("day", "1"), font=_font("bebas", 110), fill=INKC, anchor="mm")
+        ft = _font("mont", 42)
+        maxw = w - 256 - (180 if c.get("emoji") else 40)
+        while ft.getlength(c.get("title", "")) > maxw and ft.size > 22:
+            ft = _font("mont", ft.size - 2)
+        d.text((256, 100), c.get("title", ""), font=ft, fill=INKC, anchor="lm")
+        d.text((256, 160), c.get("sub", ""), font=_font("montb", 28), fill=GREY, anchor="lm")
+        if c.get("emoji"):
+            em = emoji_img(c["emoji"], 120)
+            card.alpha_composite(em, (w - 150, 70))
+        _place(lay, card, x, y, ct)
+
+
+NEWS = {"breaking", "ticker", "pricechart", "mcap", "vote", "dateblock"}
+
 CLIPS = {"bigstat", "marker", "emoji2", "chartclip"}
-OVERLAYS = {"headline", "emoji", "logo", "stockchart"} | CLIPS
+OVERLAYS = {"headline", "emoji", "logo", "stockchart"} | CLIPS | NEWS
 
 
 def rot_y(im, ang, k_scale=1.0):
@@ -1141,6 +1378,19 @@ class Studio:
             speed = float(np.linalg.norm(c2.pos - cam.pos) + 3 * np.linalg.norm(c2.target - cam.target) / 10)
             blur = max(blur, min(6.0, speed * 1.4))
         st = scene3d.get_set(s.get("set", "studio"), *s.get("set_args", []))
+        if s.get("props"):
+            extra = []
+            for pr in s["props"]:
+                pt = lt - pr.get("at", 0.0)
+                if pt < 0:
+                    continue
+                if pr["type"] == "money":
+                    extra += scene3d.money_faces(pr["pos"][0], pr["pos"][1], pt, pr.get("cols", 5), pr.get("rows", 3),
+                                                 pr.get("layers", 9), pr.get("dur", 2.4))
+                elif pr["type"] == "gpu":
+                    extra += scene3d.gpu_faces(tuple(pr["pos"]), pt, pr.get("explode_at", 0.3), pr.get("dur", 1.4),
+                                               pr.get("yaw", -28.0))
+            st = st.with_extra(extra)
         bg = st.render(cam, W, H, ss=1.25, blur=blur)
         if s.get("wash"):
             bg = colour_wash(bg, s["wash"], t)
@@ -1614,9 +1864,9 @@ def cues(spec):
             if c["type"] == "reasons":
                 out += [(a + x[1], "pop", 0.5) for x in c["items"]]
             if c["type"] == "vote":
-                out += [(a + x[3] + 0.8, "pop", 0.5) for x in c["rows"]]
+                out += [(a + x[3] + 0.8, "pop", 0.5) for x in c.get("rows", [])]
             if c["type"] == "rule":
-                out += [(a + x[3], "pop", 0.55) for x in c["boxes"]]
+                out += [(a + x[3], "pop", 0.55) for x in c.get("boxes", [])]
             if c["type"] == "calc":
                 out.append((a + c.get("count_end", 1.3), "cash", 0.5))
                 if c.get("plus_at") is not None:
