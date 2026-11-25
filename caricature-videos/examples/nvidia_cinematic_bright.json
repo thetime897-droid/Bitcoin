@@ -14,27 +14,21 @@
   "cap_size": 50,
   "cap_bg": true,
   "min_head": 905,
-  "film": {
-   "grain": 0.012,
-   "vignette": 0.16,
-   "aberration": 0,
-   "contrast": 0.08,
-   "lift": 0.0
-  },
+  "film": null,
   "panda_light": {
    "key_side": 1,
    "ambient": [
-    214,
-    220,
-    232
+    236,
+    238,
+    244
    ],
-   "ambient_mix": 0.06,
+   "ambient_mix": 0.0,
    "rim": [
     255,
     255,
     255
    ],
-   "rim_strength": 0.45
+   "rim_strength": 0.0
   }
  },
  "sound": {
@@ -228,6 +222,45 @@
    },
    "cards": [
     {
+     "type": "ticker",
+     "at": 0.0,
+     "screen": [
+      [
+       -4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       1.9,
+       19.78
+      ],
+      [
+       -4.7,
+       1.9,
+       19.78
+      ]
+     ],
+     "w": 940,
+     "h": 580,
+     "bg": [
+      255,
+      255,
+      255
+     ],
+     "logo": "nvidia",
+     "name": "NVIDIA",
+     "exch": "NASDAQ: NVDA",
+     "change": 29.6,
+     "count_at": 0.2,
+     "count_end": 1.0
+    },
+    {
      "type": "logo",
      "holo": [
       0,
@@ -361,6 +394,45 @@
     }
    ],
    "cards": [
+    {
+     "type": "ticker",
+     "at": 0.0,
+     "screen": [
+      [
+       -4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       1.9,
+       19.78
+      ],
+      [
+       -4.7,
+       1.9,
+       19.78
+      ]
+     ],
+     "w": 940,
+     "h": 580,
+     "bg": [
+      255,
+      255,
+      255
+     ],
+     "logo": "nvidia",
+     "name": "NVIDIA",
+     "exch": "NASDAQ: NVDA",
+     "change": 29.6,
+     "count_at": 0.2,
+     "count_end": 1.0
+    },
     {
      "type": "kpi",
      "holo": [
@@ -525,6 +597,45 @@
     }
    ],
    "cards": [
+    {
+     "type": "ticker",
+     "at": 0.0,
+     "screen": [
+      [
+       39.3,
+       6.9,
+       23.78
+      ],
+      [
+       50.7,
+       6.9,
+       23.78
+      ],
+      [
+       50.7,
+       2.1,
+       23.78
+      ],
+      [
+       39.3,
+       2.1,
+       23.78
+      ]
+     ],
+     "w": 1140,
+     "h": 480,
+     "bg": [
+      255,
+      255,
+      255
+     ],
+     "logo": "nvidia",
+     "name": "NVIDIA",
+     "exch": "NASDAQ: NVDA",
+     "change": 29.6,
+     "count_at": 0.2,
+     "count_end": 1.0
+    },
     {
      "type": "vote",
      "holo": [
@@ -804,6 +915,45 @@
    },
    "cards": [
     {
+     "type": "ticker",
+     "at": 0.0,
+     "screen": [
+      [
+       -4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       1.9,
+       19.78
+      ],
+      [
+       -4.7,
+       1.9,
+       19.78
+      ]
+     ],
+     "w": 940,
+     "h": 580,
+     "bg": [
+      255,
+      255,
+      255
+     ],
+     "logo": "nvidia",
+     "name": "NVIDIA",
+     "exch": "NASDAQ: NVDA",
+     "change": 29.6,
+     "count_at": 0.2,
+     "count_end": 1.0
+    },
+    {
      "type": "warn",
      "holo": [
       0.2,
@@ -996,6 +1146,45 @@
     "gesture_at": 0.2
    },
    "cards": [
+    {
+     "type": "ticker",
+     "at": 0.0,
+     "screen": [
+      [
+       -4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       1.9,
+       19.78
+      ],
+      [
+       -4.7,
+       1.9,
+       19.78
+      ]
+     ],
+     "w": 940,
+     "h": 580,
+     "bg": [
+      255,
+      255,
+      255
+     ],
+     "logo": "nvidia",
+     "name": "NVIDIA",
+     "exch": "NASDAQ: NVDA",
+     "change": 29.6,
+     "count_at": 0.2,
+     "count_end": 1.0
+    },
     {
      "type": "title",
      "holo": [
