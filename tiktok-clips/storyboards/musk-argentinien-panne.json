@@ -1,0 +1,268 @@
+{
+ "name": "musk-argentinien-panne",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trPost",
+   "duration": 7.2,
+   "script": "0:00 · Elon Musk wird live vor Argentiniens Präsidenten zugeschaltet – und weiß plötzlich nicht mehr, was er sagen soll. Nach zwei Minuten ist die Leitung tot.",
+   "params": {
+    "name": "Elon Musk",
+    "role": "live zugeschaltet · Tesla-Start Argentinien",
+    "avatar": {
+     "name": "Elon Musk",
+     "glyph": "EM",
+     "color": "#111317"
+    },
+    "quote": "„Eigentlich weiß ich nicht so richtig, was ich *sagen soll*.“",
+    "quoteAt": 2.2,
+    "playAt": 0.5,
+    "videoLabel": "LIVE · Videoschalte",
+    "meta": "Buenos Aires · 20. November 2026 · sinngemäß übersetzt",
+    "sticker": {
+     "text": "LIVE-PANNE",
+     "icon": "📡",
+     "color": "#e5392f",
+     "at": 1.2,
+     "x": 760,
+     "y": 470,
+     "size": 46,
+     "rotate": -6
+    },
+    "accent": "#e5392f"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 5.6,
+   "script": "0:07 · Der Anlass: Tesla startet offiziell in Argentinien. Großes Event in Buenos Aires, Präsident Javier Milei ist persönlich da.",
+   "params": {
+    "brand": "TSLA",
+    "text": "Tesla startet in\n*Argentinien* 🇦🇷",
+    "accent": "#2f6bff",
+    "size": 80,
+    "pills": [
+     "Buenos Aires",
+     "Präsident Milei vor Ort"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "03",
+   "type": "trList",
+   "duration": 9.0,
+   "script": "0:12 · Dann wird Musk per Video zugeschaltet – offenbar aus seinem Flugzeug. Er stockt, macht lange Pausen, verzieht das Gesicht. Und sagt dann: Eigentlich weiß ich gar nicht so richtig, was ich sagen will.",
+   "params": {
+    "title": "Was dann *passiert*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Schalte aus dem *Flugzeug*",
+      "sub": "auf Riesen-Leinwand",
+      "mark": "✈️",
+      "markColor": "#2f6bff",
+      "at": 1.4
+     },
+     {
+      "text": "Stocken, *lange Pausen*",
+      "sub": "Grimassen, nervöses Lachen",
+      "value": "…",
+      "ok": false,
+      "at": 3.4
+     },
+     {
+      "text": "„Weiß nicht, was ich *sagen soll*“",
+      "sub": "vor Publikum und Präsident",
+      "value": "!",
+      "ok": false,
+      "at": 6.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 5.0,
+   "script": "0:21 · Nach gut zwei Minuten bricht die Schalte ab – Musk verabschiedet sich nicht einmal.",
+   "params": {
+    "title": "Dann: *Leitung tot*",
+    "accent": "#e5392f",
+    "label": "Dauer der Videoschalte",
+    "logos": [
+     "TSLA"
+    ],
+    "value": "~2 Min.",
+    "tone": "red",
+    "size": 180,
+    "at": 1.0,
+    "countDur": 0.6,
+    "second": {
+     "value": "ohne Verabschiedung",
+     "size": 56,
+     "tone": "red",
+     "at": 2.6
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "trPost",
+   "duration": 5.4,
+   "script": "0:26 · Milei rettet die Situation: Musk sei der Leonardo da Vinci des 21. Jahrhunderts.",
+   "params": {
+    "name": "Javier Milei",
+    "role": "Präsident Argentiniens",
+    "avatar": {
+     "name": "Javier Milei",
+     "glyph": "JM",
+     "color": "#6cace4"
+    },
+    "quote": "„Der *Leonardo da Vinci* des 21. Jahrhunderts.“",
+    "quoteAt": 1.0,
+    "playAt": 0.4,
+    "videoLabel": "Milei auf der Bühne",
+    "meta": "über Elon Musk · laut Berichten",
+    "accent": "#2f6bff"
+   }
+  },
+  {
+   "id": "06",
+   "type": "trWarn",
+   "duration": 6.0,
+   "script": "0:32 · Und dann geht's im Netz los: Clips gehen viral, Nutzer spekulieren über Drogen – wallstreet-online titelt sogar „Keta-Alarm“.",
+   "params": {
+    "brand": {
+     "name": "Elon Musk",
+     "glyph": "EM",
+     "color": "#111317"
+    },
+    "context": "Social Media",
+    "tag": "Viral",
+    "live": true,
+    "text": "Clips gehen *viral*",
+    "size": 70,
+    "sub": "Spekulationen im Netz · Schlagzeile: *„Keta-Alarm?“*",
+    "pills": [
+     "X",
+     "TikTok",
+     "Medien"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "07",
+   "type": "trRule",
+   "duration": 8.6,
+   "script": "0:38 · Aber Fakt ist: Es gibt keinen Beleg dafür. Weder Musk noch Tesla haben die Panne erklärt. Und als 2025 über angeblichen Drogenkonsum berichtet wurde, hat Musk das bestritten.",
+   "params": {
+    "title": "Gerücht vs. *Fakt*",
+    "left": {
+     "label": "Gerücht",
+     "title": "„Drogen?“",
+     "result": "nur Spekulation",
+     "good": false,
+     "at": 1.6
+    },
+    "right": {
+     "label": "Fakt",
+     "title": "Kein Beleg",
+     "result": "Musk bestritt Berichte 2025",
+     "good": true,
+     "at": 4.0
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trList",
+   "duration": 6.0,
+   "script": "0:46 · Inhaltlich gab's übrigens echte News: Tesla will mit dem Staatskonzern YPF ein Supercharger-Netz in Argentinien prüfen.",
+   "params": {
+    "title": "Die *echte* News",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "*Supercharger-Netz* für Argentinien",
+      "sub": "mit Energiekonzern YPF",
+      "mark": "⚡",
+      "markColor": "#0d7d4d",
+      "at": 1.4
+     },
+     {
+      "text": "Tesla-Autos *aus China*",
+      "sub": "wie in Chile & Uruguay",
+      "mark": "🚗",
+      "markColor": "#2f6bff",
+      "at": 3.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.2,
+   "script": "0:52 · Für Tesla-Aktionäre bleibt trotzdem die Frage: Wie stark hängt die Firma an einem einzigen Mann – und an seinem Auftreten?",
+   "params": {
+    "brand": "TSLA",
+    "context": "Für Anleger",
+    "tag": "Risiko",
+    "text": "*Ein-Mann*-Risiko",
+    "size": 74,
+    "sub": "Tesla hängt stark an *Musks Image*.",
+    "pills": [
+     "Key-Person-Risiko"
+    ],
+    "pillsAt": 3.0
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 5.4,
+   "script": "0:59 · Also: harmlose Panne oder Warnsignal? Bildet euch selbst ein Urteil. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Panne oder *Warnsignal*?",
+    "left": {
+     "label": "Harmlos",
+     "title": "Müde / Jetlag",
+     "result": "passiert jedem",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Warnsignal",
+     "title": "Image-Schaden",
+     "result": "für Tesla",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:04 · Was glaubst du: harmlose Panne – oder ein Problem für Tesla? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Musk-Panne: *harmlos*?",
+    "options": [
+     "Harmlos, war müde",
+     "Problem für Tesla",
+     "Mir egal"
+    ],
+    "note": "Keine Anlageberatung · Stand: 25. November 2026"
+   }
+  }
+ ]
+}
