@@ -25,6 +25,7 @@ FONTS = {
     "marker": "PermanentMarker-Regular.ttf",
     "mont": "Montserrat.ttf",
     "montb": "Montserrat.ttf",
+    "bebas": "BebasNeue-Regular.ttf",
 }
 VARIATIONS = {"mont": "Black", "montb": "Bold"}
 

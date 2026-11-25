@@ -39,7 +39,7 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
   `tank`, News `newspaper` / `phone`, Rekord `trophy`, Warnung `warning`, Analyse `magnifier`,
   Prognose `gauge`, Termin `calendar`, Problem `hook`, Totgesagt `tombstone`, Wachstum `stack`/`cloud`.
   Fehlt ein Motiv, eine neue Funktion in `toonfin/illus.py` im gleichen Stil anlegen.
-- Keine echten Firmenlogos.
+- Keine echten Firmenlogos (Ausnahme seit Nutzerwunsch „wie echt“: im hellen Analyse-Studio das Logo der besprochenen Aktie aus `toonfin/logos/` (simple-icons), redaktionelle Nutzung).
 - Kerzen-Charts sind simuliert, solange keine echten Kursdaten verfügbar sind – im Chat so benennen.
 
 ## Short-Layout (neu, Nutzerwunsch: rechte TikTok-Spalte freihalten)
@@ -132,3 +132,16 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
   Kamera-Keyframes per `whoosh` + `whoosh_at`; Karten kommen mit `air_short` + leisem Pop. Mixkit/Pixabay sind im
   Netzwerk gesperrt (Freigabe vom Nutzer abgelehnt) → eigene Sounds in `toonfin/sfx/custom/` legen, wenn gewünscht.
 - Beispiel: `examples/nvidia_comeback_vicecity_spec.py`.
+
+## Helles Studio (aktueller Favorit-Kandidat, Nutzerwunsch nach Referenz „finanzlehre“)
+- **Hell, kein Neon.** Set `brightstudio`: weißer, luftiger Raum im Linien-Look (feine graue Kanten, Bodenfliesen,
+  Deckenfelder), drei Zonen, durch die die Kamera fließend fliegt (`campath`): A Saal mit großer Leinwand
+  (`SCREEN_A`-Ecken) + Stuhlreihen (x=0), B Boardroom (x=+45), C Platinen-/Chip-Wand (x=−45).
+- **Einblendungen „wie echt“:** Schlagzeilen ohne Kasten in Bebas Neue (grün/rot/gold) mit grauer Unterzeile
+  (`headline`), echte 3D-Icons Microsoft Fluent Emoji 3D (`emoji`, MIT, `toonfin/emoji3d/`), Firmenlogo (`logo`),
+  Kurs-Chart-Karte im Referenzstil (`stockchart`). Inhalte können **auf der 3D-Leinwand** liegen (`screen: [4 Ecken]`)
+  und bewegen sich dann mit der Kamera.
+- **Panda verschwindet bei wichtigen Infos** (`exit_at`, `exit_dir`) und kommt wieder (`enter_at`, `enter_dir`).
+- Untertitel: einzelnes gesprochenes Wort, gelb mit dunkler Kontur, direkt über dem Panda-Kopf (`cap_style: word`);
+  ohne Panda bei `cap_y`. Kopfzeile hell wie Referenz (`header_style: bar`).
+- Beispiel: `examples/nvidia_bright_studio_spec.py`.

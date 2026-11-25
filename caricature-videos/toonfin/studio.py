@@ -620,6 +620,136 @@ def render_card(c, t):
     return im
 
 
+@lru_cache(maxsize=64)
+def emoji_img(name, px):
+    im = Image.open(HERE / "emoji3d" / f"{name}_3d.png").convert("RGBA")
+    return im.resize((px, px), Image.LANCZOS)
+
+
+@lru_cache(maxsize=16)
+def logo_img(name, px, col="#76B900"):
+    import cairosvg
+    import io
+    svg = (HERE / "logos" / f"{name}.svg").read_text().replace("<path ", f'<path fill="{col}" ')
+    png = cairosvg.svg2png(bytestring=svg.encode(), output_width=px, output_height=px)
+    return Image.open(io.BytesIO(png)).convert("RGBA")
+
+
+def soft_shadow(im, blur=18, op=70, dy=14):
+    a = im.getchannel("A").point(lambda v: v * op // 255)
+    sh = Image.new("RGBA", (im.width + 2 * blur * 2, im.height + 2 * blur * 2), (0, 0, 0, 0))
+    blk = Image.new("RGBA", im.size, (40, 44, 60, 255))
+    blk.putalpha(a)
+    sh.alpha_composite(blk, (blur * 2, blur * 2 + dy))
+    return sh.filter(ImageFilter.GaussianBlur(blur)), blur * 2
+
+
+def draw_overlay(img, c, ct, x, y):
+    """'Real' overlays drawn straight on the frame (no glass box): headline, emoji, logo, stockchart."""
+    ty = c["type"]
+    ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
+    k = ease_out_back(seg(ct, 0, 0.45), 1.6)
+    fade = smooth(seg(ct, 0, 0.25))
+    if c.get("until") is not None and ct > c["until"] - c.get("at", 0):
+        q = smooth(seg(ct, c["until"] - c.get("at", 0), c["until"] - c.get("at", 0) + 0.3))
+        fade *= 1 - q
+    if fade <= 0.01:
+        return
+    lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    li = Ink(lay, affine(0, 0, 0, 1), 0, 1)
+    if ty == "headline":
+        col = {"up": GREEN, "down": RED, "gold": (226, 160, 20), "info": BLUE}.get(c.get("tone", "up"), GREEN)
+        size = c.get("size", 120)
+        txt = c["text"]
+        size = min(size, size * 900 / max(1, li.text_w(txt, size, "bebas")))
+        rise = 40 * (1 - smooth(seg(ct, 0, 0.4)))
+        sc = lerp(0.9, 1.0, smooth(seg(ct, 0, 0.4)))
+        with li.at(x, y + rise, 0, sc):
+            li.text(3, 5, txt, size, "bebas", fill=(0, 0, 0, 40), stroke=None)
+            li.text(0, 0, txt, size, "bebas", fill=col, stroke=None)
+        if c.get("sub"):
+            ks = smooth(seg(ct, 0.25, 0.6))
+            with li.at(x, y + size * 0.62 + 18 * (1 - ks)):
+                li.text(0, 0, c["sub"], c.get("sub_size", 34), "montb", fill=(60, 64, 76, int(255 * ks)), stroke=None)
+    elif ty == "emoji":
+        px = c.get("px", 260)
+        e = emoji_img(c["emoji"], px)
+        float_ = math.sin(ct * 2.4) * 8
+        s_ = max(0.05, k)
+        em = e.resize((max(1, int(px * s_)), max(1, int(px * s_))), Image.LANCZOS)
+        rot = c.get("tilt", 0) * (1 - smooth(seg(ct, 0, 0.5)))
+        if rot:
+            em = em.rotate(rot, Image.BICUBIC, expand=True)
+        sh, pad = soft_shadow(em, 16, 60, 18)
+        comp(lay, sh, x - sh.width / 2, y - sh.height / 2 + float_ + 6)
+        comp(lay, em, x - em.width / 2, y - em.height / 2 + float_)
+    elif ty == "logo":
+        px = c.get("px", 240)
+        lg = logo_img(c["logo"], px, c.get("col", "#76B900"))
+        s_ = max(0.05, k)
+        lw = max(1, int(lg.width * s_))
+        lg2 = lg.resize((lw, lw), Image.LANCZOS)
+        comp(lay, lg2, x - lw / 2, y - lw / 2 - px * 0.2)
+        if c.get("word"):
+            kw = smooth(seg(ct, 0.2, 0.55))
+            li.text(x, y + px * 0.48, c["word"], c.get("word_size", 96), "mont", fill=(20, 22, 28, int(255 * kw)),
+                    stroke=None)
+    elif ty == "stockchart":
+        w, h = c.get("w", 860), c.get("h", 560)
+        base, pad = glass_light(w, h, ("blue", "blue"))
+        card = base.copy()
+        ci = Ink(card, affine(pad + w / 2, pad + h / 2, 0, 1), 0, 1)
+        ci.text(-w / 2 + 44, -h / 2 + 58, c.get("title", ""), 52, "mont", fill=(22, 24, 32), stroke=None, anchor="lm")
+        ci.text(-w / 2 + 44, -h / 2 + 104, c.get("sub", ""), 24, "montb", fill=(130, 134, 146), stroke=None, anchor="lm")
+        if c.get("logo"):
+            lg = logo_img(c["logo"], 120, c.get("logo_col", "#76B900"))
+            card.alpha_composite(lg, (int(pad + w - 44 - 120), int(pad + 18)))
+        pts = c["points"]
+        x0, x1, y0, y1 = -w / 2 + 50, w / 2 - 60, h / 2 - 90, -h / 2 + 170
+        for gi in range(4):
+            gy = lerp(y0, y1, gi / 3)
+            ci.line([(x0, gy), (x1, gy)], (232, 234, 240), 2, wob=0)
+        kd = ease_in_out(seg(ct, c.get("draw_at", 0.25), c.get("draw_end", 1.6)))
+        n = 1 + (len(pts) - 1) * kd
+        P = [(lerp(x0, x1, i / (len(pts) - 1)), lerp(y0, y1, v)) for i, v in enumerate(pts)]
+        shown = P[:int(n)]
+        if int(n) < len(P):
+            f_ = n - int(n)
+            a_, b_ = P[int(n) - 1], P[int(n)]
+            shown.append((lerp(a_[0], b_[0], f_), lerp(a_[1], b_[1], f_)))
+        lc = {"up": GREEN, "down": RED}.get(c.get("tone", "down"), RED)
+        if len(shown) > 1:
+            area = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            ai = Ink(area, affine(pad + w / 2, pad + h / 2, 0, 1), 0, 1)
+            ai.shape(shown + [(shown[-1][0], y0), (shown[0][0], y0)], fill=lc + (60,), outline=None, wob=0)
+            g = np.linspace(1, 0, card.height)[:, None]
+            A = np.asarray(area.getchannel("A"), float) * g
+            area.putalpha(Image.fromarray(A.astype(np.uint8)))
+            card.alpha_composite(area)
+            ci.line(shown, lc, 7, wob=0)
+            if c.get("end_tone") and kd > 0.92:
+                ex, ey = shown[-1]
+                ci.line([(ex, ey), (ex + 26, ey - 60)], GREEN if c["end_tone"] == "up" else RED, 7, wob=0)
+        for j, lb in enumerate(c.get("xlabels", [])):
+            ci.text(lerp(x0, x1, j / max(1, len(c["xlabels"]) - 1)), y0 + 34, lb, 22, "montb", fill=(140, 144, 156),
+                    stroke=None)
+        if c.get("tag") and kd > 0.95:
+            kt = ease_out_back(seg(ct, c.get("draw_end", 1.6), c.get("draw_end", 1.6) + 0.35), 1.8)
+            ex, ey = P[-1]
+            with ci.at(ex - 70, ey + 40, 0, max(0.05, kt)):
+                pill(ci, 0, 0, c["tag"], 24, lc)
+        sc = lerp(0.85, 1.0, smooth(seg(ct, 0, 0.45)))
+        card2 = card.resize((int(card.width * sc), int(card.height * sc)), Image.LANCZOS)
+        comp(lay, card2, x - card2.width / 2, y - card2.height / 2)
+    if fade < 0.999:
+        A = np.asarray(lay.getchannel("A"), float) * fade
+        lay.putalpha(Image.fromarray(A.astype(np.uint8)))
+    img.alpha_composite(lay)
+
+
+OVERLAYS = {"headline", "emoji", "logo", "stockchart"}
+
+
 def rot_y(im, ang, k_scale=1.0):
     """Fake 3D: turn a sprite around its vertical axis (perspective)."""
     if abs(ang) < 0.5 and abs(k_scale - 1) < 1e-3:
@@ -758,6 +888,10 @@ class Studio:
             if hq < 40:
                 return None
             step = abs(math.sin(lt * math.pi * 2.2)) * hq * 0.025 if walking else 0.0
+            if p.get("exit_at") is not None:            # leaves the frame so the key info owns the screen
+                fx += 1100 * smooth(seg(lt, p["exit_at"], p["exit_at"] + 0.45)) ** 1.5 * p.get("exit_dir", 1)
+            if p.get("enter_at") is not None:
+                fx += 1100 * (1 - smooth(seg(lt, p["enter_at"], p["enter_at"] + 0.5))) * p.get("enter_dir", -1)
             sp = panda_sprite(pose, hq, kq, p.get("flip", False))
             lean = 0.018 if walking else 0.0
             sp = body_motion(sp, t_abs, talk, p.get("seed", 0.0), 1.0, lean, p.get("gesture", "idle"),
@@ -813,6 +947,30 @@ class Studio:
             if lt < c.get("at", 0) or (c.get("until") is not None and lt > c["until"] + 0.3):
                 continue
             ct = lt - c.get("at", 0)
+            if c.get("screen"):
+                # placed ON a surface of the 3D set (e.g. the wall screen): moves with the camera
+                pts = [scene3d.project(cam, W, H, q) for q in c["screen"]]
+                if all(pts):
+                    lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                    sw, sh_ = c.get("w", 900), c.get("h", 560)
+                    face = Image.new("RGBA", (sw, sh_), tuple(c.get("bg", (250, 251, 253))) + (255,))
+                    draw_overlay(face, dict(c, x=sw / 2, y=sh_ / 2, screen=None, at=0, until=None), ct, sw / 2, sh_ / 2)
+                    dst = [(p_[0], p_[1]) for p_ in pts]
+                    xs, ys = [q[0] for q in dst], [q[1] for q in dst]
+                    bx0, by0 = int(max(0, min(xs))), int(max(0, min(ys)))
+                    bx1, by1 = int(min(W, max(xs))) + 1, int(min(H, max(ys))) + 1
+                    if bx1 - bx0 > 2 and by1 - by0 > 2:
+                        co = scene3d._perspective_coeffs([(0, 0), (sw, 0), (sw, sh_), (0, sh_)],
+                                                         [(q[0] - bx0, q[1] - by0) for q in dst])
+                        wp = face.transform((bx1 - bx0, by1 - by0), Image.PERSPECTIVE, co, Image.BICUBIC)
+                        fd = smooth(seg(ct, 0, 0.35))
+                        A = np.asarray(wp.getchannel("A"), float) * fd
+                        wp.putalpha(Image.fromarray(A.astype(np.uint8)))
+                        img.alpha_composite(wp, (bx0, by0))
+                continue
+            if c["type"] in OVERLAYS:
+                draw_overlay(img, c, ct, c.get("x", 540), c.get("y", 520))
+                continue
             sp = render_card(c, ct)
             k = ease_out_back(seg(ct, 0, 0.42), 1.5)
             ang = (1 - smooth(seg(ct, 0, 0.5))) * c.get("spin", 70)
@@ -854,6 +1012,31 @@ class Studio:
         return None
 
     def caption(self, img, t, top):
+        if self.spec.get("cap_style") == "word":
+            return self.caption_word(img, t, top)
+        return self.caption_phrase(img, t, top)
+
+    def caption_word(self, img, t, top):
+        """Reference style: the spoken word alone, small, yellow with a dark outline, above the panda."""
+        cur = None
+        for j, w in enumerate(self.words):
+            nxt = self.words[j + 1]["s"] if j + 1 < len(self.words) else w["e"] + 0.4
+            if w["s"] <= t < max(w["e"] + 0.1, min(nxt, w["s"] + 0.9)):
+                cur = w
+        if not cur:
+            return
+        ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
+        txt = cur["w"].upper().strip(",.:;!?–")
+        if not txt:
+            return
+        k = 1 + 0.14 * math.exp(-(t - cur["s"]) * 14)
+        y = self.spec.get("cap_y", 1020)
+        if top is not None:                      # just above the panda's head, like the reference
+            y = min(max(top - 34, 760), 1160)
+        with ink.at(540, y, 0, k):
+            ink.text(0, 0, txt, self.spec.get("cap_size", 46), "caption", fill=(255, 214, 0), stroke=(20, 20, 24), sw=0.16)
+
+    def caption_phrase(self, img, t, top):
         """Small phrase subtitles in a soft dark pill; the spoken word lights up (karaoke), key words keep
         their semantic colour (green up, red down, gold key facts)."""
         cur = next((c for c in self.chunks if c[0] <= t < c[1]), None)
@@ -890,6 +1073,24 @@ class Studio:
 
     def header(self, img):
         ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
+        if self.spec.get("header_style") == "bar":
+            lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+            d = ImageDraw.Draw(lay)
+            y0, y1 = 150, 212
+            d.rectangle([0, y0, W, y1], fill=(255, 252, 245, 225))
+            d.line([(0, y1), (W, y1)], fill=(230, 226, 214, 255), width=2)
+            img.alpha_composite(lay)
+            ink.circle(52, (y0 + y1) / 2, 17, fill=(30, 32, 40), outline=None, wob=0)
+            ink.text(52, (y0 + y1) / 2 + 1, "P", 20, "mont", fill=(255, 255, 255), stroke=None)
+            ink.text(82, (y0 + y1) / 2, self.spec.get("brand", "panda_investiert"), 26, "montb", fill=(30, 32, 40),
+                     stroke=None, anchor="lm")
+            right = self.spec.get("header", "")
+            ink.text(W - 40, (y0 + y1) / 2, right, 24, "montb", fill=(120, 124, 136), stroke=None, anchor="rm")
+            if self.spec.get("header_tag"):
+                tw = ink.text_w(right, 24, "montb")
+                ink.text(W - 52 - tw, (y0 + y1) / 2, self.spec["header_tag"], 24, "mont", fill=(30, 32, 40), stroke=None,
+                         anchor="rm")
+            return
         if THEME["dark"]:
             y = TOK["space"]["safe_top"] + 22
             lay = Image.new("RGBA", img.size, (0, 0, 0, 0))

@@ -39,6 +39,8 @@ class Scene:
     def __init__(self, bg=BG, floor=FLOOR, fog=90.0, sky=None, light_col=None, shade_col=None):
         self.sky, self.light_col, self.shade_col = sky, light_col, shade_col
         self.reflect = 0.0          # glossy floor: share of the mirrored scene seen in the floor
+        self.edge = 0.93            # outline darkness of box edges (lower = more line-art)
+        self.ambient = 0.82         # brightness of faces turned away from the key light
         self._mirror = None
         self.faces = []      # (pts[4x3], colour, kind, texture)
         self.bg, self.floor, self.fog = bg, floor, fog
@@ -195,7 +197,7 @@ class Scene:
                 d = ImageDraw.Draw(img)
                 continue
             lam = max(0.0, float(np.dot(n, LIGHT)))
-            shade = 0.82 + 0.18 * lam
+            shade = self.ambient + (1 - self.ambient) * lam
             if n[1] > 0.9:
                 shade = 1.0
             col = np.array(face["col"], float) * shade
@@ -211,7 +213,7 @@ class Scene:
                     gd = ImageDraw.Draw(glow)
                 gd.polygon(pts, fill=tuple(int(c * (1 - fog * 0.6)) for c in col))
             col = col * (1 - fog) + np.array(self.bg, float) * fog
-            edge = tuple(int(c) for c in col * 0.93)
+            edge = tuple(int(c) for c in col * self.edge)
             d.polygon(pts, fill=tuple(int(c) for c in col), outline=edge if "nout" in face else None)
             if face.get("bands") or face.get("mull"):
                 _draw_lines(d, face, cam, r, u, f, fpx, Wp, Hp, col, fog, self.bg)
@@ -909,7 +911,86 @@ def darkstudio_set(ticker="NVDA", change="+30 %"):
     return s
 
 
-SETS = {"darkstudio": darkstudio_set, "vicecity": vicecity_set, "reichstag": reichstag_set, "ministry": ministry_set, "trading": trading_set, "hq": hq_set, "avenue": avenue_set, "boardroom": boardroom_set, "office": office_set, "studio": studio_set}
+# -- bright line-art studio (reference look: white, airy, thin grey lines, transforms between zones) ---------
+
+def _chair(s, x, z, face=1, col=(250, 250, 252)):
+    """Simple modern chair: seat, backrest, central post, base. ``face`` +1 looks towards +z."""
+    s._box(x - 0.32, x + 0.32, 0.44, 0.52, z - 0.3, z + 0.3, col=col)
+    bz = z - face * 0.3
+    s._box(x - 0.32, x + 0.32, 0.52, 1.15, min(bz, bz - face * 0.07), max(bz, bz - face * 0.07), col=col)
+    s._box(x - 0.04, x + 0.04, 0.08, 0.44, z - 0.04, z + 0.04, col=(214, 216, 222))
+    s._box(x - 0.3, x + 0.3, 0.0, 0.08, z - 0.3, z + 0.3, col=(226, 228, 233))
+    s.ground_shadow(x - 0.32, x + 0.32, z - 0.3, z + 0.3, 1.0)
+
+
+def brightstudio_set():
+    """Airy white studio in three zones the camera flies between:
+    A (x=0) presentation hall with a big wall screen and rows of chairs,
+    C (x=-45) a giant circuit-board / chip relief (tech, data),
+    B (x=+45) a boardroom with a long table and glass partitions."""
+    s = Scene(bg=(247, 247, 250), floor=(242, 242, 246), fog=170, sky=[(240, 241, 246), (246, 246, 249), (249, 249, 251)])
+    s.edge, s.ambient = 0.8, 0.94
+    s.plane(-120, 120, -40, 80)
+    for x in range(-90, 92, 3):                       # floor tiles
+        s.flat(x - 0.025, x + 0.025, -40, 80, (226, 227, 233), bias=3900.0)
+    for z in range(-39, 80, 3):
+        s.flat(-120, 120, z - 0.025, z + 0.025, (226, 227, 233), bias=3900.0)
+    # ceiling with light panels (soft, not neon)
+    s.quad([[-120, 11, -40], [120, 11, -40], [120, 11, 80], [-120, 11, 80]], (246, 246, 249), bias=9000.0)
+    for x in range(-60, 61, 6):
+        for z in range(-30, 70, 6):
+            s.quad([[x - 1.8, 10.98, z - 1.8], [x + 1.8, 10.98, z - 1.8], [x + 1.8, 10.98, z + 1.8], [x - 1.8, 10.98, z + 1.8]],
+                   (251, 251, 253), bias=8000.0)
+    # --- zone A: hall ------------------------------------------------------------------
+    s.box(-16, 16, 0, 11, 20, 20.6, col=(248, 248, 251), shadow=False, mull=2.0, band_col=(232, 233, 238))
+    s._box(-5.0, 5.0, 1.6, 8.0, 19.8, 20.0, col=(228, 230, 236))           # screen bezel
+    s.quad([[-4.7, 7.7, 19.78], [4.7, 7.7, 19.78], [4.7, 1.9, 19.78], [-4.7, 1.9, 19.78]], (238, 240, 245),
+           bias=-0.3)                                                        # screen surface
+    for side in (-1, 1):
+        s.box(side * 16 - 0.3, side * 16 + 0.3, 0, 11, -10, 20, col=(246, 246, 249), shadow=False, mull=3.0,
+              band_col=(232, 233, 238))
+        for r in range(7):
+            for c in range(5):
+                _chair(s, side * (3.6 + c * 1.2), 1.0 + r * 2.4, face=1)
+    # --- zone C: circuit board wall ------------------------------------------------------
+    s.box(-62, -28, 0, 16, 22, 22.6, col=(245, 245, 248), shadow=False)
+    s._box(-52, -38, 2, 14, 21.6, 22, col=(236, 237, 242))                   # board
+    s._box(-48.5, -41.5, 4.5, 11.5, 21.2, 21.6, col=(226, 228, 234))         # chip
+    s._box(-47.5, -42.5, 5.5, 10.5, 21.0, 21.2, col=(242, 243, 247))
+    for i in range(9):
+        y = 5.0 + i * 0.75
+        for x0, x1 in ((-50.6, -48.5), (-41.5, -39.4)):
+            s._box(x0, x1, y - 0.08, y + 0.08, 21.5, 21.6, col=(214, 216, 223))
+        xx = -48.0 + i * 0.75
+        for y0, y1 in ((2.4, 4.5), (11.5, 13.6)):
+            s._box(xx - 0.08, xx + 0.08, y0, y1, 21.5, 21.6, col=(214, 216, 223))
+    rng = np.random.default_rng(4)
+    for k in range(26):                                                      # small components
+        x = rng.uniform(-51.5, -38.5)
+        y = rng.uniform(2.5, 13.5)
+        if -49 < x < -41 and 4 < y < 12:
+            continue
+        s._box(x - 0.35, x + 0.35, y - 0.25, y + 0.25, 21.4, 21.6, col=(230, 231, 236))
+    for k in range(5):                                                       # server racks
+        x = -56 + k * 2.2 if k < 2 else -30.5 - (k - 2) * 2.2
+        s.box(x - 0.9, x + 0.9, 0, 4.2, 14, 16, col=(244, 244, 247), bands=0.6, band_col=(225, 227, 233))
+    # --- zone B: boardroom ---------------------------------------------------------------
+    s.box(30, 60, 0, 10, 24, 24.6, col=(247, 247, 250), shadow=False)
+    s._box(39, 51, 1.8, 7.2, 23.8, 24.0, col=(222, 224, 230))
+    s.quad([[39.3, 6.9, 23.78], [50.7, 6.9, 23.78], [50.7, 2.1, 23.78], [39.3, 2.1, 23.78]], (236, 238, 243), bias=-0.3)
+    s.box(42.5, 47.5, 0.72, 0.8, 8, 20, col=(252, 252, 253), shadow=False)
+    s.ground_shadow(42.5, 47.5, 8, 20, 1.0)
+    for x in (43.0, 47.0):
+        s._box(x - 0.1, x + 0.1, 0, 0.72, 9, 19, col=(226, 228, 233))
+    for z in np.arange(9, 20, 1.8):
+        _chair(s, 41.6, z, face=1)
+        _chair(s, 48.4, z, face=1)
+    for x in (33, 36, 54, 57):                                               # glass partitions
+        s._box(x - 0.05, x + 0.05, 0, 8, 6, 18, col=(228, 236, 244))
+    return s
+
+
+SETS = {"brightstudio": brightstudio_set, "darkstudio": darkstudio_set, "vicecity": vicecity_set, "reichstag": reichstag_set, "ministry": ministry_set, "trading": trading_set, "hq": hq_set, "avenue": avenue_set, "boardroom": boardroom_set, "office": office_set, "studio": studio_set}
 
 
 @lru_cache(maxsize=16)
