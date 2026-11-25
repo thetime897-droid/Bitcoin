@@ -37,11 +37,11 @@
   "duck_db": -9,
   "sfx_rel_db": -6,
   "lufs": -14.0,
-  "true_peak": -1.2
+  "true_peak": -1.8
  },
  "loop": {
   "dur": 0.7,
-  "trans": "match",
+  "trans": "cut",
   "props": [
    {
     "type": "gpu",
@@ -1184,32 +1184,6 @@
      "change": 29.6,
      "count_at": 0.2,
      "count_end": 1.0
-    },
-    {
-     "type": "title",
-     "holo": [
-      0,
-      5.6,
-      8.0
-     ],
-     "wm": 3.8,
-     "at": 0.15,
-     "kicker": "FAZIT",
-     "text": "COMEBACK DA – RISIKO AUCH",
-     "w": 900,
-     "h": 200,
-     "glow": [
-      [
-       226,
-       230,
-       238
-      ],
-      [
-       226,
-       230,
-       238
-      ]
-     ]
     },
     {
      "type": "breaking",

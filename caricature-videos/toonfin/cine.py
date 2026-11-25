@@ -299,7 +299,7 @@ def mix(spec, out_wav):
         mixed *= 0.95 / pk
     import soundfile as sf
     sf.write(str(out_wav), mixed, SR)
-    lufs, tp = snd.get("lufs", -14.0), snd.get("true_peak", -1.2)
+    lufs, tp = snd.get("lufs", -14.0), snd.get("true_peak", -1.8)  # headroom: AAC encoding adds ~0.4 dB
     from .pandanews import master_wav
     master_wav(out_wav, lufs, tp)
 
@@ -372,8 +372,10 @@ def build(cfg, work):
                           set_args=cfg.get("set_args", []), trans=lp.get("trans", "match"), match_at=[540, 960],
                           mood=first.get("mood"), cards=[], props=lp.get("props", first.get("props", [])), blur=0.0))
         k0 = dict(first["camera"][0])
-        campath.append(dict(k0, t=round(st + 0.02, 3)))
-        campath.append(dict(k0, t=round(dur, 3)))
+        k0.pop("ease", None)
+        # three identical keys -> zero tangent: the hook framing holds still instead of drifting
+        for tk in (st + 0.02, st + 0.06, dur - 0.04, dur):
+            campath.append(dict(k0, t=round(tk, 3)))
     campath.sort(key=lambda x: x["t"])
     # sound cues: from the cue file (absolute script times are rescaled to this voice) + section-local cues
     cues = []
