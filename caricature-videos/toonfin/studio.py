@@ -100,25 +100,41 @@ def panda_sprite(pose, h, kq, flip=False):
     return im
 
 
-def body_motion(sp, t, talk, seed=0.0, amp=1.0, lean=0.0):
-    """Organic idle motion on a still pose: the upper body sways and leans like a weight shift, the chest
-    breathes, the head nods a little more while speaking. Feet stay planted (warp fades to 0 at the bottom)."""
+def body_motion(sp, t, talk, seed=0.0, amp=1.0, lean=0.0, gesture="idle", gt=99.0):
+    """Organic motion on a still pose. Idle: weight shift, breathing, a small nod while speaking (feet stay
+    planted). Gestures, ``gt`` seconds after they start: nod (yes), shake (no / sceptical), jolt (shock: a
+    quick recoil), hop (joy), slow (calm, thoughtful)."""
     import cv2
     h, w = sp.height, sp.width
     a = np.asarray(sp)
     yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
-    up = np.clip(1 - yy / h, 0, 1)                    # 1 at the head, 0 at the feet
-    sway = (math.sin(t * 2 * math.pi / 3.1 + seed) * 0.012 + math.sin(t * 2 * math.pi / 1.7 + seed * 2) * 0.004)
+    up = np.clip(1 - yy / h, 0, 1)
+    head = np.clip((up - 0.62) / 0.38, 0, 1)
+    sp_ = 0.6 if gesture == "slow" else 1.0
+    sway = (math.sin(t * 2 * math.pi / 3.1 * sp_ + seed) * 0.012 + math.sin(t * 2 * math.pi / 1.7 * sp_ + seed * 2) * 0.004)
     sway = sway * amp + lean
     nod = talk * 0.010 * math.sin(t * 2 * math.pi / 0.62 + seed)
     breath = 0.008 * math.sin(t * 2 * math.pi / 3.4 + seed)
-    head = np.clip((up - 0.62) / 0.38, 0, 1)          # head region
-    dx = -(sway * h) * up ** 1.6
-    dy = -(breath * h) * up + -(nod * h) * head
+    hx, hy, lift = 0.0, 0.0, 0.0
+    env = math.exp(-gt * 2.2) if gt >= 0 else 0.0
+    if gesture == "nod" and gt >= 0:
+        hy += 0.022 * math.sin(gt * 2 * math.pi / 0.42) * env
+    elif gesture == "shake" and gt >= 0:
+        hx += 0.026 * math.sin(gt * 2 * math.pi / 0.38) * env
+    elif gesture == "jolt" and 0 <= gt < 0.6:
+        k = math.sin(math.pi * min(1, gt / 0.18)) if gt < 0.18 else math.exp(-(gt - 0.18) * 8)
+        sway += -0.02 * k
+        hy += -0.03 * k
+    elif gesture == "hop" and 0 <= gt < 0.7:
+        lift = abs(math.sin(gt / 0.7 * 2 * math.pi)) * 0.05 * (1 - gt / 0.7)
+    dx = -(sway * h) * up ** 1.6 - (hx * h) * head
+    dy = -(breath * h) * up - (nod * h + hy * h) * head
     mx = (xx + dx).astype(np.float32)
     my = (yy + dy).astype(np.float32)
     out = cv2.remap(a, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0, 0))
-    return Image.fromarray(out, "RGBA")
+    im = Image.fromarray(out, "RGBA")
+    im.info["lift"] = lift * h
+    return im
 
 
 @lru_cache(maxsize=8)
@@ -164,8 +180,61 @@ def mouth_track(voice, n):
 
 # -- glass cards ----------------------------------------------------------------------------
 
-@lru_cache(maxsize=64)
+THEME = {"dark": False}
+TOK = json.loads((HERE / "tokens.json").read_text()) if (HERE / "tokens.json").exists() else {}
+
+
+def hexc(h):
+    h = h.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) for i in range(0, len(h), 2))
+
+
+def tcol(name):
+    return hexc(TOK["color"][name])[:3]
+
+
+def set_theme(dark):
+    """Dark theme: glass cards are deep navy, text is white; semantic colours come from tokens.json."""
+    global GREEN, RED, BLUE, GOLD, YELLOW
+    THEME["dark"] = bool(dark)
+    if dark and TOK:
+        GREEN, RED, BLUE, GOLD, YELLOW = tcol("up"), tcol("down"), tcol("info"), tcol("gold"), tcol("gold")
+
+
 def glass_base(w, h, glow=("pink", "blue")):
+    if THEME["dark"]:
+        return glass_dark(w, h, glow)
+    return glass_light(w, h, glow)
+
+
+@lru_cache(maxsize=64)
+def glass_dark(w, h, glow):
+    pad = 140
+    im = Image.new("RGBA", (w + 2 * pad, h + 2 * pad), (0, 0, 0, 0))
+    cols = {"pink": (255, 80, 160), "blue": tcol("info"), "mint": (60, 230, 190), "gold": tcol("gold"),
+            "red": tcol("down"), "green": tcol("up")}
+    g = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    gd = ImageDraw.Draw(g)
+    gd.rounded_rectangle([pad - 6, pad - 6, pad + w + 6, pad + h + 6], 40, outline=cols.get(glow[0], (56, 189, 248)) + (150,),
+                         width=14)
+    im.alpha_composite(g.filter(ImageFilter.GaussianBlur(18)))
+    sh = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).rounded_rectangle([pad + 8, pad + 30, pad + w - 8, pad + h + 26], 36, fill=(0, 0, 0, 120))
+    im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(28)))
+    panel = Image.new("RGBA", im.size, (0, 0, 0, 0))
+    pd = ImageDraw.Draw(panel)
+    pd.rounded_rectangle([pad, pad, pad + w, pad + h], 34, fill=(14, 20, 36, 226))
+    # soft top sheen + accent edge
+    for i in range(int(h * 0.45)):
+        a = int(26 * (1 - i / (h * 0.45)))
+        pd.line([(pad + 30, pad + i), (pad + w - 30, pad + i)], fill=(255, 255, 255, a))
+    pd.rounded_rectangle([pad, pad, pad + w, pad + h], 34, outline=cols.get(glow[0], (56, 189, 248)) + (210,), width=3)
+    im.alpha_composite(panel)
+    return im, pad
+
+
+@lru_cache(maxsize=64)
+def glass_light(w, h, glow=("pink", "blue")):
     pad = 140
     im = Image.new("RGBA", (w + 2 * pad, h + 2 * pad), (0, 0, 0, 0))
     cols = {"pink": (255, 150, 190), "blue": (120, 170, 255), "mint": (120, 230, 190), "gold": (255, 210, 120),
@@ -190,6 +259,11 @@ def glass_base(w, h, glow=("pink", "blue")):
 
 
 def T(ink, x, y, s, size, fill=DARK, key="mont", anchor="mm"):
+    if THEME["dark"]:
+        if fill == DARK:
+            fill = (255, 255, 255)
+        elif fill == TXT2:
+            fill = tcol("text2")
     ink.text(x, y, s, size, key, fill=fill, stroke=None, anchor=anchor)
 
 
@@ -306,7 +380,15 @@ def card_draw(ink, c, t, w, h):
         k = ease_out(seg(t, c.get("count_at", 0.2), c.get("count_end", 1.2)))
         v = lerp(c.get("from", 0), c["to"], k)
         s = c.get("fmt", "{}").replace("{}", de(v, c.get("dec", 0)))
-        T(ink, 0, 22, s, fit(ink, s, 104, w - 70), c.get("col") and tuple(c["col"]) or DARK)
+        ce = c.get("count_end", 1.2)
+        snap = 1 + 0.12 * math.exp(-max(0.0, t - ce) * 9) if t >= ce else 1.0
+        colk = c.get("col") and tuple(c["col"]) or DARK
+        with ink.at(0, 22, 0, snap):
+            T(ink, 0, 0, s, fit(ink, s, 104, w - 70), colk)
+        if t >= ce and t < ce + 0.5:
+            q = (t - ce) / 0.5
+            ink.rect(-w / 2 + 10 - 20 * q, -h / 2 + 10 - 20 * q, w / 2 - 10 + 20 * q, h / 2 - 10 + 20 * q, fill=None,
+                     outline=mix(colk, (14, 20, 36) if THEME["dark"] else (255, 255, 255), q), w=6 * (1 - q) + 1, wob=0, r=34)
         if c.get("sub"):
             T(ink, 0, h / 2 - 44, c["sub"], 26, TXT2, "montb")
     elif ty == "quote":
@@ -372,11 +454,13 @@ def card_draw(ink, c, t, w, h):
         for i, (txt, at) in enumerate(c["items"]):
             yy = -h / 2 + 128 + i * 84
             if t < at:
-                ink.rect(-w / 2 + 40, yy - 30, w / 2 - 40, yy + 30, fill=(244, 245, 249), outline=None, wob=0, r=14)
+                ink.rect(-w / 2 + 40, yy - 30, w / 2 - 40, yy + 30, fill=(28, 36, 58) if THEME["dark"] else (244, 245, 249),
+                         outline=None, wob=0, r=14)
                 continue
             k = smooth(seg(t, at, at + 0.35))
             with ink.at(30 * (1 - k), yy):
-                ink.rect(-w / 2 + 40, -30, w / 2 - 40, 30, fill=(250, 238, 240), outline=None, wob=0, r=14)
+                ink.rect(-w / 2 + 40, -30, w / 2 - 40, 30, fill=(70, 24, 36) if THEME["dark"] else (250, 238, 240),
+                         outline=None, wob=0, r=14)
                 ink.circle(-w / 2 + 78, 0, 20, fill=RED, outline=None, wob=0)
                 ink.line([(-w / 2 + 70, -8), (-w / 2 + 86, 8)], WHITE, 6, wob=0)
                 ink.line([(-w / 2 + 86, -8), (-w / 2 + 70, 8)], WHITE, 6, wob=0)
@@ -433,6 +517,87 @@ def card_draw(ink, c, t, w, h):
             T(ink, -w / 2 + 180, -h / 2 + 106 + j * 54, ln, fit(ink, ln, 44, w - 220), DARK, "mont", "lm")
         if c.get("sub"):
             T(ink, -w / 2 + 180, h / 2 - 36, c["sub"], fit(ink, c["sub"], 24, w - 220), TXT2, "montb", "lm")
+    elif ty == "logo":
+        # ticker monogram hologram (real logos are trademarks -> neutral fallback, see CLAUDE.md)
+        r = min(w, h) * 0.34
+        cx = -w / 2 + r + 40
+        spin = math.cos(min(1.0, t / 0.6) * math.pi * 2) if t < 0.6 else 1.0
+        with ink.at(cx, 0, 0, 1, max(0.05, abs(spin))):
+            ink.circle(0, 0, r, fill=(20, 32, 58), outline=tcol("info") if THEME["dark"] else BLUE, w=6, wob=0)
+            T(ink, 0, 4, c.get("mono", c.get("ticker", "?")[:1]), r * 1.1, tcol("info") if THEME["dark"] else BLUE)
+        T(ink, cx + r + 34, -24, c.get("name", ""), fit(ink, c.get("name", ""), 58, w - 2 * r - 120), DARK, "mont", "lm")
+        T(ink, cx + r + 34, 34, c.get("sub", ""), 28, TXT2, "montb", "lm")
+    elif ty == "candles":
+        T(ink, -w / 2 + 40, -h / 2 + 44, c.get("title", ""), 32, DARK, "mont", "lm")
+        T(ink, w / 2 - 40, -h / 2 + 44, c.get("sub", ""), 22, TXT2, "montb", "rm")
+        data = c["ohlc"]
+        lo = min(x[2] for x in data)
+        hi = max(x[1] for x in data)
+        x0, x1, y0, y1 = -w / 2 + 40, w / 2 - 40, h / 2 - 88, -h / 2 + 110
+        Y = lambda v: lerp(y0, y1, (v - lo) / (hi - lo + 1e-9))
+        for gi in range(4):
+            gy = lerp(y0, y1, gi / 3)
+            ink.line([(x0, gy), (x1, gy)], (40, 52, 80) if THEME["dark"] else (232, 234, 240), 2, wob=0)
+        n = len(data)
+        k = seg(t, c.get("draw_at", 0.2), c.get("draw_end", 1.6)) * n
+        bw = (x1 - x0) / n * 0.62
+        for i, (o, hh, ll, cl) in enumerate(data):
+            if i >= k:
+                break
+            ki = clamp(k - i)
+            cx = x0 + (i + 0.5) * (x1 - x0) / n
+            col = GREEN if cl >= o else RED
+            ink.line([(cx, Y(ll)), (cx, Y(hh))], col, 3, wob=0)
+            top, bot = Y(max(o, cl)), Y(min(o, cl))
+            mid = (top + bot) / 2
+            ink.rect(cx - bw / 2, lerp(mid, top, ki) - 1, cx + bw / 2, lerp(mid, bot, ki) + 1, fill=col, outline=None, wob=0, r=2)
+        for m in c.get("markers", []):          # [index, label, colour, at]
+            if t < m[3]:
+                continue
+            km = ease_out_back(seg(t, m[3], m[3] + 0.4), 1.8)
+            i = m[0]
+            cx = x0 + (i + 0.5) * (x1 - x0) / n
+            o, hh, ll, cl = data[i]
+            up_ = m[2] == "up"
+            py = Y(hh) - 18 if up_ else Y(ll) + 18
+            col = GREEN if up_ else RED
+            ink.circle(cx, py, 9 * km, fill=col, outline=None, wob=0)
+            lx = cx - (ink.text_w(m[1], 24, "mont") / 2 + 30 if up_ else 0)
+            with ink.at(lx, py + (-10 if up_ else 44), 0, max(0.05, km)):
+                pill(ink, 0, 0, m[1], 24, col)
+    elif ty == "versus":
+        k1 = smooth(seg(t, 0.0, 0.45))
+        k2 = smooth(seg(t, c.get("b_at", 0.5), c.get("b_at", 0.5) + 0.45))
+        for side, (lab, val, sub, col, kk) in enumerate(((c["a"][0], c["a"][1], c["a"][2], c["a"][3], k1),
+                                                       (c["b"][0], c["b"][1], c["b"][2], c["b"][3], k2))):
+            if kk <= 0.01:
+                continue
+            cx = -w / 4 + side * w / 2
+            colr = GREEN if col == "up" else (RED if col == "down" else BLUE)
+            with ink.at(cx + (1 - kk) * (-80 if side == 0 else 80), 0):
+                ink.rect(-w / 4 + 16, -h / 2 + 20, w / 4 - 16, h / 2 - 20, fill=None, outline=colr, w=4, wob=0, r=22)
+                T(ink, 0, -h / 2 + 64, lab, fit(ink, lab, 30, w / 2 - 60), TXT2, "montb")
+                T(ink, 0, 10, val, fit(ink, val, 76, w / 2 - 120), colr)
+                T(ink, 0, h / 2 - 60, sub, fit(ink, sub, 24, w / 2 - 60), TXT2, "montb")
+        kv = ease_out_back(seg(t, c.get("b_at", 0.5) + 0.2, c.get("b_at", 0.5) + 0.6), 2.0)
+        if kv > 0.02:
+            with ink.at(0, 0, 0, kv):
+                ink.circle(0, 0, 32, fill=tcol("gold") if THEME["dark"] else GOLD, outline=None, wob=0)
+                ink.text(0, 2, "VS", 24, "mont", fill=(14, 20, 36), stroke=None)
+    elif ty == "metrics":
+        T(ink, -w / 2 + 40, -h / 2 + 46, c.get("title", ""), 30, TXT2, "montb", "lm")
+        rows = c["rows"]            # [[label, value, semantic, at]]
+        for i, (lab, val, sem, at) in enumerate(rows):
+            if t < at:
+                continue
+            kk = smooth(seg(t, at, at + 0.35))
+            yy = -h / 2 + 116 + i * 72
+            colr = GREEN if sem == "up" else (RED if sem == "down" else (GOLD if sem == "gold" else BLUE))
+            with ink.at(24 * (1 - kk), yy):
+                T(ink, -w / 2 + 40, 0, lab, 32, DARK, "montb", "lm")
+                T(ink, w / 2 - 40, 0, val, 40, colr, "mont", "rm")
+    elif ty == "logo_dummy":
+        pass
     elif ty == "icon":
         icon3d(ink, c["icon"], c.get("s", 1.0), t)
         if c.get("label"):
@@ -542,6 +707,7 @@ def path_cam(keys, t, shake=0.0):
 
 class Studio:
     def __init__(self, spec):
+        set_theme(spec.get("theme") == "dark")
         self.spec = spec
         self.shots = spec["shots"]
         self.words = spec["words"]
@@ -562,11 +728,15 @@ class Studio:
             return None
         pose = p["pose"]
         since = lt
-        for at, ps in p.get("swap", []):
-            if lt >= at:
-                pose, since = ps, lt - at
+        talk_on = p.get("talk", True)
+        for sw in p.get("swap", []):
+            if lt >= sw[0]:
+                pose, since = sw[1], lt - sw[0]
+                talk_on = sw[2] if len(sw) > 2 else talk_on
+                if len(sw) > 3:
+                    p = dict(p, gesture=sw[3], gesture_at=sw[0])
         t_abs = gi / FPS
-        kq = int(self.mouth[min(gi, self.n - 1)]) if p.get("talk", True) and pose in TALK else 0
+        kq = int(self.mouth[min(gi, self.n - 1)]) if talk_on and pose in TALK else 0
         talk = kq / 4
         if p.get("world") and cam is not None:
             # standing in the 3D world: feet on the ground at (x, z), real size and perspective
@@ -578,8 +748,9 @@ class Studio:
                 walking = 0 < k < 1
             else:
                 walking = False
-            f = scene3d.project(cam, W, H, (x, 0, z))
-            hd = scene3d.project(cam, W, H, (x, hm, z))
+            y0 = p.get("y0", 0.0)
+            f = scene3d.project(cam, W, H, (x, y0, z))
+            hd = scene3d.project(cam, W, H, (x, y0 + hm, z))
             if not f or not hd:
                 return None
             fx, feet = f[0], f[1]
@@ -589,10 +760,11 @@ class Studio:
             step = abs(math.sin(lt * math.pi * 2.2)) * hq * 0.025 if walking else 0.0
             sp = panda_sprite(pose, hq, kq, p.get("flip", False))
             lean = 0.018 if walking else 0.0
-            sp = body_motion(sp, t_abs, talk, p.get("seed", 0.0), 1.0, lean)
+            sp = body_motion(sp, t_abs, talk, p.get("seed", 0.0), 1.0, lean, p.get("gesture", "idle"),
+                             lt - p.get("gesture_at", 0.0))
             sh = shadow_sprite(max(8, int(sp.width * 0.8)))
             comp(img, sh, fx - sh.width / 2 + sp.width * 0.12, feet - sh.height * 0.6)
-            comp(img, sp, fx - sp.width / 2, feet - hq - step)
+            comp(img, sp, fx - sp.width / 2, feet - hq - step - sp.info.get("lift", 0))
             return feet - hq
         fx, fy, fh = FRAMES[p.get("frame", "medium")]
         fx, fy, fh = p.get("x", fx), p.get("y", fy), p.get("h", fh)
@@ -608,12 +780,13 @@ class Studio:
         h = fh * z * k_in
         hq = int(round(h * (1 - squash) / 6)) * 6
         sp = panda_sprite(pose, hq, kq, p.get("flip", False))
-        sp = body_motion(sp, t_abs, talk, p.get("seed", 0.0), 1.0, 0.0)
+        sp = body_motion(sp, t_abs, talk, p.get("seed", 0.0), 1.0, 0.0, p.get("gesture", "idle"),
+                         lt - p.get("gesture_at", 0.0))
         feet = fy + (fy - H * 0.5) * (z - 1) * 0.2
         if p.get("frame", "medium").startswith("wide"):
             sh = shadow_sprite(int(sp.width * 0.8))
             comp(img, sh, fx + dx - sh.width / 2 + sp.width * 0.1, feet - sh.height * 0.62)
-        comp(img, sp, fx + dx - sp.width / 2, feet - hq)
+        comp(img, sp, fx + dx - sp.width / 2, feet - hq - sp.info.get("lift", 0))
         return feet - hq
 
     def cam_at(self, s, t):
@@ -670,9 +843,19 @@ class Studio:
             comp(img, sp2, cx - sp2.width / 2, cy - sp2.height / 2)
         return img, top
 
+    def word_colour(self, w):
+        kw = TOK.get("keywords", {})
+        lw = w.lower().strip(",.:;!?–")
+        if any(ch.isdigit() for ch in lw):
+            return GREEN if w.startswith("+") else (RED if w.startswith(("-", "−")) else GOLD)
+        for sem, col in (("up", GREEN), ("down", RED), ("gold", GOLD)):
+            if lw in kw.get(sem, []):
+                return col
+        return None
+
     def caption(self, img, t, top):
-        """Small phrase subtitles in a soft dark pill at a fixed height between the cards and the panda;
-        the spoken word lights up yellow."""
+        """Small phrase subtitles in a soft dark pill; the spoken word lights up (karaoke), key words keep
+        their semantic colour (green up, red down, gold key facts)."""
         cur = next((c for c in self.chunks if c[0] <= t < c[1]), None)
         if not cur:
             return
@@ -685,21 +868,43 @@ class Studio:
         total = sum(widths) + sp * (len(widths) - 1)
         y = self.spec.get("cap_y", 862)
         k = smooth(seg(t, s_, s_ + 0.12))
-        a_ = int(150 * k)
+        a_ = int(170 * k)
         lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
         ImageDraw.Draw(lay).rounded_rectangle([540 - total / 2 - 26, y - size * 0.95, 540 + total / 2 + 26,
-                                               y + size * 0.85], radius=size, fill=(18, 20, 28, a_))
+                                               y + size * 0.85], radius=size, fill=(8, 12, 22, a_))
         img.alpha_composite(lay)
         x = 540 - total / 2
         for w, wd, tx in zip(ws, widths, texts):
             on = w["s"] <= t < max(w["e"], w["s"] + 0.1)
-            col = YELLOW if on else (255, 255, 255)
+            sem = self.word_colour(tx)
+            col = sem or (255, 255, 255)
+            if on and not sem:
+                col = YELLOW
+            if not on and sem and t < w["s"]:
+                col = (255, 255, 255)
             col = tuple(int(c * k + 40 * (1 - k)) for c in col)
-            ink.text(x + wd / 2, y, tx, size, "mont", fill=col, stroke=None)
+            sc = 1 + 0.1 * math.exp(-(t - w["s"]) * 12) if on else 1.0
+            with ink.at(x + wd / 2, y, 0, sc):
+                ink.text(0, 0, tx, size, "mont", fill=col, stroke=None)
             x += wd + sp
 
     def header(self, img):
         ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
+        if THEME["dark"]:
+            y = TOK["space"]["safe_top"] + 22
+            lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+            d = ImageDraw.Draw(lay)
+            f = font("montb", 22)
+            chips = [self.spec.get("brand", "PANDA_INVESTIERT")] + self.spec.get("chips", [])
+            x = 48
+            for j, ch in enumerate(chips):
+                tw = f.getlength(ch)
+                d.rounded_rectangle([x, y - 17, x + tw + 30, y + 17], 17, fill=(8, 12, 22, 170),
+                                    outline=(56, 189, 248, 120) if j == 0 else (255, 255, 255, 50), width=2)
+                d.text((x + 15, y), ch, font=f, fill=(255, 255, 255, 230) if j == 0 else (190, 200, 220, 230), anchor="lm")
+                x += tw + 42
+            img.alpha_composite(lay)
+            return
         ink.rect(0, 0, W, 92, fill=(255, 255, 255), outline=None, wob=0)
         ink.rect(0, 90, W, 94, fill=(236, 236, 242), outline=None, wob=0)
         ink.circle(48, 46, 14, fill=GREEN, outline=None, wob=0)
@@ -730,6 +935,29 @@ class Studio:
                 x0, y0 = (big.width - W) // 2, (big.height - H) // 2
                 frame_ = big.crop((x0, y0, x0 + W, y0 + H))
                 img = frame_.filter(ImageFilter.GaussianBlur(9 * (1 - abs(2 * u - 1)) + 0.01))
+            elif mode == "leak":
+                # warm light-leak flash: old shot burns out, new shot burns in
+                src = prev if u < 0.5 else img
+                a = np.asarray(src.convert("RGB"), float)
+                k = 1 - abs(2 * u - 1)
+                xx = np.linspace(0, 1, W)[None, :, None]
+                band = np.exp(-((xx - u) / 0.35) ** 2)
+                warm = np.array([255, 190, 120], float)
+                a = a + (warm - a) * np.clip(band * k * 1.1, 0, 0.92)
+                img = Image.fromarray(a.astype(np.uint8)).convert("RGBA")
+            elif mode == "glitch":
+                src = prev if u < 0.5 else img
+                a = np.asarray(src.convert("RGB")).copy()
+                k = 1 - abs(2 * u - 1)
+                sh = int(26 * k)
+                a[..., 0] = np.roll(a[..., 0], sh, axis=1)
+                a[..., 2] = np.roll(a[..., 2], -sh, axis=1)
+                rng = np.random.default_rng(int(u * 1000))
+                for _ in range(int(8 * k)):
+                    y0 = rng.integers(0, H - 60)
+                    hh = rng.integers(8, 60)
+                    a[y0:y0 + hh] = np.roll(a[y0:y0 + hh], rng.integers(-60, 60), axis=1)
+                img = Image.fromarray(a).convert("RGBA")
             else:  # whip
                 off = int(W * e)
                 both = Image.new("RGBA", (W * 2, H))
@@ -737,9 +965,56 @@ class Studio:
                 both.paste(img, (W, 0))
                 view = both.crop((off, 0, off + W, H))
                 img = view.filter(ImageFilter.BoxBlur(int(28 * (1 - abs(2 * u - 1))) + 1))
+        img = self.post(img, i, t)
         self.caption(img, t, top)
         self.header(img)
         return img.convert("RGB")
+
+    def mood_at(self, i, t):
+        """Lighting mood (-1 red/cool .. +1 green/warm), eased between shots."""
+        val = {"up": 1.0, "down": -1.0}
+        cur = val.get(self.shots[i].get("mood"), 0.0)
+        if i > 0:
+            prev = val.get(self.shots[i - 1].get("mood"), 0.0)
+            cur = lerp(prev, cur, smooth(seg(t, self.shots[i]["start"], self.shots[i]["start"] + 0.8)))
+        return cur
+
+    def post(self, img, i, t):
+        if not self.spec.get("atmos"):
+            return img
+        a = np.asarray(img.convert("RGB"), float)
+        m = self.mood_at(i, t)
+        if abs(m) > 0.01:
+            # subtle grade: lift the shadows/mids towards the mood colour, keep whites clean
+            tint = np.array([60, 255, 160], float) if m > 0 else np.array([255, 70, 90], float)
+            lum = a.mean(2, keepdims=True) / 255
+            a = a + (tint - a) * (0.10 * abs(m)) * (1 - lum) ** 1.5
+            if m < 0:
+                a[..., 2] += 6 * abs(m)
+        # volumetric beams from the ceiling lights (static per shot, slowly breathing)
+        if self.spec.get("beams", True):
+            xx = np.linspace(-1, 1, W)[None, :]
+            yy = np.linspace(0, 1, H)[:, None]
+            beam = np.zeros((H, W))
+            for k, x0 in enumerate((-0.55, 0.05, 0.6)):
+                cx = x0 + 0.18 * (yy) * (1 if k % 2 else -1)
+                beam += np.exp(-((xx - cx) / (0.10 + 0.18 * yy)) ** 2) * (1 - yy) ** 1.2
+            br = 0.06 + 0.015 * math.sin(t * 0.9)
+            a = a + (np.array([150, 190, 255], float) - a) * np.clip(beam * br, 0, 0.3)[..., None]
+        out = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).convert("RGBA")
+        # floating dust particles (depth: small/dim far, big/soft near)
+        lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        d = ImageDraw.Draw(lay)
+        rng = np.random.default_rng(7)
+        for k in range(70):
+            z = rng.uniform(0.2, 1.0)
+            x = (rng.uniform(0, W) + t * 14 * z + math.sin(t * 0.7 + k) * 20) % W
+            y = (rng.uniform(0, H) - t * 22 * z) % H
+            r = 1 + 2.6 * z
+            al = int(40 + 90 * z * (0.6 + 0.4 * math.sin(t * 2 + k)))
+            d.ellipse([x - r, y - r, x + r, y + r], fill=(190, 220, 255, al))
+        out.alpha_composite(lay.filter(ImageFilter.GaussianBlur(0.8)))
+        return out
 
 
 # -- sound ------------------------------------------------------------------------------------
@@ -768,8 +1043,107 @@ def air_whoosh(dur=1.1, f0=380.0, f1=1700.0, peak=0.55, seed=0, bright=1.0):
     return y / (np.max(np.abs(y)) + 1e-9)
 
 
+def _env(n, a, d):
+    sr = audio.SR
+    t = np.arange(n) / sr
+    return np.minimum(1, t / max(a, 1e-4)) * np.exp(-np.maximum(0, t - a) / d)
+
+
+@lru_cache(maxsize=None)
+def synth(name):
+    """Own synthesised effects (free to use commercially, documented in sfx/SOURCES.md)."""
+    sr = audio.SR
+    rng = np.random.default_rng(len(name))
+    if name == "impact":          # deep cinematic hit: pitch-dropping sine + sub + short noise crack
+        n = int(1.6 * sr)
+        t = np.arange(n) / sr
+        f = 30 + 60 * np.exp(-t * 7)
+        body = np.sin(2 * np.pi * np.cumsum(f) / sr) * _env(n, 0.004, 0.55)
+        crack = rng.normal(0, 1, n) * _env(n, 0.001, 0.035)
+        from scipy.signal import butter, sosfilt
+        crack = sosfilt(butter(2, [400, 4000], "bandpass", fs=sr, output="sos"), crack)
+        x = body * 1.0 + crack * 0.5
+    elif name in ("ping_up", "ping_down"):   # bright rising / dull falling two-tone
+        n = int(0.7 * sr)
+        t = np.arange(n) / sr
+        if name == "ping_up":
+            f = np.where(t < 0.09, 880, 1318.5)
+            x = (np.sin(2 * np.pi * np.cumsum(f) / sr) + 0.3 * np.sin(4 * np.pi * np.cumsum(f) / sr)) * _env(n, 0.003, 0.22)
+        else:
+            f = 520 * np.exp(-t * 1.6)
+            x = np.sin(2 * np.pi * np.cumsum(f) / sr) * _env(n, 0.004, 0.3)
+            from scipy.signal import butter, sosfilt
+            x = sosfilt(butter(2, 1400, "lowpass", fs=sr, output="sos"), x)
+    elif name == "click":         # soft UI tick for numbers / logos
+        n = int(0.12 * sr)
+        t = np.arange(n) / sr
+        x = np.sin(2 * np.pi * 2200 * t) * _env(n, 0.0008, 0.018) + 0.4 * np.sin(2 * np.pi * 3300 * t) * _env(n, 0.0005, 0.01)
+    elif name == "riser2":        # filtered noise riser into the hook
+        n = int(1.2 * sr)
+        t = np.arange(n) / sr
+        x = rng.normal(0, 1, n) * (t / t[-1]) ** 2.5
+        from scipy.signal import butter, sosfilt
+        x = sosfilt(butter(2, [600, 6000], "bandpass", fs=sr, output="sos"), x)
+        x[-int(0.02 * sr):] *= np.linspace(1, 0, int(0.02 * sr))
+    else:
+        raise KeyError(name)
+    return x / (np.max(np.abs(x)) + 1e-9)
+
+
+def music_bed(dur, bpm=96, intensity=((0, 0.6),), seed=3):
+    """Own modern cinematic-electronic bed: soft pad chords (Am-F-C-G), sub bass, a gentle kick and hats.
+    ``intensity`` [(t, 0..1)] raises drums/brightness at the climaxes."""
+    from scipy.signal import butter, sosfilt
+    sr = audio.SR
+    n = int(dur * sr)
+    t = np.arange(n) / sr
+    beat = 60 / bpm
+    bar = beat * 4
+    chords = [(57, 60, 64), (53, 57, 60), (48, 52, 55), (55, 59, 62)]   # Am F C G (MIDI)
+    hz = lambda m: 440 * 2 ** ((m - 69) / 12)
+    ti, iv = zip(*intensity)
+    inten = np.interp(t, ti, iv)
+    pad = np.zeros(n)
+    bass = np.zeros(n)
+    for b in range(int(dur / bar) + 1):
+        ch = chords[b % 4]
+        a, e = int(b * bar * sr), min(n, int((b + 1) * bar * sr))
+        if a >= n:
+            break
+        tt = t[a:e] - b * bar
+        env = np.minimum(1, tt / 0.4) * np.minimum(1, (bar - tt) / 0.3)
+        for m in ch:
+            for det in (-0.08, 0.08):
+                pad[a:e] += np.sin(2 * np.pi * hz(m + 12) * (1 + det / 100) * tt + det) * env
+        bass[a:e] += np.sin(2 * np.pi * hz(ch[0] - 12) * tt) * env
+    pad = sosfilt(butter(2, 1800, "lowpass", fs=sr, output="sos"), pad) / 6
+    kick = np.zeros(n)
+    hats = np.zeros(n)
+    rng = np.random.default_rng(seed)
+    hp = butter(2, 7000, "highpass", fs=sr, output="sos")
+    for k in range(int(dur / beat) + 1):
+        a = int(k * beat * sr)
+        if a >= n:
+            break
+        L = min(n - a, int(0.35 * sr))
+        tt = np.arange(L) / sr
+        if k % 2 == 0:
+            kick[a:a + L] += np.sin(2 * np.pi * np.cumsum(45 + 90 * np.exp(-tt * 30)) / sr) * np.exp(-tt * 9)
+        h2 = int(k * beat * sr + beat * sr / 2)
+        if h2 < n:
+            L2 = min(n - h2, int(0.06 * sr))
+            hats[h2:h2 + L2] += rng.normal(0, 1, L2) * np.exp(-np.arange(L2) / sr * 60)
+    hats = sosfilt(hp, hats)
+    x = pad * 1.0 + bass * 0.35 + (kick * 0.55 + hats * 0.18) * np.clip(inten * 1.3 - 0.2, 0, 1)
+    x *= 0.7 + 0.3 * inten
+    x *= np.minimum(1, t / 0.8) * np.minimum(1, (dur - t) / 1.5)
+    return x / (np.max(np.abs(x)) + 1e-9)
+
+
 def _variant(name):
     from .pandanews import sample, _resample, _lowpass
+    if name in ("impact", "ping_up", "ping_down", "click", "riser2"):
+        return synth(name)
     if name == "air":
         return air_whoosh(1.2, 300, 1500, 0.55, 1)
     if name == "air_long":
@@ -788,22 +1162,23 @@ def _variant(name):
 
 
 def cues(spec):
-    out = [(0.0, "riser", 0.5)]
+    out = [] if spec.get("no_riser") else [(0.0, "riser", 0.5)]
+    out += [tuple(c) for c in spec.get("cues", [])]          # named cue list [t, sound, gain]
     alt = ["whoosh", "swish", "whoosh_lo"]
     for k in spec.get("campath", []):
         if k.get("whoosh"):
             out.append((k["t"] + k.get("whoosh_at", 0.0), k["whoosh"], k.get("gain", 0.75)))
     for i, s in enumerate(spec["shots"]):
         st = s["start"]
-        if i and s.get("trans", "zoom") != "cut":
+        if i and s.get("trans", "zoom") != "cut" and not spec.get("cues"):
             out.append((st - 0.12, alt[i % 3], 0.85))
         if s.get("cam") and s["cam"].get("whoosh"):
             out.append((st + 0.05, "whoosh_lo", 0.6))
         p = s.get("panda") or {}
         if p.get("enter") == "slide":
             out.append((st + 0.02, "swish", 0.55))
-        for at, _ in p.get("swap", []):
-            out.append((st + at, "pop", 0.35))
+        for sw in p.get("swap", []):
+            out.append((st + sw[0], "pop", 0.35))
         for c in s.get("cards", []):
             a = st + c.get("at", 0)
             if c.get("at", 0) < 0:
@@ -856,6 +1231,17 @@ def mix_sfx(spec, out_wav):
             continue
         e = min(n, a + len(s))
         out[a:e] += gain * s[:e - a]
+    mb = spec.get("music")
+    if mb:
+        from .pandanews import _active_rms as ar
+        mus = music_bed(spec["duration"], mb.get("bpm", 96), tuple(map(tuple, mb.get("intensity", [[0, 0.6]]))))
+        mus = mus[:n] / (ar(mus) + 1e-9) * vr * 10 ** (mb.get("rel_db", -20) / 20)
+        hop = int(0.05 * audio.SR)
+        venv = np.array([np.sqrt(np.mean(v[i:i + hop] ** 2)) if i < len(v) else 0 for i in range(0, n, hop)])
+        speak = np.clip(venv / (vr + 1e-9) * 2.5, 0, 1)
+        sm = np.convolve(speak, np.ones(6) / 6, mode="same")
+        duck = 10 ** (mb.get("duck_db", -7) * np.repeat(sm, hop)[:n] / 20)
+        out[:len(mus)] += mus * duck[:len(mus)]
     pk = np.max(np.abs(out)) + 1e-9
     if pk > 0.95:
         out *= 0.95 / pk

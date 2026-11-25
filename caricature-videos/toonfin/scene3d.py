@@ -6,6 +6,7 @@ ordering. Everything is drawn with Pillow at a supersampled size and reduced, so
 """
 import math
 from functools import lru_cache
+from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -13,6 +14,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from .ink import FONT_DIR
 
 BG = (243, 243, 247)
+FLOOR_KEY = (3, 251, 7)
 FLOOR = (234, 235, 240)
 WHITE = (250, 250, 252)
 LIGHT = np.array([-0.45, 0.75, -0.5]) / np.linalg.norm([-0.45, 0.75, -0.5])
@@ -36,6 +38,8 @@ class Camera:
 class Scene:
     def __init__(self, bg=BG, floor=FLOOR, fog=90.0, sky=None, light_col=None, shade_col=None):
         self.sky, self.light_col, self.shade_col = sky, light_col, shade_col
+        self.reflect = 0.0          # glossy floor: share of the mirrored scene seen in the floor
+        self._mirror = None
         self.faces = []      # (pts[4x3], colour, kind, texture)
         self.bg, self.floor, self.fog = bg, floor, fog
 
@@ -105,6 +109,24 @@ class Scene:
                 self.quad([[a, lo, zz], [b, lo, zz], [b, hi, zz], [a, hi, zz]], col, bias=-0.6)
 
     # -- rendering -------------------------------------------------------------------
+    def mirror_scene(self):
+        """The scene mirrored at the floor (y -> -y), used for glossy floor reflections."""
+        if self._mirror is None:
+            m = Scene(bg=self.floor, floor=self.floor, fog=self.fog * 0.6, light_col=self.light_col,
+                      shade_col=self.shade_col)
+            for f in self.faces:
+                if f.get("floor") or float(np.max(f["p"][:, 1])) < 0.05:
+                    continue
+                g = dict(f)
+                g["p"] = f["p"] * np.array([1, -1, 1])
+                if "nout" in f:
+                    g["nout"] = f["nout"] * np.array([1, -1, 1])
+                g.pop("bands", None)
+                g.pop("mull", None)
+                m.faces.append(g)
+            self._mirror = m
+        return self._mirror
+
     def render(self, cam, W, H, ss=1.5, blur=0.0):
         Wp, Hp = int(W * ss), int(H * ss)
         img = Image.new("RGB", (Wp, Hp), self.bg)
@@ -160,6 +182,9 @@ class Scene:
             depth = np.linalg.norm(face["p"].mean(0) - cam.pos)
             pts = [proj(c) for c in poly]
             fog = 1 - math.exp(-depth / self.fog)
+            if face.get("floor") and self.reflect:
+                d.polygon(pts, fill=FLOOR_KEY)
+                continue
             if face.get("tex") is None and face.get("poly"):
                 shade_col = np.array(face["col"], float)
                 shade_col = shade_col * (1 - fog) + np.array(self.bg, float) * fog
@@ -190,6 +215,19 @@ class Scene:
             d.polygon(pts, fill=tuple(int(c) for c in col), outline=edge if "nout" in face else None)
             if face.get("bands") or face.get("mull"):
                 _draw_lines(d, face, cam, r, u, f, fpx, Wp, Hp, col, fog, self.bg)
+        if self.reflect:
+            a = np.asarray(img).copy()
+            mask = (a[..., 0] == FLOOR_KEY[0]) & (a[..., 1] == FLOOR_KEY[1]) & (a[..., 2] == FLOOR_KEY[2])
+            if mask.any():
+                mi = self.mirror_scene().render(cam, W, H, ss=ss * 0.5)
+                mi = mi.resize((Wp, Hp), Image.BILINEAR).filter(ImageFilter.GaussianBlur(3 * ss))
+                mf = np.asarray(mi, float)
+                fl = np.array(self.floor, float)
+                # reflections fade with distance from the camera (lower screen = closer = stronger)
+                ys = np.linspace(0.6, 1.0, Hp)[:, None, None]
+                comp_ = fl * (1 - self.reflect * ys) + mf * self.reflect * ys
+                a[mask] = comp_[mask].astype(np.uint8)
+            img = Image.fromarray(a)
         if glow is not None:
             g1 = np.asarray(glow.filter(ImageFilter.GaussianBlur(10 * ss)), float)
             g2 = np.asarray(glow.filter(ImageFilter.GaussianBlur(34 * ss)), float)
@@ -755,7 +793,123 @@ def vicecity_set():
     return s
 
 
-SETS = {"vicecity": vicecity_set, "reichstag": reichstag_set, "ministry": ministry_set, "trading": trading_set, "hq": hq_set, "avenue": avenue_set, "boardroom": boardroom_set, "office": office_set, "studio": studio_set}
+# -- dark finance studio --------------------------------------------------------------------------
+
+def _hexc(h):
+    h = h.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def _tok():
+    import json as _j
+    return _j.loads((Path(__file__).parent / "tokens.json").read_text())
+
+
+@lru_cache(maxsize=16)
+def holo_tex(kind, a="", b="", w=900, h=560):
+    """Hologram screen textures in the token colours: 'chart' (main wall), 'kpi', 'ticker', 'grid'."""
+    t = _tok()["color"]
+    info, up, down, gold = _hexc(t["info"]), _hexc(t["up"]), _hexc(t["down"]), _hexc(t["gold"])
+    im = Image.new("RGBA", (w, h), (12, 20, 40, 150))
+    d = ImageDraw.Draw(im)
+    for gx in range(0, w, 60):
+        d.line([(gx, 0), (gx, h)], fill=info + (26,), width=1)
+    for gy in range(0, h, 60):
+        d.line([(0, gy), (w, gy)], fill=info + (26,), width=1)
+    d.rectangle([2, 2, w - 3, h - 3], outline=info + (200,), width=4)
+
+    def f(px, bold=True):
+        fo = ImageFont.truetype(str(FONT_DIR / "Montserrat.ttf"), int(px))
+        fo.set_variation_by_name("Black" if bold else "Bold")
+        return fo
+    if kind == "chart":
+        rng = np.random.default_rng(5)
+        v = list(np.cumsum(rng.normal(0.25, 1.0, 40)))
+        v[28:32] = [v[27] - 3, v[27] - 5, v[27] - 6.5, v[27] - 6]
+        v += [v[-1] + 8, v[-1] + 9.5, v[-1] + 9, v[-1] + 10.5]
+        v = np.array(v)
+        v = (v - v.min()) / np.ptp(v)
+        pts = [(50 + i * (w - 100) / (len(v) - 1), h - 60 - v[i] * (h - 210)) for i in range(len(v))]
+        glowl = Image.new("RGBA", im.size, (0, 0, 0, 0))
+        gd = ImageDraw.Draw(glowl)
+        gd.line(pts, fill=up + (255,), width=14, joint="curve")
+        im.alpha_composite(glowl.filter(ImageFilter.GaussianBlur(10)))
+        d.line(pts, fill=(220, 255, 230, 255), width=5, joint="curve")
+        d.text((50, 40), a or "TICKER", font=f(64), fill=(255, 255, 255, 255))
+        if b:
+            d.text((w - 50, 40), b, font=f(64), fill=up + (255,), anchor="ra")
+    elif kind == "kpi":
+        d.text((40, 40), a, font=f(40, False), fill=_hexc(t["text2"]) + (255,))
+        col = up if b.startswith("+") else (down if b.startswith(("-", "−")) else gold)
+        d.text((40, h * 0.58), b, font=f(h * 0.3), fill=col + (255,), anchor="lm")
+    elif kind == "ticker":
+        d.text((w / 2, h / 2), a, font=f(h * 0.5), fill=info + (255,), anchor="mm")
+    return im
+
+
+def darkstudio_set(ticker="NVDA", change="+30 %"):
+    """Dark, glossy finance studio: reflective floor, main chart wall, side KPI panels, floating holograms,
+    a stage with a glowing ring for the Panda, a holo detail table, ceiling light bars, pillars with light strips."""
+    tk = _tok()["color"]
+    bg = _hexc(tk["bg"])
+    info, up, gold = _hexc(tk["info"]), _hexc(tk["up"]), _hexc(tk["gold"])
+    s = Scene(bg=bg, floor=(18, 22, 36), fog=70, sky=[(6, 8, 16), (11, 15, 26), (20, 26, 44)],
+              light_col=(230, 236, 255), shade_col=(70, 80, 110))
+    s.reflect = 0.34
+    s.quad([[-40, 0, -30], [40, 0, -30], [40, 0, 60], [-40, 0, 60]], (18, 22, 36), bias=10000.0)
+    s.faces[-1]["floor"] = True
+    # back wall, side walls
+    s.quad([[-24, 0, 30], [24, 0, 30], [24, 16, 30], [-24, 16, 30]], (22, 28, 46), bias=-0.2)
+    s.quad([[-24, 0, -30], [-24, 0, 30], [-24, 16, 30], [-24, 16, -30]], (16, 20, 34))
+    s.quad([[24, 0, 30], [24, 0, -30], [24, 16, -30], [24, 16, 30]], (16, 20, 34))
+    # main chart wall (screen) with glowing frame
+    s.quad([[-10, 10.6, 29.8], [10, 10.6, 29.8], [10, 1.8, 29.8], [-10, 1.8, 29.8]],
+           tex=holo_tex("chart", ticker, change, 1200, 540), bias=-2.0)
+    for y in (1.6, 10.8):
+        s.faces.append(dict(p=np.array([[-10.2, y - 0.07, 29.7], [10.2, y - 0.07, 29.7], [10.2, y + 0.07, 29.7],
+                                        [-10.2, y + 0.07, 29.7]]), col=info, emit=True, double=True, bias=-2.5))
+    # side KPI panels, angled to the stage
+    for side, (lab, val) in ((-1, ("KURS", change)), (1, ("TICKER", ticker))):
+        x0, x1 = side * 15, side * 11
+        s.quad([[x0, 7.5, 12], [x1, 7.5, 20], [x1, 2.5, 20], [x0, 2.5, 12]][:: (1 if side > 0 else -1)] if False else
+               ([[x0, 7.5, 12], [x1, 7.5, 20], [x1, 2.5, 20], [x0, 2.5, 12]] if side < 0 else
+                [[x1, 7.5, 20], [x0, 7.5, 12], [x0, 2.5, 12], [x1, 2.5, 20]]),
+               tex=holo_tex("kpi", lab, val, 700, 440), bias=-1.0)
+    # pillars with vertical light strips
+    for x in (-18, -12, 12, 18):
+        s.box(x - 0.6, x + 0.6, 0, 16, 26, 27.2, col=(26, 32, 52), shadow=False)
+        s.faces.append(dict(p=np.array([[x - 0.08, 0.2, 25.95], [x + 0.08, 0.2, 25.95], [x + 0.08, 15.5, 25.95],
+                                        [x - 0.08, 15.5, 25.95]]), col=info, emit=True, double=True, bias=-0.3))
+    # ceiling light bars
+    for z in (2, 10, 18):
+        s.faces.append(dict(p=np.array([[-12, 13, z], [12, 13, z], [12, 13, z + 0.3], [-12, 13, z + 0.3]]),
+                            col=(200, 220, 255), emit=True, double=True))
+    # stage: low octagon platform with glowing ring
+    R = 3.2
+    for k in range(8):
+        a0, a1 = 2 * math.pi * k / 8, 2 * math.pi * (k + 1) / 8
+        p0 = (R * math.cos(a0), 4 + R * math.sin(a0))
+        p1 = (R * math.cos(a1), 4 + R * math.sin(a1))
+        s.faces.append(dict(p=np.array([[0, 0.25, 4], [p0[0], 0.25, p0[1]], [p1[0], 0.25, p1[1]]]), col=(30, 36, 58),
+                            double=True, poly=True, bias=3000.0))
+        s.faces.append(dict(p=np.array([[p0[0], 0.0, p0[1]], [p1[0], 0.0, p1[1]], [p1[0], 0.25, p1[1]],
+                                        [p0[0], 0.25, p0[1]]]), col=info, emit=True, double=True, bias=2900.0))
+    # floating holograms beside the stage
+    for side in (-1, 1):
+        x = side * 5.2
+        s.quad([[x - side * 0.0 - 1.6, 4.6, 7.0 + side * 0.8], [x + 1.6, 4.6, 7.0 - side * 0.8],
+                [x + 1.6, 2.4, 7.0 - side * 0.8], [x - 1.6, 2.4, 7.0 + side * 0.8]],
+               tex=holo_tex("ticker", ticker if side < 0 else change, "", 600, 400), bias=-0.5)
+    # detail table (front right): glass top with a mini chart
+    s.box(5.2, 9.2, 0, 0.9, -4, -1.6, col=(28, 34, 56))
+    s.quad([[5.25, 0.92, -1.65], [9.15, 0.92, -1.65], [9.15, 0.92, -3.95], [5.25, 0.92, -3.95]],
+           tex=holo_tex("chart", ticker, "", 600, 360), bias=-0.4)
+    s.faces.append(dict(p=np.array([[5.2, 0.9, -1.58], [9.2, 0.9, -1.58], [9.2, 0.95, -1.58], [5.2, 0.95, -1.58]]),
+                        col=info, emit=True, double=True, bias=-0.5))
+    return s
+
+
+SETS = {"darkstudio": darkstudio_set, "vicecity": vicecity_set, "reichstag": reichstag_set, "ministry": ministry_set, "trading": trading_set, "hq": hq_set, "avenue": avenue_set, "boardroom": boardroom_set, "office": office_set, "studio": studio_set}
 
 
 @lru_cache(maxsize=16)

@@ -43,3 +43,8 @@ frei nutzbar, auch kommerziell, ohne Namensnennung. Originallinks:
 * `tbd_perc_hat`   - Donated by The Black Dog under a CC0 license
 * `tbd_perc_tap_1` - Donated by The Black Dog under a CC0 license
 * `tbd_perc_tap_2` - Donated by The Black Dog under a CC0 license
+
+# Synthetische Sounds (selbst erzeugt, frei nutzbar inkl. kommerziell)
+In `toonfin/studio.py` per Code erzeugt, keine fremden Aufnahmen:
+`air`, `air_long`, `air_short` (Luft-Whooshs aus gefiltertem Rauschen), `impact`, `ping_up`, `ping_down`,
+`click`, `riser2`, sowie das Musikbett `music_bed()` (Pad-Akkorde, Bass, Kick, Hi-Hats).
