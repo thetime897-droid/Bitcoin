@@ -1,0 +1,325 @@
+{
+ "name": "xiaomi-eu-hammer",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 7.0,
+   "script": "0:00 · Gewinn minus 68 Prozent – und jetzt macht die EU auch noch die Tür zu. Für Chinas Autobauer wird es richtig eng.",
+   "params": {
+    "intro": {
+     "tag": "XIAOMI-SCHOCK",
+     "text": "Gewinn *eingebrochen*",
+     "sub": "+ EU macht die Tür zu",
+     "dur": 2.4,
+     "size": 78,
+     "green": false
+    },
+    "brand": {
+     "name": "Xiaomi",
+     "glyph": "mi",
+     "color": "#ff6900"
+    },
+    "name": "Xiaomi",
+    "tag": "DEBAKEL?",
+    "title": "Nettogewinn *Q3*",
+    "titleSize": 58,
+    "value": "−68 %",
+    "size": 200,
+    "at": 0.3,
+    "countDur": 1.1,
+    "barFrom": "Vorjahr: 12,3 Mrd. ¥",
+    "barTo": "jetzt: 3,9 Mrd. ¥",
+    "drainTo": 0.32,
+    "sub": "und dann kommt der *EU-Hammer*",
+    "stamp": "DOPPEL-SCHLAG",
+    "stampSize": 62
+   }
+  },
+  {
+   "id": "02",
+   "type": "trMetric",
+   "duration": 7.0,
+   "script": "0:07 · Erst der Xiaomi-Schock: Der Nettogewinn bricht im dritten Quartal um 68 Prozent ein, auf 3,9 Milliarden Yuan. Bereinigt sind es minus 57 Prozent.",
+   "params": {
+    "title": "Der *Xiaomi-Schock*",
+    "accent": "#e5392f",
+    "label": "Nettogewinn 3. Quartal 2026",
+    "logos": [
+     {
+      "name": "Xiaomi",
+      "glyph": "mi",
+      "color": "#ff6900"
+     }
+    ],
+    "value": "3,9 Mrd. ¥",
+    "size": 150,
+    "at": 1.4,
+    "countDur": 1.0,
+    "tone": "red",
+    "second": {
+     "value": "−68 % · bereinigt −57 %",
+     "size": 56,
+     "tone": "red",
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trStat",
+   "duration": 5.6,
+   "script": "0:14 · Und der Umsatz sinkt das dritte Quartal in Folge – um 5,2 Prozent auf 107 Milliarden Yuan.",
+   "params": {
+    "brand": {
+     "name": "Xiaomi",
+     "glyph": "mi",
+     "color": "#ff6900"
+    },
+    "context": "Umsatz Q3",
+    "label": "Umsatz-Minus zum Vorjahr",
+    "icon": "📉",
+    "value": "−5,2 %",
+    "size": 180,
+    "at": 1.2,
+    "countDur": 0.8,
+    "tone": "red",
+    "sub": "*3. Quartal in Folge* rückläufig · 107,2 Mrd. ¥"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 8.6,
+   "script": "0:19 · Zwei Probleme: Speicherchips werden immer teurer – das frisst die Handy-Marge. Und die Autosparte macht 3,4 Milliarden Yuan Verlust im Quartal. Laut Xiaomi bleiben die Speicherpreise wohl bis Mitte 2027 hoch.",
+   "params": {
+    "title": "Die *2 Probleme*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Teure *Speicherchips*",
+      "sub": "frisst die Handy-Marge · bis Mitte 2027",
+      "value": "💾",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "Autosparte: *−3,4 Mrd. ¥*",
+      "sub": "operativer Verlust im Quartal",
+      "value": "🚗",
+      "ok": false,
+      "at": 4.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trMetric",
+   "duration": 5.8,
+   "script": "0:28 · Dabei hat Xiaomi über 100.000 Autos ausgeliefert. Doch der Auto-Umsatz fällt um fast 20 Prozent.",
+   "params": {
+    "title": "Viele Autos, *weniger Umsatz*",
+    "accent": "#e5392f",
+    "label": "Auslieferungen Q3",
+    "logos": [
+     {
+      "name": "Xiaomi",
+      "glyph": "mi",
+      "color": "#ff6900"
+     }
+    ],
+    "value": "100.975",
+    "size": 160,
+    "at": 1.2,
+    "countDur": 1.0,
+    "second": {
+     "value": "Auto-Umsatz: −19,9 %",
+     "size": 58,
+     "tone": "red",
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "06",
+   "type": "trChart",
+   "duration": 4.6,
+   "script": "0:34 · Die Aktie hat dieses Jahr schon rund 38 Prozent verloren.",
+   "params": {
+    "ticker": {
+     "name": "Xiaomi",
+     "glyph": "mi",
+     "color": "#ff6900"
+    },
+    "name": "Xiaomi · seit Jahresbeginn",
+    "price": "−38 %",
+    "countPrice": false,
+    "change": "-38 % in 2026",
+    "range": "1J",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     100,
+     98,
+     101,
+     97,
+     94,
+     96,
+     91,
+     88,
+     90,
+     86,
+     83,
+     85,
+     80,
+     78,
+     81,
+     76,
+     73,
+     75,
+     71,
+     68,
+     70,
+     66,
+     64,
+     65,
+     62
+    ],
+    "height": 380,
+    "drawAt": 0.3,
+    "drawDur": 2.4
+   }
+  },
+  {
+   "id": "07",
+   "type": "trHeadline",
+   "duration": 3.4,
+   "script": "0:38 · Und jetzt kommt der EU-Hammer.",
+   "params": {
+    "brand": {
+     "name": "EU",
+     "glyph": "EU",
+     "color": "#003399"
+    },
+    "text": "Und jetzt der *EU-Hammer*",
+    "accent": "#e5392f",
+    "size": 90
+   }
+  },
+  {
+   "id": "08",
+   "type": "trCountdown",
+   "duration": 7.0,
+   "script": "0:42 · Ab dem 1. Dezember dürfen bis Juni nur noch rund 192.000 Hybrid-Autos aus China in die EU – egal von welcher Marke.",
+   "params": {
+    "tag": "EU-COUNTDOWN",
+    "brand": {
+     "name": "EU",
+     "glyph": "EU",
+     "color": "#003399"
+    },
+    "name": "EU",
+    "title": "Hybrid-*Quote* aus China",
+    "start": [
+     5,
+     14,
+     22,
+     48
+    ],
+    "from": "Heute",
+    "to": "1. Dezember",
+    "question": "Nur noch *191.780* Hybride",
+    "questionAt": 2.6,
+    "qSize": 50,
+    "stamp": "TÜR ZU",
+    "stampRow": true,
+    "stampSize": 62,
+    "stampHalf": 120,
+    "stampAt": 4.4,
+    "dur": 7.0
+   }
+  },
+  {
+   "id": "09",
+   "type": "trList",
+   "duration": 8.4,
+   "script": "0:49 · Das ist brisant: Weil die EU schon Strafzölle auf chinesische E-Autos erhebt, sind BYD und Co. auf Hybride ausgewichen. Genau diese Lücke wird jetzt geschlossen. Das trifft vor allem BYD, Chery und SAIC.",
+   "params": {
+    "title": "Die *Lücke* wird geschlossen",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "E-Autos: schon *Strafzölle*",
+      "sub": "seit 2024",
+      "value": "🔒",
+      "ok": false,
+      "at": 1.6
+     },
+     {
+      "text": "Ausweg: *Hybride*",
+      "sub": "bisher ohne Sonderzoll",
+      "value": "↪",
+      "ok": false,
+      "at": 3.4
+     },
+     {
+      "text": "Ab 1.12.: *Quote* bis Juni 2027",
+      "sub": "trifft BYD, Chery, SAIC & Co.",
+      "value": "✕",
+      "ok": false,
+      "at": 5.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.0,
+   "script": "0:57 · Also: Debakel oder Kaufchance? Wer jetzt in Chinas Autobauer investiert, braucht starke Nerven. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Debakel oder *Kaufchance*?",
+    "left": {
+     "label": "Chance",
+     "title": "100.000+ Autos",
+     "result": "Aktie −38 %",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Debakel",
+     "title": "Gewinn −68 %",
+     "result": "+ EU-Quote",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.2,
+   "script": "1:03 · Würdest du ein Auto von Xiaomi oder BYD kaufen – oder deren Aktie? Schreib's in die Kommentare.",
+   "params": {
+    "question": "China-Autos: *kaufen*?",
+    "options": [
+     "🚗 Das Auto",
+     "📈 Die Aktie",
+     "🙅 Beides nicht"
+    ],
+    "note": "Keine Anlageberatung · Stand: 25. November 2026"
+   }
+  }
+ ]
+}

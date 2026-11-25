@@ -1,0 +1,362 @@
+{
+ "name": "siemens-energy-absturz",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 8.2,
+   "script": "0:00 · Rekordgewinn, Rekordaufträge, die Dividende mehr als verdreifacht – und trotzdem ist die Siemens-Energy-Aktie um fast 40 Prozent abgestürzt. Und laut einer Analyse soll es noch tiefer gehen.",
+   "params": {
+    "intro": {
+     "tag": "REKORDJAHR",
+     "text": "Gewinn *×2,4* · Aufträge *164 Mrd. €*",
+     "sub": "Siemens Energy · Geschäftsjahr 2026",
+     "dur": 2.6,
+     "size": 66,
+     "green": true
+    },
+    "brand": {
+     "name": "Siemens Energy",
+     "glyph": "SE",
+     "color": "#641e8c"
+    },
+    "name": "Siemens Energy",
+    "tag": "TROTZDEM",
+    "title": "Und die Aktie *stürzt ab*",
+    "titleSize": 56,
+    "value": "−40 %",
+    "size": 200,
+    "at": 0.3,
+    "countDur": 1.2,
+    "barFrom": "Rekord: ~192 €",
+    "barTo": "jetzt: < 120 €",
+    "drainTo": 0.62,
+    "sub": "und es soll *noch tiefer* gehen?",
+    "stamp": "WAS IST LOS?",
+    "stampSize": 66
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 7.4,
+   "script": "0:08 · Vom Rekordhoch bei rund 190 Euro ist die Aktie wieder unter 120 Euro gefallen. Mitten in einer Tech-Erholung, die bei Siemens Energy einfach nicht ankommt.",
+   "params": {
+    "ticker": {
+     "name": "Siemens Energy",
+     "glyph": "SE",
+     "color": "#641e8c"
+    },
+    "name": "Siemens Energy · vom Rekordhoch",
+    "price": "< 120 €",
+    "countPrice": false,
+    "priceFrom": 192,
+    "change": "-38 % vom Hoch",
+    "range": "3M",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     192,
+     188,
+     190,
+     183,
+     177,
+     180,
+     171,
+     166,
+     169,
+     160,
+     155,
+     158,
+     150,
+     146,
+     149,
+     141,
+     137,
+     140,
+     133,
+     129,
+     132,
+     126,
+     122,
+     125,
+     119,
+     116.5,
+     121,
+     118
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.8,
+    "threshold": {
+     "value": 192,
+     "label": "Rekordhoch: ~192 €",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trBars",
+   "duration": 7.0,
+   "script": "0:15 · Dabei sind die Zahlen stark: 44 Milliarden Euro Umsatz, plus 15 Prozent. Und der Gewinn ist von 1,7 auf 4,1 Milliarden gestiegen.",
+   "params": {
+    "title": "Gewinn *mehr als verdoppelt*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "name": "Nettogewinn GJ 2025",
+      "brand": {
+       "name": "Siemens Energy",
+       "glyph": "SE",
+       "color": "#641e8c"
+      },
+      "value": 1.69,
+      "label": "1,69 Mrd. €",
+      "at": 1.6,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Nettogewinn GJ 2026",
+      "brand": {
+       "name": "Siemens Energy",
+       "glyph": "SE",
+       "color": "#641e8c"
+      },
+      "value": 4.13,
+      "label": "4,13 Mrd. €",
+      "at": 3.0,
+      "color": "#0d7d4d"
+     }
+    ],
+    "max": 4.5,
+    "note": "Umsatz GJ 2026: 44,2 Mrd. € (+15,5 %)"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trStat",
+   "duration": 5.2,
+   "script": "0:22 · Dazu ein Rekord-Auftragsbestand von 164 Milliarden Euro – das sind fast vier Jahresumsätze.",
+   "params": {
+    "brand": {
+     "name": "Siemens Energy",
+     "glyph": "SE",
+     "color": "#641e8c"
+    },
+    "context": "Rekord",
+    "label": "Auftragsbestand",
+    "icon": "📦",
+    "value": "164 Mrd. €",
+    "size": 145,
+    "at": 1.0,
+    "countDur": 1.0,
+    "sub": "≈ *3,7 Jahresumsätze*"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trList",
+   "duration": 6.4,
+   "script": "0:27 · Und die Aktionäre sollen profitieren: 2,30 Euro Dividende und Aktienrückkäufe von bis zu 9 Milliarden Euro bis 2030.",
+   "params": {
+    "title": "Geschenke an *Aktionäre*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "*2,30 €* Dividende je Aktie",
+      "sub": "mehr als verdreifacht",
+      "mark": "💶",
+      "markColor": "#0d7d4d",
+      "at": 1.4
+     },
+     {
+      "text": "Rückkauf bis *9 Mrd. €*",
+      "sub": "bis Ende GJ 2030",
+      "mark": "↺",
+      "markColor": "#0d7d4d",
+      "at": 3.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "06",
+   "type": "trHeadline",
+   "duration": 3.6,
+   "script": "0:34 · Warum also der Absturz?",
+   "params": {
+    "brand": {
+     "name": "Siemens Energy",
+     "glyph": "SE",
+     "color": "#641e8c"
+    },
+    "text": "Warum also der *Absturz*?",
+    "accent": "#e5392f",
+    "size": 90
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 8.0,
+   "script": "0:37 · Siemens Energy gilt als KI-Profiteur: Rechenzentren brauchen Strom – und genau dafür liefert der Konzern Gasturbinen und Netztechnik. Wackelt der KI-Hype, wackelt auch diese Aktie.",
+   "params": {
+    "title": "Die *KI-Falle*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "KI-Rechenzentren brauchen *Strom*",
+      "sub": "Gasturbinen & Netze von Siemens Energy",
+      "mark": "⚡",
+      "markColor": "#2f6bff",
+      "at": 1.6
+     },
+     {
+      "text": "Aktie läuft im *Takt der KI-Stimmung*",
+      "sub": "nicht im Takt der Zahlen",
+      "value": "!",
+      "ok": false,
+      "at": 4.4
+     },
+     {
+      "text": "KI-Nervosität = *Abverkauf*",
+      "sub": "",
+      "value": "▼",
+      "ok": false,
+      "at": 6.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trMetric",
+   "duration": 7.6,
+   "script": "0:45 · Und charttechnisch sieht der Autor des Artikels einen Abwärtstrend – mit einer Unterstützung erst bei rund 100 Euro. Erst dort sollte man wieder kaufen, meint er.",
+   "params": {
+    "title": "Erst hier *kaufen*?",
+    "accent": "#e5392f",
+    "label": "Unterstützung laut Chartanalyse",
+    "logos": [
+     {
+      "name": "Siemens Energy",
+      "glyph": "SE",
+      "color": "#641e8c"
+     }
+    ],
+    "value": "~100 €",
+    "size": 180,
+    "at": 1.6,
+    "countDur": 1.0,
+    "tone": "red",
+    "second": {
+     "value": "noch ~15 % tiefer",
+     "size": 56,
+     "tone": "red",
+     "at": 3.6
+    },
+    "pills": [
+     "Abwärtstrend intakt"
+    ],
+    "pillsAt": 5.0
+   }
+  },
+  {
+   "id": "09",
+   "type": "trBars",
+   "duration": 7.0,
+   "script": "0:53 · Die Analysten sehen das völlig anders: Im Schnitt liegt das Kursziel bei 210 Euro – fast 80 Prozent über dem aktuellen Kurs.",
+   "params": {
+    "title": "Analysten: *+80 %*?",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "name": "Aktie aktuell",
+      "brand": {
+       "name": "Siemens Energy",
+       "glyph": "SE",
+       "color": "#641e8c"
+      },
+      "value": 118,
+      "label": "~118 €",
+      "at": 1.2,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     },
+     {
+      "name": "Unterstützung (Chart)",
+      "value": 100,
+      "label": "~100 €",
+      "at": 2.4,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Kursziel Ø (9 Analysten)",
+      "brand": {
+       "name": "Siemens Energy",
+       "glyph": "SE",
+       "color": "#641e8c"
+      },
+      "value": 210,
+      "label": "~210 €",
+      "at": 3.6,
+      "color": "#0d7d4d"
+     }
+    ],
+    "max": 230,
+    "note": "Kursziele sind keine Garantie"
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 5.6,
+   "script": "1:00 · Also: Schnäppchen oder fallendes Messer? Starke Zahlen gegen schwachen Chart. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Schnäppchen oder *fallendes Messer*?",
+    "left": {
+     "label": "Schnäppchen",
+     "title": "Rekordzahlen",
+     "result": "Kursziel ~210 €",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Messer",
+     "title": "Abwärtstrend",
+     "result": "Ziel ~100 €?",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:06 · Kaufst du jetzt – oder wartest du auf 100 Euro? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Jetzt kaufen oder *bei 100 €*?",
+    "options": [
+     "Jetzt kaufen",
+     "Erst bei 100 €",
+     "Gar nicht"
+    ],
+    "note": "Keine Anlageberatung · Stand: 25. November 2026"
+   }
+  }
+ ]
+}
