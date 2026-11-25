@@ -927,7 +927,7 @@ def money_faces(x0, z0, t, cols=5, rows=3, layers=9, dur=2.4, seed=0):
     return faces
 
 
-def gpu_faces(c, t, explode_at=0.3, dur=1.4, yaw=-28.0):
+def gpu_faces(c, t, explode_at=0.3, dur=1.4, yaw=-28.0, glow=True):
     """Graphics card lying flat in an exploded view: the layers (backplate, PCB with die and memory,
     heatsink fins, shroud with fans) lift apart vertically while the card slowly turns."""
     k = max(0.0, min(1.0, (t - explode_at) / dur))
@@ -956,7 +956,7 @@ def gpu_faces(c, t, explode_at=0.3, dur=1.4, yaw=-28.0):
                                             [a1[0] + nrm[0], y, a1[2] + nrm[2]], [a0[0] + nrm[0], y, a0[2] + nrm[2]]]),
                                 col=rim, emit=True, double=True, bias=-0.1))
         return out
-    G = (118, 255, 60)
+    G = (118, 255, 60) if glow else None
     faces += lay(-1.0, (4.4, 0.05, 1.9), (60, 62, 68), rim=G)                 # backplate
     faces += lay(0.0, (4.2, 0.07, 1.7), (24, 70, 42), rim=G)                  # PCB
     faces += lay(0.0, (0.9, 0.09, 0.1), (214, 170, 60), (-1.3, -0.86))       # gold edge connector
@@ -1048,7 +1048,8 @@ def newsroom_set(ticker="NVDA", tape=""):
     return s
 
 
-def columns_faces(c, t, values, labels_h=None, dur=1.4, gap=2.6, scale=1.6, cols=((150, 158, 178), (34, 197, 94))):
+def columns_faces(c, t, values, labels_h=None, dur=1.4, gap=2.6, scale=1.6, cols=((150, 158, 178), (34, 197, 94)),
+                  glow=True):
     """Market-cap columns growing out of the floor like towers (glowing top caps)."""
     faces = []
     n = len(values)
@@ -1059,13 +1060,14 @@ def columns_faces(c, t, values, labels_h=None, dur=1.4, gap=2.6, scale=1.6, cols
         h = max(0.02, v / vmax * scale * 3.0 * k)
         x = c[0] + (i - (n - 1) / 2) * gap
         faces += obox((x, h / 2, c[2]), (1.4, h, 1.4), 0, cols[i % len(cols)])
-        faces.append(dict(p=np.array([[x - 0.72, h + 0.01, c[2] - 0.72], [x + 0.72, h + 0.01, c[2] - 0.72],
-                                      [x + 0.72, h + 0.01, c[2] + 0.72], [x - 0.72, h + 0.01, c[2] + 0.72]]),
-                          col=cols[i % len(cols)], emit=True, double=True, bias=-0.2))
+        if glow:
+            faces.append(dict(p=np.array([[x - 0.72, h + 0.01, c[2] - 0.72], [x + 0.72, h + 0.01, c[2] - 0.72],
+                                          [x + 0.72, h + 0.01, c[2] + 0.72], [x - 0.72, h + 0.01, c[2] + 0.72]]),
+                              col=cols[i % len(cols)], emit=True, double=True, bias=-0.2))
     return faces
 
 
-def chairlight_faces(t, step=0.18, x_sides=(26.5, 33.5), zs=None):
+def chairlight_faces(t, step=0.18, x_sides=(26.5, 33.5), zs=None, glow=True, mid=30.0):
     """Light strips on the boardroom chair backs turning green one after another (unanimous vote)."""
     zs = zs if zs is not None else list(np.arange(7, 18, 2.2))
     faces = []
@@ -1074,11 +1076,11 @@ def chairlight_faces(t, step=0.18, x_sides=(26.5, 33.5), zs=None):
         for x in x_sides:
             on = t > i * step
             col = (34, 197, 94) if on else (60, 66, 84)
-            bx = x - 0.32 if x < 30 else x + 0.32
-            xo = bx + (-0.04 if x < 30 else 0.04)
+            bx = x - 0.32 if x < mid else x + 0.32
+            xo = bx + (-0.04 if x < mid else 0.04)
             f = dict(p=np.array([[xo, 0.62, z - 0.25], [xo, 0.62, z + 0.25], [xo, 1.2, z + 0.25], [xo, 1.2, z - 0.25]]),
                      col=col, double=True, bias=-0.3)
-            if on:
+            if on and glow:
                 f["emit"] = True
             faces.append(f)
             i += 1

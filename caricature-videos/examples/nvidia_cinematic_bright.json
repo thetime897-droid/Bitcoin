@@ -1,0 +1,1048 @@
+{
+ "_doc": "Nvidia comeback, bright clean studio (no neon), cinematic one-take. Only this file changes per video. Facts are from the user's brief (check before publishing). PLACEHOLDER: the price path on the chart wall is an illustrative shape (no live data source in this environment); its labels only show the reported moves (-14 %, +30 %).",
+ "set": "brightstudio",
+ "set_args": [],
+ "prompt": "Nvidia, Jensen Huang, Verwaltungsrat, Börsenwert, Billionen, Exportkontrollen, Kongress",
+ "voice": null,
+ "fps": 60,
+ "tail": 0.45,
+ "look": {
+  "theme": "light",
+  "atmos": false,
+  "beams": false,
+  "cap_y": 1500,
+  "cap_size": 50,
+  "cap_bg": true,
+  "min_head": 905,
+  "film": {
+   "grain": 0.012,
+   "vignette": 0.16,
+   "aberration": 0,
+   "contrast": 0.08,
+   "lift": 0.0
+  },
+  "panda_light": {
+   "key_side": 1,
+   "ambient": [
+    214,
+    220,
+    232
+   ],
+   "ambient_mix": 0.06,
+   "rim": [
+    255,
+    255,
+    255
+   ],
+   "rim_strength": 0.45
+  }
+ },
+ "sound": {
+  "bpm": 100,
+  "music_rel_db": -19,
+  "duck_db": -9,
+  "sfx_rel_db": -6,
+  "lufs": -14.0,
+  "true_peak": -1.2
+ },
+ "loop": {
+  "dur": 0.7,
+  "trans": "match",
+  "props": [
+   {
+    "type": "gpu",
+    "pos": [
+     -45,
+     3.0,
+     12
+    ],
+    "at": 0.0,
+    "explode_at": 99,
+    "dur": 1.2,
+    "glow": false
+   }
+  ]
+ },
+ "sections": [
+  {
+   "text": "Eine Firma, drei Billionen Dollar ... und über Nacht kehrt DIESER Mann zurück.",
+   "mood": "up",
+   "music": "off",
+   "intensity": 0.4,
+   "camera": [
+    {
+     "t": 0.0,
+     "pos": [
+      -45,
+      5.0,
+      2.0
+     ],
+     "target": [
+      -45,
+      3.3,
+      12
+     ],
+     "fov": 46
+    },
+    {
+     "t": -0.15,
+     "pos": [
+      -45,
+      4.8,
+      6.0
+     ],
+     "target": [
+      -45,
+      3.2,
+      12
+     ],
+     "fov": 40,
+     "ease": "inout"
+    }
+   ],
+   "props": [
+    {
+     "type": "gpu",
+     "pos": [
+      -45,
+      3.0,
+      12
+     ],
+     "at": 0.0,
+     "explode_at": 0.35,
+     "dur": 1.6,
+     "glow": false
+    }
+   ],
+   "cards": [
+    {
+     "type": "bigstat",
+     "at_word": "über",
+     "x": 540,
+     "y": 420,
+     "color": "gold",
+     "text": "+29,67 %",
+     "size": 230,
+     "sub": "Nvidia-Aktie · vorbörslich"
+    },
+    {
+     "type": "breaking",
+     "at_word": "DIESER",
+     "x": 540,
+     "y": 230,
+     "tag": "EILMELDUNG",
+     "time": "Mo · 15:00",
+     "text": "Huang zurück an der Spitze",
+     "sub": "Verwaltungsrat setzt den Gründer wieder ein"
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.0,
+     "cue": "sub_drop"
+    },
+    {
+     "t": 0.35,
+     "cue": "riser_up"
+    },
+    {
+     "t": 1.6,
+     "cue": "silence_gap",
+     "dur": 0.15
+    },
+    {
+     "t": 1.75,
+     "cue": "impact_hit"
+    },
+    {
+     "t": 2.35,
+     "cue": "alert_card_whoosh"
+    }
+   ]
+  },
+  {
+   "text": "Ich bin Panda, und ich erkläre dir in dreißig Sekunden, was hier passiert ... und warum das nicht das ganze Bild ist.",
+   "trans": "match",
+   "match_at": [
+    540,
+    960
+   ],
+   "music": "major",
+   "intensity": 0.55,
+   "camera": [
+    {
+     "t": 0.0,
+     "pos": [
+      0,
+      4.8,
+      4.0
+     ],
+     "target": [
+      0,
+      4.8,
+      20
+     ],
+     "fov": 46
+    },
+    {
+     "t": 1.4,
+     "pos": [
+      0,
+      1.75,
+      -3.2
+     ],
+     "target": [
+      0,
+      2.6,
+      6
+     ],
+     "fov": 48,
+     "ease": "inout"
+    },
+    {
+     "t": -0.1,
+     "pos": [
+      0.4,
+      1.75,
+      -2.4
+     ],
+     "target": [
+      0,
+      2.6,
+      6
+     ],
+     "fov": 47
+    }
+   ],
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     0,
+     5.0,
+     2.3
+    ],
+    "enter_at": 0.7,
+    "enter_dir": 1,
+    "gesture": "nod",
+    "gesture_at": 1.6
+   },
+   "cards": [
+    {
+     "type": "logo",
+     "holo": [
+      0,
+      5.3,
+      7.6
+     ],
+     "wm": 2.8,
+     "yaw": 0,
+     "at_word": "Panda",
+     "logo": "nvidia",
+     "name": "NVIDIA",
+     "sub": "NASDAQ: NVDA",
+     "w": 760,
+     "h": 210,
+     "glow": [
+      [
+       226,
+       230,
+       238
+      ],
+      [
+       226,
+       230,
+       238
+      ]
+     ],
+     "until": null,
+     "until_word": "warum"
+    },
+    {
+     "type": "title",
+     "holo": [
+      0,
+      5.3,
+      7.6
+     ],
+     "wm": 2.6,
+     "yaw": 0,
+     "at_word": "warum",
+     "kicker": "GLEICH",
+     "text": "DER HAKEN",
+     "w": 600,
+     "h": 180,
+     "glow": [
+      [
+       226,
+       230,
+       238
+      ],
+      [
+       226,
+       230,
+       238
+      ]
+     ]
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.0,
+     "cue": "whoosh_doppler"
+    },
+    {
+     "t": 0.3,
+     "cue": "room_reverb_on"
+    }
+   ]
+  },
+  {
+   "text": "Die Aktie springt um fast dreißig Prozent. Börsenwert: von drei Komma null drei auf drei Komma neun fünf Billionen.",
+   "mood": "up",
+   "music": "major",
+   "intensity": 0.85,
+   "camera": [
+    {
+     "t": 0.0,
+     "pos": [
+      -3.6,
+      2.0,
+      -1.2
+     ],
+     "target": [
+      0,
+      2.7,
+      7
+     ],
+     "fov": 50
+    },
+    {
+     "t": -0.1,
+     "pos": [
+      3.6,
+      2.0,
+      -1.2
+     ],
+     "target": [
+      0,
+      2.7,
+      7
+     ],
+     "fov": 48,
+     "ease": "inout"
+    }
+   ],
+   "panda": {
+    "pose": "zeigen",
+    "world": [
+     0,
+     5.0,
+     2.3
+    ],
+    "gesture": "nod",
+    "gesture_at": 0.5
+   },
+   "props": [
+    {
+     "type": "columns",
+     "pos": [
+      0,
+      0,
+      10.5
+     ],
+     "at": 1.5,
+     "values": [
+      3.03,
+      3.95
+     ],
+     "gap": 6.0,
+     "scale": 1.5,
+     "glow": false
+    }
+   ],
+   "cards": [
+    {
+     "type": "kpi",
+     "holo": [
+      -2.4,
+      5.3,
+      10.5
+     ],
+     "wm": 2.3,
+     "at_word": "Börsenwert",
+     "kicker": "FREITAG",
+     "from": 0,
+     "to": 3.03,
+     "dec": 2,
+     "fmt": "{} BIO. $",
+     "count_at": 0.1,
+     "count_end": 0.9,
+     "col": [
+      170,
+      178,
+      196
+     ],
+     "w": 620,
+     "h": 220,
+     "glow": [
+      [
+       226,
+       230,
+       238
+      ],
+      [
+       226,
+       230,
+       238
+      ]
+     ]
+    },
+    {
+     "type": "kpi",
+     "holo": [
+      2.4,
+      6.2,
+      10.5
+     ],
+     "wm": 2.3,
+     "at_word": "neun",
+     "kicker": "HEUTE",
+     "from": 0,
+     "to": 3.95,
+     "dec": 2,
+     "fmt": "{} BIO. $",
+     "count_at": 0.1,
+     "count_end": 0.9,
+     "col": [
+      34,
+      197,
+      94
+     ],
+     "w": 620,
+     "h": 220,
+     "glow": [
+      [
+       226,
+       230,
+       238
+      ],
+      [
+       226,
+       230,
+       238
+      ]
+     ]
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.2,
+     "cue": "ticker_ticks"
+    },
+    {
+     "t": 2.0,
+     "cue": "pop"
+    },
+    {
+     "t": 4.2,
+     "cue": "counter_lock_ding"
+    }
+   ]
+  },
+  {
+   "text": "Der Grund? Der Verwaltungsrat hat entschieden: Huang ist wieder CEO. Einstimmig.",
+   "trans": "zoom",
+   "mood": "up",
+   "music": "major",
+   "intensity": 0.75,
+   "camera": [
+    {
+     "t": 0.0,
+     "pos": [
+      45,
+      2.6,
+      -4.0
+     ],
+     "target": [
+      45,
+      2.6,
+      24
+     ],
+     "fov": 52
+    },
+    {
+     "t": -0.1,
+     "pos": [
+      45,
+      2.4,
+      -1.0
+     ],
+     "target": [
+      45,
+      2.7,
+      24
+     ],
+     "fov": 48,
+     "ease": "inout"
+    }
+   ],
+   "panda": {
+    "pose": "selbstbewusst",
+    "world": [
+     45,
+     5.5,
+     2.3
+    ],
+    "gesture": "nod",
+    "swap_word": [
+     [
+      "Einstimmig",
+      "selbstbewusst",
+      true,
+      "nod"
+     ]
+    ]
+   },
+   "props": [
+    {
+     "type": "chairlights",
+     "at": 1.2,
+     "step": 0.16,
+     "x_sides": [
+      41.6,
+      48.4
+     ],
+     "zs": [
+      9,
+      10.8,
+      12.6,
+      14.4,
+      16.2,
+      18.0
+     ],
+     "glow": false,
+     "mid": 45.0
+    }
+   ],
+   "cards": [
+    {
+     "type": "vote",
+     "holo": [
+      45,
+      5.0,
+      10.5
+     ],
+     "wm": 3.4,
+     "at_word": "Verwaltungsrat",
+     "title": "VERWALTUNGSRAT",
+     "sub": "Abstimmung",
+     "rows": [
+      [
+       "ZUSTIMMUNG",
+       100,
+       [
+        34,
+        197,
+        94
+       ],
+       0.4
+      ]
+     ],
+     "w": 760,
+     "h": 230,
+     "glow": [
+      [
+       226,
+       230,
+       238
+      ],
+      [
+       226,
+       230,
+       238
+      ]
+     ]
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.0,
+     "cue": "wall_zoom_whoosh"
+    },
+    {
+     "t": 1.2,
+     "cue": "vote_click_x5"
+    },
+    {
+     "t": -0.6,
+     "cue": "success_chime"
+    }
+   ]
+  },
+  {
+   "text": "Freitag noch null Plus, heute der Ausbruch. Und das, obwohl die Aktie im Monat fast vierzehn Prozent verloren hatte.",
+   "trans": "objwipe",
+   "music": "major",
+   "intensity": 0.8,
+   "mood_keys": [
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   "slowmo": [
+    [
+     4.6,
+     5.1,
+     0.4
+    ]
+   ],
+   "camera": [
+    {
+     "t": 0.0,
+     "pos": [
+      -2.6,
+      4.8,
+      5.5
+     ],
+     "target": [
+      -2.6,
+      4.8,
+      20
+     ],
+     "fov": 50
+    },
+    {
+     "t": -0.3,
+     "pos": [
+      2.6,
+      4.8,
+      5.5
+     ],
+     "target": [
+      2.6,
+      4.8,
+      20
+     ],
+     "fov": 50,
+     "ease": "inout"
+    }
+   ],
+   "cards": [
+    {
+     "type": "pricechart",
+     "dark": false,
+     "at": 0.0,
+     "screen": [
+      [
+       -4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       7.7,
+       19.78
+      ],
+      [
+       4.7,
+       1.9,
+       19.78
+      ],
+      [
+       -4.7,
+       1.9,
+       19.78
+      ]
+     ],
+     "w": 940,
+     "h": 580,
+     "bg": [
+      255,
+      255,
+      255
+     ],
+     "logo": "nvidia",
+     "title": "NVIDIA · NVDA",
+     "range": "1 MONAT",
+     "prices": [
+      150,
+      152,
+      149,
+      151,
+      147,
+      144,
+      145,
+      141,
+      138,
+      139,
+      135,
+      131,
+      128,
+      125.5,
+      163
+     ],
+     "volume": [
+      3,
+      3,
+      2,
+      3,
+      4,
+      3,
+      3,
+      4,
+      5,
+      4,
+      5,
+      6,
+      8,
+      9,
+      14
+     ],
+     "draw_at": 0.2,
+     "draw_end": 5.0,
+     "xlabels": [
+      "vor 4 Wo.",
+      "vor 3 Wo.",
+      "vor 2 Wo.",
+      "Freitag",
+      "heute"
+     ],
+     "markers": [
+      [
+       13,
+       "−14 % IM MONAT",
+       "down",
+       4.3
+      ],
+      [
+       14,
+       "+30 %",
+       "gold",
+       5.0
+      ]
+     ],
+     "last": "+30 %"
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.0,
+     "cue": "whoosh"
+    },
+    {
+     "t": 3.6,
+     "cue": "pitch_down_fall"
+    },
+    {
+     "t": 4.55,
+     "cue": "silence_gap",
+     "dur": 0.2
+    },
+    {
+     "t": 4.75,
+     "cue": "riser_up",
+     "gain": 0.6
+    },
+    {
+     "t": 5.0,
+     "cue": "impact_hit"
+    }
+   ]
+  },
+  {
+   "text": "ABER: Es gibt einen Haken. Die Untersuchung läuft weiter, und Nvidia bekommt einen neuen Ausschuss für Exportkontrollen.",
+   "trans": "whip",
+   "mood": "down",
+   "music": "minor",
+   "intensity": 0.6,
+   "dutch": 6,
+   "camera": [
+    {
+     "t": 0.0,
+     "pos": [
+      1.6,
+      1.9,
+      -3.4
+     ],
+     "target": [
+      0,
+      2.5,
+      6
+     ],
+     "fov": 50
+    },
+    {
+     "t": -0.1,
+     "pos": [
+      0.6,
+      1.85,
+      -1.4
+     ],
+     "target": [
+      0,
+      2.5,
+      6
+     ],
+     "fov": 46,
+     "ease": "inout"
+    }
+   ],
+   "panda": {
+    "pose": "zeigestock",
+    "world": [
+     0,
+     5.0,
+     2.3
+    ],
+    "gesture": "shake",
+    "gesture_at": 0.3
+   },
+   "cards": [
+    {
+     "type": "warn",
+     "holo": [
+      0.2,
+      5.2,
+      7.6
+     ],
+     "wm": 3.6,
+     "at_word": "Haken",
+     "kicker": "RISIKO",
+     "lines": [
+      "Untersuchung läuft",
+      "Exportkontrollen"
+     ],
+     "sub": "neuer Ausschuss bei Nvidia",
+     "w": 820,
+     "h": 260,
+     "glow": [
+      [
+       226,
+       230,
+       238
+      ],
+      [
+       226,
+       230,
+       238
+      ]
+     ]
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.0,
+     "cue": "whoosh"
+    },
+    {
+     "t": 0.4,
+     "cue": "warning_ping_x2"
+    },
+    {
+     "t": 0.9,
+     "cue": "heartbeat_pulse_loop",
+     "dur": 6.0,
+     "gain": 0.6
+    }
+   ]
+  },
+  {
+   "text": "Der Termin, auf den jetzt alle schauen: Erster Dezember. Anhörung im Kongress. Huang muss aussagen.",
+   "trans": "whip",
+   "music": "minor",
+   "intensity": 0.55,
+   "camera": [
+    {
+     "t": 0.0,
+     "pos": [
+      0,
+      13,
+      24
+     ],
+     "target": [
+      0,
+      4,
+      60
+     ],
+     "fov": 54
+    },
+    {
+     "t": 1.2,
+     "pos": [
+      0.4,
+      2.0,
+      45.5
+     ],
+     "target": [
+      0,
+      3.6,
+      64
+     ],
+     "fov": 50,
+     "ease": "out"
+    },
+    {
+     "t": -0.1,
+     "pos": [
+      0.2,
+      2.0,
+      47.0
+     ],
+     "target": [
+      0,
+      3.6,
+      64
+     ],
+     "fov": 49
+    }
+   ],
+   "cards": [
+    {
+     "type": "calendar",
+     "holo": [
+      0,
+      4.4,
+      54.5
+     ],
+     "wm": 3.2,
+     "yaw": 0,
+     "at_word": "Erster",
+     "until": 4.3,
+     "month": "DEZ",
+     "day": "1",
+     "title": "Anhörung",
+     "sub": "US-Kongress · Huang sagt aus",
+     "w": 780,
+     "h": 300,
+     "glow": [
+      [
+       226,
+       230,
+       238
+      ],
+      [
+       226,
+       230,
+       238
+      ]
+     ]
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.0,
+     "cue": "whoosh"
+    },
+    {
+     "t": 1.7,
+     "cue": "gong_hit",
+     "gain": 0.8
+    },
+    {
+     "t": 4.25,
+     "cue": "paper_rip"
+    }
+   ]
+  },
+  {
+   "text": "Fazit: Das Comeback ist da, das Risiko auch. Folge mir für mehr Börsen-News ... denn eine Sache bei Nvidia habe ich dir noch nicht gezeigt.",
+   "trans": "whip",
+   "music": "resolve",
+   "intensity": 0.7,
+   "camera": [
+    {
+     "t": 0.0,
+     "pos": [
+      0.3,
+      1.8,
+      -2.2
+     ],
+     "target": [
+      0,
+      2.6,
+      6
+     ],
+     "fov": 48
+    },
+    {
+     "t": -0.1,
+     "pos": [
+      0,
+      7.0,
+      -13
+     ],
+     "target": [
+      0,
+      3.2,
+      10
+     ],
+     "fov": 54,
+     "ease": "inout"
+    }
+   ],
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     0,
+     5.0,
+     2.3
+    ],
+    "gesture": "nod",
+    "gesture_at": 0.2
+   },
+   "cards": [
+    {
+     "type": "title",
+     "holo": [
+      0,
+      5.6,
+      8.0
+     ],
+     "wm": 3.8,
+     "at": 0.15,
+     "kicker": "FAZIT",
+     "text": "COMEBACK DA – RISIKO AUCH",
+     "w": 900,
+     "h": 200,
+     "glow": [
+      [
+       226,
+       230,
+       238
+      ],
+      [
+       226,
+       230,
+       238
+      ]
+     ]
+    },
+    {
+     "type": "breaking",
+     "at_word": "Folge",
+     "x": 540,
+     "y": 230,
+     "tag": "FOLGEN",
+     "time": "täglich",
+     "text": "Mehr Börsen-News",
+     "sub": "Keine Anlageberatung"
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.0,
+     "cue": "whoosh"
+    },
+    {
+     "t": -1.2,
+     "cue": "riser_into_loop"
+    }
+   ]
+  }
+ ]
+}

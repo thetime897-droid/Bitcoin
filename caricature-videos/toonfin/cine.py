@@ -387,9 +387,9 @@ def build(cfg, work):
     snd["intensity"] = [[starts[k], s.get("intensity", 0.6)] for k, s in enumerate(secs)] + [[dur, secs[-1].get("intensity", 0.6)]]
     look = cfg.get("look", {})
     spec = dict(audio=voice, duration=round(dur, 2), words=words, shots=shots, campath=campath, slowmo=slowmo,
-                theme="dark", atmos=look.get("atmos", True), beams=look.get("beams", True), film=look.get("film"),
+                theme=look.get("theme", "dark"), atmos=look.get("atmos", True), beams=look.get("beams", True), film=look.get("film"),
                 integrate=look.get("panda_light"), header_style="none", cap_style="lower",
-                cap_y=look.get("cap_y", 1470), cap_size=look.get("cap_size", 54), min_head=look.get("min_head", 900),
+                cap_y=look.get("cap_y", 1470), cap_size=look.get("cap_size", 54), cap_bg=look.get("cap_bg", False), min_head=look.get("min_head", 900),
                 cues=cues, sound=snd, mix="cine", shake=0.0, fps=cfg.get("fps", 60))
     return spec
 

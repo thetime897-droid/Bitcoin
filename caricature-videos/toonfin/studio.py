@@ -207,6 +207,7 @@ def set_theme(dark):
 
 
 def glass_base(w, h, glow=("pink", "blue")):
+    glow = tuple(tuple(g) if isinstance(g, list) else g for g in glow)
     if THEME["dark"]:
         return glass_dark(w, h, glow)
     return glass_light(w, h, glow)
@@ -1513,12 +1514,14 @@ class Studio:
                                                  pr.get("layers", 9), pr.get("dur", 2.4))
                 elif pr["type"] == "columns":
                     extra += scene3d.columns_faces(tuple(pr["pos"]), pt, pr["values"], dur=pr.get("dur", 1.4),
-                                                   gap=pr.get("gap", 2.6), scale=pr.get("scale", 1.6))
+                                                   gap=pr.get("gap", 2.6), scale=pr.get("scale", 1.6),
+                                                   glow=pr.get("glow", True))
                 elif pr["type"] == "chairlights":
-                    extra += scene3d.chairlight_faces(pt, pr.get("step", 0.18))
+                    extra += scene3d.chairlight_faces(pt, pr.get("step", 0.18), tuple(pr.get("x_sides", (26.5, 33.5))),
+                                                      pr.get("zs"), pr.get("glow", True), pr.get("mid", 30.0))
                 elif pr["type"] == "gpu":
                     extra += scene3d.gpu_faces(tuple(pr["pos"]), pt, pr.get("explode_at", 0.3), pr.get("dur", 1.4),
-                                               pr.get("yaw", -28.0))
+                                               pr.get("yaw", -28.0), pr.get("glow", True))
             st = st.with_extra(extra)
         bg = st.render(cam, W, H, ss=1.25, blur=blur)
         if s.get("wash"):
@@ -1697,6 +1700,10 @@ class Studio:
         x = 540 - total / 2
         lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
         li = Ink(lay, affine(0, 0, 0, 1), 0, 1)
+        if self.spec.get("cap_bg"):
+            kb = smooth(seg(t, s_, s_ + 0.15))
+            ImageDraw.Draw(lay).rounded_rectangle([540 - total / 2 - 28, y - size * 0.82, 540 + total / 2 + 28,
+                                                   y + size * 0.78], radius=size * 0.8, fill=(14, 18, 28, int(175 * kb)))
         for w, wd, tx in zip(ws, widths, texts):
             if t < w["s"] - 0.02:
                 x += wd + sp
