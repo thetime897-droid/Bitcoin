@@ -87,7 +87,7 @@ def _draw_mouth(im, pose, k):
 BLINK = {"mikrofon", "selbstbewusst", "kaffee", "hoodie_daumen", "zeigestock"}
 
 
-@lru_cache(maxsize=900)
+@lru_cache(maxsize=48)
 def panda_sprite(pose, h, kq, flip=False, blink=False):
     """Pose at height h. Poses that can talk always use the redrawn mouth (state kq, 0 = closed), so the
     mouth never changes style inside a shot and the original drawn mouth never shows underneath."""
@@ -2245,7 +2245,8 @@ def render(spec, out_path, workers=None, log=print):
         cmd[cmd.index("-crf") + 1] = "20"
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     t0 = time.time()
-    with mp.Pool(workers or mp.cpu_count(), initializer=_init, initargs=(spec,)) as pool:
+    workers = workers or spec.get("workers") or (3 if spec.get("mix") == "cine" else mp.cpu_count())
+    with mp.Pool(workers, initializer=_init, initargs=(spec,), maxtasksperchild=400) as pool:
         for k, buf in enumerate(pool.imap(_work, range(n), chunksize=2)):
             proc.stdin.write(buf)
             if k % (FPS * 5) == 0:
