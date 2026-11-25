@@ -947,7 +947,7 @@ def brightstudio_set():
     s.quad([[-4.7, 7.7, 19.78], [4.7, 7.7, 19.78], [4.7, 1.9, 19.78], [-4.7, 1.9, 19.78]], (238, 240, 245),
            bias=-0.3)                                                        # screen surface
     for side in (-1, 1):
-        s.box(side * 16 - 0.3, side * 16 + 0.3, 0, 11, -10, 20, col=(246, 246, 249), shadow=False, mull=3.0,
+        s.box(side * 16 - 0.3, side * 16 + 0.3, 0, 11, 8, 20, col=(246, 246, 249), shadow=False, mull=3.0,
               band_col=(232, 233, 238))
         for r in range(7):
             for c in range(5):
@@ -986,7 +986,7 @@ def brightstudio_set():
         _chair(s, 41.6, z, face=1)
         _chair(s, 48.4, z, face=1)
     for x in (33, 36, 54, 57):                                               # glass partitions
-        s._box(x - 0.05, x + 0.05, 0, 8, 6, 18, col=(228, 236, 244))
+        s._box(x - 0.05, x + 0.05, 0, 8, 10, 20, col=(228, 236, 244))
     return s
 
 
