@@ -166,3 +166,81 @@ def mouth_track(voice, sr, n, fps, hold=4):
         out[i:i + hold] = s
         prev = s
     return out
+
+
+@lru_cache(maxsize=None)
+def eye_regions(pose):
+    """The two eye whites of a pose (masks), found automatically: the two largest near-white blobs in the upper head,
+    side by side. Used for blinking."""
+    im = np.asarray(Image.open(HERE / "panda" / f"{pose}.png").convert("RGBA"))
+    h, w = im.shape[:2]
+    _, my, mw = MOUTH.get(pose, (0, int(h * 0.3), 60))
+    white = (im[..., :3].min(2) > 222) & (im[..., 3] > 200)
+    white[int(my - 0.1 * mw):] = False
+    white[:int(my - 3.5 * mw)] = False
+    lab, n = ndimage.label(white)
+    comps = []
+    for i, sl in enumerate(ndimage.find_objects(lab), 1):
+        area = int((lab[sl] == i).sum())
+        ys, xs = sl
+        hh, ww = ys.stop - ys.start, xs.stop - xs.start
+        if area < (0.2 * mw) ** 2 or area > (1.6 * mw) ** 2 or hh > 2.4 * ww or ww > 2.6 * hh:
+            continue
+        comp = np.zeros((h, w), bool)
+        comp[sl] = lab[sl] == i
+        ring = ndimage.binary_dilation(comp, iterations=max(4, int(mw / 10))) & ~comp
+        lum = im[..., :3].mean(2)
+        if ring.sum() == 0 or (lum[ring] < 110).mean() < 0.55:
+            continue                                  # an eye white sits inside the dark eye patch / iris
+        box = lum[sl]
+        if (box < 90).mean() < 0.08:
+            continue                                  # ... and holds a dark pupil
+        comps.append((area, i, sl))
+    comps.sort(reverse=True)
+    best = None
+    for a in range(len(comps)):
+        for b in range(a + 1, len(comps)):
+            sa, sb = comps[a][2], comps[b][2]
+            ca = ((sa[0].start + sa[0].stop) / 2, (sa[1].start + sa[1].stop) / 2)
+            cb = ((sb[0].start + sb[0].stop) / 2, (sb[1].start + sb[1].stop) / 2)
+            if abs(ca[0] - cb[0]) < 0.9 * mw and abs(ca[1] - cb[1]) > 0.9 * mw:
+                best = (comps[a], comps[b])
+                break
+        if best:
+            break
+    if not best:
+        return []
+    out = []
+    for _, i, sl in best:
+        m = np.zeros((h, w), bool)
+        m[sl] = lab[sl] == i
+        out.append(m)
+    return out
+
+
+def blink(im, pose, k=1.0):
+    """Close the eyes (k=1) by covering the eye whites + pupils with face colour and drawing a lid line."""
+    eyes = eye_regions(pose)
+    if not eyes or k <= 0:
+        return im
+    a = np.asarray(im).copy()
+    for m in eyes:
+        ys, xs = np.nonzero(m)
+        y0, y1, x0, x1 = ys.min(), ys.max(), xs.min(), xs.max()
+        cy = (y0 + y1) / 2
+        ry, rx = (y1 - y0) / 2 * 1.08, (x1 - x0) / 2 * 1.08
+        yy, xx = np.mgrid[0:a.shape[0], 0:a.shape[1]]
+        ell = ((yy - cy) / ry) ** 2 + ((xx - (x0 + x1) / 2) / rx) ** 2 <= 1
+        top = yy < y0 + (y1 - y0) * k * 1.04
+        cover = ell & top
+        ring = ndimage.binary_dilation(ell, iterations=6) & ~ndimage.binary_dilation(ell, iterations=2)
+        dark = ring & (a[..., :3].max(2) < 90)
+        patch = np.median(a[dark][:, :3], axis=0) if dark.any() else np.array([22, 20, 24])
+        a[cover, :3] = patch                          # the lid takes the colour of the dark eye patch
+        lid = Image.fromarray(a)
+        d = ImageDraw.Draw(lid)
+        ly = y0 + (y1 - y0) * min(1.0, k) * 0.95
+        d.arc([x0 + rx * 0.15, ly - ry * 0.75, x1 - rx * 0.15, ly + ry * 0.25], 15, 165, fill=(214, 216, 222, 255),
+              width=max(3, int(rx / 6)))
+        a = np.asarray(lid).copy()
+    return Image.fromarray(a, "RGBA")

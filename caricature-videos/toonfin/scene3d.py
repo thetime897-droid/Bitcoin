@@ -854,6 +854,28 @@ def holo_tex(kind, a="", b="", w=900, h=560):
         d.text((40, h * 0.58), b, font=f(h * 0.3), fill=col + (255,), anchor="lm")
     elif kind == "ticker":
         d.text((w / 2, h / 2), a, font=f(h * 0.5), fill=info + (255,), anchor="mm")
+    elif kind == "standby":
+        # stand-by content: soft raster light, a market-data tape and the ticker mark - never an empty screen
+        for gy in range(0, h, 24):
+            d.line([(0, gy), (w, gy)], fill=info + (14,), width=1)
+        d.rectangle([0, h - 70, w, h], fill=(8, 14, 30, 210))
+        tape = b or "NVDA  ▲ 29,67 %     NASDAQ  ▲ 1,8 %     S&P 500  ▲ 0,9 %     DAX  ▲ 0,6 %     BTC  ▼ 1,2 %"
+        d.text((30, h - 35), tape, font=f(30, False), fill=(200, 220, 240, 230), anchor="lm")
+        d.text((w / 2, h * 0.42), a, font=f(h * 0.28), fill=info + (70,), anchor="mm")
+    elif kind == "capitol":
+        # glowing line drawing of a capitol building
+        cx, base = w / 2, h * 0.86
+        col = info + (230,)
+        d.line([(cx - w * 0.42, base), (cx + w * 0.42, base)], fill=col, width=5)
+        d.rectangle([cx - w * 0.38, base - h * 0.22, cx + w * 0.38, base], outline=col, width=4)
+        for i in range(13):
+            x = cx - w * 0.34 + i * w * 0.68 / 12
+            d.line([(x, base - h * 0.2), (x, base - h * 0.02)], fill=col, width=3)
+        d.polygon([(cx - w * 0.14, base - h * 0.22), (cx + w * 0.14, base - h * 0.22), (cx, base - h * 0.32)], outline=col)
+        d.rectangle([cx - w * 0.1, base - h * 0.42, cx + w * 0.1, base - h * 0.3], outline=col, width=4)
+        d.chord([cx - w * 0.12, base - h * 0.66, cx + w * 0.12, base - h * 0.3], 180, 360, outline=col, width=5)
+        d.line([(cx, base - h * 0.66), (cx, base - h * 0.76)], fill=col, width=4)
+        d.text((cx, h * 0.08), a or "US-KONGRESS", font=f(h * 0.07), fill=(220, 236, 255, 240), anchor="mm")
     return im
 
 
@@ -917,21 +939,149 @@ def gpu_faces(c, t, explode_at=0.3, dur=1.4, yaw=-28.0):
     cx, cy, cz = c
     faces = []
 
-    def lay(level, size, col, local=(0, 0)):
+    def lay(level, size, col, local=(0, 0), rim=None):
         p = np.array([cx, cy, cz]) + np.array([0, level * (0.12 + 0.95 * k), 0]) + ra * local[0] + rb * local[1]
-        return obox(tuple(p), size, yaw, col)
-    faces += lay(-1.0, (4.4, 0.05, 1.9), (60, 62, 68))                        # backplate
-    faces += lay(0.0, (4.2, 0.07, 1.7), (24, 70, 42))                         # PCB
+        out = obox(tuple(p), size, yaw, col)
+        if rim:
+            # thin glowing outline on the top edge (green rim light)
+            hx, hz = size[0] / 2, size[2] / 2
+            y = p[1] + size[1] / 2 + 0.005
+            for (u0, v0), (u1, v1) in (((-hx, -hz), (hx, -hz)), ((hx, -hz), (hx, hz)), ((hx, hz), (-hx, hz)),
+                                       ((-hx, hz), (-hx, -hz))):
+                a0 = p + ra * u0 + rb * v0
+                a1 = p + ra * u1 + rb * v1
+                nrm = np.cross(a1 - a0, [0, 1, 0])
+                nrm = nrm / (np.linalg.norm(nrm) + 1e-9) * 0.035
+                out.append(dict(p=np.array([[a0[0] - nrm[0], y, a0[2] - nrm[2]], [a1[0] - nrm[0], y, a1[2] - nrm[2]],
+                                            [a1[0] + nrm[0], y, a1[2] + nrm[2]], [a0[0] + nrm[0], y, a0[2] + nrm[2]]]),
+                                col=rim, emit=True, double=True, bias=-0.1))
+        return out
+    G = (118, 255, 60)
+    faces += lay(-1.0, (4.4, 0.05, 1.9), (60, 62, 68), rim=G)                 # backplate
+    faces += lay(0.0, (4.2, 0.07, 1.7), (24, 70, 42), rim=G)                  # PCB
     faces += lay(0.0, (0.9, 0.09, 0.1), (214, 170, 60), (-1.3, -0.86))       # gold edge connector
     faces += lay(0.1, (1.0, 0.08, 1.0), (196, 200, 208))                      # GPU die
     for dx, dz in ((-1.35, 0.5), (-1.35, -0.5), (1.35, 0.5), (1.35, -0.5)):
         faces += lay(0.1, (0.5, 0.06, 0.4), (26, 26, 30), (dx, dz))           # memory
     for i in range(10):
         faces += lay(1.0, (0.05, 0.45, 1.6), (170, 174, 182), (-1.9 + i * 0.42, 0))   # fins
-    faces += lay(2.0, (4.4, 0.25, 1.9), (30, 32, 38))                         # shroud
+    faces += lay(2.0, (4.4, 0.25, 1.9), (30, 32, 38), rim=G)                  # shroud
     for dx in (-1.05, 1.05):
         faces += lay(2.18, (1.3, 0.03, 1.3), (74, 76, 84), (dx, 0))           # fans
         faces += lay(2.21, (0.35, 0.04, 0.35), (118, 185, 0), (dx, 0))        # hub accent
+    faces += lay(0.1, (1.0, 0.08, 1.0), (196, 200, 208), rim=G)               # die rim (the green core)
+    return faces
+
+
+def newsroom_set(ticker="NVDA", tape=""):
+    """Cinematic dark newsroom for one-take videos. Zones:
+    hook void (x=-34): black space where the exploded GPU floats (rim-lit), match-cut source;
+    main stage (0, 4) with a round pendant lamp (match-cut target), glowing ring and two side holo panels;
+    chart wall (back, z=30, x -12..12) glass screen with stand-by content;
+    boardroom (x=+30): table, chairs (their light strips are animated props), vote screen at z=24;
+    capitol screen on the left wall (x=-23.8, z 6..20); detail table front right."""
+    tk = _tok()["color"]
+    info = _hexc(tk["info"])
+    s = Scene(bg=(8, 11, 20), floor=(14, 18, 28), fog=60, sky=[(4, 6, 12), (8, 11, 20), (14, 18, 32)],
+              light_col=(236, 240, 255), shade_col=(44, 52, 76))
+    s.reflect, s.edge, s.ambient = 0.38, 0.86, 0.62
+    s.quad([[-70, 0, -40], [60, 0, -40], [60, 0, 60], [-70, 0, 60]], (14, 18, 28), bias=10000.0)
+    s.faces[-1]["floor"] = True
+    # walls
+    s.quad([[-24, 0, 30], [24, 0, 30], [24, 16, 30], [-24, 16, 30]], (18, 23, 38), bias=-0.2)
+    s.quad([[-24, 0, -10], [-24, 0, 30], [-24, 16, 30], [-24, 16, -10]], (15, 19, 32))
+    for x in range(-22, 23, 4):                                         # wall panel seams
+        s.quad([[x - 0.03, 0.4, 29.9], [x + 0.03, 0.4, 29.9], [x + 0.03, 15.6, 29.9], [x - 0.03, 15.6, 29.9]],
+               (28, 34, 52), bias=-0.3)
+    # chart wall: glass screen with stand-by content and a glowing frame
+    s.quad([[-12, 11.2, 29.75], [12, 11.2, 29.75], [12, 1.6, 29.75], [-12, 1.6, 29.75]],
+           tex=holo_tex("standby", ticker, tape, 1600, 640), bias=-2.0)
+    for y in (1.45, 11.35):
+        s.faces.append(dict(p=np.array([[-12.2, y - 0.06, 29.7], [12.2, y - 0.06, 29.7], [12.2, y + 0.06, 29.7],
+                                        [-12.2, y + 0.06, 29.7]]), col=info, emit=True, double=True, bias=-2.5))
+    # capitol screen on the left wall (faces +x)
+    s.quad([[-23.8, 9.5, 6], [-23.8, 9.5, 20], [-23.8, 2.0, 20], [-23.8, 2.0, 6]][::-1] if False else
+           [[-23.8, 9.5, 6], [-23.8, 9.5, 20], [-23.8, 2.0, 20], [-23.8, 2.0, 6]],
+           tex=holo_tex("capitol", "US-KONGRESS", "", 1200, 640), bias=-1.0)
+    # pillars with light strips
+    for x in (-18, 18):
+        s.box(x - 0.6, x + 0.6, 0, 16, 26, 27.2, col=(22, 27, 44), shadow=False)
+        s.faces.append(dict(p=np.array([[x - 0.07, 0.2, 25.95], [x + 0.07, 0.2, 25.95], [x + 0.07, 15.5, 25.95],
+                                        [x - 0.07, 15.5, 25.95]]), col=info, emit=True, double=True, bias=-0.3))
+    # main stage + ring
+    R = 3.0
+    for k in range(10):
+        a0, a1 = 2 * math.pi * k / 10, 2 * math.pi * (k + 1) / 10
+        p0 = (R * math.cos(a0), 4 + R * math.sin(a0))
+        p1 = (R * math.cos(a1), 4 + R * math.sin(a1))
+        s.faces.append(dict(p=np.array([[0, 0.22, 4], [p0[0], 0.22, p0[1]], [p1[0], 0.22, p1[1]]]), col=(24, 30, 48),
+                            double=True, poly=True, bias=3000.0))
+        s.faces.append(dict(p=np.array([[p0[0], 0.16, p0[1]], [p1[0], 0.16, p1[1]], [p1[0], 0.22, p1[1]],
+                                        [p0[0], 0.22, p0[1]]]), col=info, emit=True, double=True, bias=2900.0))
+    # round pendant lamp above the stage (match-cut target for the green chip core)
+    for k in range(12):
+        a0, a1 = 2 * math.pi * k / 12, 2 * math.pi * (k + 1) / 12
+        s.faces.append(dict(p=np.array([[0, 9.0, 4], [1.1 * math.cos(a0), 9.0, 4 + 1.1 * math.sin(a0)],
+                                        [1.1 * math.cos(a1), 9.0, 4 + 1.1 * math.sin(a1)]]),
+                            col=(210, 255, 220), emit=True, double=True, poly=True, bias=-1.0))
+    s._box(-0.03, 0.03, 9.0, 13, 3.97, 4.03, col=(60, 66, 80))
+    # boardroom zone
+    s.quad([[22, 9.0, 23.9], [38, 9.0, 23.9], [38, 2.0, 23.9], [22, 2.0, 23.9]],
+           tex=holo_tex("standby", "BOARD", "VERWALTUNGSRAT  ·  SITZUNG  ·  ABSTIMMUNG", 1200, 520), bias=-1.0)
+    s.box(20, 40, 0, 16, 24, 24.6, col=(18, 23, 38), shadow=False)
+    s.box(27.5, 32.5, 0.72, 0.8, 6, 18, col=(30, 36, 54), shadow=False)
+    s.ground_shadow(27.5, 32.5, 6, 18, 1.0)
+    for z in np.arange(7, 18, 2.2):
+        for x in (26.5, 33.5):
+            s._box(x - 0.35, x + 0.35, 0.45, 0.53, z - 0.32, z + 0.32, col=(26, 28, 36))
+            bx = x - 0.32 if x < 30 else x + 0.32
+            s._box(min(bx, bx + (0.07 if x > 30 else -0.07)), max(bx, bx + (0.07 if x > 30 else -0.07)), 0.53, 1.25,
+                   z - 0.32, z + 0.32, col=(22, 24, 32))
+    # detail table front right
+    s.box(5.2, 9.2, 0, 0.9, -4, -1.6, col=(24, 30, 48))
+    s.quad([[5.25, 0.92, -1.65], [9.15, 0.92, -1.65], [9.15, 0.92, -3.95], [5.25, 0.92, -3.95]],
+           tex=holo_tex("chart", ticker, "", 600, 360), bias=-0.4)
+    # ceiling light bars
+    for z in (0, 10, 20):
+        s.faces.append(dict(p=np.array([[-14, 13, z], [14, 13, z], [14, 13, z + 0.25], [-14, 13, z + 0.25]]),
+                            col=(190, 210, 255), emit=True, double=True))
+    return s
+
+
+def columns_faces(c, t, values, labels_h=None, dur=1.4, gap=2.6, scale=1.6, cols=((150, 158, 178), (34, 197, 94))):
+    """Market-cap columns growing out of the floor like towers (glowing top caps)."""
+    faces = []
+    n = len(values)
+    vmax = max(values)
+    for i, v in enumerate(values):
+        k = max(0.0, min(1.0, (t - i * 0.35) / dur))
+        k = 1 - (1 - k) ** 3
+        h = max(0.02, v / vmax * scale * 3.0 * k)
+        x = c[0] + (i - (n - 1) / 2) * gap
+        faces += obox((x, h / 2, c[2]), (1.4, h, 1.4), 0, cols[i % len(cols)])
+        faces.append(dict(p=np.array([[x - 0.72, h + 0.01, c[2] - 0.72], [x + 0.72, h + 0.01, c[2] - 0.72],
+                                      [x + 0.72, h + 0.01, c[2] + 0.72], [x - 0.72, h + 0.01, c[2] + 0.72]]),
+                          col=cols[i % len(cols)], emit=True, double=True, bias=-0.2))
+    return faces
+
+
+def chairlight_faces(t, step=0.18, x_sides=(26.5, 33.5), zs=None):
+    """Light strips on the boardroom chair backs turning green one after another (unanimous vote)."""
+    zs = zs if zs is not None else list(np.arange(7, 18, 2.2))
+    faces = []
+    i = 0
+    for z in zs:
+        for x in x_sides:
+            on = t > i * step
+            col = (34, 197, 94) if on else (60, 66, 84)
+            bx = x - 0.32 if x < 30 else x + 0.32
+            xo = bx + (-0.04 if x < 30 else 0.04)
+            f = dict(p=np.array([[xo, 0.62, z - 0.25], [xo, 0.62, z + 0.25], [xo, 1.2, z + 0.25], [xo, 1.2, z - 0.25]]),
+                     col=col, double=True, bias=-0.3)
+            if on:
+                f["emit"] = True
+            faces.append(f)
+            i += 1
     return faces
 
 
@@ -1096,7 +1246,7 @@ def brightstudio_set():
     return s
 
 
-SETS = {"brightstudio": brightstudio_set, "darkstudio": darkstudio_set, "vicecity": vicecity_set, "reichstag": reichstag_set, "ministry": ministry_set, "trading": trading_set, "hq": hq_set, "avenue": avenue_set, "boardroom": boardroom_set, "office": office_set, "studio": studio_set}
+SETS = {"newsroom": newsroom_set, "brightstudio": brightstudio_set, "darkstudio": darkstudio_set, "vicecity": vicecity_set, "reichstag": reichstag_set, "ministry": ministry_set, "trading": trading_set, "hq": hq_set, "avenue": avenue_set, "boardroom": boardroom_set, "office": office_set, "studio": studio_set}
 
 
 @lru_cache(maxsize=16)

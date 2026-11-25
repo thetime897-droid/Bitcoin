@@ -84,14 +84,19 @@ def _draw_mouth(im, pose, k):
     im.alpha_composite(lay)
 
 
+BLINK = {"mikrofon", "selbstbewusst", "kaffee", "hoodie_daumen", "zeigestock"}
+
+
 @lru_cache(maxsize=900)
-def panda_sprite(pose, h, kq, flip=False):
+def panda_sprite(pose, h, kq, flip=False, blink=False):
     """Pose at height h. Poses that can talk always use the redrawn mouth (state kq, 0 = closed), so the
     mouth never changes style inside a shot and the original drawn mouth never shows underneath."""
     if pose in TALK:
         im = pandaface.talking(pose, int(kq))
     else:
         im = Image.open(HERE / "panda" / f"{pose}.png").convert("RGBA")
+    if blink and pose in BLINK:
+        im = pandaface.blink(im, pose, 1.0)
     im = im.resize((max(1, int(im.width * h / im.height)), int(h)), Image.LANCZOS)
     if h > 900:
         im = im.filter(ImageFilter.UnsharpMask(2, 50, 2))
@@ -517,6 +522,19 @@ def card_draw(ink, c, t, w, h):
             T(ink, -w / 2 + 180, -h / 2 + 106 + j * 54, ln, fit(ink, ln, 44, w - 220), DARK, "mont", "lm")
         if c.get("sub"):
             T(ink, -w / 2 + 180, h / 2 - 36, c["sub"], fit(ink, c["sub"], 24, w - 220), TXT2, "montb", "lm")
+    elif ty == "calendar":
+        k = smooth(seg(t, 0.1, 0.5))
+        bw_ = min(w * 0.32, h - 60)
+        x0 = -w / 2 + 40
+        ink.rect(x0, -h / 2 + 30, x0 + bw_, h / 2 - 30, fill=(240, 242, 248), outline=None, wob=0, r=22)
+        ink.rect(x0, -h / 2 + 30, x0 + bw_, -h / 2 + 30 + bw_ * 0.28, fill=RED, outline=None, wob=0, r=22)
+        ink.text(x0 + bw_ / 2, -h / 2 + 30 + bw_ * 0.15, c.get("month", "DEZ"), bw_ * 0.16, "mont", fill=(255, 255, 255),
+                 stroke=None)
+        ink.text(x0 + bw_ / 2, 30, c.get("day", "1"), bw_ * 0.62, "bebas", fill=(20, 24, 34), stroke=None)
+        tx = x0 + bw_ + 40
+        with ink.at(30 * (1 - k), 0):
+            T(ink, tx, -40, c.get("title", ""), fit(ink, c.get("title", ""), 50, w / 2 + w / 2 - tx - 40), DARK, "mont", "lm")
+            T(ink, tx, 26, c.get("sub", ""), fit(ink, c.get("sub", ""), 32, w - tx - w / 2 - 40 + w / 2), TXT2, "montb", "lm")
     elif ty == "logo":
         # ticker monogram hologram (real logos are trademarks -> neutral fallback, see CLAUDE.md)
         r = min(w, h) * 0.34
@@ -524,7 +542,12 @@ def card_draw(ink, c, t, w, h):
         spin = math.cos(min(1.0, t / 0.6) * math.pi * 2) if t < 0.6 else 1.0
         with ink.at(cx, 0, 0, 1, max(0.05, abs(spin))):
             ink.circle(0, 0, r, fill=(20, 32, 58), outline=tcol("info") if THEME["dark"] else BLUE, w=6, wob=0)
-            T(ink, 0, 4, c.get("mono", c.get("ticker", "?")[:1]), r * 1.1, tcol("info") if THEME["dark"] else BLUE)
+            if c.get("logo") and (HERE / "logos" / f"{c['logo']}.svg").exists():
+                lg = logo_img(c["logo"], int(r * 1.3 * ink.scale()), c.get("logo_col", "#76B900"))
+                X_, Y_ = ink.P(0, 0)
+                ink.img.alpha_composite(lg, (int(X_ - lg.width / 2), int(Y_ - lg.height / 2)))
+            else:                                            # fallback: ticker monogram
+                T(ink, 0, 4, c.get("mono", c.get("ticker", "?")[:1]), r * 1.1, tcol("info") if THEME["dark"] else BLUE)
         T(ink, cx + r + 34, -24, c.get("name", ""), fit(ink, c.get("name", ""), 58, w - 2 * r - 120), DARK, "mont", "lm")
         T(ink, cx + r + 34, 34, c.get("sub", ""), 28, TXT2, "montb", "lm")
     elif ty == "candles":
@@ -1015,12 +1038,14 @@ def news_clip(lay, c, ct, x, y):
         _place(lay, card, x, y, ct)
     elif ty == "pricechart":
         w, h = c.get("w", 960), c.get("h", 760)
-        card = _card(w, h)
+        dk = c.get("dark", False)
+        INKC_, GREY_, GRID_ = ((236, 240, 248), (150, 162, 184), (34, 44, 68)) if dk else (INKC, GREY, (238, 240, 244))
+        card = _card(w, h, fill=(10, 16, 30, 236) if dk else (255, 255, 255, 250))
         d = ImageDraw.Draw(card)
         lg = logo_img(c["logo"], 54, c.get("logo_col", "#76B900"))
         card.alpha_composite(lg, (36, 30))
-        d.text((104, 58), c.get("title", ""), font=_font("mont", 38), fill=INKC, anchor="lm")
-        d.text((w - 36, 58), c.get("range", "1M"), font=_font("montb", 26), fill=GREY, anchor="rm")
+        d.text((104, 58), c.get("title", ""), font=_font("mont", 38), fill=INKC_, anchor="lm")
+        d.text((w - 36, 58), c.get("range", "1M"), font=_font("montb", 26), fill=GREY_, anchor="rm")
         data = c["prices"]
         vol = c.get("volume", [1] * len(data))
         lo, hi = min(data), max(data)
@@ -1030,8 +1055,8 @@ def news_clip(lay, c, ct, x, y):
         vy0, vy1 = h - 70, h - 170
         for gi in range(5):
             gy = lerp(y0, y1, gi / 4)
-            d.line([(x0, gy), (x1, gy)], fill=(238, 240, 244), width=2)
-            d.text((x1 + 18, gy), de(lerp(lo, hi, gi / 4), 0) + " $", font=_font("montb", 22), fill=GREY, anchor="lm")
+            d.line([(x0, gy), (x1, gy)], fill=GRID_, width=2)
+            d.text((x1 + 18, gy), de(lerp(lo, hi, gi / 4), 0) + " $", font=_font("montb", 22), fill=GREY_, anchor="lm")
         n = len(data)
         X = lambda i: lerp(x0, x1, i / (n - 1))
         Y = lambda v: lerp(y0, y1, (v - lo) / (hi - lo))
@@ -1063,20 +1088,20 @@ def news_clip(lay, c, ct, x, y):
         ex, ey = pts[-1]
         d.ellipse([ex - 9, ey - 9, ex + 9, ey + 9], fill=(255, 255, 255), outline=lc, width=4)
         for j, lb in enumerate(c.get("xlabels", [])):
-            d.text((lerp(x0, x1, j / max(1, len(c["xlabels"]) - 1)), h - 40), lb, font=_font("montb", 22), fill=GREY,
+            d.text((lerp(x0, x1, j / max(1, len(c["xlabels"]) - 1)), h - 40), lb, font=_font("montb", 22), fill=GREY_,
                    anchor="mm")
         for mk in c.get("markers", []):                    # [index, label, "up"/"down", at]
             if ct < mk[3]:
                 continue
             km = ease_out_back(seg(ct, mk[3], mk[3] + 0.35), 1.6)
             i = mk[0]
-            colm = UPC if mk[2] == "up" else DNC
+            colm = {"up": UPC, "down": DNC, "gold": (232, 168, 20)}.get(mk[2], UPC)
             mx, my = X(i), Y(data[i])
             for yy in range(int(y1), int(y0), 14):
                 d.line([(mx, yy), (mx, yy + 7)], fill=colm + (140,), width=2)
             f = _font("mont", 26)
             tw = f.getlength(mk[1]) + 30
-            ty_ = my - 52 if mk[2] == "up" else my + 52
+            ty_ = my - 52 if mk[2] in ("up", "gold") else my + 52
             bx = min(max(mx, x0 + tw / 2), x1 - tw / 2)
             sc = max(0.05, km)
             d.rounded_rectangle([bx - tw / 2 * sc, ty_ - 22 * sc, bx + tw / 2 * sc, ty_ + 22 * sc], 22 * sc,
@@ -1269,8 +1294,88 @@ def colour_wash(bg, wash, t):
     return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8))
 
 
+@lru_cache(maxsize=8)
+def _rim_kernel(r):
+    return r
+
+
+def light_match(sp, cfg):
+    """Match the 2D panda to the set light: key from one side (a soft brightness gradient), the set's ambient
+    colour in the shadows, and a coloured rim light along the silhouette on the back-light side."""
+    a = np.asarray(sp, float)
+    h, w = a.shape[:2]
+    A = a[..., 3:4] / 255
+    xx = np.linspace(0, 1, w)[None, :, None]
+    side = cfg.get("key_side", 1)                              # +1 key from the right
+    key = 0.82 + 0.26 * (xx if side > 0 else 1 - xx)
+    amb = np.array(cfg.get("ambient", [70, 84, 120]), float)
+    rgb = a[..., :3] * key
+    rgb = rgb * (1 - cfg.get("ambient_mix", 0.12)) + amb * cfg.get("ambient_mix", 0.12)
+    # rim: alpha edge, shifted towards the back-light side, tinted with the accent colour
+    al = sp.getchannel("A")
+    er = al.filter(ImageFilter.MinFilter(max(3, int(w / 90) | 1)))
+    edge = np.asarray(al, float) - np.asarray(er, float)
+    edge = np.asarray(Image.fromarray(np.clip(edge, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(w / 220)),
+                      float) / 255
+    rimside = (1 - xx[..., 0]) if side > 0 else xx[..., 0]
+    rim = (edge * np.clip(rimside * 1.6 - 0.2, 0, 1))[..., None] * cfg.get("rim_strength", 0.9)
+    rc = np.array(cfg.get("rim", [56, 189, 248]), float)
+    rgb = rgb + (rc - rgb) * np.clip(rim, 0, 1)
+    out = np.concatenate([np.clip(rgb, 0, 255), a[..., 3:4]], 2).astype(np.uint8)
+    return Image.fromarray(out, "RGBA")
+
+
+def cast_shadow(img, sp, fx, feet, tx, ty):
+    """Long soft shadow on the floor from the feet towards (tx, ty) (screen), following the key light."""
+    al = sp.getchannel("A").resize((max(1, sp.width // 3), max(1, sp.height // 3)))
+    sh = Image.new("RGBA", al.size, (0, 0, 0, 0))
+    blk = Image.new("RGBA", al.size, (0, 0, 0, 150))
+    sh.paste(blk, (0, 0), al)
+    w_, h_ = sh.size
+    # map the sprite (feet at its bottom-centre) so the head lands at the shadow tip, squashed onto the floor
+    src = [(0, 0), (w_, 0), (w_, h_), (0, h_)]
+    dx, dy = tx - fx, ty - feet
+    half = sp.width * 0.5
+    dst = [(fx - half + dx, feet + dy), (fx + half + dx, feet + dy), (fx + half, feet), (fx - half, feet)]
+    xs, ys = [q[0] for q in dst], [q[1] for q in dst]
+    bx0, by0 = int(min(xs)), int(min(ys))
+    bw, bh = int(max(xs) - bx0) + 2, int(max(ys) - by0) + 2
+    if bw < 4 or bh < 4 or bw > 4 * W or bh > 4 * H:
+        return
+    co = scene3d._perspective_coeffs(src, [(q[0] - bx0, q[1] - by0) for q in dst])
+    wp = sh.transform((bw, bh), Image.PERSPECTIVE, co, Image.BILINEAR).filter(ImageFilter.GaussianBlur(8))
+    comp(img, wp, bx0, by0)
+
+
+@lru_cache(maxsize=4)
+def _vignette(strength):
+    xx, yy = np.meshgrid(np.linspace(-1, 1, W), np.linspace(-1, 1, H))
+    r = np.sqrt(xx ** 2 * 1.0 + yy ** 2 * 0.7)
+    return (1 - strength * np.clip(r - 0.35, 0, 1) ** 1.6)[..., None]
+
+
+def film_look(img, gi, cfg):
+    """Subtle film look: grade (lifted blacks, gentle S-curve), vignette, minimal chromatic aberration, grain."""
+    a = np.asarray(img.convert("RGB"), float) / 255
+    a = a * (1 - cfg.get("lift", 0.03)) + cfg.get("lift", 0.03) * np.array(cfg.get("lift_col", [0.1, 0.14, 0.24]))
+    c = cfg.get("contrast", 0.12)
+    a = a + c * (a - 0.5) * (1 - np.abs(a - 0.5) * 2) * 2
+    a = a * _vignette(cfg.get("vignette", 0.35))
+    ca = cfg.get("aberration", 1)
+    if ca:
+        a[..., 0] = np.roll(a[..., 0], ca, axis=1)
+        a[..., 2] = np.roll(a[..., 2], -ca, axis=1)
+    g = cfg.get("grain", 0.025)
+    if g:
+        rng = np.random.default_rng(gi)
+        a = a + rng.normal(0, g, (H // 2, W // 2, 1)).repeat(2, 0).repeat(2, 1)
+    return Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8)).convert("RGBA")
+
+
 class Studio:
     def __init__(self, spec):
+        global FPS
+        FPS = spec.get("fps", 60)
         set_theme(spec.get("theme") == "dark")
         self.spec = spec
         self.shots = spec["shots"]
@@ -1328,12 +1433,31 @@ class Studio:
                 fx += 1100 * (1 - smooth(seg(lt, p["enter_at"], p["enter_at"] + 0.5))) * p.get("enter_dir", -1)
             if self.spec.get("min_head") and feet - hq < self.spec["min_head"]:
                 feet += self.spec["min_head"] - (feet - hq)   # never let the head reach the info zone
-            sp = panda_sprite(pose, hq, kq, p.get("flip", False))
+            bl = (t_abs + p.get("seed", 0.0)) % 3.3 < 0.11            # blink every ~3.3 s
+            sp = panda_sprite(pose, hq, kq, p.get("flip", False), bl)
             lean = 0.018 if walking else 0.0
             sp = body_motion(sp, t_abs, talk, p.get("seed", 0.0), 1.0, lean, p.get("gesture", "idle"),
                              lt - p.get("gesture_at", 0.0))
-            sh = shadow_sprite(max(8, int(sp.width * 0.8)))
-            comp(img, sh, fx - sh.width / 2 + sp.width * 0.12, feet - sh.height * 0.6)
+            if self.spec.get("integrate"):
+                sp = light_match(sp, self.spec["integrate"])
+                st_ = scene3d.get_set(s.get("set", "studio"), *s.get("set_args", []))
+                # shadow cast away from the key light, contact shadow under the feet
+                L = scene3d.LIGHT
+                tip = scene3d.project(cam, W, H, (x - L[0] / L[1] * hm * 0.5, y0, z - L[2] / L[1] * hm * 0.5))
+                if tip:
+                    cast_shadow(img, sp, fx, feet, tip[0], tip[1])
+                sh = shadow_sprite(max(8, int(sp.width * 0.7)))
+                comp(img, sh, fx - sh.width / 2, feet - sh.height * 0.55)
+                if st_.reflect:
+                    refl = sp.transpose(Image.FLIP_TOP_BOTTOM)
+                    g = np.linspace(st_.reflect * 0.75, 0, refl.height) ** 1.3
+                    A = np.asarray(refl.getchannel("A"), float) * g[:, None]
+                    refl.putalpha(Image.fromarray(A.astype(np.uint8)))
+                    refl = refl.filter(ImageFilter.GaussianBlur(3))
+                    comp(img, refl, fx - refl.width / 2, feet + 2)
+            else:
+                sh = shadow_sprite(max(8, int(sp.width * 0.8)))
+                comp(img, sh, fx - sh.width / 2 + sp.width * 0.12, feet - sh.height * 0.6)
             comp(img, sp, fx - sp.width / 2, feet - hq - step - sp.info.get("lift", 0))
             if fx + sp.width * 0.35 < 0 or fx - sp.width * 0.35 > W:
                 return None                       # off screen: captions go back to their own line
@@ -1387,6 +1511,11 @@ class Studio:
                 if pr["type"] == "money":
                     extra += scene3d.money_faces(pr["pos"][0], pr["pos"][1], pt, pr.get("cols", 5), pr.get("rows", 3),
                                                  pr.get("layers", 9), pr.get("dur", 2.4))
+                elif pr["type"] == "columns":
+                    extra += scene3d.columns_faces(tuple(pr["pos"]), pt, pr["values"], dur=pr.get("dur", 1.4),
+                                                   gap=pr.get("gap", 2.6), scale=pr.get("scale", 1.6))
+                elif pr["type"] == "chairlights":
+                    extra += scene3d.chairlight_faces(pt, pr.get("step", 0.18))
                 elif pr["type"] == "gpu":
                     extra += scene3d.gpu_faces(tuple(pr["pos"]), pt, pr.get("explode_at", 0.3), pr.get("dur", 1.4),
                                                pr.get("yaw", -28.0))
@@ -1400,6 +1529,9 @@ class Studio:
             if lt < c.get("at", 0) or (c.get("until") is not None and lt > c["until"] + 0.3):
                 continue
             ct = lt - c.get("at", 0)
+            if c.get("holo"):
+                self.draw_holo(img, c, ct, cam, lt)
+                continue
             if c.get("screen"):
                 # placed ON a surface of the 3D set (e.g. the wall screen): moves with the camera
                 pts = [scene3d.project(cam, W, H, q) for q in c["screen"]]
@@ -1464,10 +1596,120 @@ class Studio:
                 return col
         return None
 
+    def draw_holo(self, img, c, ct, cam, lt):
+        """Glass hologram panel standing IN the room: perspective, gentle float, parallax, own entrance per type."""
+        sp = render_card(c, ct)                              # dark glass card (theme dark)
+        pos = np.array(c["holo"], float)
+        wm = c.get("wm", 3.2)                                # width of the card face in metres
+        pad_frac = (sp.width - c.get("w", 760)) / 2 / c.get("w", 760)
+        hm = wm * sp.height / sp.width * (1 + 2 * pad_frac) / (1 + 2 * pad_frac)
+        Wm = wm * (1 + 2 * pad_frac)
+        Hm = Wm * sp.height / sp.width
+        ty = c["type"]
+        k = smooth(seg(ct, 0, 0.55))
+        out = 0.0
+        if c.get("until") is not None:
+            out = smooth(seg(lt, c["until"], c["until"] + 0.4))
+        yaw = math.radians(c.get("yaw", 0.0))
+        bob = 0.06 * math.sin(ct * 1.7 + pos[0])
+        sc = 1.0
+        if ty in ("kpi", "logo"):                            # pop forward
+            sc = lerp(0.55, 1.0, ease_out_back(seg(ct, 0, 0.5), 1.6))
+        elif ty in ("versus", "metrics"):                    # slide in sideways
+            pos = pos + np.array([math.cos(yaw), 0, -math.sin(yaw)]) * (1 - k) * -2.5
+        elif ty == "vote":                                   # rise from below
+            pos = pos + np.array([0, -1.5 * (1 - k), 0])
+        elif ty == "calendar":                               # flip in; on exit the page tears off towards camera
+            yaw += (1 - k) * 1.4
+            if out:
+                fwd = cam.target - cam.pos
+                fwd = fwd / np.linalg.norm(fwd)
+                pos = pos - fwd * 6.5 * out ** 1.4 + np.array([0.6 * out, 0.4 * out, 0])
+                yaw += out * 0.9
+        elif ty == "warn":                                   # drop + shake
+            pos = pos + np.array([0.08 * math.sin(ct * 40) * math.exp(-ct * 5), 1.2 * (1 - k), 0])
+        if out and ty != "calendar":
+            pos = pos + np.array([0, 0.8 * out, 0])
+            sc *= 1 - 0.3 * out
+        r = np.array([math.cos(yaw), 0, -math.sin(yaw)]) * Wm / 2 * sc
+        u = np.array([0, 1, 0]) * Hm / 2 * sc
+        ctr = pos + np.array([0, bob, 0])
+        corners = [ctr - r + u, ctr + r + u, ctr + r - u, ctr - r - u]
+        pts = [scene3d.project(cam, W, H, q) for q in corners]
+        if not all(pts):
+            return
+        dst = [(q[0], q[1]) for q in pts]
+        xs, ys = [q[0] for q in dst], [q[1] for q in dst]
+        bx0, by0 = int(max(-200, min(xs))), int(max(-200, min(ys)))
+        bx1, by1 = int(min(W + 200, max(xs))) + 1, int(min(H + 200, max(ys))) + 1
+        if bx1 - bx0 < 4 or by1 - by0 < 4:
+            return
+        co = scene3d._perspective_coeffs([(0, 0), (sp.width, 0), (sp.width, sp.height), (0, sp.height)],
+                                         [(q[0] - bx0, q[1] - by0) for q in dst])
+        wp = sp.transform((bx1 - bx0, by1 - by0), Image.PERSPECTIVE, co, Image.BICUBIC)
+        fade = k * (1 - out) if ty != "calendar" else k * (1 - max(0.0, out - 0.6) / 0.4)
+        if fade < 0.999:
+            A = np.asarray(wp.getchannel("A"), float) * fade
+            wp.putalpha(Image.fromarray(A.astype(np.uint8)))
+        comp(img, wp, bx0, by0)
+        # counters lock in with particles: green rising, red falling
+        if ty == "kpi" and ct >= c.get("count_end", 1.2):
+            lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+            colk = tuple(c.get("col", (34, 197, 94)))
+            up = colk[1] > colk[0]
+            cx_, cy_ = sum(xs) / 4, sum(ys) / 4
+            q = ct - c.get("count_end", 1.2)
+            if q < 1.0:
+                d = ImageDraw.Draw(lay)
+                rng = np.random.default_rng(3)
+                for i in range(26):
+                    px = cx_ + rng.uniform(-1, 1) * (max(xs) - min(xs)) * 0.5
+                    py = cy_ + rng.uniform(-0.3, 0.3) * (max(ys) - min(ys)) + (-1 if up else 1) * q * rng.uniform(150, 420)
+                    r_ = rng.uniform(3, 7) * (1 - q)
+                    d.ellipse([px - r_, py - r_, px + r_, py + r_], fill=colk + (int(255 * (1 - q)),))
+                img.alpha_composite(lay)
+
     def caption(self, img, t, top):
+        if self.spec.get("cap_style") == "lower":
+            return self.caption_lower(img, t)
         if self.spec.get("cap_style") == "word":
             return self.caption_word(img, t, top)
         return self.caption_phrase(img, t, top)
+
+    def caption_lower(self, img, t):
+        """White bold phrase in the lower third (above TikTok's bottom UI), key words coloured, soft pop-in per word."""
+        cur = next((c for c in self.chunks if c[0] <= t < c[1]), None)
+        if not cur:
+            return
+        s_, e_, ws = cur
+        ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
+        size = self.spec.get("cap_size", 54)
+        texts = [w["w"] for w in ws]
+        sp = size * 0.28
+        widths = [ink.text_w(x, size, "mont") for x in texts]
+        total = sum(widths) + sp * (len(widths) - 1)
+        if total > 960:
+            size *= 960 / total
+            widths = [ink.text_w(x, size, "mont") for x in texts]
+            sp = size * 0.28
+            total = sum(widths) + sp * (len(widths) - 1)
+        y = self.spec.get("cap_y", 1470)
+        x = 540 - total / 2
+        lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        li = Ink(lay, affine(0, 0, 0, 1), 0, 1)
+        for w, wd, tx in zip(ws, widths, texts):
+            if t < w["s"] - 0.02:
+                x += wd + sp
+                continue
+            kk = smooth(seg(t, w["s"] - 0.02, w["s"] + 0.14))
+            sem = self.word_colour(tx)
+            col = sem or (255, 255, 255)
+            sc = lerp(0.7, 1.0, ease_out_back(kk, 1.8))
+            with li.at(x + wd / 2, y + 10 * (1 - kk), 0, sc):
+                li.text(2, 4, tx, size, "mont", fill=(0, 0, 0, int(150 * kk)), stroke=None)
+                li.text(0, 0, tx, size, "mont", fill=col + (int(255 * kk),), stroke=(0, 0, 0, int(120 * kk)), sw=0.06)
+            x += wd + sp
+        img.alpha_composite(lay)
 
     def caption_word(self, img, t, top):
         """Reference style: the spoken word alone, small, yellow with a dark outline, above the panda."""
@@ -1567,19 +1809,59 @@ class Studio:
         T(ink, 74, 47, self.spec.get("brand", "PANDA_INVESTIERT"), 28, DARK, "mont", "lm")
         T(ink, W - 36, 47, self.spec.get("header", ""), 26, TXT2, "montb", "rm")
 
+    def vis_time(self, t):
+        """Speed ramps: inside a slow-motion window visual time runs at ``f``; it then catches up smoothly."""
+        for a, b, f in self.spec.get("slowmo", []):
+            catch = 0.45
+            lost = (b - a) * (1 - f)
+            if a <= t < b:
+                return a + (t - a) * f
+            if b <= t < b + catch:
+                u = (t - b) / catch
+                return t - lost * (1 - (3 * u * u - 2 * u * u * u))
+        return t
+
     def frame(self, gi):
-        t = gi / FPS
+        t_audio = gi / FPS
+        t = self.vis_time(t_audio)
         i = self.shot_at(t)
         s = self.shots[i]
         lt = t - s["start"]
         img, top = self.draw_shot(i, t, gi)
-        TD = 0.36 if s.get("trans") == "wipe" else 0.24
+        TD = {"wipe": 0.36, "match": 0.5, "objwipe": 0.45}.get(s.get("trans"), 0.24)
         if i > 0 and lt < TD and s.get("trans", "zoom") != "cut":
             prev, _ = self.draw_shot(i - 1, s["start"] - 1e-3, gi)
             u = lt / TD
             e = smooth(u)
             mode = s.get("trans", "zoom")
-            if mode == "zoom":
+            if mode == "match":
+                # match cut: zoom deep into a point of the old shot, land on the same screen point in the new one
+                fxp, fyp = s.get("match_at", [540, 960])
+                if u < 0.5:
+                    kk = smooth(u * 2)
+                    src, zo = prev, 1 + 2.2 * kk * kk
+                else:
+                    kk = smooth((u - 0.5) * 2)
+                    src, zo = img, 2.4 - 1.4 * kk
+                big = src.resize((int(W * zo), int(H * zo)), Image.BILINEAR)
+                x0, y0 = int(fxp * zo - fxp), int(fyp * zo - fyp)
+                x0 = min(max(0, x0), big.width - W)
+                y0 = min(max(0, y0), big.height - H)
+                img = big.crop((x0, y0, x0 + W, y0 + H)).filter(ImageFilter.GaussianBlur(6 * (1 - abs(2 * u - 1)) + 0.01))
+            elif mode == "objwipe":
+                # a dark studio wall panel slides through the frame and carries the new scene in behind it
+                pw = int(W * 0.5)
+                xw = int(lerp(-pw, W, smooth(u)))
+                out = prev.copy()
+                out.paste(img.crop((0, 0, max(0, xw), H)), (0, 0)) if xw > 0 else None
+                panel = Image.new("RGBA", (pw, H), (16, 20, 34, 255))
+                pd = ImageDraw.Draw(panel)
+                for gx in range(0, pw, 48):
+                    pd.line([(gx, 0), (gx, H)], fill=(30, 36, 56, 255), width=2)
+                pd.rectangle([pw - 8, 0, pw, H], fill=(56, 189, 248, 255))
+                comp(out, panel.filter(ImageFilter.BoxBlur(6)), xw - pw, 0)
+                img = out
+            elif mode == "zoom":
                 # old shot rushes in, hard switch at the midpoint, new shot settles out of a zoom: no ghosting
                 if u < 0.5:
                     k = smooth(u * 2)
@@ -1636,13 +1918,27 @@ class Studio:
                 view = both.crop((off, 0, off + W, H))
                 img = view.filter(ImageFilter.BoxBlur(int(28 * (1 - abs(2 * u - 1))) + 1))
         img = self.post(img, i, t)
-        self.caption(img, t, top)
+        if s.get("dutch"):
+            ang = s["dutch"] * smooth(seg(lt, 0, 0.6))
+            big = img.rotate(ang, Image.BICUBIC, expand=False)
+            z_ = 1 + abs(math.sin(math.radians(ang))) * 1.9
+            bw_, bh_ = int(W * z_), int(H * z_)
+            big = big.resize((bw_, bh_), Image.BICUBIC)
+            img = big.crop(((bw_ - W) // 2, (bh_ - H) // 2, (bw_ - W) // 2 + W, (bh_ - H) // 2 + H))
+        if self.spec.get("film"):
+            img = film_look(img, gi, self.spec["film"])
+        self.caption(img, t_audio, top)
         self.header(img)
         return img.convert("RGB")
 
     def mood_at(self, i, t):
         """Lighting mood (-1 red/cool .. +1 green/warm), eased between shots."""
         val = {"up": 1.0, "down": -1.0}
+        mk = self.shots[i].get("mood_keys")
+        if mk:                                               # [[local t, -1..1], ...] inside one shot
+            lt = t - self.shots[i]["start"]
+            ts_, vs_ = zip(*mk)
+            return float(np.interp(lt, ts_, vs_))
         cur = val.get(self.shots[i].get("mood"), 0.0)
         if i > 0:
             prev = val.get(self.shots[i - 1].get("mood"), 0.0)
@@ -1932,13 +2228,21 @@ def _work(i):
 
 
 def render(spec, out_path, workers=None, log=print):
+    global FPS
+    FPS = spec.get("fps", 60)
     out_path = Path(out_path)
     wav = out_path.with_suffix(".mix.wav")
-    mix_sfx(spec, wav)
+    if spec.get("mix") == "cine":
+        from .cine import mix as cine_mix
+        cine_mix(spec, wav)
+    else:
+        mix_sfx(spec, wav)
     n = int(math.ceil(spec["duration"] * FPS))
     cmd = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
            "-i", "-", "-i", str(wav), "-map", "0:v", "-map", "1:a", "-c:v", "libx264", "-preset", "medium", "-crf", "17",
-           "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(out_path)]
+           "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "256k", "-shortest", "-movflags", "+faststart", str(out_path)]
+    if spec.get("mix") == "cine":
+        cmd[cmd.index("-crf") + 1] = "20"
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     t0 = time.time()
     with mp.Pool(workers or mp.cpu_count(), initializer=_init, initargs=(spec,)) as pool:

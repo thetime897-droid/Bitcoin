@@ -48,3 +48,8 @@ frei nutzbar, auch kommerziell, ohne Namensnennung. Originallinks:
 In `toonfin/studio.py` per Code erzeugt, keine fremden Aufnahmen:
 `air`, `air_long`, `air_short` (Luft-Whooshs aus gefiltertem Rauschen), `impact`, `ping_up`, `ping_down`,
 `click`, `riser2`, sowie das Musikbett `music_bed()` (Pad-Akkorde, Bass, Kick, Hi-Hats).
+
+# Cinematic-Cues (toonfin/cine.py, alle synthetisch erzeugt, frei inkl. kommerziell)
+`sub_drop`, `riser_up`, `riser_into_loop`, `impact_hit`, `alert_card_whoosh`, `whoosh_doppler`, `wall_zoom_whoosh`,
+`ticker_tick(s)`, `counter_lock_ding`, `vote_click(_x5)`, `success_chime`, `pitch_down_fall`, `warning_ping(_x2)`,
+`heartbeat(_pulse_loop)`, `paper_rip`, `gong_hit`, Musik `score()` (Dur/Moll/Auflösung, Stereo). Keine fremden Aufnahmen.

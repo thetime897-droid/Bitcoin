@@ -171,3 +171,19 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
   Weitere Themen-Props nach gleichem Muster (z. B. Panzer, Auto-Explosionszeichnung) in `scene3d.py` ergänzen.
 - Kamera ruhig: `shake: 0`, weiche Ease-Fahrten, Zooms nur mit Grund (Leinwand-Chart, Personen, Zahlen).
 - Beispiel: `examples/nvidia_news_studio_spec.py` → `demo/nvidia_news_studio_TEST.mp4`.
+
+## Cinematic Newsroom v4 (aktueller Stand, Nutzer-Brief „nvidia_news_studio verbessern“, dunkel gewünscht)
+- Eine Konfigurationsdatei pro Video: `examples/nvidia_cinematic.json` → `python -m toonfin.cine cfg.json out.mp4`
+  (`--preview` = 30 fps, `--stills 1,5` = Standbilder). Abschnitte = Kapitel; Kamera-Keys, Karten (`at_word`,
+  `until_word`), Props, Stimmung (`mood`/`mood_keys`), `dutch`, `slowmo`, `trans`, Musik-Modus, Cues pro Kapitel.
+- Set `newsroom` (scene3d): dunkel, Spiegelboden, Bühne mit Ring + runder Hängelampe (Match-Cut-Ziel), Chart-Wand mit
+  Standby-Ticker, Sitzungssaal-Zone (Stuhl-Lichter als Prop `chairlights`), Kapitol-Screen links, Hook-Raum mit GPU
+  (grünes Kantenlicht). Props: `gpu`, `columns` (Börsenwert-Säulen), `money`, `chairlights`.
+- Panda-Integration (`look.panda_light`): Licht-Angleich, Kantenlicht, Schatten in Lichtrichtung, Kontaktschatten,
+  Bodenspiegelung; Blinzeln (nur Posen in `studio.BLINK`, Augen automatisch erkannt).
+- Hologramm-Panels im Raum (`holo: [x,y,z]`, `wm`, `yaw`) mit typ-eigenen Auftritten; Kalender reißt ab und fliegt in die
+  Kamera. Übergänge `match`, `objwipe`, `whip`, `zoom`. Filmlook (`look.film`), Untertitel `cap_style: lower` (weiß,
+  Schlüsselwörter farbig, unteres Drittel über der Safe Zone). Loop-Ende (`loop`) = erstes Bild.
+- Sound (`toonfin/cine.py`): Stereo, Stimmkette (Hochpass, Kompressor, De-Esser, kurzer Raum), Musik `score()` mit
+  Dur/Moll/Auflösung + Ducking −9 dB, Stille vor Impacts (`silence_gap`), −14 LUFS, True Peak ≤ −1,2 dBTP.
+- Chart-Kursverlauf ist Platzhalter-Form (im Config-`_doc` vermerkt), im Video steht kein „Beispielverlauf“.
