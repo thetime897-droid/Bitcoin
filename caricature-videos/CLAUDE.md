@@ -145,3 +145,15 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Untertitel: einzelnes gesprochenes Wort, gelb mit dunkler Kontur, direkt über dem Panda-Kopf (`cap_style: word`);
   ohne Panda bei `cap_y`. Kopfzeile hell wie Referenz (`header_style: bar`).
 - Beispiel: `examples/nvidia_bright_studio_spec.py`.
+
+## Farbiges Studio v2 (Nutzer-Feedback: Kopfzeile weg, farbenfroh, schneller, nichts überlappt, stärkere Clips)
+- **Keine Kopfzeile** (`header_style: none`). ~10 Szenenwechsel in 20 s: Kamerafahrten zwischen den Zonen,
+  Farb-Wischer `trans: wipe` (diagonale Bänder Gold/Pink/Blau/Grün, darunter springt die Kamera), Panda raus/rein.
+- **Farbe:** eigene Palette `POP` (Grün, Korall-Rot, Gold, Himmelblau, Violett, Pink, Pfirsich, Mint);
+  pro Szene farbige Licht-Stimmung `wash: [farbe1, farbe2, stärke]` über dem hellen Set.
+- **Clips:** `bigstat` (Farbverlauf-Badge, rollende Zahl, Einrast-Pop, Konfetti, Unter-Chip), `marker`
+  (Bebas-Schlagzeile auf farbigem Marker-Balken), `emoji2` (3D-Icon auf Farbscheibe mit Strahlen), `chartclip`
+  (Karte mit farbigem Kopf, Logo, leuchtender Linie, Puls-Punkt).
+- **Nichts überlappt:** Infos oben (y ~250–1020), Panda-Kopf nie über `min_head` (900); wenn Panda aus dem Bild,
+  Untertitel bei `cap_y` (1360). Logo nie hinter dem Panda platzieren.
+- Beispiel: `examples/nvidia_color_studio_spec.py` → `demo/nvidia_color_studio_TEST.mp4`.

@@ -657,7 +657,9 @@ def draw_overlay(img, c, ct, x, y):
         return
     lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     li = Ink(lay, affine(0, 0, 0, 1), 0, 1)
-    if ty == "headline":
+    if ty in CLIPS:
+        draw_clip(lay, c, ct, x, y)
+    elif ty == "headline":
         col = {"up": GREEN, "down": RED, "gold": (226, 160, 20), "info": BLUE}.get(c.get("tone", "up"), GREEN)
         size = c.get("size", 120)
         txt = c["text"]
@@ -747,7 +749,177 @@ def draw_overlay(img, c, ct, x, y):
     img.alpha_composite(lay)
 
 
-OVERLAYS = {"headline", "emoji", "logo", "stockchart"}
+POP = {"green": (34, 197, 94), "red": (255, 77, 94), "gold": (255, 190, 40), "blue": (56, 170, 248),
+       "violet": (139, 92, 246), "pink": (255, 92, 170), "peach": (255, 150, 100), "mint": (45, 212, 191)}
+POP_DARK = {"green": (21, 128, 61), "red": (190, 24, 60), "gold": (214, 120, 0), "blue": (14, 116, 200),
+            "violet": (100, 50, 200), "pink": (200, 40, 120), "peach": (220, 100, 50), "mint": (13, 148, 136)}
+
+
+def _grad_panel(w, h, c1, c2, r):
+    """Rounded panel with a diagonal gradient c1 -> c2, soft inner top highlight."""
+    g = np.zeros((h, w, 3), float)
+    xx, yy = np.meshgrid(np.linspace(0, 1, w), np.linspace(0, 1, h))
+    k = np.clip(xx * 0.55 + yy * 0.45, 0, 1)[..., None]
+    g[:] = np.array(c1, float) * (1 - k) + np.array(c2, float) * k
+    hi = np.clip(1 - yy / 0.5, 0, 1)[..., None] * 0.18
+    g = g + (255 - g) * hi
+    im = Image.fromarray(g.astype(np.uint8)).convert("RGBA")
+    m = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(m).rounded_rectangle([0, 0, w - 1, h - 1], r, fill=255)
+    im.putalpha(m)
+    return im
+
+
+def burst(lay, x, y, ct, t0, cols, r=220, n=22, life=0.9, seed=0):
+    """Colourful confetti + ray burst when something lands."""
+    if ct < t0 or ct > t0 + life:
+        return
+    k = (ct - t0) / life
+    d = ImageDraw.Draw(lay)
+    rng = np.random.default_rng(seed)
+    for i in range(n):
+        a = 2 * math.pi * i / n + rng.uniform(-0.2, 0.2)
+        sp = rng.uniform(0.6, 1.2)
+        rr = r * (0.3 + 1.1 * (1 - (1 - k) ** 3)) * sp
+        px, py = x + math.cos(a) * rr, y + math.sin(a) * rr + 120 * k * k
+        col = cols[i % len(cols)]
+        al = int(255 * (1 - k))
+        if i % 3 == 0:
+            r0 = rr * 0.7
+            d.line([(x + math.cos(a) * r0, y + math.sin(a) * r0), (px, py)], fill=col + (al,), width=max(1, int(8 * (1 - k))))
+        else:
+            sz = 9 * (1 - k * 0.6)
+            ang = a + ct * 8
+            pts = [(px + math.cos(ang + q * math.pi / 2) * sz, py + math.sin(ang + q * math.pi / 2) * sz * 0.6) for q in range(4)]
+            d.polygon(pts, fill=col + (al,))
+
+
+def draw_clip(lay, c, ct, x, y):
+    """Stylish overlay clips: bigstat (colour badge + rolling number + confetti), marker headline,
+    emoji with colour disc and rays, chartclip (colour header, glowing line), versus2."""
+    ty = c["type"]
+    li = Ink(lay, affine(0, 0, 0, 1), 0, 1)
+    col = POP.get(c.get("color", "green"), POP["green"])
+    dcol = POP_DARK.get(c.get("color", "green"), POP_DARK["green"])
+    if ty == "bigstat":
+        k = ease_out_back(seg(ct, 0, 0.45), 1.7)
+        ca, ce = c.get("count_at", 0.1), c.get("count_end", 0.75)
+        kc = ease_out(seg(ct, ca, ce))
+        v = lerp(c.get("from", 0), c.get("to", 0), kc)
+        txt = c.get("fmt", "{}").replace("{}", de(v, c.get("dec", 0))) if "to" in c else c["text"]
+        full = c.get("fmt", "{}").replace("{}", de(c.get("to", 0), c.get("dec", 0))) if "to" in c else c["text"]
+        size = c.get("size", 190)
+        tw = li.text_w(full, size, "bebas")
+        w = int(min(980, tw + 120))
+        size = size * min(1.0, (w - 120) / max(1, tw))
+        h = int(size * 1.08 + 40)
+        panel = _grad_panel(w, h, col, dcol, int(h * 0.28))
+        pi = Ink(panel, affine(w / 2, h / 2 + size * 0.06, 0, 1), 0, 1)
+        roll = (1 - kc) * size * 0.25 * math.sin(ct * 40) if kc < 1 else 0
+        pi.text(4, 6 + roll, txt, size, "bebas", fill=(0, 0, 0, 60), stroke=None)
+        pi.text(0, roll, txt, size, "bebas", fill=(255, 255, 255), stroke=None)
+        sc = max(0.05, k) * (1 + 0.08 * math.exp(-max(0, ct - ce) * 10) if ct >= ce else 1)
+        rot = c.get("rot", -3) * (1 - smooth(seg(ct, 0, 0.5))) * 3 + c.get("rot", -3)
+        pw = panel.resize((max(1, int(w * sc)), max(1, int(h * sc))), Image.LANCZOS).rotate(rot, Image.BICUBIC, expand=True)
+        sh, _ = soft_shadow(pw, 22, 90, 22)
+        comp(lay, sh, x - sh.width / 2, y - sh.height / 2 + 10)
+        comp(lay, pw, x - pw.width / 2, y - pw.height / 2)
+        burst(lay, x, y, ct, ce, [POP["gold"], POP["pink"], POP["blue"], col, POP["mint"]], r=w * 0.42, seed=len(full))
+        if c.get("sub"):
+            ks = smooth(seg(ct, 0.3, 0.6))
+            sw = li.text_w(c["sub"], 34, "montb") + 50
+            sy = y + h * sc / 2 + 44 + 16 * (1 - ks)
+            d = ImageDraw.Draw(lay)
+            d.rounded_rectangle([x - sw / 2, sy - 30, x + sw / 2, sy + 30], 30, fill=(255, 255, 255, int(240 * ks)),
+                                outline=col + (int(255 * ks),), width=3)
+            li.text(x, sy + 1, c["sub"], 34, "montb", fill=(30, 32, 40, int(255 * ks)), stroke=None)
+    elif ty == "marker":
+        size = c.get("size", 120)
+        txt = c["text"]
+        size = min(size, size * 900 / max(1, li.text_w(txt, size, "bebas")))
+        tw = li.text_w(txt, size, "bebas")
+        km = smooth(seg(ct, 0.05, 0.4))
+        d = ImageDraw.Draw(lay)
+        bx0 = x - tw / 2 - 26
+        d.rounded_rectangle([bx0, y - size * 0.28, bx0 + (tw + 52) * km, y + size * 0.44], 16, fill=col + (235,))
+        kt = smooth(seg(ct, 0.15, 0.45))
+        li.text(x, y + 6 + 30 * (1 - kt), txt, size, "bebas", fill=(255, 255, 255, int(255 * kt)), stroke=None)
+        if c.get("sub"):
+            ks = smooth(seg(ct, 0.35, 0.65))
+            li.text(x, y + size * 0.78, c["sub"], 34, "montb", fill=dcol + (int(255 * ks),), stroke=None)
+    elif ty == "emoji2":
+        px = c.get("px", 240)
+        k = ease_out_back(seg(ct, 0, 0.45), 1.8)
+        R = px * 0.62 * max(0.05, k)
+        d = ImageDraw.Draw(lay)
+        for i in range(12):                                   # rotating soft rays
+            a = 2 * math.pi * i / 12 + ct * 0.8
+            a2 = a + 0.13
+            d.polygon([(x, y), (x + math.cos(a) * R * 1.7, y + math.sin(a) * R * 1.7),
+                       (x + math.cos(a2) * R * 1.7, y + math.sin(a2) * R * 1.7)], fill=col + (40,))
+        d.ellipse([x - R, y - R, x + R, y + R], fill=col + (255,))
+        d.ellipse([x - R * 0.82, y - R * 0.82, x + R * 0.82, y + R * 0.82], fill=tuple(min(255, v + 40) for v in col) + (255,))
+        e = emoji_img(c["emoji"], px)
+        s_ = max(0.05, k)
+        em = e.resize((max(1, int(px * s_)), max(1, int(px * s_))), Image.LANCZOS)
+        if c.get("tilt"):
+            em = em.rotate(c["tilt"] * (1 - smooth(seg(ct, 0, 0.5))) + math.sin(ct * 3) * 4, Image.BICUBIC, expand=True)
+        fl = math.sin(ct * 2.6) * 6
+        comp(lay, em, x - em.width / 2, y - em.height / 2 + fl)
+    elif ty == "chartclip":
+        w, h = c.get("w", 900), c.get("h", 560)
+        k = smooth(seg(ct, 0, 0.4))
+        card = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+        m = Image.new("L", (w, h), 0)
+        ImageDraw.Draw(m).rounded_rectangle([0, 0, w - 1, h - 1], 36, fill=255)
+        bgc = Image.new("RGBA", (w, h), (255, 255, 255, 255))
+        hdr = _grad_panel(w, 120, col, dcol, 0)
+        bgc.alpha_composite(hdr, (0, 0))
+        bgc.putalpha(m)
+        card.alpha_composite(bgc)
+        ci = Ink(card, affine(0, 0, 0, 1), 0, 1)
+        ci.text(40, 60, c.get("title", ""), 64, "bebas", fill=(255, 255, 255), stroke=None, anchor="lm")
+        ci.text(w - 40, 60, c.get("tag", ""), 52, "bebas", fill=(255, 255, 255), stroke=None, anchor="rm")
+        if c.get("logo"):
+            lg = logo_img(c["logo"], 86, "#FFFFFF")
+            card.alpha_composite(lg, (int(40 + li.text_w(c.get("title", ""), 64, "bebas") + 20), 17))
+        pts = c["points"]
+        x0, x1, y0, y1 = 50, w - 70, h - 70, 170
+        for gi in range(4):
+            gy = lerp(y0, y1, gi / 3)
+            ci.line([(x0, gy), (x1, gy)], (236, 238, 243), 2, wob=0)
+        kd = ease_in_out(seg(ct, c.get("draw_at", 0.25), c.get("draw_end", 1.3)))
+        n = 1 + (len(pts) - 1) * kd
+        P = [(lerp(x0, x1, i / (len(pts) - 1)), lerp(y0, y1, v)) for i, v in enumerate(pts)]
+        shown = P[:int(n)]
+        if int(n) < len(P):
+            f_ = n - int(n)
+            a_, b_ = P[int(n) - 1], P[int(n)]
+            shown.append((lerp(a_[0], b_[0], f_), lerp(a_[1], b_[1], f_)))
+        if len(shown) > 1:
+            area = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            ImageDraw.Draw(area).polygon(shown + [(shown[-1][0], y0), (shown[0][0], y0)], fill=col + (90,))
+            g = np.clip(np.linspace(1.3, 0, h), 0, 1)[:, None]
+            A = np.asarray(area.getchannel("A"), float) * g
+            area.putalpha(Image.fromarray(A.astype(np.uint8)))
+            card.alpha_composite(area)
+            gl = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            ImageDraw.Draw(gl).line(shown, fill=col + (200,), width=18, joint="curve")
+            card.alpha_composite(gl.filter(ImageFilter.GaussianBlur(9)))
+            ImageDraw.Draw(card).line(shown, fill=dcol + (255,), width=8, joint="curve")
+            ex, ey = shown[-1]
+            pr = 12 + 4 * math.sin(ct * 10)
+            ImageDraw.Draw(card).ellipse([ex - pr - 8, ey - pr - 8, ex + pr + 8, ey + pr + 8], fill=col + (90,))
+            ImageDraw.Draw(card).ellipse([ex - 10, ey - 10, ex + 10, ey + 10], fill=(255, 255, 255, 255), outline=dcol + (255,), width=4)
+        sc = lerp(0.82, 1.0, k)
+        cw = card.resize((int(w * sc), int(h * sc)), Image.LANCZOS)
+        sh, _ = soft_shadow(cw, 24, 80, 22)
+        comp(lay, sh, x - sh.width / 2, y - sh.height / 2 + 10)
+        comp(lay, cw, x - cw.width / 2, y - cw.height / 2)
+
+
+CLIPS = {"bigstat", "marker", "emoji2", "chartclip"}
+OVERLAYS = {"headline", "emoji", "logo", "stockchart"} | CLIPS
 
 
 def rot_y(im, ang, k_scale=1.0):
@@ -835,6 +1007,31 @@ def path_cam(keys, t, shake=0.0):
     return scene3d.Camera(pos, tgt, fov)
 
 
+@lru_cache(maxsize=32)
+def _wash_layer(c1, c2, strength):
+    xx, yy = np.meshgrid(np.linspace(0, 1, W // 4), np.linspace(0, 1, H // 4))
+    a = np.exp(-(((xx - 0.05) / 0.55) ** 2 + ((yy - 0.15) / 0.45) ** 2))
+    b = np.exp(-(((xx - 0.95) / 0.55) ** 2 + ((yy - 0.75) / 0.5) ** 2))
+    col = (np.array(c1, float)[None, None] * a[..., None] + np.array(c2, float)[None, None] * b[..., None]) / \
+        np.maximum(a + b, 1e-6)[..., None]
+    al = np.clip((a + b) * strength, 0, strength)
+    im = Image.fromarray(np.concatenate([col, al[..., None] * 255], 2).astype(np.uint8), "RGBA")
+    return im.resize((W, H), Image.BILINEAR)
+
+
+def colour_wash(bg, wash, t):
+    """Soft coloured light pools over the bright set (multiply-ish tint, whites stay airy)."""
+    c1 = POP.get(wash[0], wash[0]) if isinstance(wash[0], str) else tuple(wash[0])
+    c2 = POP.get(wash[1], wash[1]) if isinstance(wash[1], str) else tuple(wash[1])
+    lay = _wash_layer(tuple(c1), tuple(c2), float(wash[2]) if len(wash) > 2 else 0.42)
+    a = np.asarray(bg.convert("RGB"), float)
+    L = np.asarray(lay, float)
+    al = L[..., 3:4] / 255
+    tint = a * (L[..., :3] / 255)                      # multiply: colours the light greys of the set
+    out = a * (1 - al) + np.clip(tint * 0.55 + L[..., :3] * 0.45, 0, 255) * al
+    return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8))
+
+
 class Studio:
     def __init__(self, spec):
         set_theme(spec.get("theme") == "dark")
@@ -892,6 +1089,8 @@ class Studio:
                 fx += 1100 * smooth(seg(lt, p["exit_at"], p["exit_at"] + 0.45)) ** 1.5 * p.get("exit_dir", 1)
             if p.get("enter_at") is not None:
                 fx += 1100 * (1 - smooth(seg(lt, p["enter_at"], p["enter_at"] + 0.5))) * p.get("enter_dir", -1)
+            if self.spec.get("min_head") and feet - hq < self.spec["min_head"]:
+                feet += self.spec["min_head"] - (feet - hq)   # never let the head reach the info zone
             sp = panda_sprite(pose, hq, kq, p.get("flip", False))
             lean = 0.018 if walking else 0.0
             sp = body_motion(sp, t_abs, talk, p.get("seed", 0.0), 1.0, lean, p.get("gesture", "idle"),
@@ -899,6 +1098,8 @@ class Studio:
             sh = shadow_sprite(max(8, int(sp.width * 0.8)))
             comp(img, sh, fx - sh.width / 2 + sp.width * 0.12, feet - sh.height * 0.6)
             comp(img, sp, fx - sp.width / 2, feet - hq - step - sp.info.get("lift", 0))
+            if fx + sp.width * 0.35 < 0 or fx - sp.width * 0.35 > W:
+                return None                       # off screen: captions go back to their own line
             return feet - hq
         fx, fy, fh = FRAMES[p.get("frame", "medium")]
         fx, fy, fh = p.get("x", fx), p.get("y", fy), p.get("h", fh)
@@ -941,6 +1142,8 @@ class Studio:
             blur = max(blur, min(6.0, speed * 1.4))
         st = scene3d.get_set(s.get("set", "studio"), *s.get("set_args", []))
         bg = st.render(cam, W, H, ss=1.25, blur=blur)
+        if s.get("wash"):
+            bg = colour_wash(bg, s["wash"], t)
         img = bg.convert("RGBA")
         top = self.panda_layer(img, s, lt, gi, cam)
         for c in s.get("cards", []):
@@ -1072,6 +1275,8 @@ class Studio:
             x += wd + sp
 
     def header(self, img):
+        if self.spec.get("header_style") == "none":
+            return
         ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
         if self.spec.get("header_style") == "bar":
             lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
@@ -1118,7 +1323,7 @@ class Studio:
         s = self.shots[i]
         lt = t - s["start"]
         img, top = self.draw_shot(i, t, gi)
-        TD = 0.24
+        TD = 0.36 if s.get("trans") == "wipe" else 0.24
         if i > 0 and lt < TD and s.get("trans", "zoom") != "cut":
             prev, _ = self.draw_shot(i - 1, s["start"] - 1e-3, gi)
             u = lt / TD
@@ -1146,6 +1351,20 @@ class Studio:
                 warm = np.array([255, 190, 120], float)
                 a = a + (warm - a) * np.clip(band * k * 1.1, 0, 0.92)
                 img = Image.fromarray(a.astype(np.uint8)).convert("RGBA")
+            elif mode == "wipe":
+                # diagonal bands in the brand colours sweep over, the new scene is revealed behind them
+                src = prev if u < 0.5 else img
+                out = src.convert("RGBA").copy()
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                cols = [POP[k] for k in self.spec.get("wipe_cols", ["gold", "pink", "blue", "green"])]
+                span = W + H * 0.6
+                for j, c_ in enumerate(cols):
+                    off = (u * 1.5 - j * 0.12) * (span + 600) - 600
+                    bw = 260
+                    d.polygon([(off, 0), (off + bw, 0), (off + bw - H * 0.6, H), (off - H * 0.6, H)], fill=c_ + (255,))
+                out.alpha_composite(lay)
+                img = out
             elif mode == "glitch":
                 src = prev if u < 0.5 else img
                 a = np.asarray(src.convert("RGB")).copy()
