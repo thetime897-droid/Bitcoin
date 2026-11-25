@@ -71,11 +71,11 @@ def _norm(w):
     return re.sub(r"[^\wäöüß%+]", "", w.lower())
 
 
-def tts(text, out_wav):
+def tts(text, out_wav, length_scale=0.88):
     """Placeholder voice (Piper, Thorsten) when no own recording is given."""
     model = Path("/tmp/claude-0/piper/de-thorsten-low.onnx")
     raw = Path(out_wav).with_suffix(".raw.wav")
-    subprocess.run(["piper", "-m", str(model), "--length_scale", "0.88", "--sentence_silence", "0.18", "-f", str(raw)],
+    subprocess.run(["piper", "-m", str(model), "--length_scale", str(length_scale), "--sentence_silence", "0.18", "-f", str(raw)],
                    input=text.encode(), check=True, capture_output=True)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-af",
                     "highpass=f=70,equalizer=f=250:t=q:w=1:g=-1.5,equalizer=f=3200:t=q:w=1.2:g=2,"

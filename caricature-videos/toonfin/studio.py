@@ -1373,6 +1373,30 @@ def film_look(img, gi, cfg):
     return Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8)).convert("RGBA")
 
 
+SAFE_TOP = 140          # nothing above this (TikTok top UI)
+
+
+def keep_off(base, lay, pbox, gap=26):
+    """Composite one graphic layer onto base so it NEVER covers the panda (pbox = x0, y0, x1, y1 incl. the
+    caption line above the head): slide it up above the head; if there is not enough room, also shrink it."""
+    bb = lay.getbbox()
+    if bb and pbox:
+        x0, y0, x1, y1 = bb
+        px0, py0, px1, py1 = pbox
+        if x0 < px1 and x1 > px0 and y0 < py1 and y1 > py0 - gap:
+            room = py0 - gap - SAFE_TOP
+            h = y1 - y0
+            k = min(1.0, max(0.25, room / max(h, 1)))
+            crop = lay.crop(bb)
+            if k < 1.0:
+                crop = crop.resize((max(1, int(crop.width * k)), max(1, int(crop.height * k))), Image.LANCZOS)
+            ny = int(min(y0, py0 - gap - crop.height))
+            nx = int((x0 + x1) / 2 - crop.width / 2)
+            base.alpha_composite(crop, (max(0, min(base.width - crop.width, nx)), max(0, ny)))
+            return base
+    base.alpha_composite(lay)
+    return base
+
 class Studio:
     def __init__(self, spec):
         global FPS
@@ -1460,6 +1484,7 @@ class Studio:
                 sh = shadow_sprite(max(8, int(sp.width * 0.8)))
                 comp(img, sh, fx - sh.width / 2 + sp.width * 0.12, feet - sh.height * 0.6)
             comp(img, sp, fx - sp.width / 2, feet - hq - step - sp.info.get("lift", 0))
+            self._set_pbox(sp, fx - sp.width / 2, feet - hq - step - sp.info.get("lift", 0))
             if fx + sp.width * 0.35 < 0 or fx - sp.width * 0.35 > W:
                 return None                       # off screen: captions go back to their own line
             return feet - hq
@@ -1484,11 +1509,31 @@ class Studio:
             sh = shadow_sprite(int(sp.width * 0.8))
             comp(img, sh, fx + dx - sh.width / 2 + sp.width * 0.1, feet - sh.height * 0.62)
         comp(img, sp, fx + dx - sp.width / 2, feet - hq - sp.info.get("lift", 0))
+        self._set_pbox(sp, fx + dx - sp.width / 2, feet - hq - sp.info.get("lift", 0))
         return feet - hq
+
+    def _set_pbox(self, sp, x, y):
+        """Screen box the panda occupies (plus the caption word above the head): graphics must stay out of it."""
+        bb = sp.getchannel("A").point(lambda a: 255 if a > 40 else 0).getbbox()
+        if not bb:
+            return
+        x0, y0, x1, y1 = x + bb[0], y + bb[1], x + bb[2], y + bb[3]
+        if x1 < 0 or x0 > W:
+            return
+        if self.spec.get("cap_style") == "word":
+            y0 -= 34 + self.spec.get("cap_size", 46) * 1.25
+        self._pbox = (x0 - 12, y0, x1 + 12, y1)
 
     def cam_at(self, s, t):
         if self.spec.get("campath") and not s.get("cam"):
-            return path_cam(self.spec["campath"], t, self.spec.get("shake", 0.0))
+            keys = self.spec["campath"]
+            if self.spec.get("shot_cams"):
+                # each shot only uses its own keys: clean cuts between zones, never a visible flight
+                own = [k for k in keys if s["start"] - 1e-6 <= k["t"] <= s["end"] + 1e-6]
+                if len(own) >= 2:
+                    keys = own
+                t = min(max(t, s["start"]), s["end"])
+            return path_cam(keys, t, self.spec.get("shake", 0.0))
         lt, dur = t - s["start"], s["end"] - s["start"]
         return _cam(s["cam"], clamp(lt / dur)) if s.get("cam") else scene3d.Camera((0, 1.6, -6), (0, 1.2, 10), 45)
 
@@ -1499,7 +1544,7 @@ class Studio:
         blur = s.get("blur", 0.0)
         if self.spec.get("campath") and not s.get("cam"):
             # motion blur from camera speed (fast flights smear, slow moves stay crisp)
-            c2 = path_cam(self.spec["campath"], t + 1 / FPS)
+            c2 = self.cam_at(s, t + 1 / FPS)
             speed = float(np.linalg.norm(c2.pos - cam.pos) + 3 * np.linalg.norm(c2.target - cam.target) / 10)
             blur = max(blur, min(6.0, speed * 1.4))
         st = scene3d.get_set(s.get("set", "studio"), *s.get("set_args", []))
@@ -1527,10 +1572,10 @@ class Studio:
         if s.get("wash"):
             bg = colour_wash(bg, s["wash"], t)
         img = bg.convert("RGBA")
-        top = self.panda_layer(img, s, lt, gi, cam)
-        for c in s.get("cards", []):
-            if lt < c.get("at", 0) or (c.get("until") is not None and lt > c["until"] + 0.3):
-                continue
+        vis = [c for c in s.get("cards", [])
+               if not (lt < c.get("at", 0) or (c.get("until") is not None and lt > c["until"] + 0.3))]
+        # pass 1: content that lives IN the 3D world (wall screens, holo panels) sits behind the panda
+        for c in vis:
             ct = lt - c.get("at", 0)
             if c.get("holo"):
                 self.draw_holo(img, c, ct, cam, lt)
@@ -1555,9 +1600,19 @@ class Studio:
                         A = np.asarray(wp.getchannel("A"), float) * fd
                         wp.putalpha(Image.fromarray(A.astype(np.uint8)))
                         img.alpha_composite(wp, (bx0, by0))
+        self._pbox = None
+        top = self.panda_layer(img, s, lt, gi, cam)
+        pbox = self._pbox
+        # pass 2: screen-space graphics, each on its own layer so it can be kept off the panda
+        for c in vis:
+            if c.get("holo") or c.get("screen"):
                 continue
+            ct = lt - c.get("at", 0)
+            out = img
+            img = Image.new("RGBA", out.size, (0, 0, 0, 0))
             if c["type"] in OVERLAYS:
                 draw_overlay(img, c, ct, c.get("x", 540), c.get("y", 520))
+                img = keep_off(out, img, pbox)
                 continue
             sp = render_card(c, ct)
             k = ease_out_back(seg(ct, 0, 0.42), 1.5)
@@ -1587,6 +1642,7 @@ class Studio:
                     img.alpha_composite(lay)
             sp2, ox, oy = rot_y(sp, ang, sc)
             comp(img, sp2, cx - sp2.width / 2, cy - sp2.height / 2)
+            img = keep_off(out, img, pbox)
         return img, top
 
     def word_colour(self, w):

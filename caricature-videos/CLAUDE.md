@@ -187,3 +187,23 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Sound (`toonfin/cine.py`): Stereo, Stimmkette (Hochpass, Kompressor, De-Esser, kurzer Raum), Musik `score()` mit
   Dur/Moll/Auflösung + Ducking −9 dB, Stille vor Impacts (`silence_gap`), −14 LUFS, True Peak ≤ −1,2 dBTP.
 - Chart-Kursverlauf ist Platzhalter-Form (im Config-`_doc` vermerkt), im Video steht kein „Beispielverlauf“.
+
+## Clean-Studio 20 s (aktuell, Nutzer-Feedback zu v4)
+- **Tests immer nur 20 s** (`examples/nvidia_20s.json`, ~54 Wörter, `tts_length_scale` für die Platzhalter-Stimme).
+- **Hintergrund immer clean weiß mit schwarzen Stühlen** (`brightstudio` Saal A), kein Neon, kein Filmlook, keine
+  Farbtönung. Saal-Ausstattung `_hall_dressing`: Bühne mit schwarzer Kante, Seitenpaneele, Pflanzen (grüner Akzent),
+  Rednerpult mit grünem Streifen, Wandbilder. Keine Hängeleuchten (wirken von unten wie Striche).
+- **Bildaufbau wie Referenz „finanzlehre“:** farbige Schlagzeile (`marker`, y≈235) oben, Info auf der Wandleinwand
+  (`screen`: ticker, mcap, vote, dateblock) darunter, Panda frei darunter. Kamera leicht erhöht (y 3.4–4.4 m,
+  Ziel y 2.6, fov 40–42), damit die Leinwand ganz über dem Kopf liegt. Untertitel: einzelnes gelbes Wort über dem Kopf
+  (`cap_style: word`).
+- **Nichts überlappt den Panda (automatisch):** Leinwand-/Raum-Inhalte werden hinter dem Panda gezeichnet; jede
+  Bildschirm-Einblendung wird per `studio.keep_off` über den Kopf (inkl. Untertitel-Zeile) geschoben und notfalls
+  verkleinert. Panda-Umriss in `Studio._set_pbox`.
+- **Kamera cinematisch/clean:** pro Einstellung eine ruhige Fahrt (Kran, Slider, kleiner Orbit, Rückfahrt),
+  `look.shot_cams: true` = jede Einstellung nutzt nur ihre eigenen Keys → harte, saubere Zonenwechsel ohne Zwischenflug.
+  Letzte Einstellung endet auf dem Startbild (Loop inkl. Panda + Leinwand).
+- **Sound weniger generisch:** UI-Cues aus `toonfin/sfx/uisfx/` (CC0, npm `uisfx`), Whooshs neu (`cine_whoosh`: Doppler-
+  Bandpass, Luft-Layer, 4 Varianten, nie zweimal derselbe), Impact mit Punch, gemeinsamer kurzer Raumhall `fx_room`.
+  Cues auch per `at_word`.
+- QA: `python -m toonfin.cine cfg.json out.mp4 --sheet 16` → Kontaktbogen `<out>_work/sheet.png` vor jedem Render prüfen.

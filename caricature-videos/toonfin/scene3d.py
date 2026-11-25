@@ -1161,6 +1161,50 @@ def _chair(s, x, z, face=1, col=(40, 42, 48)):
     s.ground_shadow(x - 0.32, x + 0.32, z - 0.3, z + 0.3, 1.0)
 
 
+
+def _plant(s, x, z, h=1.9, leaf=(84, 168, 104)):
+    """Tall indoor plant in a matte black pot (a fresh green accent in the white studio)."""
+    s._box(x - 0.34, x + 0.34, 0, 0.75, z - 0.34, z + 0.34, col=(38, 40, 46))
+    s._box(x - 0.36, x + 0.36, 0.72, 0.8, z - 0.36, z + 0.36, col=(52, 54, 60))
+    s.ground_shadow(x - 0.4, x + 0.4, z - 0.4, z + 0.4, 1.0)
+    rng = np.random.default_rng(int(abs(x * 31 + z * 7)) % 997)
+    for k in range(11):
+        a = k / 11 * 2 * math.pi + rng.uniform(-0.2, 0.2)
+        ln = rng.uniform(0.55, 0.95) * h * 0.6
+        y0 = 0.8 + rng.uniform(0.0, h * 0.35)
+        dx, dz = math.cos(a), math.sin(a)
+        tip = (x + dx * ln * 0.75, y0 + ln * rng.uniform(0.45, 0.9), z + dz * ln * 0.75)
+        w = 0.17
+        c = tuple(int(v * rng.uniform(0.86, 1.08)) for v in leaf)
+        s.quad([[x - dz * w * 0.3, y0, z + dx * w * 0.3], [x + dz * w * 0.3, y0, z - dx * w * 0.3],
+                [tip[0] + dz * w, tip[1], tip[2] - dx * w], [tip[0] - dz * w, tip[1], tip[2] + dx * w]], c, double=True)
+
+
+def _hall_dressing(s):
+    """Extra set dressing for hall A: stage, lectern, plants, side display panels, linear pendant lights,
+    framed wall panels. All clean white/black with small colour accents."""
+    s.box(-7.2, 7.2, 0, 0.3, 16.6, 19.8, col=(251, 251, 253), shadow=False)          # low stage
+    s._box(-7.2, 7.2, 0.25, 0.31, 16.56, 16.62, col=(36, 38, 44))                    # black stage edge
+    for side in (-1, 1):
+        sx = side * 7.0
+        s._box(sx - 1.25, sx + 1.25, 1.2, 8.6, 19.72, 19.9, col=(244, 245, 248))      # side display panels
+        s._box(sx - 1.25, sx + 1.25, 1.2, 1.28, 19.68, 19.72, col=(36, 38, 44))
+        for i in range(7):                                                          # fine line pattern
+            yy = 2.0 + i * 0.95
+            s._box(sx - 0.9, sx + 0.9, yy - 0.025, yy + 0.025, 19.66, 19.7, col=(214, 216, 223))
+        s._box(sx - 0.03, sx + 0.03, 1.6, 8.2, 19.65, 19.69, col=(222, 224, 230))
+        _plant(s, side * 5.7, 16.1, 2.3)
+        for zz in (5.0, 11.0):                                                      # framed wall panels
+            s._box(side * 15.69 - 0.02, side * 15.69 + 0.02, 3.0, 6.6, zz - 1.6, zz + 1.6, col=(36, 38, 44))
+            s._box(side * 15.64 - 0.02, side * 15.64 + 0.02, 3.12, 6.48, zz - 1.48, zz + 1.48, col=(246, 247, 250))
+            for j in range(4):
+                s._box(side * 15.6 - 0.02, side * 15.6 + 0.02, 3.6 + j * 0.8, 3.64 + j * 0.8, zz - 1.1,
+                       zz - 1.1 + 0.6 + j * 0.45, col=(120, 200, 140) if j == 3 else (210, 212, 220))
+    # lectern with a green accent stripe
+    s.box(4.0, 5.0, 0.3, 1.45, 16.9, 17.5, col=(250, 250, 252), shadow=False)
+    s._box(4.0, 5.0, 1.12, 1.2, 16.86, 16.9, col=(118, 185, 0))
+    s._box(3.95, 5.05, 1.45, 1.5, 16.85, 17.55, col=(36, 38, 44))
+
 def brightstudio_set():
     """Airy white studio in three zones the camera flies between:
     A (x=0) presentation hall with a big wall screen and rows of chairs,
@@ -1190,6 +1234,7 @@ def brightstudio_set():
         for r in range(7):
             for c in range(5):
                 _chair(s, side * (3.6 + c * 1.2), 1.0 + r * 2.4, face=1)
+    _hall_dressing(s)
     # --- zone C: circuit board wall ------------------------------------------------------
     s.box(-62, -28, 0, 16, 22, 22.6, col=(245, 245, 248), shadow=False)
     s._box(-52, -38, 2, 14, 21.6, 22, col=(236, 237, 242))                   # board
