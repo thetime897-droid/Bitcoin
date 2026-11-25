@@ -1340,8 +1340,8 @@ def cast_shadow(img, sp, fx, feet, tx, ty):
     xs, ys = [q[0] for q in dst], [q[1] for q in dst]
     bx0, by0 = int(min(xs)), int(min(ys))
     bw, bh = int(max(xs) - bx0) + 2, int(max(ys) - by0) + 2
-    if bw < 4 or bh < 4 or bw > 4 * W or bh > 4 * H:
-        return
+    if bw < 4 or bh < 4 or bw > 1.6 * W or bh > 1.2 * H:
+        return                                   # degenerate projection (camera looking up / grazing): skip
     co = scene3d._perspective_coeffs(src, [(q[0] - bx0, q[1] - by0) for q in dst])
     wp = sh.transform((bw, bh), Image.PERSPECTIVE, co, Image.BILINEAR).filter(ImageFilter.GaussianBlur(8))
     comp(img, wp, bx0, by0)
@@ -1424,8 +1424,8 @@ class Studio:
                 return None
             fx, feet = f[0], f[1]
             hq = int(round((feet - hd[1]) / 4)) * 4
-            if hq < 40:
-                return None
+            if hq < 40 or hq > 2.4 * H:
+                return None                        # too small, or the camera is right on top of the panda
             step = abs(math.sin(lt * math.pi * 2.2)) * hq * 0.025 if walking else 0.0
             if p.get("exit_at") is not None:            # leaves the frame so the key info owns the screen
                 fx += 1100 * smooth(seg(lt, p["exit_at"], p["exit_at"] + 0.45)) ** 1.5 * p.get("exit_dir", 1)
