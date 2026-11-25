@@ -458,7 +458,7 @@ def build(cfg, work):
         shots.append(dict(start=round(st, 3), end=round(dur, 3), set=cfg.get("set", "newsroom"),
                           set_args=cfg.get("set_args", []), trans=lp.get("trans", "match"), match_at=[540, 960],
                           mood=first.get("mood"), props=lp.get("props", first.get("props", [])), blur=0.0,
-                          cards=[dict(c, at=0.0) for c in shots[0]["cards"] if c.get("screen") and c.get("at", 0) == 0],
+                          cards=[dict(c) for c in shots[0]["cards"] if c.get("screen") and c.get("at", 0) <= 0],
                           **({"panda": {k: v for k, v in shots[0]["panda"].items() if k not in ("gesture", "gesture_at")}}
                              if shots[0].get("panda") else {})))
         k0 = dict(first["camera"][0])

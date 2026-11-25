@@ -1529,7 +1529,7 @@ class Studio:
             keys = self.spec["campath"]
             if self.spec.get("shot_cams"):
                 # each shot only uses its own keys: clean cuts between zones, never a visible flight
-                own = [k for k in keys if s["start"] - 1e-6 <= k["t"] <= s["end"] + 1e-6]
+                own = [k for k in keys if s["start"] - 1e-6 <= k["t"] < s["end"] - 1e-6]   # next shot's key excluded
                 if len(own) >= 2:
                     keys = own
                 t = min(max(t, s["start"]), s["end"])
