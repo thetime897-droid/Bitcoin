@@ -34,7 +34,8 @@ class Camera:
 
 
 class Scene:
-    def __init__(self, bg=BG, floor=FLOOR, fog=90.0):
+    def __init__(self, bg=BG, floor=FLOOR, fog=90.0, sky=None, light_col=None, shade_col=None):
+        self.sky, self.light_col, self.shade_col = sky, light_col, shade_col
         self.faces = []      # (pts[4x3], colour, kind, texture)
         self.bg, self.floor, self.fog = bg, floor, fog
 
@@ -109,9 +110,24 @@ class Scene:
         img = Image.new("RGB", (Wp, Hp), self.bg)
         # soft vertical gradient: sky slightly cooler at the top, floor haze near the horizon
         g = np.linspace(0, 1, Hp)[:, None]
-        top = np.array([226, 232, 243], float)
-        bot = np.array(self.bg, float)
-        grad = (top * (1 - g) + bot * g)[:, None, :].repeat(Wp, 1)
+        if self.sky:
+            # sky gradient tied to the horizon line, so it moves with the camera tilt
+            r_, u_, f_ = cam.basis()
+            fpx_ = (Hp / 2) / math.tan(math.radians(cam.fov) / 2)
+            hz = Hp / 2 - (f_[1] / max(1e-3, math.hypot(f_[0], f_[2]))) * fpx_
+            yy = np.arange(Hp)[:, None].astype(float)
+            k = np.clip((yy - (hz - Hp * 0.9)) / (Hp * 0.9), 0, 1)
+            cols = [np.array(c, float) for c in self.sky]
+            n_ = len(cols) - 1
+            idx = np.minimum((k * n_).astype(int), n_ - 1)
+            fr = k * n_ - idx
+            A = np.stack(cols)[idx[:, 0]]
+            B = np.stack(cols)[idx[:, 0] + 1]
+            grad = (A * (1 - fr) + B * fr)[:, None, :].repeat(Wp, 1)
+        else:
+            top = np.array([226, 232, 243], float)
+            bot = np.array(self.bg, float)
+            grad = (top * (1 - g) + bot * g)[:, None, :].repeat(Wp, 1)
         img = Image.fromarray(np.broadcast_to(grad, (Hp, Wp, 3)).astype(np.uint8).copy())
         d = ImageDraw.Draw(img)
         r, u, f = cam.basis()
@@ -135,6 +151,7 @@ class Scene:
             depth = np.linalg.norm(centre - cam.pos)
             drawn.append((depth + face.get("bias", 0.0), face, poly, n))
         drawn.sort(key=lambda x: -x[0])
+        glow = None
 
         def proj(c):
             return (Wp / 2 + c[0] / c[2] * fpx, Hp / 2 - c[1] / c[2] * fpx)
@@ -152,15 +169,33 @@ class Scene:
                 _draw_tex(img, face, cam, r, u, f, fpx, Wp, Hp, fog, self.bg)
                 d = ImageDraw.Draw(img)
                 continue
-            shade = 0.82 + 0.18 * max(0.0, float(np.dot(n, LIGHT)))
+            lam = max(0.0, float(np.dot(n, LIGHT)))
+            shade = 0.82 + 0.18 * lam
             if n[1] > 0.9:
                 shade = 1.0
             col = np.array(face["col"], float) * shade
+            if self.light_col and not face.get("emit"):
+                tint = np.array(self.light_col, float) * lam + np.array(self.shade_col, float) * (1 - lam)
+                if n[1] > 0.9:
+                    tint = np.array(self.light_col, float) * 0.6 + np.array(self.shade_col, float) * 0.4
+                col = col * tint / 255.0
+            if face.get("emit"):
+                col = np.array(face["col"], float)
+                if glow is None:
+                    glow = Image.new("RGB", (Wp, Hp), (0, 0, 0))
+                    gd = ImageDraw.Draw(glow)
+                gd.polygon(pts, fill=tuple(int(c * (1 - fog * 0.6)) for c in col))
             col = col * (1 - fog) + np.array(self.bg, float) * fog
             edge = tuple(int(c) for c in col * 0.93)
             d.polygon(pts, fill=tuple(int(c) for c in col), outline=edge if "nout" in face else None)
             if face.get("bands") or face.get("mull"):
                 _draw_lines(d, face, cam, r, u, f, fpx, Wp, Hp, col, fog, self.bg)
+        if glow is not None:
+            g1 = np.asarray(glow.filter(ImageFilter.GaussianBlur(10 * ss)), float)
+            g2 = np.asarray(glow.filter(ImageFilter.GaussianBlur(34 * ss)), float)
+            a = np.asarray(img, float)
+            a = 255 - (255 - a) * (1 - np.clip(g1 * 0.9 + g2 * 0.6, 0, 255) / 255)
+            img = Image.fromarray(a.astype(np.uint8))
         if blur:
             img = img.filter(ImageFilter.GaussianBlur(blur * ss))
         return img.resize((W, H), Image.LANCZOS)
@@ -183,6 +218,17 @@ def _hull(pts):
             hi.pop()
         hi.append(p)
     return lo[:-1] + hi[:-1]
+
+
+def project(cam, W, H, p):
+    """Screen position (x, y) and depth of world point p, or None behind the camera."""
+    r, u, f = cam.basis()
+    fpx = (H / 2) / math.tan(math.radians(cam.fov) / 2)
+    c = np.array(p, float) - cam.pos
+    z = c @ f
+    if z < 0.2:
+        return None
+    return W / 2 + (c @ r) / z * fpx, H / 2 - (c @ u) / z * fpx, z
 
 
 def _clip_near(C, near):
@@ -526,7 +572,190 @@ def trading_set():
     return s
 
 
-SETS = {"reichstag": reichstag_set, "ministry": ministry_set, "trading": trading_set, "hq": hq_set, "avenue": avenue_set, "boardroom": boardroom_set, "office": office_set, "studio": studio_set}
+# -- GTA-style sunset city ------------------------------------------------------------------
+
+PASTEL = [(250, 176, 196), (164, 226, 210), (255, 206, 168), (196, 182, 240), (250, 232, 176), (170, 212, 250)]
+NEON = [(255, 70, 170), (40, 230, 255), (255, 140, 40), (170, 90, 255)]
+
+
+@lru_cache(maxsize=8)
+def sun_tex(w=512):
+    im = Image.new("RGBA", (w, w), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    for i in range(40, 0, -1):
+        r = w / 2 * i / 40
+        a = int(255 * (1 - i / 40) ** 0.6) if i > 26 else 255
+        c = (255, int(150 + 80 * (1 - i / 40)), int(90 + 60 * (1 - i / 40)), a)
+        d.ellipse([w / 2 - r, w / 2 - r, w / 2 + r, w / 2 + r], fill=c)
+    return im
+
+
+@lru_cache(maxsize=16)
+def neon_sign_tex(text, col=(255, 70, 170), w=1200, h=300, bg=(26, 20, 44, 255), sub=None):
+    im = Image.new("RGBA", (w, h), bg)
+    g = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(g)
+    f = ImageFont.truetype(str(FONT_DIR / "Montserrat.ttf"), int(h * (0.42 if sub else 0.56)))
+    try:
+        f.set_variation_by_name("Black")
+    except Exception:
+        pass
+    if f.getlength(text) > w * 0.9:
+        f = ImageFont.truetype(str(FONT_DIR / "Montserrat.ttf"), int(h * 0.5 * w * 0.9 / f.getlength(text)))
+        f.set_variation_by_name("Black")
+    y = h * (0.4 if sub else 0.5)
+    d.text((w / 2, y), text, font=f, fill=col + (255,), anchor="mm")
+    if sub:
+        f2 = ImageFont.truetype(str(FONT_DIR / "Montserrat.ttf"), int(h * 0.2))
+        f2.set_variation_by_name("Bold")
+        d.text((w / 2, h * 0.8), sub, font=f2, fill=(255, 255, 255, 235), anchor="mm")
+    halo = g.filter(ImageFilter.GaussianBlur(h * 0.06))
+    im.alpha_composite(halo)
+    im.alpha_composite(halo)
+    im.alpha_composite(g)
+    d2 = ImageDraw.Draw(im)
+    d2.rectangle([4, 4, w - 5, h - 5], outline=col + (255,), width=6)
+    return im
+
+
+@lru_cache(maxsize=8)
+def led_chart_tex(w=1000, h=620, label="NVDA", change="+30 %"):
+    im = Image.new("RGBA", (w, h), (14, 16, 30, 255))
+    d = ImageDraw.Draw(im)
+    for gy in range(5):
+        d.line([(40, 150 + gy * 100), (w - 40, 150 + gy * 100)], fill=(40, 46, 72), width=2)
+    rng = np.random.default_rng(3)
+    v = list(np.cumsum(rng.normal(-0.35, 1.0, 34)))
+    v += [v[-1] + 9.5, v[-1] + 10.6, v[-1] + 10.2, v[-1] + 11.3]
+    v = np.array(v)
+    v = (v - v.min()) / np.ptp(v)
+    pts = [(40 + i * (w - 80) / (len(v) - 1), h - 50 - v[i] * (h - 230)) for i in range(len(v))]
+    red, grn = pts[:35], pts[34:]
+    d.line(red, fill=(255, 80, 110), width=7, joint="curve")
+    d.line(grn, fill=(60, 255, 150), width=9, joint="curve")
+    f = ImageFont.truetype(str(FONT_DIR / "Montserrat.ttf"), 78)
+    f.set_variation_by_name("Black")
+    d.text((44, 30), label, font=f, fill=(240, 240, 255))
+    d.text((w - 44, 30), change, font=f, fill=(60, 255, 150), anchor="ra")
+    return im
+
+
+def palm(s, x, z, h=9.0, lean=(0.6, 0.2), seed=0):
+    rng = np.random.default_rng(seed)
+    segs = 7
+    px, pz = x, z
+    for i in range(segs):
+        k = (i + 1) / segs
+        nx, nz = x + lean[0] * k * k * h * 0.25, z + lean[1] * k * k * h * 0.25
+        r = 0.26 - 0.08 * k
+        s._box(min(px, nx) - r, max(px, nx) + r, h * i / segs, h * (i + 1) / segs, min(pz, nz) - r, max(pz, nz) + r,
+               col=(176, 140, 108))
+        px, pz = nx, nz
+    top = np.array([px, h, pz])
+    for j in range(9):
+        a = 2 * math.pi * j / 9 + rng.uniform(-0.2, 0.2)
+        L = rng.uniform(3.0, 4.2)
+        dx, dz = math.cos(a), math.sin(a)
+        tip = top + np.array([dx * L, -1.6 - rng.uniform(0, 0.8), dz * L])
+        mid = top + np.array([dx * L * 0.55, 0.45, dz * L * 0.55])
+        side = np.array([-dz, 0, dx]) * 0.55
+        col = (58, 168, 108) if j % 2 else (82, 190, 120)
+        s.faces.append(dict(p=np.array([top, mid + side, tip, mid - side]), col=col, double=True, poly=False))
+    s.ground_shadow(px - 2.5, px + 2.5, pz - 2.5, pz + 2.5, 3)
+
+
+def deco_building(s, x0, x1, z0, z1, h, col, neon, sign=None, sign_col=None, seed=0):
+    """Art-deco block: pastel body, white floor bands, a stepped top, neon strip along the roof and a sign."""
+    s.box(x0, x1, 0, h, z0, z1, col=col, bands=3.0, band_col=tuple(min(255, c + 30) for c in col))
+    face_x = x0 if x0 > 0 else x1                  # facade facing the road (x = 0)
+    inward = -1 if x0 > 0 else 1
+    rows = int(h // 3.0)
+    for r in range(rows - 1):
+        for zz in np.arange(z0 + 1.2, z1 - 1.0, 2.4):
+            y = 1.2 + r * 3.0
+            s.quad([[face_x + inward * 0.04, y, zz], [face_x + inward * 0.04, y, zz + 1.4],
+                    [face_x + inward * 0.04, y + 1.6, zz + 1.4], [face_x + inward * 0.04, y + 1.6, zz]],
+                   (120, 196, 230) if (r + int(zz)) % 3 else (150, 220, 240), bias=-0.4)
+    # stepped crown + neon edge
+    m = (x1 - x0) * 0.2
+    s._box(x0 + m, x1 - m, h, h + 2.2, z0 + m, z1 - m, col=(252, 248, 244))
+    s.faces.append(dict(p=np.array([[face_x + inward * 0.06, h - 0.35, z0], [face_x + inward * 0.06, h - 0.35, z1],
+                                    [face_x + inward * 0.06, h - 0.05, z1], [face_x + inward * 0.06, h - 0.05, z0]]),
+                        col=neon, emit=True, double=True, bias=-0.5))
+    s.faces.append(dict(p=np.array([[face_x + inward * 0.06, 0.05, z0 + 0.1], [face_x + inward * 0.06, 0.05, z0 + 0.4],
+                                    [face_x + inward * 0.06, h, z0 + 0.4], [face_x + inward * 0.06, h, z0 + 0.1]]),
+                        col=neon, emit=True, double=True, bias=-0.5))
+    if sign:
+        sw = min(z1 - z0 - 2, 9)
+        zc = (z0 + z1) / 2
+        y0 = h * 0.55
+        s.quad([[face_x + inward * 0.1, y0 + 2.6, zc - sw / 2], [face_x + inward * 0.1, y0 + 2.6, zc + sw / 2],
+                [face_x + inward * 0.1, y0, zc + sw / 2], [face_x + inward * 0.1, y0, zc - sw / 2]][::(-1 if x0 > 0 else 1)]
+               if False else
+               [[face_x + inward * 0.1, y0 + 2.6, zc - sw / 2 * inward], [face_x + inward * 0.1, y0 + 2.6, zc + sw / 2 * inward],
+                [face_x + inward * 0.1, y0, zc + sw / 2 * inward], [face_x + inward * 0.1, y0, zc - sw / 2 * inward]],
+               tex=neon_sign_tex(sign, sign_col or neon), bias=-1.0)
+
+
+def vicecity_set():
+    """Sunset 'Vice City' boulevard: ocean and beach on the left, pastel art-deco hotels with neon on the
+    right, palms, a stock-exchange tower with a giant LED chart, skyline in the haze."""
+    s = Scene(bg=(255, 196, 170), floor=(236, 214, 200), fog=420,
+              sky=[(92, 70, 160), (196, 104, 178), (255, 150, 140), (255, 206, 150)],
+              light_col=(255, 232, 205), shade_col=(196, 176, 232))
+    s.plane(-400, 400, -100, 700)
+    s.flat(-400, -26, -100, 700, (64, 168, 204), bias=4100.0)          # ocean
+    s.flat(-26, -9, -100, 700, (246, 222, 184), bias=4000.0)           # beach
+    s.flat(-9, -6, -100, 700, (230, 214, 206), bias=3950.0)            # promenade
+    s.flat(-6, 6, -100, 700, (78, 80, 104), bias=3900.0)               # Ocean Drive
+    for z in range(-90, 690, 10):
+        s.flat(-0.12, 0.12, z, z + 4.5, (250, 236, 190), bias=3800.0)
+    s.flat(6, 10, -100, 700, (238, 220, 214), bias=3950.0)             # sidewalk
+    # waves glints
+    for i in range(70):
+        x = -40 - (i * 37 % 300)
+        z = (i * 53) % 640 - 60
+        s.flat(x, x + 6, z, z + 0.25, (150, 220, 240), bias=4050.0)
+    # sun low over the sea
+    s.quad([[-420, 8, 420], [-420, 8, 520], [-420, 108, 520], [-420, 108, 420]], tex=sun_tex(), bias=900.0)
+    # hotels along the boulevard
+    names = [("NVIDIA", NEON[1]), ("VICE STOCK EXCHANGE", NEON[0]), (None, None), ("BULL MARKET", NEON[2]),
+             (None, None), ("HUANG IS BACK", NEON[0]), (None, None), ("+30 %", NEON[1])]
+    z = 4.0
+    rng = np.random.default_rng(11)
+    for i in range(16):
+        w = rng.uniform(16, 24)
+        h = rng.uniform(14, 26)
+        sign, sc = names[i % len(names)]
+        deco_building(s, 11, 11 + rng.uniform(14, 20), z, z + w - 2.5, h, PASTEL[i % len(PASTEL)], NEON[i % 4],
+                      sign=sign, sign_col=sc, seed=i)
+        z += w
+    # stock exchange tower with LED wall, standing at the end of the first block
+    s.box(13, 33, 0, 60, 70, 92, col=(64, 60, 104), bands=4.0, mull=2.5, band_col=(90, 84, 140))
+    s.quad([[12.9, 54, 90], [12.9, 54, 72], [12.9, 30, 72], [12.9, 30, 90]], tex=led_chart_tex(), bias=-2.0)
+    # palms
+    for k, z in enumerate(range(-20, 360, 13)):
+        palm(s, -7.6, z, h=rng.uniform(8, 11), lean=(-0.8, 0.2), seed=k)
+        if k % 2 == 0 and not (0 < z + 6 < 34):          # keep the first block's sidewalk free
+            palm(s, 8.4, z + 6, h=rng.uniform(7.5, 9.5), lean=(0.4, -0.2), seed=100 + k)
+    for k, z in enumerate(range(0, 300, 34)):
+        palm(s, -18 + (k % 3) * 2.5, z + 11, h=rng.uniform(8, 12), lean=(-0.6, 0.4), seed=300 + k)
+    # distant skyline
+    for i in range(26):
+        x = 50 + (i % 6) * 18 + rng.uniform(-4, 4)
+        z = 170 + i * 15 + rng.uniform(-6, 6)
+        h = rng.uniform(40, 110)
+        s.box(x - 7, x + 7, 0, h, z - 7, z + 7, col=(150, 122, 190), bands=3.2, mull=2.6, band_col=(176, 150, 210))
+    # sports car on the boulevard
+    s.box(2.2, 4.2, 0.25, 0.95, 24, 28.4, col=(255, 70, 150))
+    s._box(2.45, 3.95, 0.95, 1.4, 25.3, 27.4, col=(40, 30, 70))
+    for zz in (24.8, 27.6):
+        for xx in (2.1, 4.3):
+            s._box(xx - 0.12, xx + 0.12, 0, 0.55, zz - 0.3, zz + 0.3, col=(30, 30, 40))
+    return s
+
+
+SETS = {"vicecity": vicecity_set, "reichstag": reichstag_set, "ministry": ministry_set, "trading": trading_set, "hq": hq_set, "avenue": avenue_set, "boardroom": boardroom_set, "office": office_set, "studio": studio_set}
 
 
 @lru_cache(maxsize=16)

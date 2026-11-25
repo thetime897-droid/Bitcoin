@@ -116,3 +116,19 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Glas-Karten mit Farbschimmer drehen sich in 3D rein (`title`, `person`, `news`, `chart`, `kpi`, `quote`, `shrink`,
   `stamp`, `icon`). Kopfzeile „PANDA_INVESTIERT · BÖRSENNEWS datum“, Untertitel Wort für Wort gelb.
 - Beispiel: `examples/nvidia_huang_studio_spec.py` → JSON, `python -m toonfin.studio spec.json out.mp4`.
+
+## Vice-City-Stil (GTA-6-artige 3D-Stadt) – Nutzerwunsch
+- Set `vicecity` in `toonfin/scene3d.py`: Sonnenuntergangs-Himmel (Verlauf am Horizont), Meer + Strand + Promenade,
+  Ocean Drive, Art-déco-Hotels in Pastell mit leuchtenden Neonkanten/Neonschildern (Glow-Pass), Palmen,
+  Börsenturm mit LED-Chartwand (x=12.9, y 30–54, z 72–90), Skyline im Dunst, Sportwagen. Warmes Licht/kühle Schatten.
+- Eine durchgehende Kamerafahrt `campath` (Keyframes t/pos/target/fov, Hermite mit begrenzten Tangenten – kein
+  Durchfliegen von Wänden), leichtes Handkamera-Wackeln `shake`, Bewegungsunschärfe aus der Kamerageschwindigkeit;
+  Innenräume per Zoom-Schnitt (`trans: zoom`). Flüge immer erst nach dem Halte-Keyframe starten.
+- Panda steht **in der Welt** (`panda.world = [x, z, höhe_m]`, ~2,4 m, Kamera ~6–8 m entfernt), mit Bodenschatten;
+  natürliche Bewegung über `body_motion` (Gewichtsverlagerung, Atmen, Nicken beim Sprechen, Füße bleiben stehen).
+  Kleidung/Posen unverändert aus `toonfin/panda/`.
+- Callout-Karten mit `anchor: [x, y, z]` ziehen eine Linie zu einem Punkt in der 3D-Welt (Aufschlüsselung wie Referenz).
+- Whooshs: eigene synthetische Luft-Whooshs `air`, `air_long`, `air_short` (frei, kommerziell nutzbar), an
+  Kamera-Keyframes per `whoosh` + `whoosh_at`; Karten kommen mit `air_short` + leisem Pop. Mixkit/Pixabay sind im
+  Netzwerk gesperrt (Freigabe vom Nutzer abgelehnt) → eigene Sounds in `toonfin/sfx/custom/` legen, wenn gewünscht.
+- Beispiel: `examples/nvidia_comeback_vicecity_spec.py`.

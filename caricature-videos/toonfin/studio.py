@@ -100,6 +100,27 @@ def panda_sprite(pose, h, kq, flip=False):
     return im
 
 
+def body_motion(sp, t, talk, seed=0.0, amp=1.0, lean=0.0):
+    """Organic idle motion on a still pose: the upper body sways and leans like a weight shift, the chest
+    breathes, the head nods a little more while speaking. Feet stay planted (warp fades to 0 at the bottom)."""
+    import cv2
+    h, w = sp.height, sp.width
+    a = np.asarray(sp)
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    up = np.clip(1 - yy / h, 0, 1)                    # 1 at the head, 0 at the feet
+    sway = (math.sin(t * 2 * math.pi / 3.1 + seed) * 0.012 + math.sin(t * 2 * math.pi / 1.7 + seed * 2) * 0.004)
+    sway = sway * amp + lean
+    nod = talk * 0.010 * math.sin(t * 2 * math.pi / 0.62 + seed)
+    breath = 0.008 * math.sin(t * 2 * math.pi / 3.4 + seed)
+    head = np.clip((up - 0.62) / 0.38, 0, 1)          # head region
+    dx = -(sway * h) * up ** 1.6
+    dy = -(breath * h) * up + -(nod * h) * head
+    mx = (xx + dx).astype(np.float32)
+    my = (yy + dy).astype(np.float32)
+    out = cv2.remap(a, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=(0, 0, 0, 0))
+    return Image.fromarray(out, "RGBA")
+
+
 @lru_cache(maxsize=8)
 def shadow_sprite(w):
     im = Image.new("RGBA", (int(w * 1.6), int(w * 0.5)), (0, 0, 0, 0))
@@ -476,6 +497,49 @@ def _cam(spec, k):
     return scene3d.Camera(pos, tgt, fov)
 
 
+def _cr(p0, p1, p2, p3, t):
+    """Hermite segment p1->p2 with Catmull-Rom tangents clamped to the neighbouring segment lengths, so a
+    long flight into a short hold never overshoots (no flying through walls)."""
+    d = np.linalg.norm(p2 - p1)
+
+    def tan(a, b, near):
+        m = (b - a) / 2
+        n = np.linalg.norm(m)
+        lim = 1.2 * min(d, near) if near > 0 else 0.0
+        return m * (lim / n) if n > lim and n > 0 else m
+    m1 = tan(p0, p2, np.linalg.norm(p1 - p0))
+    m2 = tan(p1, p3, np.linalg.norm(p3 - p2))
+    t2, t3 = t * t, t * t * t
+    return ((2 * t3 - 3 * t2 + 1) * p1 + (t3 - 2 * t2 + t) * m1 + (-2 * t3 + 3 * t2) * p2 + (t3 - t2) * m2)
+
+
+def path_cam(keys, t, shake=0.0):
+    """Smooth camera through keyframes [{t, pos, target, fov, ease}] (Catmull-Rom, eased per segment)."""
+    ts = [k["t"] for k in keys]
+    if t <= ts[0]:
+        i, u = 0, 0.0
+    elif t >= ts[-1]:
+        i, u = len(keys) - 2, 1.0
+    else:
+        i = max(j for j in range(len(ts) - 1) if ts[j] <= t)
+        u = (t - ts[i]) / (ts[i + 1] - ts[i])
+    e = keys[i + 1].get("ease", "inout")
+    u = ease_in_out(u) if e == "inout" else (ease_out(u) if e == "out" else u)
+
+    def get(name):
+        P = [np.array(k[name], float) for k in keys]
+        a, b = P[max(0, i - 1)], P[i]
+        c, d = P[i + 1], P[min(len(P) - 1, i + 2)]
+        return _cr(a, b, c, d, u)
+    pos, tgt = get("pos"), get("target")
+    fov = lerp(keys[i].get("fov", 50), keys[i + 1].get("fov", 50), u)
+    if shake:
+        pos = pos + shake * np.array([math.sin(t * 1.3) * 0.6 + math.sin(t * 3.1) * 0.25,
+                                      math.sin(t * 1.7 + 1) * 0.35, 0])
+        tgt = tgt + shake * np.array([math.sin(t * 0.9 + 2) * 0.5, math.sin(t * 1.1) * 0.3, 0])
+    return scene3d.Camera(pos, tgt, fov)
+
+
 class Studio:
     def __init__(self, spec):
         self.spec = spec
@@ -492,60 +556,118 @@ class Studio:
                 return i
         return len(self.shots) - 1
 
-    def panda_layer(self, img, s, lt, gi):
+    def panda_layer(self, img, s, lt, gi, cam=None):
         p = s.get("panda")
         if not p:
             return None
-        fx, fy, fh = FRAMES[p.get("frame", "medium")]
-        fx, fy, fh = p.get("x", fx), p.get("y", fy), p.get("h", fh)
-        dur = s["end"] - s["start"]
-        # slow push-in on the panda during the shot
-        z = 1 + p.get("push", 0.05) * ease_in_out(clamp(lt / max(dur, 0.01)))
         pose = p["pose"]
         since = lt
         for at, ps in p.get("swap", []):
             if lt >= at:
                 pose, since = ps, lt - at
-        enter = p.get("enter", "pop")
-        k_in = 1.0
-        dx = 0.0
-        if enter == "pop":
-            k_in = lerp(0.82, 1.0, ease_out_back(seg(lt, 0, 0.32), 1.8))
-        elif enter == "slide":
-            dx = -700 * (1 - smooth(seg(lt, 0, 0.5)))
-        squash = 0.06 * math.sin(math.pi * min(1, since / 0.2)) if since < 0.2 and since != lt else 0.0
-        bob = math.sin(lt * 2 * math.pi / 2.6) * 6
-        h = fh * z * k_in
+        t_abs = gi / FPS
         kq = int(self.mouth[min(gi, self.n - 1)]) if p.get("talk", True) and pose in TALK else 0
+        talk = kq / 4
+        if p.get("world") and cam is not None:
+            # standing in the 3D world: feet on the ground at (x, z), real size and perspective
+            x, z, hm = p["world"]
+            if p.get("walk_to"):
+                wx, wz, a0, a1 = p["walk_to"]
+                k = ease_in_out(seg(lt, a0, a1))
+                x, z = lerp(x, wx, k), lerp(z, wz, k)
+                walking = 0 < k < 1
+            else:
+                walking = False
+            f = scene3d.project(cam, W, H, (x, 0, z))
+            hd = scene3d.project(cam, W, H, (x, hm, z))
+            if not f or not hd:
+                return None
+            fx, feet = f[0], f[1]
+            hq = int(round((feet - hd[1]) / 4)) * 4
+            if hq < 40:
+                return None
+            step = abs(math.sin(lt * math.pi * 2.2)) * hq * 0.025 if walking else 0.0
+            sp = panda_sprite(pose, hq, kq, p.get("flip", False))
+            lean = 0.018 if walking else 0.0
+            sp = body_motion(sp, t_abs, talk, p.get("seed", 0.0), 1.0, lean)
+            sh = shadow_sprite(max(8, int(sp.width * 0.8)))
+            comp(img, sh, fx - sh.width / 2 + sp.width * 0.12, feet - sh.height * 0.6)
+            comp(img, sp, fx - sp.width / 2, feet - hq - step)
+            return feet - hq
+        fx, fy, fh = FRAMES[p.get("frame", "medium")]
+        fx, fy, fh = p.get("x", fx), p.get("y", fy), p.get("h", fh)
+        dur = s["end"] - s["start"]
+        z = 1 + p.get("push", 0.05) * ease_in_out(clamp(lt / max(dur, 0.01)))
+        enter = p.get("enter", "pop")
+        k_in, dx = 1.0, 0.0
+        if enter == "pop":
+            k_in = lerp(0.86, 1.0, ease_out_back(seg(lt, 0, 0.36), 1.5))
+        elif enter == "slide":
+            dx = -700 * (1 - smooth(seg(lt, 0, 0.55)))
+        squash = 0.05 * math.sin(math.pi * min(1, since / 0.22)) if since < 0.22 and since != lt else 0.0
+        h = fh * z * k_in
         hq = int(round(h * (1 - squash) / 6)) * 6
         sp = panda_sprite(pose, hq, kq, p.get("flip", False))
+        sp = body_motion(sp, t_abs, talk, p.get("seed", 0.0), 1.0, 0.0)
         feet = fy + (fy - H * 0.5) * (z - 1) * 0.2
         if p.get("frame", "medium").startswith("wide"):
-            # contact shadow, falling slightly to the right/back like the buildings' shadows
             sh = shadow_sprite(int(sp.width * 0.8))
             comp(img, sh, fx + dx - sh.width / 2 + sp.width * 0.1, feet - sh.height * 0.62)
-        comp(img, sp, fx + dx - sp.width / 2, feet - hq + bob)
-        return feet - hq + bob
+        comp(img, sp, fx + dx - sp.width / 2, feet - hq)
+        return feet - hq
+
+    def cam_at(self, s, t):
+        if self.spec.get("campath") and not s.get("cam"):
+            return path_cam(self.spec["campath"], t, self.spec.get("shake", 0.0))
+        lt, dur = t - s["start"], s["end"] - s["start"]
+        return _cam(s["cam"], clamp(lt / dur)) if s.get("cam") else scene3d.Camera((0, 1.6, -6), (0, 1.2, 10), 45)
 
     def draw_shot(self, i, t, gi):
         s = self.shots[i]
         lt = t - s["start"]
-        dur = s["end"] - s["start"]
-        cam = _cam(s["cam"], clamp(lt / dur)) if s.get("cam") else scene3d.Camera((0, 1.6, -6), (0, 1.2, 10), 45)
-        bg = scene3d.get_set(s.get("set", "studio"), *s.get("set_args", [])).render(cam, W, H, ss=1.25, blur=s.get("blur", 0.0))
+        cam = self.cam_at(s, t)
+        blur = s.get("blur", 0.0)
+        if self.spec.get("campath") and not s.get("cam"):
+            # motion blur from camera speed (fast flights smear, slow moves stay crisp)
+            c2 = path_cam(self.spec["campath"], t + 1 / FPS)
+            speed = float(np.linalg.norm(c2.pos - cam.pos) + 3 * np.linalg.norm(c2.target - cam.target) / 10)
+            blur = max(blur, min(6.0, speed * 1.4))
+        st = scene3d.get_set(s.get("set", "studio"), *s.get("set_args", []))
+        bg = st.render(cam, W, H, ss=1.25, blur=blur)
         img = bg.convert("RGBA")
-        top = self.panda_layer(img, s, lt, gi)
+        top = self.panda_layer(img, s, lt, gi, cam)
         for c in s.get("cards", []):
-            if lt < c.get("at", 0):
+            if lt < c.get("at", 0) or (c.get("until") is not None and lt > c["until"] + 0.3):
                 continue
             ct = lt - c.get("at", 0)
             sp = render_card(c, ct)
             k = ease_out_back(seg(ct, 0, 0.42), 1.5)
             ang = (1 - smooth(seg(ct, 0, 0.5))) * c.get("spin", 70)
             sc = lerp(0.6, 1.0, k) * (1 + 0.012 * math.sin(ct * 2.2))
+            if c.get("until") is not None and lt > c["until"]:
+                q = seg(lt, c["until"], c["until"] + 0.3)
+                sc *= 1 - 0.4 * q
+                ang = -80 * q * q
             fl = math.sin(ct * 1.8 + c.get("y", 500) * 0.01) * 6
+            cx, cy = c.get("x", 540), c.get("y", 520) + fl
+            if c.get("anchor"):
+                # call-out: a line from the card down to a point in the 3D world, with a pulsing dot
+                pt = scene3d.project(cam, W, H, c["anchor"])
+                if pt:
+                    kl = smooth(seg(ct, 0.15, 0.55))
+                    lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+                    d = ImageDraw.Draw(lay)
+                    sx, sy = cx, cy + c.get("h", 220) / 2 * sc - 10
+                    ex, ey = sx + (pt[0] - sx) * kl, sy + (pt[1] - sy) * kl
+                    col = tuple(c.get("line_col", (255, 255, 255)))
+                    d.line([(sx, sy), (ex, ey)], fill=col + (230,), width=4)
+                    if kl > 0.98:
+                        r = 11 + 3 * math.sin(ct * 6)
+                        d.ellipse([pt[0] - r - 9, pt[1] - r - 9, pt[0] + r + 9, pt[1] + r + 9], outline=col + (120,), width=3)
+                        d.ellipse([pt[0] - r * 0.6, pt[1] - r * 0.6, pt[0] + r * 0.6, pt[1] + r * 0.6], fill=col + (255,))
+                    img.alpha_composite(lay)
             sp2, ox, oy = rot_y(sp, ang, sc)
-            comp(img, sp2, c.get("x", 540) - sp2.width / 2, c.get("y", 520) - sp2.height / 2 + fl)
+            comp(img, sp2, cx - sp2.width / 2, cy - sp2.height / 2)
         return img, top
 
     def caption(self, img, t, top):
@@ -622,8 +744,38 @@ class Studio:
 
 # -- sound ------------------------------------------------------------------------------------
 
+@lru_cache(maxsize=None)
+def air_whoosh(dur=1.1, f0=380.0, f1=1700.0, peak=0.55, seed=0, bright=1.0):
+    """Synthesised soft air whoosh (own sound, free to use commercially): noise shaped by a band that
+    glides like a passing object (doppler-ish sweep up then down), smooth swell and tail, gentle stereo-less body."""
+    from scipy.signal import stft, istft
+    sr = audio.SR
+    n = int(dur * sr)
+    rng = np.random.default_rng(seed)
+    x = rng.normal(0, 1, n)
+    f, tt, Z = stft(x, sr, nperseg=1024)
+    u = tt / dur
+    centre = np.where(u < peak, f0 + (f1 - f0) * (u / peak) ** 1.4, f1 - (f1 - f0) * 0.75 * ((u - peak) / (1 - peak)))
+    width = 0.55 + 0.35 * np.sin(np.pi * np.clip(u, 0, 1))
+    lf = np.log2(np.maximum(f[:, None], 20) / centre[None, :])
+    mask = np.exp(-(lf / width[None, :]) ** 2) + 0.12 * bright * np.exp(-(lf - 1.6) ** 2 / 0.5)
+    Z = Z * mask
+    _, y = istft(Z, sr, nperseg=1024)
+    y = y[:n]
+    tq = np.arange(len(y)) / sr / dur
+    env = np.where(tq < peak, (tq / peak) ** 2.2, np.exp(-((tq - peak) / (1 - peak)) * 3.2))
+    y = y * env
+    return y / (np.max(np.abs(y)) + 1e-9)
+
+
 def _variant(name):
     from .pandanews import sample, _resample, _lowpass
+    if name == "air":
+        return air_whoosh(1.2, 300, 1500, 0.55, 1)
+    if name == "air_long":
+        return air_whoosh(1.9, 220, 1300, 0.6, 2, 0.7)
+    if name == "air_short":
+        return air_whoosh(0.55, 600, 2600, 0.45, 3, 1.2)
     if name == "whoosh_lo":
         return _lowpass(_resample(sample("whoosh"), 0.72), 5000)
     if name == "swish":
@@ -638,9 +790,12 @@ def _variant(name):
 def cues(spec):
     out = [(0.0, "riser", 0.5)]
     alt = ["whoosh", "swish", "whoosh_lo"]
+    for k in spec.get("campath", []):
+        if k.get("whoosh"):
+            out.append((k["t"] + k.get("whoosh_at", 0.0), k["whoosh"], k.get("gain", 0.75)))
     for i, s in enumerate(spec["shots"]):
         st = s["start"]
-        if i:
+        if i and s.get("trans", "zoom") != "cut":
             out.append((st - 0.12, alt[i % 3], 0.85))
         if s.get("cam") and s["cam"].get("whoosh"):
             out.append((st + 0.05, "whoosh_lo", 0.6))
@@ -653,7 +808,10 @@ def cues(spec):
             a = st + c.get("at", 0)
             if c.get("at", 0) < 0:
                 continue
-            out.append((a + 0.02, "pop", 0.55))
+            out.append((a - 0.04, "air_short", 0.4))
+            out.append((a + 0.05, "pop", 0.45))
+            if c.get("until") is not None:
+                out.append((st + c["until"] - 0.02, "air_short", 0.3))
             if c["type"] == "coins":
                 out += [(st + c.get("at", 0) + x[2], "pop", 0.5) for x in c["coins"]]
             if c["type"] == "strike" and c.get("strike_at") is not None:
@@ -686,7 +844,7 @@ def mix_sfx(spec, out_wav):
     out[:min(n, len(v))] += v[:n]
     vr = _active_rms(v)
     last = {}
-    gaps = {"pop": 0.18, "cash": 1.0}
+    gaps = {"pop": 0.18, "cash": 1.0, "air_short": 0.2}
     for t, name, gain in cues(spec):
         if t - last.get(name, -9) < gaps.get(name, 0.25):
             continue
