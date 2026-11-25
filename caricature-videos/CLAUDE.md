@@ -207,3 +207,17 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
   Bandpass, Luft-Layer, 4 Varianten, nie zweimal derselbe), Impact mit Punch, gemeinsamer kurzer Raumhall `fx_room`.
   Cues auch per `at_word`.
 - QA: `python -m toonfin.cine cfg.json out.mp4 --sheet 16` → Kontaktbogen `<out>_work/sheet.png` vor jedem Render prüfen.
+
+## Referenz-Stil „Geldwolf“ (aktuell, Nutzer: Zooms, Bilder, Grafiken, Farbstil wie die 2 Referenz-Shorts)
+- Config `examples/nvidia_20s_gw.json`, Grafiken `toonfin/gwstyle.py` (Schrift Inter Display, OFL, `fonts/`).
+- **Pro Beat:** schwarze Schlagzeile oben (`title2`, y≈215, Schlüsselwort in `*Sternchen*` farbig: grün/rot/lila/gold)
+  + **genau eine Karte** darunter (y≈470, ~540 px breit, runde Ecken, weicher Schatten, Pop-in):
+  `photo` (Bild + Label-Pille unten links + Badge oben rechts, Bilder aus eigener 3D-Welt `gpu`/`boardroom`/`chipwall`
+  oder `emoji:<name>:sky`), `widget` dunkel/hell (`line` zeichnet sich, grauer Verlauf + farbiger Sprung; `big`
+  Zahl; `bars`), `cal`, `profile` (Folgen-Pille → „Gefolgt“). Pillen/Badges per `at_word`.
+- **Zooms wie Referenz:** jeder Satzteil ein Beat mit hartem Schnitt im Wechsel Totale (Panda ganz, Kopf ≈990 px) /
+  Halbnah (Oberkörper groß, Kopf ≈820 px), minimale Push-Fahrt pro Beat. Gleiche Karte über den Schnitt: `at: -2`
+  (kein erneutes Ploppen), neue Badge.
+- Hintergrund: Studio weich gezeichnet + aufgehellt (`look.bg_soft: [6, 0.35]`). Untertitel: kleines dunkles Wort mit
+  weißer Kontur über dem Kopf (`cap_font: inter`, `cap_case: orig`). Unten Pille „Keine Anlageberatung“ (`look.disclaimer`).
+- Posen: `zeigen` (Zeigefinger) in Halbnah, `ueberrascht` bei „Aber“, `selbstbewusst`, sonst `mikrofon`.

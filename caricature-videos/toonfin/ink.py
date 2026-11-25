@@ -26,6 +26,9 @@ FONTS = {
     "mont": "Montserrat.ttf",
     "montb": "Montserrat.ttf",
     "bebas": "BebasNeue-Regular.ttf",
+    "inter": "InterDisplay-Bold.otf",          # OFL (fonts/Inter-LICENSE.txt)
+    "interx": "InterDisplay-ExtraBold.otf",
+    "inters": "InterDisplay-SemiBold.otf",
 }
 VARIATIONS = {"mont": "Black", "montb": "Bold"}
 

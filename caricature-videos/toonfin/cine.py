@@ -429,6 +429,11 @@ def build(cfg, work):
                 c["at"] = round(max(0.0, rel(c.pop("at_word")) - 0.1), 3)
             if "until_word" in c:
                 c["until"] = round(max(0.0, rel(c.pop("until_word")) - 0.35), 3)
+            for sub in ("pill", "badge"):                  # nested pop-ins on a spoken word (card-local time)
+                if isinstance(c.get(sub), dict) and "at_word" in c[sub]:
+                    d_ = dict(c[sub])
+                    d_["at"] = round(rel(d_.pop("at_word")) - 0.05 - c.get("at", 0.0), 3)
+                    c[sub] = d_
             cards.append(c)
         panda = dict(s["panda"]) if s.get("panda") else None
         if panda and "swap_word" in panda:
@@ -488,7 +493,9 @@ def build(cfg, work):
                 integrate=look.get("panda_light"), header_style="none", cap_style=look.get("cap_style", "lower"),
                 cap_y=look.get("cap_y", 1470), cap_size=look.get("cap_size", 54), cap_bg=look.get("cap_bg", False), min_head=look.get("min_head", 900),
                 cues=cues, sound=snd, mix="cine", shake=0.0, fps=cfg.get("fps", 60),
-                shot_cams=look.get("shot_cams", False))
+                shot_cams=look.get("shot_cams", False), bg_soft=look.get("bg_soft"),
+                **{k: look[k] for k in ("cap_fill", "cap_stroke", "cap_font", "cap_sw", "cap_case", "disclaimer",
+                                        "disclaimer_y") if k in look})
     return spec
 
 

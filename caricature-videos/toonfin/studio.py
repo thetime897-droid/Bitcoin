@@ -671,6 +671,9 @@ def soft_shadow(im, blur=18, op=70, dy=14):
 def draw_overlay(img, c, ct, x, y):
     """'Real' overlays drawn straight on the frame (no glass box): headline, emoji, logo, stockchart."""
     ty = c["type"]
+    if ty in gwstyle.TYPES:
+        gwstyle.draw(img, c, ct)
+        return
     ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
     k = ease_out_back(seg(ct, 0, 0.45), 1.6)
     fade = smooth(seg(ct, 0, 0.25))
@@ -1182,7 +1185,8 @@ def news_clip(lay, c, ct, x, y):
 NEWS = {"breaking", "ticker", "pricechart", "mcap", "vote", "dateblock"}
 
 CLIPS = {"bigstat", "marker", "emoji2", "chartclip"}
-OVERLAYS = {"headline", "emoji", "logo", "stockchart"} | CLIPS | NEWS
+from . import gwstyle  # noqa: E402
+OVERLAYS = {"headline", "emoji", "logo", "stockchart"} | CLIPS | NEWS | gwstyle.TYPES
 
 
 def rot_y(im, ang, k_scale=1.0):
@@ -1569,6 +1573,12 @@ class Studio:
                                                pr.get("yaw", -28.0), pr.get("glow", True))
             st = st.with_extra(extra)
         bg = st.render(cam, W, H, ss=1.25, blur=blur)
+        if self.spec.get("bg_soft"):
+            # reference look: the room stays as a soft, airy backdrop so the graphics read first
+            rad, wmix = self.spec["bg_soft"]
+            bg = bg.filter(ImageFilter.GaussianBlur(rad))
+            if wmix:
+                bg = Image.blend(bg.convert("RGB"), Image.new("RGB", bg.size, (246, 246, 248)), wmix)
         if s.get("wash"):
             bg = colour_wash(bg, s["wash"], t)
         img = bg.convert("RGBA")
@@ -1784,7 +1794,9 @@ class Studio:
         if not cur:
             return
         ink = Ink(img, affine(0, 0, 0, 1), 0, 1)
-        txt = cur["w"].upper().strip(",.:;!?–")
+        txt = cur["w"].strip(",.:;!?–")
+        if self.spec.get("cap_case", "upper") == "upper":
+            txt = txt.upper()
         if not txt:
             return
         k = 1 + 0.14 * math.exp(-(t - cur["s"]) * 14)
@@ -1792,7 +1804,9 @@ class Studio:
         if top is not None:                      # just above the panda's head, like the reference
             y = min(max(top - 34, 760), 1160)
         with ink.at(540, y, 0, k):
-            ink.text(0, 0, txt, self.spec.get("cap_size", 46), "caption", fill=(255, 214, 0), stroke=(20, 20, 24), sw=0.16)
+            ink.text(0, 0, txt, self.spec.get("cap_size", 46), self.spec.get("cap_font", "caption"),
+                     fill=tuple(self.spec.get("cap_fill", (255, 214, 0))),
+                     stroke=tuple(self.spec.get("cap_stroke", (20, 20, 24))), sw=self.spec.get("cap_sw", 0.16))
 
     def caption_phrase(self, img, t, top):
         """Small phrase subtitles in a soft dark pill; the spoken word lights up (karaoke), key words keep
@@ -1991,6 +2005,10 @@ class Studio:
         if self.spec.get("film"):
             img = film_look(img, gi, self.spec["film"])
         self.caption(img, t_audio, top)
+        if self.spec.get("disclaimer"):
+            img = img if img.mode == "RGBA" else img.convert("RGBA")
+            gwstyle.draw(img, dict(type="disclaimer", text=self.spec["disclaimer"], x=540,
+                                   y=self.spec.get("disclaimer_y", 1868)), 9.0)
         self.header(img)
         return img.convert("RGB")
 
