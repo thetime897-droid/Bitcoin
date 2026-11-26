@@ -429,6 +429,8 @@ def build(cfg, work):
                 c["at"] = round(max(0.0, rel(c.pop("at_word")) - 0.1), 3)
             if "until_word" in c:
                 c["until"] = round(max(0.0, rel(c.pop("until_word")) - 0.35), 3)
+            if "punch_words" in c:                         # card punch-in on spoken words (card-local time)
+                c["punch"] = [round(rel(w_) - 0.05 - c.get("at", 0.0), 3) for w_ in c.pop("punch_words")]
             for sub in ("pill", "badge"):                  # nested pop-ins on a spoken word (card-local time)
                 if isinstance(c.get(sub), dict) and "at_word" in c[sub]:
                     d_ = dict(c[sub])
@@ -454,6 +456,21 @@ def build(cfg, work):
             campath.append(kk)
         for sm in s.get("slowmo", []):
             slowmo.append([st + sm[0], st + sm[1], sm[2]])
+    if cfg.get("look", {}).get("carry_exit"):
+        # professional hand-over: the previous beat's graphics push out while the new ones come in
+        from .gwstyle import TYPES as GW
+        for k in range(1, len(shots)):
+            prev, cur = shots[k - 1], shots[k]
+            plen = prev["end"] - prev["start"]
+            ids = {c.get("id") for c in cur["cards"] if c.get("id")}
+            carry = [dict(c, at=round(c.get("at", 0.0) - plen, 3), until=0.0) for c in prev["cards"]
+                     if c["type"] in GW and c["type"] not in ("burst", "disclaimer") and not c.get("screen")
+                     and c.get("until") is None and not (c.get("id") and c["id"] in ids)]
+            if any(c["type"] == "title2" for c in carry):    # new headline waits until the old one has lifted out
+                for c in cur["cards"]:
+                    if c["type"] == "title2" and c.get("at", 0.0) < 0.24:
+                        c["at"] = 0.24
+            cur["cards"] = carry + cur["cards"]
     if cfg.get("loop"):
         # last frame = first frame: append a short tail that returns to the hook framing (match cut in)
         lp = cfg["loop"]

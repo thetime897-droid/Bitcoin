@@ -1527,6 +1527,7 @@ class Studio:
         if self.spec.get("cap_style") == "word":
             y0 -= 34 + self.spec.get("cap_size", 46) * 1.25
         self._pbox = (x0 - 12, y0, x1 + 12, y1)
+        self._pcx = (x0 + x1) / 2
 
     def cam_at(self, s, t):
         if self.spec.get("campath") and not s.get("cam"):
@@ -1611,6 +1612,7 @@ class Studio:
                         wp.putalpha(Image.fromarray(A.astype(np.uint8)))
                         img.alpha_composite(wp, (bx0, by0))
         self._pbox = None
+        self._pcx = 540
         top = self.panda_layer(img, s, lt, gi, cam)
         pbox = self._pbox
         # pass 2: screen-space graphics, each on its own layer so it can be kept off the panda
@@ -1801,9 +1803,12 @@ class Studio:
             return
         k = 1 + 0.14 * math.exp(-(t - cur["s"]) * 14)
         y = self.spec.get("cap_y", 1020)
+        cx = 540
         if top is not None:                      # just above the panda's head, like the reference
-            y = min(max(top - 34, 760), 1160)
-        with ink.at(540, y, 0, k):
+            y = min(max(top - 34, 760), 1300)
+            tw = ink.text_w(txt, self.spec.get("cap_size", 46), self.spec.get("cap_font", "caption")) * 1.15
+            cx = min(max(getattr(self, "_pcx", 540), tw / 2 + 36), W - tw / 2 - 36)
+        with ink.at(cx, y, 0, k):
             ink.text(0, 0, txt, self.spec.get("cap_size", 46), self.spec.get("cap_font", "caption"),
                      fill=tuple(self.spec.get("cap_fill", (255, 214, 0))),
                      stroke=tuple(self.spec.get("cap_stroke", (20, 20, 24))), sw=self.spec.get("cap_sw", 0.16))

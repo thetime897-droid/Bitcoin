@@ -1,0 +1,828 @@
+{
+ "_doc": "20 s, information first (user: focus on the information, less on the panda; professional transitions; livelier animations). One calm continuous camera drift, graphics push in/out (carry_exit), small panda bottom-left. Facts from the user's reference video (check before publishing). Card pictures are our own 3D renders/emoji.",
+ "set": "brightstudio",
+ "set_args": [],
+ "prompt": "Nvidia, Jensen Huang, Verwaltungsrat, Börsenwert, Milliarden, Dollar, Kongress, Dezember",
+ "voice": null,
+ "fps": 60,
+ "tail": 0.4,
+ "tts_length_scale": 0.8,
+ "look": {
+  "theme": "light",
+  "atmos": false,
+  "beams": false,
+  "film": null,
+  "shot_cams": false,
+  "bg_soft": [
+   12,
+   0.8
+  ],
+  "cap_style": "word",
+  "cap_size": 38,
+  "cap_font": "inter",
+  "cap_case": "orig",
+  "cap_fill": [
+   24,
+   24,
+   27
+  ],
+  "cap_stroke": [
+   255,
+   255,
+   255
+  ],
+  "cap_sw": 0.12,
+  "min_head": 1100,
+  "disclaimer": "Keine Anlageberatung",
+  "disclaimer_y": 1858,
+  "panda_light": {
+   "key_side": 1,
+   "ambient": [
+    236,
+    238,
+    244
+   ],
+   "ambient_mix": 0.0,
+   "rim": [
+    255,
+    255,
+    255
+   ],
+   "rim_strength": 0.0
+  },
+  "carry_exit": true
+ },
+ "sound": {
+  "bpm": 100,
+  "music_rel_db": -22,
+  "duck_db": -9,
+  "sfx_rel_db": -8,
+  "fx_room": 0.14,
+  "lufs": -14.0,
+  "true_peak": -1.8
+ },
+ "loop": {
+  "dur": 0.3,
+  "trans": "cut",
+  "props": []
+ },
+ "sections": [
+  {
+   "text": "Jensen Huang ist zurück –",
+   "cards": [
+    {
+     "type": "title2",
+     "text": "Nvidia-Chef *zurück*",
+     "color": "green",
+     "x": 540,
+     "y": 190,
+     "size": 72,
+     "at": 0.0
+    },
+    {
+     "type": "photo",
+     "id": "gpu",
+     "img": "gpu",
+     "label": "Nvidia",
+     "w": 880,
+     "h": 520,
+     "at": 0.06,
+     "x": 540,
+     "y": 640,
+     "badge": {
+      "text": "▲ 30,29 %",
+      "color": "green",
+      "at": 0.9
+     }
+    },
+    {
+     "type": "sticker",
+     "emoji": "rocket",
+     "px": 170,
+     "x": 930,
+     "y": 380,
+     "at": 0.5,
+     "from": [
+      220,
+      -200
+     ],
+     "spin": -160
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.0,
+     "cue": "whoosh_soft",
+     "gain": 0.7
+    },
+    {
+     "t": 0.06,
+     "cue": "card_swipe",
+     "gain": 0.8
+    },
+    {
+     "t": 0.5,
+     "cue": "card_pop",
+     "gain": 0.8
+    },
+    {
+     "t": 0.9,
+     "cue": "tick"
+    }
+   ],
+   "trans": "cut",
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     -1.2,
+     7.0,
+     2.3
+    ],
+    "gesture": "nod",
+    "gesture_at": 0.4,
+    "seed": 0.0
+   },
+   "music": "major",
+   "camera": [
+    {
+     "pos": [
+      -0.3,
+      3.4,
+      -4.6
+     ],
+     "target": [
+      -0.15,
+      3.6,
+      14
+     ],
+     "fov": 40,
+     "t": 0.0
+    }
+   ]
+  },
+  {
+   "text": "und die Nvidia-Aktie springt um dreißig Prozent!",
+   "cards": [
+    {
+     "type": "title2",
+     "text": "Kurs-*Rakete*",
+     "color": "green",
+     "x": 540,
+     "y": 190,
+     "size": 72,
+     "at": 0.0
+    },
+    {
+     "type": "widget",
+     "theme": "dark",
+     "kind": "line",
+     "logo": "nvidia",
+     "name": "Nvidia",
+     "meta": "Rekord-Tag",
+     "w": 900,
+     "h": 600,
+     "at": 0.06,
+     "x": 540,
+     "y": 640,
+     "points": [
+      150,
+      151,
+      149,
+      150,
+      148,
+      147,
+      148,
+      146,
+      147,
+      146,
+      145,
+      147,
+      190
+     ],
+     "grey_until": 11,
+     "color": "green",
+     "xlabels": [
+      "16. Nov.",
+      "23. Nov."
+     ],
+     "draw_at": 0.25,
+     "draw_end": 1.3,
+     "punch_words": [
+      "dreißig"
+     ],
+     "pill": {
+      "text": "▲ 30,29 %  an 1 Tag",
+      "color": "green",
+      "at_word": "dreißig"
+     }
+    },
+    {
+     "type": "burst",
+     "at_word": "dreißig",
+     "x": 540,
+     "y": 850,
+     "colors": [
+      "green",
+      "gold",
+      "mint"
+     ]
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.06,
+     "cue": "card_swipe",
+     "gain": 0.8
+    },
+    {
+     "t": 0.25,
+     "cue": "riser_up",
+     "gain": 0.35
+    },
+    {
+     "t": 0.0,
+     "cue": "counter_lock_ding",
+     "at_word": "dreißig",
+     "gain": 0.9
+    }
+   ],
+   "trans": "cut",
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     -1.2,
+     7.0,
+     2.3
+    ],
+    "gesture": "nod",
+    "gesture_at": 0.4,
+    "seed": 1.3
+   },
+   "music": "major",
+   "camera": []
+  },
+  {
+   "text": "Der Verwaltungsrat hat entschieden: einstimmig.",
+   "cards": [
+    {
+     "type": "title2",
+     "text": "Der *Verwaltungsrat*",
+     "color": "purple",
+     "x": 540,
+     "y": 190,
+     "size": 72,
+     "at": 0.0
+    },
+    {
+     "type": "photo",
+     "id": "board",
+     "img": "boardroom",
+     "label": "Verwaltungsrat",
+     "w": 880,
+     "h": 520,
+     "at": 0.06,
+     "x": 540,
+     "y": 640,
+     "punch_words": [
+      "einstimmig."
+     ],
+     "badge": {
+      "text": "✓ einstimmig",
+      "color": "green",
+      "at_word": "einstimmig."
+     }
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.06,
+     "cue": "card_swipe",
+     "gain": 0.8
+    },
+    {
+     "t": 0.0,
+     "cue": "success_chime",
+     "at_word": "einstimmig.",
+     "gain": 0.9
+    }
+   ],
+   "trans": "cut",
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     -1.2,
+     7.0,
+     2.3
+    ],
+    "gesture": "idle",
+    "gesture_at": 0.4,
+    "seed": 2.6
+   },
+   "music": "major",
+   "camera": []
+  },
+  {
+   "text": "Huang ist wieder Chef.",
+   "cards": [
+    {
+     "type": "title2",
+     "text": "Zurück an *Bord*",
+     "color": "green",
+     "x": 540,
+     "y": 190,
+     "size": 72,
+     "at": 0.0
+    },
+    {
+     "type": "photo",
+     "id": "board",
+     "img": "boardroom",
+     "label": "Verwaltungsrat",
+     "w": 880,
+     "h": 520,
+     "at": -2.0,
+     "x": 540,
+     "y": 640,
+     "badge": {
+      "text": "Chef + Verwaltungsrat",
+      "color": "green",
+      "at": 2.1
+     }
+    },
+    {
+     "type": "sticker",
+     "emoji": "chair",
+     "px": 160,
+     "x": 150,
+     "y": 390,
+     "at": 0.15,
+     "from": [
+      -220,
+      -160
+     ],
+     "spin": 160
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.1,
+     "cue": "tick"
+    },
+    {
+     "t": 0.15,
+     "cue": "card_pop",
+     "gain": 0.8
+    }
+   ],
+   "trans": "cut",
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     -1.2,
+     7.0,
+     2.3
+    ],
+    "gesture": "nod",
+    "gesture_at": 0.4,
+    "seed": 3.9000000000000004
+   },
+   "music": "major",
+   "camera": []
+  },
+  {
+   "text": "Der Börsenwert steigt um neunhundertzwanzig Milliarden Dollar.",
+   "cards": [
+    {
+     "type": "title2",
+     "text": "Wert *explodiert*",
+     "color": "green",
+     "x": 540,
+     "y": 190,
+     "size": 72,
+     "at": 0.0
+    },
+    {
+     "type": "widget",
+     "theme": "light",
+     "kind": "bars",
+     "logo": "nvidia",
+     "name": "Nvidia",
+     "meta": "Börsenwert",
+     "w": 900,
+     "h": 720,
+     "at": 0.06,
+     "x": 540,
+     "y": 660,
+     "bars": [
+      [
+       "Freitag",
+       "3,03 Bio. $",
+       3.03,
+       [
+        176,
+        176,
+        182
+       ]
+      ],
+      [
+       "heute",
+       "3,95 Bio. $",
+       3.95,
+       "green"
+      ]
+     ],
+     "bar_fmt": "{} Bio. $",
+     "punch_words": [
+      "neunhundertzwanzig"
+     ],
+     "pill": {
+      "text": "+ 920 Mrd. $",
+      "color": "green",
+      "at_word": "neunhundertzwanzig"
+     }
+    },
+    {
+     "type": "sticker",
+     "emoji": "money_bag",
+     "px": 170,
+     "x": 930,
+     "y": 1000,
+     "at_word": "neunhundertzwanzig",
+     "from": [
+      220,
+      160
+     ],
+     "spin": -150
+    },
+    {
+     "type": "burst",
+     "at_word": "neunhundertzwanzig",
+     "x": 540,
+     "y": 880,
+     "colors": [
+      "green",
+      "gold",
+      "yellow"
+     ]
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.06,
+     "cue": "card_swipe",
+     "gain": 0.8
+    },
+    {
+     "t": 0.0,
+     "cue": "reward",
+     "at_word": "neunhundertzwanzig"
+    },
+    {
+     "t": 0.35,
+     "cue": "counter_lock_ding",
+     "at_word": "neunhundertzwanzig",
+     "gain": 0.8
+    }
+   ],
+   "trans": "cut",
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     -1.2,
+     7.0,
+     2.3
+    ],
+    "gesture": "hop",
+    "gesture_at": 0.4,
+    "seed": 5.2
+   },
+   "music": "major",
+   "camera": [
+    {
+     "pos": [
+      0.3,
+      3.4,
+      -4.2
+     ],
+     "target": [
+      0.15,
+      3.6,
+      14
+     ],
+     "fov": 40,
+     "t": 0.0,
+     "ease": "inout"
+    }
+   ]
+  },
+  {
+   "text": "Aber: Die Untersuchung in den USA",
+   "cards": [
+    {
+     "type": "title2",
+     "text": "*Ermittlungen* in den USA",
+     "color": "red",
+     "x": 540,
+     "y": 190,
+     "size": 72,
+     "at": 0.0
+    },
+    {
+     "type": "photo",
+     "id": "usa",
+     "img": "emoji:classical_building:sky",
+     "label": "Washington",
+     "w": 880,
+     "h": 520,
+     "at": 0.06,
+     "x": 540,
+     "y": 640,
+     "badge": {
+      "text": "! Untersuchung",
+      "color": "red",
+      "at": 0.6
+     }
+    },
+    {
+     "type": "sticker",
+     "emoji": "warning",
+     "px": 160,
+     "x": 140,
+     "y": 380,
+     "at": 0.4,
+     "from": [
+      -220,
+      -200
+     ],
+     "spin": 150
+    }
+   ],
+   "cues": [
+    {
+     "t": -0.1,
+     "cue": "silence_gap",
+     "dur": 0.1
+    },
+    {
+     "t": 0.0,
+     "cue": "impact_hit",
+     "gain": 0.6
+    },
+    {
+     "t": 0.06,
+     "cue": "card_swipe",
+     "gain": 0.8
+    },
+    {
+     "t": 0.6,
+     "cue": "warning_ping",
+     "gain": 0.8
+    }
+   ],
+   "trans": "cut",
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     -1.2,
+     7.0,
+     2.3
+    ],
+    "gesture": "shake",
+    "gesture_at": 0.4,
+    "seed": 6.5
+   },
+   "music": "minor",
+   "camera": []
+  },
+  {
+   "text": "ist noch nicht vorbei.",
+   "cards": [
+    {
+     "type": "title2",
+     "text": "Noch nicht *vorbei*",
+     "color": "red",
+     "x": 540,
+     "y": 190,
+     "size": 72,
+     "at": 0.0
+    },
+    {
+     "type": "photo",
+     "id": "usa",
+     "img": "emoji:classical_building:sky",
+     "label": "Washington",
+     "w": 880,
+     "h": 520,
+     "at": -2.0,
+     "x": 540,
+     "y": 640,
+     "punch_words": [
+      "vorbei."
+     ],
+     "badge": {
+      "text": "läuft weiter",
+      "color": "red",
+      "at": 2.15
+     }
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.15,
+     "cue": "tick",
+     "gain": 0.9
+    }
+   ],
+   "trans": "cut",
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     -1.2,
+     7.0,
+     2.3
+    ],
+    "gesture": "shake",
+    "gesture_at": 0.4,
+    "seed": 7.800000000000001
+   },
+   "music": "minor",
+   "camera": []
+  },
+  {
+   "text": "Am ersten Dezember muss Huang vor dem Kongress aussagen.",
+   "cards": [
+    {
+     "type": "title2",
+     "text": "Termin: *1. Dezember*",
+     "color": "purple",
+     "x": 540,
+     "y": 190,
+     "size": 72,
+     "at": 0.0
+    },
+    {
+     "type": "cal",
+     "month": "DEZ.",
+     "day": "1",
+     "month_prev": "NOV.",
+     "day_prev": "30",
+     "w": 470,
+     "h": 470,
+     "at": 0.06,
+     "x": 540,
+     "y": 640,
+     "flip_at": 0.45,
+     "punch_words": [
+      "Dezember"
+     ]
+    },
+    {
+     "type": "sticker",
+     "emoji": "classical_building",
+     "px": 150,
+     "x": 860,
+     "y": 420,
+     "at": 1.2,
+     "from": [
+      200,
+      -150
+     ]
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.06,
+     "cue": "card_swipe",
+     "gain": 0.8
+    },
+    {
+     "t": 0.5,
+     "cue": "paper_rip",
+     "gain": 0.5
+    },
+    {
+     "t": 1.1,
+     "cue": "tick"
+    },
+    {
+     "t": 1.2,
+     "cue": "card_pop",
+     "gain": 0.7
+    }
+   ],
+   "trans": "cut",
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     -1.2,
+     7.0,
+     2.3
+    ],
+    "gesture": "nod",
+    "gesture_at": 0.4,
+    "seed": 9.1
+   },
+   "music": "minor",
+   "camera": []
+  },
+  {
+   "text": "Keine Anlageberatung. Folg mir für mehr Börsen-News!",
+   "cards": [
+    {
+     "type": "title2",
+     "text": "Bleib *dran*",
+     "color": "green",
+     "x": 540,
+     "y": 190,
+     "size": 72,
+     "at": 0.0
+    },
+    {
+     "type": "profile",
+     "name": "Panda_investiert",
+     "w": 860,
+     "at": 0.06,
+     "x": 540,
+     "y": 600,
+     "flip_at": 1.3,
+     "enter": "up"
+    },
+    {
+     "type": "sticker",
+     "emoji": "bell",
+     "px": 150,
+     "x": 900,
+     "y": 420,
+     "at": 0.5,
+     "from": [
+      200,
+      -150
+     ],
+     "spin": -90
+    },
+    {
+     "type": "burst",
+     "at": 1.3,
+     "x": 420,
+     "y": 650,
+     "colors": [
+      "pink",
+      "gold",
+      "blue"
+     ]
+    }
+   ],
+   "cues": [
+    {
+     "t": 0.06,
+     "cue": "card_swipe",
+     "gain": 0.8
+    },
+    {
+     "t": 0.5,
+     "cue": "card_pop",
+     "gain": 0.7
+    },
+    {
+     "t": 1.25,
+     "cue": "click"
+    },
+    {
+     "t": 1.3,
+     "cue": "confirm",
+     "gain": 0.9
+    }
+   ],
+   "trans": "cut",
+   "panda": {
+    "pose": "mikrofon",
+    "world": [
+     -1.2,
+     7.0,
+     2.3
+    ],
+    "gesture": "hop",
+    "gesture_at": 0.4,
+    "seed": 10.4
+   },
+   "music": "resolve",
+   "camera": [
+    {
+     "pos": [
+      -0.3,
+      3.4,
+      -4.6
+     ],
+     "target": [
+      -0.15,
+      3.6,
+      14
+     ],
+     "fov": 40,
+     "t": -0.02,
+     "ease": "inout"
+    }
+   ]
+  }
+ ]
+}

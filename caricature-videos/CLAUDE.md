@@ -221,3 +221,16 @@ Render: `python -m toonfin render <plan.json> --out out/<name>.mp4` (60 fps, 108
 - Hintergrund: Studio weich gezeichnet + aufgehellt (`look.bg_soft: [6, 0.35]`). Untertitel: kleines dunkles Wort mit
   weißer Kontur über dem Kopf (`cap_font: inter`, `cap_case: orig`). Unten Pille „Keine Anlageberatung“ (`look.disclaimer`).
 - Posen: `zeigen` (Zeigefinger) in Halbnah, `ueberrascht` bei „Aber“, `selbstbewusst`, sonst `mikrofon`.
+
+## Info-Fokus (aktuell, Nutzer: Fokus auf Infos statt Panda, professionellere Übergänge, lebendigere Animationen)
+- Config `examples/nvidia_20s_info.json`. **Karten groß** (≈880–900 px breit, Mitte y≈640), Schlagzeile y≈190 (72 px).
+  **Panda klein unten links** (`world [-1.2, 7.0, 2.3]`, Kopf ≈1240 px), keine Panda-Nahaufnahmen, eine Pose.
+- **Kamera:** eine durchgehende ruhige Drift über das ganze Video (`shot_cams: false`, Keys nur in Beat 1/5/9),
+  Hintergrund stark weich + hell (`bg_soft: [12, 0.8]`).
+- **Übergänge:** `look.carry_exit` – die Karten des vorigen Beats schieben sich nach links raus (Bewegungsunschärfe),
+  die neue Karte federt von rechts rein; Schlagzeile hebt sich Wort für Wort raus, die neue steigt Wort für Wort ein
+  (wartet 0,24 s). Gleiche Karte über mehrere Beats per `id` (bleibt stehen, nur Badge wechselt).
+- **Animationen (gwstyle):** Chart mit Leuchtspur + Flächenverlauf + pulsierenden Ringen, Balken mit Feder + mitzählenden
+  Werten, Ken-Burns im Bild, Kalender blättert um und wird rot eingekreist, Folgen-Knopf mit Tipp-Welle, `sticker`
+  (3D-Emoji fliegt mit Drehung an die Kartenecke, schwebt), `burst` (Konfetti + Funken), Markierung hinter dem
+  Schlüsselwort, `punch_words` (kurzer Punch-Zoom der Karte auf ein Wort). Sticker nie über Karten-Text.
