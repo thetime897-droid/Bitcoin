@@ -1,0 +1,317 @@
+{
+ "name": "ark-cathie-umbau",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trPartner",
+   "duration": 7.4,
+   "script": "0:00 · Cathie Wood wirft Nvidia raus – für über 100 Millionen Dollar. Und kauft stattdessen eine Aktie, die gerade unter ihren Ausgabepreis gerutscht ist.",
+   "params": {
+    "tag": "ARK INVEST · CATHIE WOOD",
+    "title": "Nvidia *raus* – Anthropic *rein*",
+    "accent": "#e5392f",
+    "left": {
+     "brand": "NVDA",
+     "word": "NVIDIA",
+     "wordColor": "#e5392f",
+     "spacing": "3px",
+     "wordSize": 52,
+     "sub": "−107 Mio. $ verkauft"
+    },
+    "right": {
+     "brand": "ANT",
+     "word": "ANTHROPIC",
+     "wordColor": "#0d7d4d",
+     "spacing": "2px",
+     "wordSize": 46,
+     "sub": "unter IPO-Preis gekauft"
+    },
+    "joiner": "→",
+    "at": [
+     0.4,
+     0.9
+    ],
+    "xAt": 1.5,
+    "line": "🤯 Mutig oder *verrückt*?",
+    "lineAt": 2.8,
+    "pills": [
+     "ARK Innovation ETF",
+     "diese Woche"
+    ],
+    "pillsAt": 3.8
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 7.4,
+   "script": "0:07 · Ihr Flaggschiff, der ARK Innovation ETF, steht bei rund 67 Dollar – nur knapp über dem Jahrestief. Und fast 60 Prozent unter dem Rekord von 2021.",
+   "params": {
+    "ticker": "ARK",
+    "name": "ARK Innovation ETF (ARKK) · seit 2021",
+    "price": "~67 $",
+    "countPrice": false,
+    "priceFrom": 156,
+    "change": "-57 % vom Rekord",
+    "range": "5J",
+    "ranges": [
+     "1J",
+     "3J",
+     "5J",
+     "Max"
+    ],
+    "data": [
+     156,
+     150,
+     138,
+     124,
+     118,
+     96,
+     84,
+     70,
+     52,
+     44,
+     40,
+     46,
+     51,
+     48,
+     42,
+     49,
+     53,
+     47,
+     45,
+     56,
+     62,
+     58,
+     72,
+     78,
+     70,
+     74,
+     66,
+     63,
+     67.4
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.8,
+    "threshold": {
+     "value": 156,
+     "label": "Rekord Feb. 2021: ~156 $",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trHeadline",
+   "duration": 4.0,
+   "script": "0:14 · Und genau jetzt baut Cathie Wood den Fonds radikal um.",
+   "params": {
+    "brand": {
+     "name": "Cathie Wood",
+     "glyph": "CW",
+     "color": "#111317"
+    },
+    "text": "Der *radikale Umbau*",
+    "accent": "#2f6bff",
+    "size": 92
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 7.2,
+   "script": "0:18 · Raus fliegen: Nvidia für rund 107 Millionen Dollar, dazu Meta, Netflix, Palantir und Robinhood. Sogar ihren eigenen Bitcoin-ETF verkauft sie.",
+   "params": {
+    "title": "Das fliegt *raus*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Nvidia*",
+      "sub": "~107 Mio. $ in einer Woche",
+      "value": "−",
+      "ok": false,
+      "at": 1.2
+     },
+     {
+      "text": "*Meta · Netflix · Palantir · Robinhood*",
+      "sub": "verkauft bzw. reduziert",
+      "value": "−",
+      "ok": false,
+      "at": 3.0
+     },
+     {
+      "text": "ARK *Bitcoin-ETF*",
+      "sub": "Anteile verkauft",
+      "value": "−",
+      "ok": false,
+      "at": 5.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trBars",
+   "duration": 7.0,
+   "script": "0:26 · Rein kommen: Anthropic – allein an einem Tag für über 60 Millionen Dollar. Dazu SpaceX für rund 74 Millionen in nur einer Woche.",
+   "params": {
+    "title": "Das kommt *rein*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "name": "SpaceX (eine Woche)",
+      "brand": "SPACEX",
+      "value": 74,
+      "label": "~74 Mio. $",
+      "at": 1.4,
+      "color": "#0d7d4d"
+     },
+     {
+      "name": "Anthropic (an einem Tag)",
+      "brand": "ANT",
+      "value": 62,
+      "label": "~62 Mio. $",
+      "at": 2.8,
+      "color": "#0d7d4d"
+     }
+    ],
+    "max": 80,
+    "note": "laut ARK-Trade-Meldungen · gerundet"
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 7.6,
+   "script": "0:33 · Der Clou: Anthropic ist nach dem Rekord-Börsengang unter den Ausgabepreis von 83 Dollar gerutscht. Cathie Wood kauft genau diesen Dip – und zwar mehrere Tage hintereinander.",
+   "params": {
+    "title": "Sie kauft den *Dip*",
+    "accent": "#0d7d4d",
+    "label": "Anthropic-Ausgabepreis",
+    "logos": [
+     "ANT"
+    ],
+    "value": "83 $",
+    "size": 170,
+    "at": 1.2,
+    "countDur": 0.8,
+    "second": {
+     "value": "Aktie zeitweise darunter",
+     "size": 56,
+     "tone": "red",
+     "at": 3.0
+    },
+    "pills": [
+     "Cathie kauft nach"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 6.4,
+   "script": "0:40 · Ihre Strategie war schon immer: Kaufen, wenn andere verkaufen – und auf die großen Zukunftsthemen setzen. KI, Raumfahrt, Robotik.",
+   "params": {
+    "title": "Ihre *Strategie*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Kaufen, wenn *andere verkaufen*",
+      "mark": "🔁",
+      "markColor": "#2f6bff",
+      "at": 1.2
+     },
+     {
+      "text": "*KI* · *Raumfahrt* · *Robotik*",
+      "sub": "disruptive Innovation",
+      "mark": "🚀",
+      "markColor": "#2f6bff",
+      "at": 3.2
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 7.0,
+   "script": "0:47 · Aber die Bilanz ist durchwachsen: In den zwölf Monaten bis Juli hat der Fonds sowohl den S&P 500 als auch den MSCI World verfehlt.",
+   "params": {
+    "brand": "ARK",
+    "context": "Die Bilanz",
+    "tag": "Aber",
+    "text": "Schlechter als der *Markt*",
+    "size": 66,
+    "sub": "12 Monate bis Juli 2026: hinter *S&P 500* und *MSCI World*",
+    "pills": [
+     "laut Jahresbericht"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trStat",
+   "duration": 6.6,
+   "script": "0:54 · Dazu kostet der ETF 0,75 Prozent Gebühren pro Jahr – deutlich mehr als ein normaler Welt-ETF. Bei 10.000 Euro sind das 75 Euro – jedes Jahr.",
+   "params": {
+    "brand": "ARK",
+    "context": "Kosten",
+    "label": "Jährliche Gebühren (TER)",
+    "icon": "💸",
+    "value": "0,75 %",
+    "size": 180,
+    "at": 1.0,
+    "countDur": 0.8,
+    "tone": "red",
+    "sub": "Welt-ETFs oft *unter 0,25 %*"
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 5.0,
+   "script": "1:00 · Also: Genialer Umbau oder teures Glücksspiel? Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Genial oder *Glücksspiel*?",
+    "left": {
+     "label": "Genial",
+     "title": "Früh bei KI & SpaceX",
+     "result": "kauft den Dip",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Glücksspiel",
+     "title": "−57 % vom Rekord",
+     "result": "hinter dem Markt",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 4.6,
+   "script": "1:05 · Würdest du Cathie Wood dein Geld anvertrauen? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Cathie Wood dein *Geld* geben?",
+    "options": [
+     "Ja, sie ist genial",
+     "Nein, lieber MSCI World",
+     "Nur ein bisschen"
+    ],
+    "note": "Keine Anlageberatung · Stand: 26. November 2026"
+   }
+  }
+ ]
+}

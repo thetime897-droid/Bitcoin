@@ -1,0 +1,292 @@
+{
+ "name": "nvidia-kreditakten",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDossier",
+   "duration": 8.2,
+   "script": "0:00 · Geheime Kreditakten aus China – und plötzlich tauchen KI-Server für rund 300 Millionen Dollar auf. Und in wenigen Tagen muss Jensen Huang in Washington aussagen.",
+   "params": {
+    "tag": "EXKLUSIV · LAUT REUTERS",
+    "brand": "NVDA",
+    "name": "Nvidia",
+    "title": "Geheime *Kreditakten* aus China",
+    "docTitle": "KREDITREGISTER · AUSZUG",
+    "rows": [
+     {
+      "l": "Leasing #1 · KI-Server",
+      "r": "✓"
+     },
+     {
+      "l": "Leasing #2 · KI-Server",
+      "r": "✓"
+     },
+     {
+      "l": "Leasing #3 · KI-Server",
+      "r": "✓"
+     },
+     {
+      "l": "Leasing #4 · KI-Server",
+      "r": "✓"
+     },
+     {
+      "l": "Leasing #5 · bis 512 Server",
+      "r": "✓"
+     },
+     {
+      "l": "Gesamt inkl. Netzwerk",
+      "r": "≈ 300 Mio. $",
+      "red": true,
+      "hl": true
+     }
+    ],
+    "value": "~300 Mio. $",
+    "sub": "KI-Technik für Rechenzentren in *China*",
+    "stamp": "LEAK",
+    "stampBottom": 250,
+    "valueSize": 130
+   }
+  },
+  {
+   "id": "02",
+   "type": "trList",
+   "duration": 5.2,
+   "script": "0:08 · Entdeckt hat das Reuters – in einem bisher unveröffentlichten Kreditregister der chinesischen Zentralbank.",
+   "params": {
+    "title": "Die *Quelle*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Reuters*-Recherche",
+      "sub": "Nachrichtenagentur",
+      "mark": "🔎",
+      "markColor": "#2f6bff",
+      "at": 1.0
+     },
+     {
+      "text": "Kreditregister der *Zentralbank*",
+      "sub": "bisher unveröffentlicht",
+      "mark": "🏦",
+      "markColor": "#e5392f",
+      "at": 2.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "trMetric",
+   "duration": 9.0,
+   "script": "0:13 · Im Mittelpunkt: Century Litong, laut Reuters ein bevorzugter Cloud-Partner von Nvidia. Zwischen Mai und Dezember 2024 schließt die Firma fünf Leasingverträge – für bis zu 512 Server, rund 200 Millionen Dollar.",
+   "params": {
+    "title": "Century *Litong*",
+    "accent": "#e5392f",
+    "label": "5 Leasingverträge · Mai–Dez. 2024",
+    "logos": [
+     {
+      "name": "Century Litong",
+      "glyph": "CL",
+      "color": "#5b6470"
+     }
+    ],
+    "value": "~200 Mio. $",
+    "size": 150,
+    "at": 1.8,
+    "countDur": 1.0,
+    "second": {
+     "value": "bis zu 512 Server",
+     "size": 58,
+     "at": 4.4
+    },
+    "pills": [
+     "1,42 Mrd. Yuan",
+     "„bevorzugter Cloud-Partner“"
+    ],
+    "pillsAt": 6.0,
+    "tone": "red"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trBars",
+   "duration": 6.6,
+   "script": "0:22 · Insgesamt geht es um bis zu 764 KI-Server und Module für 270 Millionen Dollar – plus Netzwerktechnik für 31 Millionen.",
+   "params": {
+    "title": "Die *Gesamtsumme*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "name": "bis zu 764 KI-Server & Module",
+      "brand": "NVDA",
+      "value": 270,
+      "label": "270 Mio. $",
+      "at": 1.4,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     },
+     {
+      "name": "Netzwerktechnik",
+      "value": 31,
+      "label": "31 Mio. $",
+      "at": 2.8,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     }
+    ],
+    "max": 300,
+    "note": "zusammen rund 300 Mio. $ · laut Reuters"
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 3.4,
+   "script": "0:29 · Und jetzt wird's richtig brisant.",
+   "params": {
+    "brand": false,
+    "text": "Jetzt wird's *brisant*",
+    "accent": "#e5392f",
+    "size": 96
+   }
+  },
+  {
+   "id": "06",
+   "type": "trWarn",
+   "duration": 7.4,
+   "script": "0:32 · Die Firmen stehen laut Berichten im Umfeld von Alice Huang – genau der Geschäftsfrau, deren Affäre mit Jensen Huang zu seinem kurzzeitigen Rücktritt geführt hat.",
+   "params": {
+    "brand": {
+     "name": "Alice Huang",
+     "glyph": "AH",
+     "color": "#8b9099"
+    },
+    "context": "laut Berichten",
+    "tag": "Die Spur",
+    "live": true,
+    "text": "Spur zu *Alice Huang*",
+    "size": 70,
+    "sub": "Ihre Affäre führte zu Huangs *kurzzeitigem Rücktritt*.",
+    "pills": [
+     "Firmen aus ihrem Umfeld"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 6.8,
+   "script": "0:39 · Und wer hat das finanziert? Unter anderem die Ping An Bank – und eine Tochter des staatlichen chinesischen Luftfahrt- und Rüstungskonzerns AVIC.",
+   "params": {
+    "title": "Wer *finanziert* hat",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*Ping An Bank*",
+      "sub": "chinesische Großbank",
+      "mark": "🏦",
+      "markColor": "#e5392f",
+      "at": 1.6
+     },
+     {
+      "text": "Tochter von *AVIC*",
+      "sub": "staatlicher Luftfahrt- & Rüstungskonzern",
+      "value": "!",
+      "ok": false,
+      "at": 3.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 8.4,
+   "script": "0:46 · Offen ist: Waren darunter Chips, die gar nicht nach China dürften? Und wie kam die Technik ins Land? Wichtig: Ein Fehlverhalten von Nvidia belegen die Akten nicht.",
+   "params": {
+    "title": "Offen vs. *belegt*",
+    "left": {
+     "label": "Offen",
+     "title": "Verbotene Chips?",
+     "result": "Wie kam die Technik nach China?",
+     "good": false,
+     "at": 1.6
+    },
+    "right": {
+     "label": "Wichtig",
+     "title": "Kein Beleg",
+     "result": "für Fehlverhalten von Nvidia",
+     "good": true,
+     "at": 5.4
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 7.0,
+   "script": "0:54 · Und das Timing ist heikel: Gerade erst hat Nvidia Lieferungen nach Südostasien gestoppt – und in wenigen Tagen muss Huang in Washington aussagen.",
+   "params": {
+    "brand": {
+     "name": "USA",
+     "glyph": "US",
+     "color": "#1c3d6e"
+    },
+    "context": "Timing",
+    "tag": "Washington",
+    "live": true,
+    "text": "Huang muss *aussagen*",
+    "size": 72,
+    "sub": "Dazu: *Lieferstopp* nach Südostasien",
+    "pills": [
+     "in wenigen Tagen"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 5.0,
+   "script": "1:01 · Also: Sturm im Wasserglas oder der nächste Skandal? Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Sturm oder *Skandal*?",
+    "left": {
+     "label": "Sturm im Wasserglas",
+     "title": "Kein Beleg",
+     "result": "Akten zeigen Finanzierung",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Skandal",
+     "title": "Weitere Enthüllungen?",
+     "result": "Anhörung in Washington",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 4.6,
+   "script": "1:07 · Was glaubst du: Kommt da noch mehr raus? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Kommt da noch *mehr raus*?",
+    "options": [
+     "Ja, sicher",
+     "Nein, nichts dran",
+     "Abwarten"
+    ],
+    "note": "Keine Anlageberatung · Stand: 26. November 2026"
+   }
+  }
+ ]
+}

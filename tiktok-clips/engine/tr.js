@@ -1462,6 +1462,59 @@
     };
   };
 
+  // ----------------------------------------------------------- trDossier ---
+  // "Leaked files" hook: red tag, title, a manila folder stamped
+  // VERTRAULICH opens, a document slides out, rows type in one by one,
+  // a marker highlights the total, then a big number + stamp. All inside.
+  S.trDossier = (st, p, ctx) => {
+    const card = T.card(st, { pad: 40, ...p.card });
+    const head = C.h('div', { class: 'ctr', style: { justifyContent: 'space-between', gap: '16px' } }, card);
+    const tag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '10px 22px', borderRadius: '14px', background: RD, color: '#fff', fontSize: '30px', fontWeight: 900, letterSpacing: '2px' } }, head);
+    const dot = C.h('span', { style: { width: '16px', height: '16px', borderRadius: '50%', background: '#fff' } }, tag);
+    tag.insertAdjacentHTML('beforeend', `<span>${p.tag || 'EXKLUSIV'}</span>`);
+    if (p.brand) { const b = C.h('div', { class: 'ctr', style: { gap: '12px' } }, head); C.chip(p.brand, 60, b); C.h('div', { style: { fontSize: '32px', fontWeight: 900, color: INK } }, b, p.name || C.brand(p.brand).name); }
+    const hl = C.h('div', { style: { fontSize: (p.size || 62) + 'px', fontWeight: 900, color: INK, letterSpacing: '-1.5px', lineHeight: 1.06, margin: '18px 0 20px' } }, card);
+    hl.innerHTML = T.rich(p.title || '', RD);
+    const SH = p.stageH || 540;
+    const stage = C.h('div', { style: { position: 'relative', height: SH + 'px', borderRadius: '30px', overflow: 'hidden', background: 'linear-gradient(180deg,#f3efe6,#e9e2d2)' } }, card);
+    stage.dataset.own = 1;
+    const back = C.h('div', { style: { position: 'absolute', left: '60px', right: '60px', bottom: '24px', height: '300px', borderRadius: '18px', background: '#d9a441' } }, stage);
+    C.h('div', { style: { position: 'absolute', left: '0', top: '-26px', width: '220px', height: '40px', borderRadius: '14px 14px 0 0', background: '#d9a441' } }, back);
+    const doc = C.h('div', { style: { position: 'absolute', left: '100px', right: '100px', bottom: '40px', height: (SH - 70) + 'px', borderRadius: '14px', background: '#fff', boxShadow: '0 10px 26px rgba(0,0,0,.15)', padding: '26px 30px', boxSizing: 'border-box' } }, stage);
+    C.h('div', { style: { fontSize: '22px', fontWeight: 900, color: '#8b9099', letterSpacing: '3px', marginBottom: '14px' } }, doc, p.docTitle || 'KREDITREGISTER · AUSZUG');
+    const rows = (p.rows || []).map((r, i) => {
+      const d = C.h('div', { class: 'ctr', style: { position: 'relative', justifyContent: 'space-between', padding: '9px 10px', borderBottom: '2px dashed #e3e5e8', fontSize: '28px', fontWeight: 800, color: INK, opacity: 0 } }, doc);
+      const mk = C.h('div', { style: { position: 'absolute', left: '-4px', top: '4px', bottom: '4px', width: '0%', background: 'rgba(255,214,0,.55)', borderRadius: '6px' } }, d);
+      C.h('span', { style: { position: 'relative' } }, d, r.l); C.h('span', { style: { position: 'relative', color: r.red ? RD : INK } }, d, r.r || '');
+      return { d, mk, hl: !!r.hl };
+    });
+    const front = C.h('div', { style: { position: 'absolute', left: '60px', right: '60px', bottom: '24px', height: '230px', borderRadius: '18px', background: '#e8b84f', boxShadow: '0 -6px 16px rgba(0,0,0,.10)', transformOrigin: '50% 100%' } }, stage);
+    const conf = C.h('div', { style: { position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%) rotate(-8deg)', padding: '8px 22px', border: `6px solid ${RD}`, borderRadius: '12px', color: RD, fontSize: '46px', fontWeight: 900, letterSpacing: '3px', whiteSpace: 'nowrap' } }, front, p.secret || 'VERTRAULICH');
+    const num = C.h('div', { style: { fontSize: (p.valueSize || 140) + 'px', fontWeight: 900, color: RD, letterSpacing: '-4px', lineHeight: 1.05, marginTop: '16px', whiteSpace: 'nowrap', opacity: 0 } }, card, '');
+    if (p.sub) { const s = C.h('div', { style: { fontSize: '34px', fontWeight: 800, color: '#4b5058', marginTop: '4px' } }, card); s.innerHTML = T.rich(p.sub, RD); }
+    const stamp = stampEl(card, p.stamp || 'LEAK', RD, 0, 0, p.stampSize || 66);
+    stamp.style.right = '44px'; stamp.style.left = 'auto'; stamp.style.bottom = (p.stampBottom ?? 60) + 'px'; stamp.style.top = 'auto';
+    const openAt = p.openAt ?? 0.9, rowAt = p.rowAt ?? 1.6, rowStep = p.rowStep ?? 0.32, hlAt = p.hlAt ?? rowAt + rows.length * rowStep + 0.2, numAt = p.valueAt ?? hlAt + 0.7, stampAt = p.stampAt ?? numAt + 1.2;
+    ctx.cue('whoosh', 0, 0.8); ctx.cue('alert', 0.15, 0.4); ctx.cue('stamp', 0.45, 0.6); ctx.cue('whoosh', openAt, 0.6);
+    rows.forEach((_, i) => ctx.cue('tick', rowAt + i * rowStep, 0.6));
+    ctx.cue('marker', hlAt, 0.6); T.countSfx(ctx, p.value || '300 Mio. $', numAt, 1.0); ctx.cue('stamp', stampAt, 0.95);
+    return (t) => {
+      T.enter(card, t);
+      const ph = (t * 1.6) % 1; dot.style.boxShadow = `0 0 0 ${ph * 12}px rgba(255,255,255,${0.6 * (1 - ph)})`;
+      const kc = C.k(t, 0.45, 0.3, 'back'); conf.style.transform = `translate(-50%,-50%) rotate(-8deg) scale(${t < 0.45 ? 0 : Math.max(0, kc) * (1 + 0.6 * (1 - Math.min(1, kc)))})`;
+      const ko = C.k(t, openAt, 0.6, 'out');
+      front.style.transform = `perspective(900px) rotateX(${ko * 62}deg)`; front.style.opacity = 1 - ko * 0.15;
+      doc.style.transform = `translateY(${(1 - C.k(t, openAt + 0.1, 0.6, 'out')) * 330}px)`;
+      rows.forEach((o, i) => { const k = C.k(t, rowAt + i * rowStep, 0.25); o.d.style.opacity = k; o.d.style.transform = `translateX(${(1 - k) * -20}px)`; if (o.hl) o.mk.style.width = 100 * C.k(t, hlAt, 0.45, 'out') + '%'; });
+      num.style.opacity = C.k(t, numAt, 0.1); num.textContent = C.count(p.value || '300 Mio. $', C.k(t, numAt, 1.0, 'out'));
+      const kS = C.k(t, stampAt, 0.35, 'back');
+      stamp.style.opacity = C.k(t, stampAt, 0.1);
+      stamp.style.transform = `scale(${Math.max(0, kS) * (1 + 0.8 * (1 - Math.min(1, kS)))}) rotate(-8deg)`;
+      const shake = t > stampAt && t < stampAt + 0.3 ? Math.sin(t * 80) * 8 : 0;
+      card.style.translate = `${shake}px 0`;
+    };
+  };
+
   // ------------------------------------------------------------- trDrain ---
   // Hook card for "money gone": live tag, title, a huge red number that
   // counts up while the card trembles, banknotes falling through the card,
