@@ -1,0 +1,285 @@
+{
+ "name": "nvidia-reissleine",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trOutage",
+   "duration": 7.0,
+   "script": "0:00 · Breaking News: Nvidia zieht die Reißleine! Der Chip-Riese stoppt Server-Lieferungen in gleich vier Länder. Und ein Insider spricht vom reinsten Chaos.",
+   "params": {
+    "tag": "BREAKING NEWS · NVIDIA",
+    "title": "Nvidia zieht die *Reißleine*",
+    "services": [
+     {
+      "icon": "🇲🇾",
+      "name": "Malaysia"
+     },
+     {
+      "icon": "🇸🇬",
+      "name": "Singapur"
+     },
+     {
+      "icon": "🇹🇭",
+      "name": "Thailand"
+     },
+     {
+      "icon": "🇮🇩",
+      "name": "Indonesien"
+     },
+     {
+      "icon": "🖥️",
+      "name": "Dell",
+      "bad": "✕ gestoppt"
+     },
+     {
+      "icon": "🖥️",
+      "name": "Supermicro",
+      "bad": "✕ gestoppt"
+     }
+    ],
+    "flipAt": 1.0,
+    "step": 0.35,
+    "okText": "● Lieferung",
+    "badText": "✕ STOPP",
+    "stamp": "LIEFERSTOPP",
+    "stampSize": 80
+   }
+  },
+  {
+   "id": "02",
+   "type": "trList",
+   "duration": 7.4,
+   "script": "0:07 · Betroffen sind Malaysia, Singapur, Thailand und Indonesien. Laut Financial Times haben Dell und Supermicro ihren Kunden dort mitgeteilt: Nvidia gibt die Bestellungen nicht frei.",
+   "params": {
+    "title": "Was *passiert* ist",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "*4 Länder* in Südostasien",
+      "sub": "Malaysia · Singapur · Thailand · Indonesien",
+      "value": "✕",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "*Dell & Supermicro* informieren Kunden",
+      "sub": "laut Financial Times",
+      "mark": "📩",
+      "markColor": "#2f6bff",
+      "at": 3.6
+     },
+     {
+      "text": "Nvidia gibt Bestellungen *nicht frei*",
+      "sub": "KI-Server mit Nvidia-Chips",
+      "value": "⛔",
+      "ok": false,
+      "at": 5.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "03",
+   "type": "trHeadline",
+   "duration": 3.8,
+   "script": "0:14 · Aber warum stoppt Nvidia freiwillig sein eigenes Geschäft?",
+   "params": {
+    "brand": "NVDA",
+    "text": "Warum stoppt Nvidia sein *eigenes Geschäft*?",
+    "accent": "#e5392f",
+    "size": 74
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 7.2,
+   "script": "0:18 · Der Grund: neue US-Exportregeln. Seit dem 19. November braucht man für Top-KI-Chips in diese Länder – und nach Brasilien – eine US-Lizenz.",
+   "params": {
+    "title": "Der *Grund*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Neue *US-Exportregeln*",
+      "sub": "gültig seit 19. November",
+      "mark": "📜",
+      "markColor": "#2f6bff",
+      "at": 1.2
+     },
+     {
+      "text": "*Lizenzpflicht* für Top-KI-Chips",
+      "sub": "4 Länder + Brasilien",
+      "mark": "🔒",
+      "markColor": "#e5392f",
+      "at": 3.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trWarn",
+   "duration": 7.0,
+   "script": "0:25 · Die USA wollen verhindern, dass China über Umwege an Nvidia-Chips kommt – per Schmuggel über Südostasien oder per Fernzugriff auf Rechenzentren.",
+   "params": {
+    "brand": {
+     "name": "USA",
+     "glyph": "US",
+     "color": "#1c3d6e"
+    },
+    "context": "Das Ziel",
+    "tag": "Washington",
+    "live": true,
+    "text": "China den *Umweg* abschneiden",
+    "size": 62,
+    "sub": "Schmuggel · *Fernzugriff* auf Rechenzentren",
+    "pills": [
+     "Jamieson Greer (USTR)"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 7.6,
+   "script": "0:32 · Und das ist kein Nebenschauplatz: Über seine Tochter in Singapur hat Nvidia 2025 rund 104 Milliarden Dollar Umsatz verbucht. Ein Teil davon sind Verkäufe, die nur über Singapur abgerechnet werden.",
+   "params": {
+    "title": "Kein *Nebenschauplatz*",
+    "accent": "#e5392f",
+    "label": "Umsatz über Nvidia Singapur (2025)",
+    "logos": [
+     "NVDA"
+    ],
+    "value": "104 Mrd. $",
+    "size": 160,
+    "at": 1.2,
+    "countDur": 1.0,
+    "second": {
+     "value": "+72 % zum Vorjahr",
+     "size": 56,
+     "at": 3.2
+    },
+    "pills": [
+     "teils dort verbuchte Verkäufe"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "07",
+   "type": "trWarn",
+   "duration": 8.4,
+   "script": "0:40 · Die Folgen spürt man sofort: Ein Cloud-Manager spricht vom reinsten Chaos. Und Banken haben laut Bericht einen Kredit über rund 500 Millionen Dollar für ein Rechenzentrums-Projekt gestoppt.",
+   "params": {
+    "brand": {
+     "name": "Financial Times",
+     "glyph": "FT",
+     "color": "#f2a7b0"
+    },
+    "context": "Laut Financial Times",
+    "tag": "Folgen",
+    "live": true,
+    "text": "„Das *reinste Chaos*“",
+    "size": 72,
+    "sub": "Banken stoppen Kredit über *~500 Mio. $*",
+    "pills": [
+     "Cloud-Projekt Singapur"
+    ],
+    "pillsAt": 4.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trList",
+   "duration": 6.0,
+   "script": "0:48 · Und für die Aktie kommt das zur Unzeit: Erst der Rekordsprung, dann die Zölle, jetzt der Lieferstopp.",
+   "params": {
+    "title": "Achterbahn-*Woche*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Mo: *+31,5 %* – Huang zurück",
+      "mark": "▲",
+      "markColor": "#0d7d4d",
+      "at": 1.0
+     },
+     {
+      "text": "Mi: *Zoll-Schock* – Chips fallen",
+      "mark": "▼",
+      "markColor": "#e5392f",
+      "at": 2.4
+     },
+     {
+      "text": "Do: *Lieferstopp* Südostasien",
+      "mark": "⛔",
+      "markColor": "#e5392f",
+      "at": 3.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.4,
+   "script": "0:54 · Wichtig: Nvidia selbst hat sich noch nicht geäußert. Auch Dell und Supermicro schweigen. Ob der Stopp nur vorübergehend ist, ist offen.",
+   "params": {
+    "brand": "NVDA",
+    "context": "Noch offen",
+    "tag": "Wichtig",
+    "text": "Nvidia *schweigt*",
+    "size": 76,
+    "sub": "Vorübergehend oder dauerhaft? *Unklar*.",
+    "pills": [
+     "laut Bericht"
+    ],
+    "pillsAt": 2.8
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.2,
+   "script": "1:00 · Also: Kurzer Schock oder echtes Problem? Das hängt davon ab, wie schnell die Lizenzen kommen. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Schock oder *Problem*?",
+    "left": {
+     "label": "Kurzer Schock",
+     "title": "Lizenzen kommen",
+     "result": "Lieferungen laufen weiter",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Echtes Problem",
+     "title": "Stopp bleibt",
+     "result": "Milliarden-Umsatz fehlt",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 4.6,
+   "script": "1:07 · Was meinst du: Schadet das Nvidia wirklich? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Schadet das *Nvidia* wirklich?",
+    "options": [
+     "Ja, Milliarden fehlen",
+     "Nein, kurzer Schock",
+     "Kaufchance!"
+    ],
+    "note": "Keine Anlageberatung · Stand: 26. November 2026"
+   }
+  }
+ ]
+}

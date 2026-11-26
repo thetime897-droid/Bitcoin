@@ -1,0 +1,338 @@
+{
+ "name": "servicenow-einstieg",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 8.0,
+   "script": "0:00 · Minus 45 Prozent in einem Jahr – und jetzt soll genau das die große Einstiegschance sein? Der SAP-Rivale ServiceNow ist abgestürzt. Und Analysten sehen fast 70 Prozent Potenzial.",
+   "params": {
+    "intro": {
+     "tag": "SAP-RIVALE ABGESTÜRZT",
+     "text": "*ServiceNow*: −45 % in 1 Jahr",
+     "sub": "…und jetzt die Chance?",
+     "dur": 2.4,
+     "size": 72,
+     "green": false
+    },
+    "brand": {
+     "name": "ServiceNow",
+     "glyph": "now",
+     "color": "#1d4b3f"
+    },
+    "name": "ServiceNow",
+    "tag": "CRASH",
+    "title": "In nur *12 Monaten*",
+    "titleSize": 58,
+    "value": "−45 %",
+    "size": 200,
+    "at": 0.3,
+    "countDur": 1.1,
+    "barFrom": "Hoch: ~175 $",
+    "barTo": "jetzt: ~92 $",
+    "drainTo": 0.53,
+    "sub": "Analysten: *+70 % Potenzial*?",
+    "stamp": "EINSTIEGSCHANCE?",
+    "stampSize": 58
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 6.4,
+   "script": "0:08 · ServiceNow – kennt kaum jemand, nutzt aber ein Großteil der größten Konzerne der Welt: Software, die Abläufe in Firmen automatisiert. Ein direkter Konkurrent von SAP.",
+   "params": {
+    "brand": {
+     "name": "ServiceNow",
+     "glyph": "now",
+     "color": "#1d4b3f"
+    },
+    "text": "Kennt kaum jemand –\nnutzen *fast alle Großen*",
+    "accent": "#0d7d4d",
+    "size": 66,
+    "pills": [
+     "Workflow-Software",
+     "Rivale von SAP"
+    ],
+    "pillsAt": 2.6
+   }
+  },
+  {
+   "id": "03",
+   "type": "trChart",
+   "duration": 5.4,
+   "script": "0:14 · Doch die Aktie ist abgestürzt: vom Hoch bei rund 175 Dollar auf etwa 92 Dollar.",
+   "params": {
+    "ticker": {
+     "name": "ServiceNow",
+     "glyph": "now",
+     "color": "#1d4b3f"
+    },
+    "name": "ServiceNow · 12 Monate",
+    "price": "~92 $",
+    "countPrice": false,
+    "priceFrom": 173.5,
+    "change": "-45 % in 12 Monaten",
+    "range": "1J",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     173.5,
+     170,
+     166,
+     168,
+     160,
+     154,
+     157,
+     150,
+     146,
+     149,
+     141,
+     137,
+     140,
+     132,
+     128,
+     131,
+     125,
+     128,
+     93,
+     96,
+     94,
+     99,
+     95,
+     91,
+     92
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 173.5,
+     "label": "Hoch: ~175 $",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trList",
+   "duration": 7.0,
+   "script": "0:19 · Der Auslöser: die letzten Quartalszahlen. Der Gewinn verfehlt knapp die Erwartungen, der Ausblick enttäuscht – an einem Tag rund minus 27 Prozent.",
+   "params": {
+    "title": "Der *Auslöser*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Gewinn *knapp verfehlt*",
+      "sub": "3. Quartal 2026",
+      "value": "✕",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "Ausblick *enttäuscht*",
+      "sub": "4. Quartal",
+      "value": "▼",
+      "ok": false,
+      "at": 2.8
+     },
+     {
+      "text": "An einem Tag *rund −27 %*",
+      "sub": "29. Oktober",
+      "value": "📉",
+      "ok": false,
+      "at": 4.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "05",
+   "type": "trBars",
+   "duration": 5.6,
+   "script": "0:26 · Besonders bitter: Die operative Marge halbiert sich fast – von 16,8 auf 9,4 Prozent.",
+   "params": {
+    "title": "Marge *fast halbiert*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "name": "Operative Marge Q3 2025",
+      "brand": {
+       "name": "ServiceNow",
+       "glyph": "now",
+       "color": "#1d4b3f"
+      },
+      "value": 16.8,
+      "label": "16,8 %",
+      "at": 1.2,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Operative Marge Q3 2026",
+      "brand": {
+       "name": "ServiceNow",
+       "glyph": "now",
+       "color": "#1d4b3f"
+      },
+      "value": 9.4,
+      "label": "9,4 %",
+      "at": 2.6,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     }
+    ],
+    "max": 18
+   }
+  },
+  {
+   "id": "06",
+   "type": "trHeadline",
+   "duration": 3.8,
+   "script": "0:32 · Aber jetzt kommt der Grund, warum Analysten trotzdem jubeln.",
+   "params": {
+    "brand": false,
+    "text": "Warum Analysten *trotzdem jubeln*",
+    "accent": "#0d7d4d",
+    "size": 78
+   }
+  },
+  {
+   "id": "07",
+   "type": "trMetric",
+   "duration": 7.6,
+   "script": "0:36 · Der Umsatz wächst weiter um über 20 Prozent. Und das KI-Umsatzziel wurde sogar auf 1,7 Milliarden Dollar angehoben. Das Geschäft wächst also – nur die Aktie nicht.",
+   "params": {
+    "title": "Das Wachstum *läuft*",
+    "accent": "#0d7d4d",
+    "label": "Umsatzwachstum Q3",
+    "logos": [
+     {
+      "name": "ServiceNow",
+      "glyph": "now",
+      "color": "#1d4b3f"
+     }
+    ],
+    "value": "+20,5 %",
+    "size": 170,
+    "at": 1.2,
+    "countDur": 0.9,
+    "second": {
+     "value": "KI-Umsatzziel: 1,7 Mrd. $",
+     "size": 56,
+     "at": 3.2
+    }
+   }
+  },
+  {
+   "id": "08",
+   "type": "trBars",
+   "duration": 8.0,
+   "script": "0:43 · Das durchschnittliche Kursziel liegt bei rund 155 Dollar – fast 70 Prozent über dem aktuellen Kurs. Vor den Zahlen rieten 45 von 50 Analysten zum Kauf.",
+   "params": {
+    "title": "Kursziel: *+70 %*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "name": "Aktie aktuell",
+      "brand": {
+       "name": "ServiceNow",
+       "glyph": "now",
+       "color": "#1d4b3f"
+      },
+      "value": 92,
+      "label": "~92 $",
+      "at": 1.2,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     },
+     {
+      "name": "Kursziel Ø Analysten",
+      "brand": {
+       "name": "ServiceNow",
+       "glyph": "now",
+       "color": "#1d4b3f"
+      },
+      "value": 155,
+      "label": "~155 $",
+      "at": 2.6,
+      "color": "#0d7d4d"
+     }
+    ],
+    "max": 180,
+    "note": "vor den Zahlen: 45 von 50 Analysten „Kaufen“ · Kursziele sind keine Garantie"
+   }
+  },
+  {
+   "id": "09",
+   "type": "trWarn",
+   "duration": 6.6,
+   "script": "0:51 · Aber Vorsicht: KI-Agenten bedrohen das klassische Software-Geschäft. Genau deshalb hat es ServiceNow 2026 sogar härter getroffen als SAP.",
+   "params": {
+    "brand": {
+     "name": "ServiceNow",
+     "glyph": "now",
+     "color": "#1d4b3f"
+    },
+    "context": "Das Risiko",
+    "tag": "KI-Angst",
+    "live": true,
+    "text": "KI frisst *Software*?",
+    "size": 72,
+    "sub": "2026: ServiceNow *−35 %*, SAP *−27 %*",
+    "pills": [
+     "Wettbewerbsdruck"
+    ],
+    "pillsAt": 3.4
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.6,
+   "script": "0:58 · Also: Top-Einstiegschance oder Value-Falle? Wer kauft, wettet darauf, dass KI ServiceNow stärker macht – nicht schwächer. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Chance oder *Value-Falle*?",
+    "left": {
+     "label": "Chance",
+     "title": "Wachstum +20 %",
+     "result": "Kursziel ~155 $",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Falle",
+     "title": "KI-Konkurrenz",
+     "result": "Marge sinkt",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:05 · Würdest du jetzt bei ServiceNow einsteigen – oder lieber SAP? Schreib's in die Kommentare.",
+   "params": {
+    "question": "ServiceNow oder *SAP*?",
+    "options": [
+     "ServiceNow 🚀",
+     "Lieber SAP",
+     "Keins von beiden"
+    ],
+    "note": "Keine Anlageberatung · Stand: 26. November 2026"
+   }
+  }
+ ]
+}
