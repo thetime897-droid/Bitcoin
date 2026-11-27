@@ -10,8 +10,8 @@
   {
    "id": "01",
    "type": "trDrain",
-   "duration": 8.0,
-   "script": "0:00 · Minus 45 Prozent in einem Jahr – und jetzt soll genau das die große Einstiegschance sein? Der SAP-Rivale ServiceNow ist abgestürzt. Und Analysten sehen fast 70 Prozent Potenzial.",
+   "duration": 6.6,
+   "script": "0:00 · Minus 45 Prozent in einem Jahr – und jetzt soll genau das die große Einstiegschance sein?",
    "params": {
     "intro": {
      "tag": "SAP-RIVALE ABGESTÜRZT",
@@ -43,10 +43,46 @@
    }
   },
   {
+   "id": "01b",
+   "type": "trDrain",
+   "duration": 6.4,
+   "script": "0:06 · Der SAP-Rivale ServiceNow ist abgestürzt. Und Analysten sehen jetzt fast 70 Prozent Kurspotenzial.",
+   "params": {
+    "intro": {
+     "tag": "SAP-RIVALE",
+     "text": "ServiceNow *abgestürzt*",
+     "sub": "−45 % in 12 Monaten",
+     "dur": 2.2,
+     "size": 76,
+     "green": false
+    },
+    "up": true,
+    "brand": {
+     "name": "ServiceNow",
+     "glyph": "now",
+     "color": "#1d4b3f"
+    },
+    "name": "ServiceNow",
+    "tag": "ANALYSTEN",
+    "title": "Jetzt *Kurspotenzial*",
+    "titleSize": 58,
+    "value": "+70 %",
+    "size": 200,
+    "at": 0.3,
+    "countDur": 1.1,
+    "barFrom": "jetzt: ~92 $",
+    "barTo": "Kursziel: ~155 $",
+    "fillFrom": 0.59,
+    "sub": "Ø-Kursziel der *Analysten*",
+    "stamp": "KURSPOTENZIAL",
+    "stampSize": 60
+   }
+  },
+  {
    "id": "02",
    "type": "trHeadline",
    "duration": 6.4,
-   "script": "0:08 · ServiceNow – kennt kaum jemand, nutzt aber ein Großteil der größten Konzerne der Welt: Software, die Abläufe in Firmen automatisiert. Ein direkter Konkurrent von SAP.",
+   "script": "0:13 · ServiceNow – kennt kaum jemand, nutzt aber ein Großteil der größten Konzerne der Welt: Software, die Abläufe in Firmen automatisiert. Ein direkter Konkurrent von SAP.",
    "params": {
     "brand": {
      "name": "ServiceNow",
@@ -67,7 +103,7 @@
    "id": "03",
    "type": "trChart",
    "duration": 5.4,
-   "script": "0:14 · Doch die Aktie ist abgestürzt: vom Hoch bei rund 175 Dollar auf etwa 92 Dollar.",
+   "script": "0:19 · Doch die Aktie ist abgestürzt: vom Hoch bei rund 175 Dollar auf etwa 92 Dollar.",
    "params": {
     "ticker": {
      "name": "ServiceNow",
@@ -127,7 +163,7 @@
    "id": "04",
    "type": "trList",
    "duration": 7.0,
-   "script": "0:19 · Der Auslöser: die letzten Quartalszahlen. Der Gewinn verfehlt knapp die Erwartungen, der Ausblick enttäuscht – an einem Tag rund minus 27 Prozent.",
+   "script": "0:24 · Der Auslöser: die letzten Quartalszahlen. Der Gewinn verfehlt knapp die Erwartungen, der Ausblick enttäuscht – an einem Tag rund minus 27 Prozent.",
    "params": {
     "title": "Der *Auslöser*",
     "accent": "#e5392f",
@@ -160,7 +196,7 @@
    "id": "05",
    "type": "trBars",
    "duration": 5.6,
-   "script": "0:26 · Besonders bitter: Die operative Marge halbiert sich fast – von 16,8 auf 9,4 Prozent.",
+   "script": "0:31 · Besonders bitter: Die operative Marge halbiert sich fast – von 16,8 auf 9,4 Prozent.",
    "params": {
     "title": "Marge *fast halbiert*",
     "accent": "#e5392f",
@@ -199,7 +235,7 @@
    "id": "06",
    "type": "trHeadline",
    "duration": 3.8,
-   "script": "0:32 · Aber jetzt kommt der Grund, warum Analysten trotzdem jubeln.",
+   "script": "0:37 · Aber jetzt kommt der Grund, warum Analysten trotzdem jubeln.",
    "params": {
     "brand": false,
     "text": "Warum Analysten *trotzdem jubeln*",
@@ -211,7 +247,7 @@
    "id": "07",
    "type": "trMetric",
    "duration": 7.6,
-   "script": "0:36 · Der Umsatz wächst weiter um über 20 Prozent. Und das KI-Umsatzziel wurde sogar auf 1,7 Milliarden Dollar angehoben. Das Geschäft wächst also – nur die Aktie nicht.",
+   "script": "0:41 · Der Umsatz wächst weiter um über 20 Prozent. Und das KI-Umsatzziel wurde sogar auf 1,7 Milliarden Dollar angehoben. Das Geschäft wächst also – nur die Aktie nicht.",
    "params": {
     "title": "Das Wachstum *läuft*",
     "accent": "#0d7d4d",
@@ -238,7 +274,7 @@
    "id": "08",
    "type": "trBars",
    "duration": 8.0,
-   "script": "0:43 · Das durchschnittliche Kursziel liegt bei rund 155 Dollar – fast 70 Prozent über dem aktuellen Kurs. Vor den Zahlen rieten 45 von 50 Analysten zum Kauf.",
+   "script": "0:48 · Das durchschnittliche Kursziel liegt bei rund 155 Dollar – fast 70 Prozent über dem aktuellen Kurs. Vor den Zahlen rieten 45 von 50 Analysten zum Kauf.",
    "params": {
     "title": "Kursziel: *+70 %*",
     "accent": "#0d7d4d",
@@ -277,7 +313,7 @@
    "id": "09",
    "type": "trWarn",
    "duration": 6.6,
-   "script": "0:51 · Aber Vorsicht: KI-Agenten bedrohen das klassische Software-Geschäft. Genau deshalb hat es ServiceNow 2026 sogar härter getroffen als SAP.",
+   "script": "0:56 · Aber Vorsicht: KI-Agenten bedrohen das klassische Software-Geschäft. Genau deshalb hat es ServiceNow 2026 sogar härter getroffen als SAP.",
    "params": {
     "brand": {
      "name": "ServiceNow",
@@ -300,7 +336,7 @@
    "id": "10",
    "type": "trRule",
    "duration": 6.6,
-   "script": "0:58 · Also: Top-Einstiegschance oder Value-Falle? Wer kauft, wettet darauf, dass KI ServiceNow stärker macht – nicht schwächer. Das ist keine Anlageberatung.",
+   "script": "1:03 · Also: Top-Einstiegschance oder Value-Falle? Wer kauft, wettet darauf, dass KI ServiceNow stärker macht – nicht schwächer. Das ist keine Anlageberatung.",
    "params": {
     "title": "Chance oder *Value-Falle*?",
     "left": {
@@ -323,7 +359,7 @@
    "id": "11",
    "type": "trPoll",
    "duration": 5.0,
-   "script": "1:05 · Würdest du jetzt bei ServiceNow einsteigen – oder lieber SAP? Schreib's in die Kommentare.",
+   "script": "1:10 · Würdest du jetzt bei ServiceNow einsteigen – oder lieber SAP? Schreib's in die Kommentare.",
    "params": {
     "question": "ServiceNow oder *SAP*?",
     "options": [

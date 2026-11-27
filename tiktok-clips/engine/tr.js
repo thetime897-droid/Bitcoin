@@ -1553,8 +1553,8 @@
       ovTag = C.h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '14px', padding: '14px 30px', borderRadius: '18px', background: p.intro.green ? G : RD, color: '#fff', fontSize: '46px', fontWeight: 900, letterSpacing: '2px' } }, ov);
       ovDot = C.h('span', { style: { width: '20px', height: '20px', borderRadius: '50%', background: '#fff' } }, ovTag);
       ovTag.insertAdjacentHTML('beforeend', `<span>${p.intro.tag || 'BREAKING NEWS'}</span>`);
-      ovTxt = C.h('div', { style: { fontSize: (p.intro.size || 92) + 'px', fontWeight: 900, color: INK, letterSpacing: '-3px', lineHeight: 1.05 } }, ov, T.rich(p.intro.text || '', G));
-      ovSub = C.h('div', { style: { padding: '12px 28px', borderRadius: '30px', background: '#ddf4e8', color: G, fontSize: '38px', fontWeight: 900 } }, ov, p.intro.sub || '');
+      ovTxt = C.h('div', { style: { fontSize: (p.intro.size || 92) + 'px', fontWeight: 900, color: INK, letterSpacing: '-3px', lineHeight: 1.05 } }, ov, T.rich(p.intro.text || '', p.intro.green === false ? RD : G));
+      ovSub = C.h('div', { style: { padding: '12px 28px', borderRadius: '30px', background: p.intro.green === false ? '#fde6e3' : '#ddf4e8', color: p.intro.green === false ? RD : G, fontSize: '38px', fontWeight: 900 } }, ov, p.intro.sub || '');
       ctx.cue('alert', 0.2, 0.5); ctx.cue('pop', 0.55, 0.6); ctx.cue('success', 1.0, 0.45); ctx.cue('whoosh', I - 0.25, 0.7);
     }
     const at = I + (p.at ?? 0.4), dur = p.countDur ?? 1.6, stampAt = p.stampAt != null ? I + p.stampAt : at + dur + 0.25;

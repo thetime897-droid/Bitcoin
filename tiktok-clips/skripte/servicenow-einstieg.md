@@ -1,12 +1,13 @@
 # FACELESS SHORT: SERVICENOW −45 % – TOP-EINSTIEGSCHANCE?
 
-*Ca. 66–68 s gesprochen (218 Wörter, Clips zusammen 70 s), Broker-App-Karten, ohne Ausblendung.*
+*Ca. 66–68 s gesprochen (219 Wörter, Clips zusammen 75 s), Broker-App-Karten, ohne Ausblendung.*
 
 **Hook-Text (On-Screen):** **SAP-RIVALE −45 % – JETZT DIE CHANCE?**
 
 ## Storytelling
 
 - **Hook (0:00):** Rote Karte „SAP-Rivale abgestürzt: ServiceNow −45 % in 1 Jahr“, dann zählt **−45 %** hoch, der Balken leert sich von ~175 auf ~92 $, Stempel „EINSTIEGSCHANCE?“. Der Widerspruch (Absturz, aber +70 % Potenzial) trägt das Video.
+- **Neu `01b` (0:06):** Rote Karte „ServiceNow abgestürzt · −45 % in 12 Monaten“ kippt in Grün: **+70 %** zählt hoch, Raketen, der Balken füllt sich von ~92 $ auf das Kursziel ~155 $, Stempel „KURSPOTENZIAL“.
 - **Wer?** Kennt kaum jemand, nutzen fast alle Großen → Chart → der Auslöser (Zahlen, −27 % an einem Tag) → Marge fast halbiert.
 - **Re-Hook (0:33):** „Warum Analysten trotzdem jubeln“ → Wachstum +20,5 %, KI-Ziel 1,7 Mrd. $ → Kursziel ~155 $ (+70 %).
 - **Aber:** KI-Angst, 2026 schlechter als SAP.
@@ -16,17 +17,18 @@
 
 | Zeit | Karte | Text |
 |---|---|---|
-| 0:00 | `01-trDrain` | Minus 45 Prozent in einem Jahr – und jetzt soll genau das die große Einstiegschance sein? Der SAP-Rivale ServiceNow ist abgestürzt. Und Analysten sehen fast 70 Prozent Potenzial. |
-| 0:08 | `02-trHeadline` | ServiceNow – kennt kaum jemand, nutzt aber ein Großteil der größten Konzerne der Welt: Software, die Abläufe in Firmen automatisiert. Ein direkter Konkurrent von SAP. |
-| 0:14 | `03-trChart` | Doch die Aktie ist abgestürzt: vom Hoch bei rund 175 Dollar auf etwa 92 Dollar. |
-| 0:19 | `04-trList` | Der Auslöser: die letzten Quartalszahlen. Der Gewinn verfehlt knapp die Erwartungen, der Ausblick enttäuscht – an einem Tag rund minus 27 Prozent. |
-| 0:26 | `05-trBars` | Besonders bitter: Die operative Marge halbiert sich fast – von 16,8 auf 9,4 Prozent. |
-| 0:32 | `06-trHeadline` | Aber jetzt kommt der Grund, warum Analysten trotzdem jubeln. |
-| 0:36 | `07-trMetric` | Der Umsatz wächst weiter um über 20 Prozent. Und das KI-Umsatzziel wurde sogar auf 1,7 Milliarden Dollar angehoben. Das Geschäft wächst also – nur die Aktie nicht. |
-| 0:43 | `08-trBars` | Das durchschnittliche Kursziel liegt bei rund 155 Dollar – fast 70 Prozent über dem aktuellen Kurs. Vor den Zahlen rieten 45 von 50 Analysten zum Kauf. |
-| 0:51 | `09-trWarn` | Aber Vorsicht: KI-Agenten bedrohen das klassische Software-Geschäft. Genau deshalb hat es ServiceNow 2026 sogar härter getroffen als SAP. |
-| 0:58 | `10-trRule` | Also: Top-Einstiegschance oder Value-Falle? Wer kauft, wettet darauf, dass KI ServiceNow stärker macht – nicht schwächer. Das ist keine Anlageberatung. |
-| 1:05 | `11-trPoll` | Würdest du jetzt bei ServiceNow einsteigen – oder lieber SAP? Schreib's in die Kommentare. |
+| 0:00 | `01-trDrain` | Minus 45 Prozent in einem Jahr – und jetzt soll genau das die große Einstiegschance sein? |
+| 0:06 | `01b-trDrain` | Der SAP-Rivale ServiceNow ist abgestürzt. Und Analysten sehen jetzt fast 70 Prozent Kurspotenzial. |
+| 0:13 | `02-trHeadline` | ServiceNow – kennt kaum jemand, nutzt aber ein Großteil der größten Konzerne der Welt: Software, die Abläufe in Firmen automatisiert. Ein direkter Konkurrent von SAP. |
+| 0:19 | `03-trChart` | Doch die Aktie ist abgestürzt: vom Hoch bei rund 175 Dollar auf etwa 92 Dollar. |
+| 0:24 | `04-trList` | Der Auslöser: die letzten Quartalszahlen. Der Gewinn verfehlt knapp die Erwartungen, der Ausblick enttäuscht – an einem Tag rund minus 27 Prozent. |
+| 0:31 | `05-trBars` | Besonders bitter: Die operative Marge halbiert sich fast – von 16,8 auf 9,4 Prozent. |
+| 0:37 | `06-trHeadline` | Aber jetzt kommt der Grund, warum Analysten trotzdem jubeln. |
+| 0:41 | `07-trMetric` | Der Umsatz wächst weiter um über 20 Prozent. Und das KI-Umsatzziel wurde sogar auf 1,7 Milliarden Dollar angehoben. Das Geschäft wächst also – nur die Aktie nicht. |
+| 0:48 | `08-trBars` | Das durchschnittliche Kursziel liegt bei rund 155 Dollar – fast 70 Prozent über dem aktuellen Kurs. Vor den Zahlen rieten 45 von 50 Analysten zum Kauf. |
+| 0:56 | `09-trWarn` | Aber Vorsicht: KI-Agenten bedrohen das klassische Software-Geschäft. Genau deshalb hat es ServiceNow 2026 sogar härter getroffen als SAP. |
+| 1:03 | `10-trRule` | Also: Top-Einstiegschance oder Value-Falle? Wer kauft, wettet darauf, dass KI ServiceNow stärker macht – nicht schwächer. Das ist keine Anlageberatung. |
+| 1:10 | `11-trPoll` | Würdest du jetzt bei ServiceNow einsteigen – oder lieber SAP? Schreib's in die Kommentare. |
 
 ## Faktencheck
 
