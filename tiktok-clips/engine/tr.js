@@ -987,14 +987,14 @@
     const full = p.prompt || '';
     const row = C.h('div', { class: 'ctr', style: { gap: '16px', marginTop: '26px', alignItems: 'stretch' } }, card);
     row.dataset.own = 1;
-    const mkTile = (label, bg, bd) => { const d = C.h('div', { style: { flex: 1, padding: '20px 24px', borderRadius: '28px', background: bg, border: `5px solid ${bd}` } }, row); C.h('div', { style: { fontSize: '28px', fontWeight: 800, color: '#4b5058' } }, d, label); const v = C.h('div', { style: { fontSize: '104px', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-4px', whiteSpace: 'nowrap' } }, d, ''); return { d, v }; };
+    const mkTile = (label, bg, bd) => { const d = C.h('div', { style: { flex: 1, padding: '20px 24px', borderRadius: '28px', background: bg, border: `5px solid ${bd}` } }, row); C.h('div', { style: { fontSize: '28px', fontWeight: 800, color: '#4b5058' } }, d, label); const v = C.h('div', { style: { fontSize: (p.tileSize || 104) + 'px', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'clip' } }, d, ''); d.style.minWidth = 0; return { d, v }; };
     const a = mkTile(p.stakeLabel || 'Investiert', '#ddf4e8', CHK);
     const arrow = C.h('div', { class: 'ctr', style: { fontSize: '64px', fontWeight: 900, color: INK, flex: 'none' } }, row, '→');
     const b = mkTile(p.resultLabel || 'Nach 1 Woche', '#f2f3f5', '#d5d8dc');
     a.v.style.color = G;
     const foot = C.h('div', { class: 'ctr', style: { gap: '14px', marginTop: '22px', fontSize: '34px', fontWeight: 900 } }, card);
     foot.dataset.own = 1;
-    foot.innerHTML = `<span style="color:${G}">▲ Gewinn</span><span style="color:${GR}">oder</span><span style="color:${RD}">▼ Verlust?</span>`;
+    foot.innerHTML = p.foot ? T.rich(p.foot, G) : `<span style="color:${G}">▲ Gewinn</span><span style="color:${GR}">oder</span><span style="color:${RD}">▼ Verlust?</span>`;
     const typeAt = p.typeAt ?? 0.5, typeDur = p.typeDur ?? 1.8, stakeAt = p.stakeAt ?? typeAt + typeDur + 0.2, spinAt = p.spinAt ?? stakeAt + 1.0, landAt = p.landAt ?? spinAt + 1.5;
     ctx.cue('whoosh', 0, 0.8); ctx.cue('pop', 0.25, 0.5);
     for (let i = 0; i < 6; i++) ctx.cue('tick', typeAt + (typeDur * i) / 6, 0.32);

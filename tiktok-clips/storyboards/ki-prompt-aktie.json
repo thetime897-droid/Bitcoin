@@ -1,0 +1,263 @@
+{
+ "name": "ki-prompt-aktie",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trPrompt",
+   "duration": 8.6,
+   "script": "0:00 · Wir haben einer KI unseren Aktien-Prompt gegeben – und nach wenigen Sekunden landet sie bei einer Aktie, die fast die Hälfte verloren hat. Analysten sehen hier aber fast 70 Prozent Potenzial.",
+   "params": {
+    "brand": {
+     "name": "KI-Screener",
+     "glyph": "KI",
+     "color": "#111317"
+    },
+    "name": "KI-Screener",
+    "role": "unser Prompt · wenige Sekunden",
+    "tag": "EXPERIMENT",
+    "prompt": "„Finde US-Aktien mit *+20 % Umsatz*, *−40 % vom Hoch* & Analysten-*Kaufen*.“",
+    "stake": "~500",
+    "stakeLabel": "Suchraum (S&P 500)",
+    "result": "NOW",
+    "resultLabel": "Treffer: ServiceNow",
+    "typeAt": 0.4,
+    "typeDur": 2.2,
+    "stakeAt": 3.0,
+    "spinAt": 4.2,
+    "landAt": 6.0,
+    "tileSize": 96,
+    "foot": "✓ alle *3 Kriterien* erfüllt"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trHeadline",
+   "duration": 5.6,
+   "script": "0:08 · Die Idee stammt aus einem Interview auf wallstreet-online: Mit dem richtigen Prompt findet KI spannende Aktien in Sekunden.",
+   "params": {
+    "brand": false,
+    "text": "Aktien finden in\n*wenigen Sekunden*",
+    "accent": "#2f6bff",
+    "size": 80,
+    "pills": [
+     "KI-Prompt",
+     "Interview wallstreet-online"
+    ],
+    "pillsAt": 2.0
+   }
+  },
+  {
+   "id": "03",
+   "type": "trPost",
+   "duration": 9.0,
+   "script": "0:14 · Unser Prompt hat drei Kriterien: Umsatz wächst um mindestens 20 Prozent. Die Aktie liegt mindestens 40 Prozent unter ihrem Hoch. Und die Analysten sagen mehrheitlich Kaufen.",
+   "params": {
+    "name": "Unser Prompt",
+    "role": "zum Kopieren · KI-Chat",
+    "avatar": {
+     "name": "KI-Screener",
+     "glyph": "KI",
+     "color": "#111317"
+    },
+    "quote": "„Finde liquide US-Aktien aus S&P 500 & Nasdaq 100 mit: *Umsatzwachstum ≥ 20 %*, Kurs *≥ 40 % unter dem 52-Wochen-Hoch*, Analysten-Konsens *Kaufen*. Nenne Kurs, Kursziel und Risiken.“",
+    "quoteAt": 0.8,
+    "playAt": 0.4,
+    "videoLabel": "Prompt",
+    "meta": "Screenshot-Tipp: Prompt pausieren & abtippen",
+    "sticker": {
+     "text": "PROMPT ZUM KOPIEREN",
+     "icon": "📋",
+     "color": "#2f6bff",
+     "at": 2.0,
+     "x": 700,
+     "y": 560,
+     "size": 36,
+     "rotate": -5
+    },
+    "accent": "#2f6bff"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trHeadline",
+   "duration": 3.8,
+   "script": "0:23 · Und der Treffer ist ein Name, den viele gar nicht kennen.",
+   "params": {
+    "brand": false,
+    "text": "Der *Treffer*…",
+    "accent": "#0d7d4d",
+    "size": 96
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 5.0,
+   "script": "0:27 · ServiceNow – ein großer Konkurrent von SAP. Software, mit der Konzerne ihre Abläufe automatisieren.",
+   "params": {
+    "brand": {
+     "name": "ServiceNow",
+     "glyph": "now",
+     "color": "#1d4b3f"
+    },
+    "text": "*ServiceNow*",
+    "accent": "#0d7d4d",
+    "size": 110,
+    "pills": [
+     "Rivale von SAP",
+     "Workflow-Software"
+    ],
+    "pillsAt": 1.6
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 9.0,
+   "script": "0:32 · Check eins: Umsatz plus 20,5 Prozent. Check zwei: rund 45 Prozent unter dem Hoch. Check drei: Konsens „Strong Buy“ – mit einem Kursziel rund 70 Prozent über dem aktuellen Kurs.",
+   "params": {
+    "title": "Alle 3 Kriterien *erfüllt*",
+    "accent": "#0d7d4d",
+    "items": [
+     {
+      "text": "Umsatz *+20,5 %*",
+      "sub": "Kriterium: ≥ 20 %",
+      "mark": "✓",
+      "markColor": "#0d7d4d",
+      "at": 1.4
+     },
+     {
+      "text": "*~45 %* unter dem Hoch",
+      "sub": "Kriterium: ≥ 40 %",
+      "mark": "✓",
+      "markColor": "#0d7d4d",
+      "at": 3.4
+     },
+     {
+      "text": "Konsens *„Strong Buy“*",
+      "sub": "Ø-Kursziel ~155 $ · ca. +70 %",
+      "mark": "✓",
+      "markColor": "#0d7d4d",
+      "at": 5.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trWarn",
+   "duration": 7.4,
+   "script": "0:41 · Aber warum ist die Aktie so billig? Die Marge ist eingebrochen, der Ausblick hat enttäuscht – und viele fürchten, dass KI das Software-Geschäft auffrisst.",
+   "params": {
+    "brand": {
+     "name": "ServiceNow",
+     "glyph": "now",
+     "color": "#1d4b3f"
+    },
+    "context": "Die Kehrseite",
+    "tag": "Warum billig?",
+    "live": true,
+    "text": "Es gibt *Gründe*",
+    "size": 74,
+    "sub": "Marge *9,4 %* statt 16,8 % · schwacher Ausblick · *KI-Angst*",
+    "pills": [
+     "Risiken"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 7.6,
+   "script": "0:48 · Und genau da liegt die Grenze von KI-Prompts: Die KI findet Kennzahlen in Sekunden. Aber ob die Story dahinter stimmt, musst du selbst prüfen.",
+   "params": {
+    "title": "Was KI *kann* – und was *nicht*",
+    "left": {
+     "label": "KI kann",
+     "title": "Zahlen in Sekunden",
+     "result": "filtert Tausende Aktien",
+     "good": true,
+     "at": 1.4
+    },
+    "right": {
+     "label": "KI kann nicht",
+     "title": "Zukunft garantieren",
+     "result": "Story selbst prüfen",
+     "good": false,
+     "at": 3.8
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trList",
+   "duration": 6.4,
+   "script": "0:56 · Unser Tipp: Daten immer gegenchecken – KI kann sich verrechnen oder alte Zahlen nutzen. Und nie alles auf einen Treffer setzen.",
+   "params": {
+    "title": "Unser *Tipp*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Daten *gegenchecken*",
+      "sub": "KI kann sich irren oder alte Zahlen nutzen",
+      "mark": "🔍",
+      "markColor": "#2f6bff",
+      "at": 1.4
+     },
+     {
+      "text": "Nie *alles auf einen* Treffer",
+      "sub": "streuen statt zocken",
+      "mark": "🧺",
+      "markColor": "#2f6bff",
+      "at": 3.8
+     }
+    ]
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.0,
+   "script": "1:02 · Also: Ist das die neue Art, Aktien zu finden – oder nur ein Werkzeug? Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Revolution oder *Werkzeug*?",
+    "left": {
+     "label": "Revolution",
+     "title": "Screening in Sekunden",
+     "result": "spart Stunden",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Werkzeug",
+     "title": "Ersetzt kein Denken",
+     "result": "Risiken bleiben",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:08 · Soll ich den Prompt auch auf deutsche Aktien loslassen? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Prompt auf *DAX-Aktien*?",
+    "options": [
+     "Ja, mach!",
+     "Lieber Europa",
+     "Lieber ETFs"
+    ],
+    "note": "Keine Anlageberatung · Beispiel-Treffer, keine Empfehlung · Stand: 28.11.2026"
+   }
+  }
+ ]
+}
