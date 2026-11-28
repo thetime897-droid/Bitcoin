@@ -1,0 +1,315 @@
+{
+ "name": "spacex-128-trillionen",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 8.4,
+   "script": "0:00 · 128 Trillionen Dollar. Das ist eine 128 mit 18 Nullen – und so viel soll SpaceX laut Elon Musk irgendwann wert sein. Kein Tippfehler.",
+   "params": {
+    "intro": {
+     "tag": "ELON MUSK · KEIN TIPPFEHLER",
+     "text": "*128.000.000.000.\n000.000.000 $*",
+     "sub": "eine 128 mit 18 Nullen",
+     "dur": 3.0,
+     "size": 64,
+     "green": true
+    },
+    "up": true,
+    "brand": "SPACEX",
+    "name": "SpaceX",
+    "tag": "MUSKS ZIEL",
+    "title": "So viel *mehr* als heute",
+    "titleSize": 56,
+    "value": "×75 Mio.",
+    "size": 180,
+    "at": 0.3,
+    "countDur": 1.2,
+    "barFrom": "heute: ~1,7 Bio. $",
+    "barTo": "Ziel: 128 Trill. $",
+    "fillFrom": 0.01,
+    "sub": "128 *Trillionen* Dollar",
+    "stamp": "KEIN TIPPFEHLER",
+    "stampSize": 56,
+    "note": "🚀"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trBars",
+   "duration": 8.6,
+   "script": "0:08 · Zum Vergleich: Heute ist SpaceX an der Börse rund 1,7 Billionen Dollar wert. Musks Zahl wäre das 75-Millionen-fache. Also nicht 75 Prozent mehr – sondern 75 Millionen Mal so viel.",
+   "params": {
+    "title": "Heute vs. *Musks Zahl*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "name": "SpaceX heute",
+      "brand": "SPACEX",
+      "value": 1,
+      "label": "~1,7 Bio. $",
+      "at": 1.4,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Musks Zahl",
+      "brand": "SPACEX",
+      "value": 100,
+      "label": "128 Trill. $ (×75 Mio.)",
+      "at": 3.0,
+      "color": "#0d7d4d"
+     }
+    ],
+    "max": 100,
+    "note": "Balken nicht maßstabsgetreu – sonst wäre der erste unsichtbar"
+   }
+  },
+  {
+   "id": "03",
+   "type": "trMetric",
+   "duration": 6.4,
+   "script": "0:17 · Und das wäre rund eine Million Mal so viel wie die gesamte Weltwirtschaft – die liegt bei etwa 128 Billionen Dollar.",
+   "params": {
+    "title": "Mehr als die *ganze Welt*",
+    "accent": "#0d7d4d",
+    "label": "× gesamte Weltwirtschaft (~128 Bio. $)",
+    "logos": [
+     "SPACEX"
+    ],
+    "value": "×1 Mio.",
+    "size": 180,
+    "at": 1.4,
+    "countDur": 1.0,
+    "second": {
+     "value": "128 Trillionen = 10¹⁸ × 128",
+     "size": 50,
+     "at": 3.4
+    }
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 8.0,
+   "script": "0:23 · Heißt: Eine einzige SpaceX-Aktie, heute etwa 127 Dollar, wäre theoretisch 9,5 Milliarden Dollar wert. Wer heute nur eine Aktie hat, wäre damit Milliardär.",
+   "params": {
+    "title": "Eine *Aktie* wäre…",
+    "accent": "#0d7d4d",
+    "label": "Wert je SpaceX-Aktie (theoretisch)",
+    "logos": [
+     "SPACEX"
+    ],
+    "value": "9,5 Mrd. $",
+    "size": 160,
+    "at": 1.4,
+    "countDur": 1.0,
+    "second": {
+     "value": "statt heute ~127 $",
+     "size": 56,
+     "at": 3.2
+    },
+    "pills": [
+     "ohne Verwässerung"
+    ],
+    "pillsAt": 4.4
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 3.4,
+   "script": "0:31 · Aber wie soll das bitte gehen?",
+   "params": {
+    "brand": {
+     "name": "Elon Musk",
+     "glyph": "EM",
+     "color": "#111317"
+    },
+    "text": "Wie soll das *gehen*?",
+    "accent": "#2f6bff",
+    "size": 92
+   }
+  },
+  {
+   "id": "06",
+   "type": "trList",
+   "duration": 8.6,
+   "script": "0:34 · Musks Plan: eine menschliche Zivilisation jenseits der Erde aufbauen – und ein Millionstel der Energie der Sonne einfangen. Dafür setzt er auf Solarenergie direkt im All.",
+   "params": {
+    "title": "Musks *Plan*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "text": "Zivilisation *jenseits der Erde*",
+      "sub": "Mond, Mars & Co.",
+      "mark": "🪐",
+      "markColor": "#2f6bff",
+      "at": 1.4
+     },
+     {
+      "text": "*1 Millionstel* der Sonnenenergie",
+      "sub": "einfangen und nutzen",
+      "mark": "☀️",
+      "markColor": "#2f6bff",
+      "at": 3.8
+     },
+     {
+      "text": "*Solarenergie* im All",
+      "sub": "orbitale Kraftwerke",
+      "mark": "🛰️",
+      "markColor": "#2f6bff",
+      "at": 6.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "07",
+   "type": "trWarn",
+   "duration": 6.2,
+   "script": "0:43 · Musk gibt selbst zu: Das sind extrem schwierige Ziele. Und anders als sonst nennt er diesmal keinen Zeitplan.",
+   "params": {
+    "brand": {
+     "name": "Elon Musk",
+     "glyph": "EM",
+     "color": "#111317"
+    },
+    "context": "Selbst zugegeben",
+    "tag": "Haken",
+    "text": "„*Extrem schwierige* Ziele“",
+    "size": 66,
+    "sub": "Diesmal *kein Zeitplan*.",
+    "pills": [
+     "laut Berichten"
+    ],
+    "pillsAt": 3.2
+   }
+  },
+  {
+   "id": "08",
+   "type": "trRule",
+   "duration": 7.4,
+   "script": "0:49 · Kritiker rechnen vor: Selbst bei einer Billion Dollar Umsatz pro Jahr – mal tausend – wäre das immer noch weniger als ein Prozent davon.",
+   "params": {
+    "title": "Die *Gegenrechnung*",
+    "left": {
+     "label": "Annahme",
+     "title": "1 Billiarde $",
+     "result": "= 1 Bio. $ Umsatz × 1.000",
+     "good": true,
+     "at": 1.6
+    },
+    "right": {
+     "label": "Ergebnis",
+     "title": "< 1 %",
+     "result": "von 128 Trillionen",
+     "good": false,
+     "at": 4.0
+    }
+   }
+  },
+  {
+   "id": "09",
+   "type": "trChart",
+   "duration": 6.6,
+   "script": "0:57 · Die Realität an der Börse: Die SpaceX-Aktie steht bei rund 127 Dollar – sogar unter ihrem Ausgabepreis von 135 Dollar.",
+   "params": {
+    "ticker": "SPACEX",
+    "name": "SpaceX · seit Juni",
+    "price": "~127 $",
+    "countPrice": false,
+    "priceFrom": 201,
+    "change": "-6 % unter IPO-Preis",
+    "range": "6M",
+    "ranges": [
+     "1M",
+     "3M",
+     "6M",
+     "Max"
+    ],
+    "data": [
+     201,
+     196,
+     199,
+     190,
+     184,
+     188,
+     179,
+     172,
+     176,
+     168,
+     162,
+     166,
+     158,
+     153,
+     156,
+     149,
+     144,
+     147,
+     141,
+     139,
+     142,
+     138,
+     165,
+     152,
+     135,
+     130,
+     127
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.6,
+    "threshold": {
+     "value": 135,
+     "label": "Ausgabepreis: 135 $",
+     "at": 0.6
+    }
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 6.8,
+   "script": "1:03 · Also: Visionär oder völlig abgehoben? Musk hat schon oft Unmögliches geliefert – aber auch oft Zeitpläne verfehlt. Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Visionär oder *abgehoben*?",
+    "left": {
+     "label": "Visionär",
+     "title": "Raketen, Starlink, KI",
+     "result": "hat oft geliefert",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Abgehoben",
+     "title": "×75 Mio.",
+     "result": "kein Zeitplan",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:10 · Was glaubst du: Erleben wir das noch – oder ist das reiner Hype? Schreib's in die Kommentare.",
+   "params": {
+    "question": "128 Trillionen: *realistisch*?",
+    "options": [
+     "Ja, irgendwann",
+     "Reiner Hype",
+     "Nicht zu unseren Lebzeiten"
+    ],
+    "note": "Keine Anlageberatung · Stand: 28. November 2026"
+   }
+  }
+ ]
+}

@@ -1,0 +1,330 @@
+{
+ "name": "bitcoin-417-tage",
+ "fps": 30,
+ "theme": "tr",
+ "layout": "full",
+ "exit": false,
+ "sfxGap": 0.5,
+ "sfxVolume": 0.3,
+ "scenes": [
+  {
+   "id": "01",
+   "type": "trDrain",
+   "duration": 8.0,
+   "script": "0:00 · 417 Tage. So lange steckt Bitcoin jetzt schon im Bärenmarkt – länger als je zuvor. Und jetzt steht der Kurs kurz vor einer Marke, die alles entscheiden könnte.",
+   "params": {
+    "intro": {
+     "tag": "NEGATIVREKORD",
+     "text": "Bitcoin im *Bärenmarkt*",
+     "sub": "so lange wie noch nie",
+     "dur": 2.4,
+     "size": 76,
+     "green": false
+    },
+    "brand": "BTC",
+    "name": "Bitcoin",
+    "tag": "BÄRENMARKT",
+    "title": "Seit dem *Rekordhoch*",
+    "titleSize": 56,
+    "value": "417 Tage",
+    "size": 180,
+    "at": 0.3,
+    "countDur": 1.4,
+    "barFrom": "Hoch: ~126.000 $",
+    "barTo": "jetzt: ~54.500 $",
+    "drainTo": 0.43,
+    "sub": "und jetzt droht *die* Marke",
+    "stamp": "NEGATIVREKORD",
+    "stampSize": 58,
+    "note": "🐻"
+   }
+  },
+  {
+   "id": "02",
+   "type": "trChart",
+   "duration": 7.0,
+   "script": "0:08 · Rückblick: Im Oktober 2025 knackt Bitcoin sein Rekordhoch bei rund 126.000 Dollar. Heute: etwa 54.500 Dollar. Das sind rund 57 Prozent minus.",
+   "params": {
+    "ticker": "BTC",
+    "name": "Bitcoin · seit Oktober 2025",
+    "price": "~54.500 $",
+    "countPrice": false,
+    "priceFrom": 126000,
+    "change": "-57 % vom Rekord",
+    "range": "1J",
+    "ranges": [
+     "1M",
+     "3M",
+     "1J",
+     "Max"
+    ],
+    "data": [
+     126000,
+     121000,
+     115000,
+     118000,
+     110000,
+     104000,
+     107000,
+     99000,
+     93000,
+     96000,
+     88000,
+     84000,
+     87000,
+     79000,
+     74000,
+     77000,
+     70000,
+     66000,
+     69000,
+     62000,
+     64000,
+     58000,
+     61000,
+     56000,
+     54500
+    ],
+    "height": 400,
+    "drawAt": 0.3,
+    "drawDur": 2.8,
+    "threshold": {
+     "value": 126000,
+     "label": "Rekord 6. Okt. 2025: ~126.000 $",
+     "at": 0.5
+    }
+   }
+  },
+  {
+   "id": "03",
+   "type": "trBars",
+   "duration": 9.4,
+   "script": "0:15 · Und das Krasse: Laut Galaxy Research haben die vier Bärenmärkte davor zwischen 163 und 406 Tagen gebraucht, bis der Boden erreicht war. Jetzt sind es schon 417 – und ein Boden ist nicht in Sicht.",
+   "params": {
+    "title": "Länger als *je zuvor*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "name": "Kürzester Bärenmarkt bis zum Boden",
+      "brand": "BTC",
+      "value": 163,
+      "label": "163 Tage",
+      "at": 1.6,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Längster Bärenmarkt bis zum Boden",
+      "brand": "BTC",
+      "value": 406,
+      "label": "406 Tage",
+      "at": 3.4,
+      "color": "#8b9099",
+      "barColor": "#c5c9cf"
+     },
+     {
+      "name": "Jetzt (und noch kein Boden)",
+      "brand": "BTC",
+      "value": 417,
+      "label": "417 Tage",
+      "at": 5.4,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     }
+    ],
+    "max": 450,
+    "note": "laut Galaxy Research · die 4 Bärenmärkte davor"
+   }
+  },
+  {
+   "id": "04",
+   "type": "trMetric",
+   "duration": 5.4,
+   "script": "0:24 · Die realisierten Verluste der Anleger sind so hoch wie seit dem FTX-Crash nicht mehr.",
+   "params": {
+    "title": "Verluste wie bei *FTX*",
+    "accent": "#e5392f",
+    "label": "realisierte Verluste der Anleger",
+    "logos": [
+     "BTC"
+    ],
+    "value": "Hoch seit 2022",
+    "countUp": false,
+    "size": 110,
+    "tone": "red",
+    "at": 1.0,
+    "second": {
+     "value": "so hoch wie seit dem FTX-Crash nicht",
+     "size": 46,
+     "tone": "red",
+     "at": 2.6
+    }
+   }
+  },
+  {
+   "id": "05",
+   "type": "trHeadline",
+   "duration": 3.8,
+   "script": "0:29 · Aber jetzt kommt die Marke, auf die alle schauen.",
+   "params": {
+    "brand": "BTC",
+    "text": "Die Marke, auf die *alle* schauen",
+    "accent": "#e5392f",
+    "size": 78
+   }
+  },
+  {
+   "id": "06",
+   "type": "trMetric",
+   "duration": 8.0,
+   "script": "0:33 · Der realisierte Preis – also der durchschnittliche Einstandskurs aller Bitcoin – liegt laut Analysten bei 53.200 Dollar. Und der Kurs ist nur noch knapp darüber.",
+   "params": {
+    "title": "Der *realisierte Preis*",
+    "accent": "#e5392f",
+    "label": "Ø-Einstandskurs aller Bitcoin",
+    "logos": [
+     "BTC"
+    ],
+    "value": "53.200 $",
+    "size": 160,
+    "at": 1.6,
+    "countDur": 1.0,
+    "second": {
+     "value": "Kurs: ~54.500 $ · nur ~2 % darüber",
+     "size": 48,
+     "tone": "red",
+     "at": 4.4
+    },
+    "pills": [
+     "laut Analysten"
+    ],
+    "pillsAt": 5.8,
+    "tone": "red"
+   }
+  },
+  {
+   "id": "07",
+   "type": "trList",
+   "duration": 6.4,
+   "script": "0:41 · Fällt er darunter, sind die Anleger im Schnitt im Minus. Glassnode warnt deshalb vor einem weiteren Abverkauf.",
+   "params": {
+    "title": "Warum die Marke *zählt*",
+    "accent": "#e5392f",
+    "items": [
+     {
+      "text": "Darunter: Anleger *im Schnitt im Minus*",
+      "sub": "Panikverkäufe möglich",
+      "value": "▼",
+      "ok": false,
+      "at": 1.4
+     },
+     {
+      "text": "*Glassnode* warnt",
+      "sub": "vor weiterem Abverkauf",
+      "value": "⚠",
+      "ok": false,
+      "at": 3.6
+     }
+    ]
+   }
+  },
+  {
+   "id": "08",
+   "type": "trWarn",
+   "duration": 7.4,
+   "script": "0:47 · Und das Problem: Bitcoin läuft gerade fast im Gleichschritt mit den Tech-Aktien. Die Korrelation zum Nasdaq 100 ist so hoch wie seit September 2022 nicht mehr.",
+   "params": {
+    "brand": "NDX",
+    "context": "Das Problem",
+    "tag": "Korrelation",
+    "live": true,
+    "text": "Bitcoin = *Tech-Aktie*?",
+    "size": 68,
+    "sub": "Gleichlauf mit Nasdaq 100 so hoch wie seit *Sept. 2022* nicht",
+    "pills": [
+     "Tech-Schwäche = Krypto-Winter"
+    ],
+    "pillsAt": 3.6
+   }
+  },
+  {
+   "id": "09",
+   "type": "trBars",
+   "duration": 7.4,
+   "script": "0:55 · Aber: Historisch war genau diese Phase oft die beste Kaufgelegenheit – 2018 und 2022 fiel Bitcoin sogar um rund 80 Prozent, bevor es wieder hochging.",
+   "params": {
+    "title": "Zum *Vergleich*",
+    "accent": "#2f6bff",
+    "items": [
+     {
+      "name": "Bärenmarkt 2018",
+      "brand": "BTC",
+      "value": 84,
+      "label": "−84 %",
+      "at": 1.4,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     },
+     {
+      "name": "Bärenmarkt 2022",
+      "brand": "BTC",
+      "value": 78,
+      "label": "−78 %",
+      "at": 2.6,
+      "color": "#e5392f",
+      "barColor": "#f3b3ae"
+     },
+     {
+      "name": "Jetzt",
+      "brand": "BTC",
+      "value": 57,
+      "label": "−57 %",
+      "at": 3.8,
+      "color": "#e5392f",
+      "barColor": "#e5392f"
+     }
+    ],
+    "max": 90,
+    "note": "Verlust vom Hoch · danach kamen jeweils neue Rekorde"
+   }
+  },
+  {
+   "id": "10",
+   "type": "trRule",
+   "duration": 5.4,
+   "script": "1:02 · Also: Boden in Sicht oder der nächste Absturz? Das ist keine Anlageberatung.",
+   "params": {
+    "title": "Boden oder *Absturz*?",
+    "left": {
+     "label": "Boden",
+     "title": "Historisch Kaufzone",
+     "result": "früher −80 % und Comeback",
+     "good": true,
+     "at": 1.2
+    },
+    "right": {
+     "label": "Absturz",
+     "title": "Unter 53.200 $?",
+     "result": "Glassnode warnt",
+     "good": false,
+     "at": 2.8
+    }
+   }
+  },
+  {
+   "id": "11",
+   "type": "trPoll",
+   "duration": 5.0,
+   "script": "1:08 · Kaufst du Bitcoin jetzt – oder wartest du unter 50.000? Schreib's in die Kommentare.",
+   "params": {
+    "question": "Bitcoin *jetzt kaufen*?",
+    "options": [
+     "Ja, jetzt!",
+     "Erst unter 50.000 $",
+     "Gar nicht"
+    ],
+    "note": "Keine Anlageberatung · Stand: 28. November 2026"
+   }
+  }
+ ]
+}
